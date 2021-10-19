@@ -12,13 +12,13 @@
 ```
 Start Mysql server if not running (e.g. mysqld).
 
-mysqladmin -u root create paproject -p
-mysqladmin -u root create paprojecttest -p
+mysqladmin -u root create fireproject -p
+mysqladmin -u root create fireprojecttest -p
 
 mysql -u root -p
-    CREATE USER 'pa'@'localhost' IDENTIFIED BY 'pa';
-    GRANT ALL PRIVILEGES ON paproject.* to 'pa'@'localhost' WITH GRANT OPTION;
-    GRANT ALL PRIVILEGES ON paprojecttest.* to 'pa'@'localhost' WITH GRANT OPTION;
+    CREATE USER 'fireuser'@'localhost' IDENTIFIED BY 'fireuser';
+    GRANT ALL PRIVILEGES ON fireproject.* to 'fireuser'@'localhost' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON fireprojecttest.* to 'fireuser'@'localhost' WITH GRANT OPTION;
     exit
 ```
 
