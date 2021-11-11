@@ -1,91 +1,102 @@
 package es.udc.fireproject.backend.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "user", schema = "public")
 public class User {
-	
-	public enum RoleType {USER};
 
-	private Long id;
-	private String userName;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private RoleType role;
+    private Long id;
 
-	public User() {}
+    @Column(name = "username")
+    private String userName;
 
-	public User(String userName, String password, String firstName, String lastName, String email) {
+    private String password;
 
-		this.userName = userName;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		
-	}
+    @Column(name = "firstname")
+    private String firstName;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "lastname")
+    private String lastName;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private String email;
 
-	public String getUserName() {
-		return userName;
-	}
+    @Enumerated(EnumType.ORDINAL)
+    private RoleType role;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public User() {
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public User(String userName, String password, String firstName, String lastName, String email) {
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+        return id;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public RoleType getRole() {
-		return role;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRole(RoleType role) {
-		this.role = role;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
+
+    public enum RoleType {
+        USER
+    }
 
 }
