@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.test.model.services;
 
+import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.services.user.UserService;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,34 +9,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.entities.User;
-import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
-import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
-import es.udc.fireproject.backend.model.services.UserService;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
 public class UserServiceTest {
-	
-	private final Long NON_EXISTENT_ID = Long.valueOf(-1);
-	
-	@Autowired
-	private UserService userService;
-	
-	private User createUser(String userName) {
-		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
-	}
 
-	@Test
-	public void test(){
-		Assert.isTrue(true);
-	}
-	
+    private final Long NON_EXISTENT_ID = Long.valueOf(-1);
+
+    @Autowired
+    private UserService userService;
+
+    private User createUser(String userName) {
+        return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+    }
+
+    @Test
+    public void test() {
+        Assert.isTrue(true);
+    }
+
 //	@Test
 //	public void testSignUpAndLoginFromId() throws DuplicateInstanceException, InstanceNotFoundException {
 //

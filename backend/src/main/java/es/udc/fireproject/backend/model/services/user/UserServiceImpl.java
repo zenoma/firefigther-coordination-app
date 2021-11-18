@@ -1,7 +1,8 @@
-package es.udc.fireproject.backend.model.services;
+package es.udc.fireproject.backend.model.services.user;
 
-import es.udc.fireproject.backend.model.entities.User;
-import es.udc.fireproject.backend.model.entities.UserDao;
+import es.udc.fireproject.backend.model.entities.user.RoleType;
+import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.entities.user.UserDao;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(User.RoleType.USER);
+        user.setRole(RoleType.USER);
 
         userDao.save(user);
 

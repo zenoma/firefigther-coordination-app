@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.model.entities;
+package es.udc.fireproject.backend.model.entities.user;
 
 import javax.persistence.*;
 
@@ -95,8 +95,5 @@ public class User {
         this.role = role;
     }
 
-    public enum RoleType {
-        USER
-    }
 
 }
