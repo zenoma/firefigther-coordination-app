@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.model.entities.user;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "user")
 public class User {
 
     private Long id;
@@ -13,10 +13,10 @@ public class User {
 
     private String password;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
     private String email;

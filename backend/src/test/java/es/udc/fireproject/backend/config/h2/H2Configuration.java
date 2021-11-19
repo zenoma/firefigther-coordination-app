@@ -1,6 +1,5 @@
 package es.udc.fireproject.backend.config.h2;
 
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -14,18 +13,17 @@ import javax.sql.DataSource;
 public class H2Configuration {
 
     @Bean
-    public DataSource getDataSource()
-    {
+    public DataSource getDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
-        dataSourceBuilder.url("jdbc:h2:mem:fireprojecttest");
+        dataSourceBuilder.url("jdbc:h2:mem:fireproject");
         dataSourceBuilder.username("fireuser");
         dataSourceBuilder.password("fireuser");
         return dataSourceBuilder.build();
     }
 
     @ConfigurationProperties(prefix = "h2.console")
-    public static class H2Console{
+    public static class H2Console {
         Boolean enable = true;
     }
 
