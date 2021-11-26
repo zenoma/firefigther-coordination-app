@@ -6,9 +6,11 @@ import javax.persistence.*;
 @Table(name = "organization_type")
 public class OrganizationType {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "organizationtypename")
+    @Column(name = "organization_type_name")
     private String organizationTypeName;
 
     public OrganizationType() {
@@ -19,8 +21,6 @@ public class OrganizationType {
         this.organizationTypeName = organizationTypeName;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

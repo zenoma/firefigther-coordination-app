@@ -2,7 +2,7 @@ package es.udc.fireproject.backend.model.entities.organization;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface OrganizationTypeDao extends PagingAndSortingRepository<OrganizationType, Long> {
+public interface OrganizationTypeRepository extends PagingAndSortingRepository<OrganizationType, Long> {
 
 
 }

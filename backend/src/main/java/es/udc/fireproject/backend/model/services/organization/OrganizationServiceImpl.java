@@ -1,7 +1,9 @@
 package es.udc.fireproject.backend.model.services.organization;
 
+import es.udc.fireproject.backend.model.entities.organization.Organization;
+import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
-import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeDao;
+import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +16,24 @@ import java.util.List;
 public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
-    private OrganizationTypeDao organizationTypeDao;
+    private OrganizationTypeRepository organizationTypeRepository;
+
+    @Autowired
+    private OrganizationRepository organizationRepository;
+
+    public List<OrganizationType> findAllOrganizationTypes() {
+
+        List<OrganizationType> organizationTypes = new ArrayList<>();
+
+        organizationTypeRepository.findAll().forEach(organizationTypes::add);
+        return organizationTypes;
+    }
 
     @Override
-    public List<OrganizationType> findAllOrganizationTypes() {
-        Iterable<OrganizationType> iterable = organizationTypeDao.findAll();
-        List<OrganizationType> result = new ArrayList<>();
-        iterable.forEach(result::add);
+    public List<Organization> findAll() {
+        List<Organization> organizations = new ArrayList<>();
 
-        return result;
+        organizationRepository.findAll().forEach(organizations::add);
+        return organizations;
     }
 }
