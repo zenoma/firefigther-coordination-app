@@ -9,6 +9,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 class OrganizationTypeOM {
     static OrganizationType withDefaultValues() {
@@ -28,6 +29,7 @@ class OrganizationOM {
 }
 
 @SpringBootTest
+@Transactional
 class OrganizationServiceImplTest {
 
     @Autowired
@@ -50,5 +52,21 @@ class OrganizationServiceImplTest {
         Assertions.assertNotNull(result.getId(), "Id must be not Null");
         Assertions.assertNotNull(result.getCreatedAt(), "Created date must be not Null");
 
+    }
+
+    @Test
+    void givenValidName_whenFindByName_thenFoundedOrganization() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+
+        organizationService.createOrganizationType(organization.getOrganizationType().getName());
+        organizationService.createOrganization(organization);
+
+        Assertions.assertEquals(organization, organizationService.findByName(organization.getName()));
+    }
+
+    @Test
+    void givenInvalidName_whenFindByName_thenReturnNull() {
+
+        Assertions.assertNull(organizationService.findByName(""), "The item founded must be null");
     }
 }

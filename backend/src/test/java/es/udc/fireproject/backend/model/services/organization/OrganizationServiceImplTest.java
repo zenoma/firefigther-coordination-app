@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ class OrganizationOM {
 }
 
 @SpringBootTest
+@Transactional
 class OrganizationServiceImplTest {
     @Mock
     OrganizationTypeRepository organizationTypeRepository;
@@ -156,6 +158,35 @@ class OrganizationServiceImplTest {
 
         // Create At must be null because the Object never persist in the Database
         Assertions.assertNull(result.getCreatedAt(), "Created date must be Null");
+
+    }
+
+    @Test
+    void givenValidName_whenFindByName_thenFoundedOrganization() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findByName(Mockito.anyString())).thenReturn(organization);
+
+        organizationService.createOrganization(organization);
+
+        Assertions.assertEquals(organization, organizationService.findByName(organization.getName()));
+
+    }
+
+    @Test
+    void givenInvalidName_whenFindByName_thenFoundedOrganization() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findByName("")).thenReturn(null);
+
+        organizationService.createOrganization(organization);
+
+        Assertions.assertNull(organizationService.findByName(""), "The item founded must be null");
+
 
     }
 

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Organization {
@@ -26,7 +27,7 @@ public class Organization {
 
     @Transient
     private Geometry location;
-    
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -100,5 +101,18 @@ public class Organization {
 
     public void setOrganizationType(OrganizationType organizationType) {
         this.organizationType = organizationType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return name.equals(that.name) && organizationType.equals(that.organizationType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, organizationType);
     }
 }

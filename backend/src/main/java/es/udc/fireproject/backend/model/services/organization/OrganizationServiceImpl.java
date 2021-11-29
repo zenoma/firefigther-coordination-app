@@ -26,9 +26,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization findByName(String name) {
-
-        // TODO
-        throw new UnsupportedOperationException();
+        return organizationRepository.findByName(name);
     }
 
     @Override
