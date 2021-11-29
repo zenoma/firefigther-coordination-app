@@ -4,6 +4,7 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
+import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization findByName(String name) {
-        return null;
+
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Organization findByCode(String code) {
-        return null;
+
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -59,6 +64,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationType createOrganizationType(String name) {
         OrganizationType organizationType = new OrganizationType();
         organizationType.setName(name);
+
+        ConstraintValidator.validate(organizationType);
         return organizationTypeRepository.save(organizationType);
     }
 
@@ -66,9 +73,22 @@ public class OrganizationServiceImpl implements OrganizationService {
     public Organization createOrganization(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName) {
         OrganizationType organizationType = organizationTypeRepository.findByName(organizationTypeName);
         Organization organization = new Organization(code, name, headquartersAddress, location, organizationType);
+
         organization.setCreatedAt(LocalDateTime.now());
+        ConstraintValidator.validate(organization);
         return organizationRepository.save(organization);
     }
+
+    @Override
+    public Organization createOrganization(Organization organization) {
+
+        return createOrganization(organization.getCode(),
+                organization.getName(),
+                organization.getHeadquartersAddress(),
+                organization.getLocation(),
+                organization.getOrganizationType().getName());
+    }
+
 
     @Override
     public void deleteOrganization() {

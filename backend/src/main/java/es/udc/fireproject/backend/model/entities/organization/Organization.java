@@ -3,6 +3,8 @@ package es.udc.fireproject.backend.model.entities.organization;
 import org.locationtech.jts.geom.Geometry;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,21 +14,23 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code")
+    @NotBlank
     private String code;
 
-    @Column(name = "name")
+    @NotBlank
     private String name;
 
+    @NotBlank
     @Column(name = "headquarters_address")
     private String headquartersAddress;
 
     @Transient
     private Geometry location;
-
+    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "organization_type_id")
     private OrganizationType organizationType;

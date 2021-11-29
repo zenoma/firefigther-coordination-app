@@ -11,19 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 class OrganizationTypeOM {
-    static OrganizationType aDummyOrganizationType() {
+    static OrganizationType withDefaultValues() {
         return new OrganizationType("Dummy Name");
     }
 }
 
 class OrganizationOM {
-    static Organization aDummyOrganization() {
+    static Organization withDefaultValues() {
         final GeometryFactory geoFactory = new GeometryFactory();
 
         return new Organization("ORG-01",
                 "Centro de Coordinación Central",
                 "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
-                OrganizationTypeOM.aDummyOrganizationType());
+                OrganizationTypeOM.withDefaultValues());
     }
 }
 
@@ -36,14 +36,16 @@ class OrganizationServiceImplTest {
     @Test
     void givenValidData_whenCreationOrganization_thenReturnOrganizationWithId() {
 
-        Organization dummyOrganization = OrganizationOM.aDummyOrganization();
-        Organization createdOrganization = dummyOrganization;
+        OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        organizationService.createOrganizationType(organizationType.getName());
 
-        Organization result = organizationService.createOrganization(dummyOrganization.getCode(),
-                dummyOrganization.getName(),
-                dummyOrganization.getHeadquartersAddress(),
-                dummyOrganization.getLocation(),
-                dummyOrganization.getOrganizationType().getName());
+        Organization organization = OrganizationOM.withDefaultValues();
+
+        Organization result = organizationService.createOrganization(organization.getCode(),
+                organization.getName(),
+                organization.getHeadquartersAddress(),
+                organization.getLocation(),
+                organization.getOrganizationType().getName());
 
         Assertions.assertNotNull(result.getId(), "Id must be not Null");
         Assertions.assertNotNull(result.getCreatedAt(), "Created date must be not Null");

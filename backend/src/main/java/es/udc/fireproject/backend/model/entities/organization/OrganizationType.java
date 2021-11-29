@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "organization_type")
@@ -10,7 +11,7 @@ public class OrganizationType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotBlank
     private String name;
 
     public OrganizationType() {

@@ -13,25 +13,31 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 class OrganizationTypeOM {
-    static OrganizationType aDummyOrganizationType() {
+    static OrganizationType withDefaultValues() {
         return new OrganizationType("Dummy Name");
+    }
+
+    static OrganizationType withInvalidName() {
+        OrganizationType organizationType = withDefaultValues();
+        organizationType.setName("");
+        return organizationType;
     }
 }
 
 class OrganizationOM {
-    static Organization aDummyOrganization() {
+    static Organization withDefaultValues() {
         final GeometryFactory geoFactory = new GeometryFactory();
 
         return new Organization("ORG-01",
                 "Centro de Coordinación Central",
                 "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
-                OrganizationTypeOM.aDummyOrganizationType());
-
+                OrganizationTypeOM.withDefaultValues());
     }
 }
 
@@ -48,84 +54,109 @@ class OrganizationServiceImplTest {
 
 
     @Test
-    void givenValidData_whenCreationOrganization_thenReturnOrganizationWithId() {
-
-        Organization dummyOrganization = OrganizationOM.aDummyOrganization();
-
-        dummyOrganization.setId(1L);
-
-        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(dummyOrganization);
-        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.aDummyOrganizationType());
-
-        Organization result = organizationService.createOrganization(dummyOrganization.getCode(),
-                dummyOrganization.getName(),
-                dummyOrganization.getHeadquartersAddress(),
-                dummyOrganization.getLocation(),
-                dummyOrganization.getOrganizationType().getName());
-
-        Assertions.assertNotNull(result.getId(), "Id must be not Null");
-
-        // Create At must be null because the Object never persist in the Database
-        Assertions.assertNull(result.getCreatedAt(), "Created date must be Null");
-
-    }
-
-
-    @Test
     void givenNoData_whenCallFindAllOrganizationTypes_thenReturnEmptyList() {
-        List<OrganizationType> result = organizationService.findAllOrganizationTypes();
+        final List<OrganizationType> result = organizationService.findAllOrganizationTypes();
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
 
     @Test
     void givenData_whenFindAllOrganizationTypes_thenReturnNotEmptyList() {
-        OrganizationType organizationType = new OrganizationType();
-        organizationType.setId(1L);
-        organizationType.setName("name");
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
 
-        List<OrganizationType> list = new ArrayList<>();
+        final List<OrganizationType> list = new ArrayList<>();
         list.add(organizationType);
 
         Mockito.when(organizationTypeRepository.findAll()).thenReturn(list);
 
-        List<OrganizationType> result = organizationService.findAllOrganizationTypes();
+        final List<OrganizationType> result = organizationService.findAllOrganizationTypes();
 
         Assertions.assertTrue(result.contains(list.get(0)), "Result must contain the same Data");
     }
 
     @Test
     void givenNoData_whenCallFindAll_thenReturnEmptyList() {
-        List<Organization> result = organizationService.findAll();
+        final List<Organization> result = organizationService.findAll();
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
 
     @Test
     void givenData_whenFindAll_thenReturnNotEmptyList() {
-        final OrganizationType organizationType = new OrganizationType();
-        organizationType.setId(1L);
-        organizationType.setName("name");
 
-        final Organization organization = new Organization();
-        organization.setId(1L);
-        organization.setName("Centro Coordinación Central");
-        organization.setHeadquartersAddress("Calle alguna");
-        organization.setOrganizationType(organizationType);
-
-        final GeometryFactory geoFactory = new GeometryFactory();
-        organization.setLocation(geoFactory.createPoint(new Coordinate(-45, 45)));
-
+        final Organization organization = OrganizationOM.withDefaultValues();
 
         final List<Organization> list = new ArrayList<>();
         list.add(organization);
 
         Mockito.when(organizationRepository.findAll()).thenReturn(list);
 
-        List<Organization> result = organizationService.findAll();
+        final List<Organization> result = organizationService.findAll();
 
         Assertions.assertFalse(result.isEmpty(), "Result must be not empty");
         Assertions.assertTrue(result.contains(list.get(0)), "Result must contain the same Data");
+    }
+
+
+    @Test
+    void givenEmptyName_whenCreationOrganization_thenInvalidArgumentException() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        organization.setName("");
+
+        Assertions.assertThrows(ConstraintViolationException.class, () ->
+                        organizationService.createOrganization(organization)
+                , "ConstraintViolationException error was expected");
+    }
+
+    @Test
+    void givenEmptyAddress_whenCreationOrganization_thenInvalidArgumentException() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        organization.setHeadquartersAddress("");
+
+        Assertions.assertThrows(ConstraintViolationException.class, () ->
+                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+    }
+
+    @Test
+    void givenInvalidLocation_whenCreationOrganization_thenInvalidArgumentException() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        organization.setLocation(null);
+
+        Assertions.assertThrows(ConstraintViolationException.class, () ->
+                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+    }
+
+    @Test
+    void givenEmptyOrganizationTypeName_whenCreationOrganization_thenInvalidArgumentException() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        final OrganizationType organizationType = OrganizationTypeOM.withInvalidName();
+
+        Assertions.assertThrows(ConstraintViolationException.class, () ->
+                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+    }
+
+
+    @Test
+    void givenValidData_whenCreationOrganization_thenReturnOrganizationWithId() {
+
+        final Organization organization = OrganizationOM.withDefaultValues();
+
+        organization.setId(1L);
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+
+        final Organization result = organizationService.createOrganization(organization.getCode(),
+                organization.getName(),
+                organization.getHeadquartersAddress(),
+                organization.getLocation(),
+                organization.getOrganizationType().getName());
+
+        Assertions.assertNotNull(result.getId(), "Id must be not Null");
+
+        // Create At must be null because the Object never persist in the Database
+        Assertions.assertNull(result.getCreatedAt(), "Created date must be Null");
+
     }
 
 

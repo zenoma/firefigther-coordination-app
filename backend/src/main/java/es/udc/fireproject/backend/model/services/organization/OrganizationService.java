@@ -22,6 +22,8 @@ public interface OrganizationService {
 
     Organization createOrganization(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName);
 
+    Organization createOrganization(Organization organization);
+
     void deleteOrganization();
 
     Organization updateOrganization();
