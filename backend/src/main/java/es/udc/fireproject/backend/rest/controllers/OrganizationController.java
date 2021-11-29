@@ -21,10 +21,10 @@ public class OrganizationController {
     @GetMapping("/list")
     public List<OrganizationTypeDto> findAll() {
 
-        List<OrganizationType> query = organizationService.findAllOrganizationTypes();
+        List<OrganizationType> organizationTypeList = organizationService.findAllOrganizationTypes();
         List<OrganizationTypeDto> result = new ArrayList<>();
-        for (OrganizationType var : query) {
-            result.add(new OrganizationTypeDto(var.getOrganizationTypeName()));
+        for (OrganizationType item : organizationTypeList) {
+            result.add(new OrganizationTypeDto(item.getName()));
         }
 
         return result;

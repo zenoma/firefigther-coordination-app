@@ -1,4 +1,4 @@
-INSERT INTO public.organization_type (organization_type_name) VALUES
+INSERT INTO public.organization_type (name) VALUES
 ('Centro de Coordinación')
 ,('Brigada')
 ,('Patrulla de Vigilancia')

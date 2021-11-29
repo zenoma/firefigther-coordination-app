@@ -10,15 +10,14 @@ public class OrganizationType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "organization_type_name")
-    private String organizationTypeName;
+    @Column(name = "name")
+    private String name;
 
     public OrganizationType() {
     }
 
-    public OrganizationType(Long id, String organizationTypeName) {
-        this.id = id;
-        this.organizationTypeName = organizationTypeName;
+    public OrganizationType(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -29,11 +28,11 @@ public class OrganizationType {
         this.id = id;
     }
 
-    public String getOrganizationTypeName() {
-        return organizationTypeName;
+    public String getName() {
+        return name;
     }
 
-    public void setOrganizationTypeName(String organizationTypeName) {
-        this.organizationTypeName = organizationTypeName;
+    public void setName(String name) {
+        this.name = name;
     }
 }
