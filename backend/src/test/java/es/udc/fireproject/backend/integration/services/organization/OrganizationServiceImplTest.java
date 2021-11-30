@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class OrganizationTypeOM {
     static OrganizationType withDefaultValues() {
         return new OrganizationType("Dummy Name");
@@ -55,18 +58,20 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidName_whenFindByName_thenFoundedOrganization() {
+    void givenValidName_whenFindByNameOrCode_thenFoundedOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
+        final List<Organization> organizationList = new ArrayList<>();
+        organizationList.add(organization);
 
         organizationService.createOrganizationType(organization.getOrganizationType().getName());
         organizationService.createOrganization(organization);
 
-        Assertions.assertEquals(organization, organizationService.findByName(organization.getName()));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), ""));
     }
 
     @Test
-    void givenInvalidName_whenFindByName_thenReturnNull() {
+    void givenInvalidName_whenFindByNameOrCode_thenReturnEmptyList() {
 
-        Assertions.assertNull(organizationService.findByName(""), "The item founded must be null");
+        Assertions.assertTrue(organizationService.findByNameOrCode("", "").isEmpty(), "The item founded must be null");
     }
 }

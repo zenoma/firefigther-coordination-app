@@ -16,17 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 class OrganizationTypeOM {
     static OrganizationType withDefaultValues() {
-        return new OrganizationType("Dummy Name");
+        return new OrganizationType("Dummy Type Name");
     }
 
     static OrganizationType withInvalidName() {
         OrganizationType organizationType = withDefaultValues();
-        organizationType.setName("");
+        organizationType.setName(null);
         return organizationType;
     }
 }
@@ -39,6 +40,24 @@ class OrganizationOM {
                 "Centro de Coordinación Central",
                 "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withDefaultValues());
+    }
+
+    static List<Organization> withNames(List<String> names) {
+        final GeometryFactory geoFactory = new GeometryFactory();
+        final List<Organization> result = new ArrayList<>();
+        Organization organization;
+        int count = 0;
+
+        for (String name : names) {
+            organization = new Organization(name.substring(0, 3).toUpperCase() + "-" + count,
+                    name,
+                    "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
+                    OrganizationTypeOM.withDefaultValues());
+            result.add(organization);
+            count++;
+        }
+        return result;
+
     }
 }
 
@@ -131,7 +150,6 @@ class OrganizationServiceImplTest {
     @Test
     void givenEmptyOrganizationTypeName_whenCreationOrganization_thenInvalidArgumentException() {
         final Organization organization = OrganizationOM.withDefaultValues();
-        final OrganizationType organizationType = OrganizationTypeOM.withInvalidName();
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
                 organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
@@ -162,33 +180,85 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidName_whenFindByName_thenFoundedOrganization() {
+    void givenValidName_whenFindByNameOrCode_thenFoundedOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
+        final List<Organization> organizationList = new ArrayList<>();
+        organizationList.add(organization);
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByName(Mockito.anyString())).thenReturn(organization);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
-        organizationService.createOrganization(organization);
 
-        Assertions.assertEquals(organization, organizationService.findByName(organization.getName()));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), ""));
 
     }
 
     @Test
-    void givenInvalidName_whenFindByName_thenFoundedOrganization() {
+    void givenValidCode_whenFindByNameOrCode_thenFoundedOrganization() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        final List<Organization> organizationList = new ArrayList<>();
+        organizationList.add(organization);
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
+
+
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode("", organization.getCode()));
+
+    }
+
+    @Test
+    void givenValidNameAndValidCode_whenFindByNameOrCode_thenFoundedOrganization() {
+        final Organization organization = OrganizationOM.withDefaultValues();
+        final List<Organization> organizationList = new ArrayList<>();
+        organizationList.add(organization);
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
+
+
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), organization.getCode()));
+    }
+
+    @Test
+    void givenInvalidName_whenFindByNameOrCode_thenFoundedOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByName("")).thenReturn(null);
-
-        organizationService.createOrganization(organization);
-
-        Assertions.assertNull(organizationService.findByName(""), "The item founded must be null");
+        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode("", "")).thenReturn(null);
 
 
+        Assertions.assertTrue(organizationService.findByNameOrCode(null, null).isEmpty(), "The item founded must be null");
     }
 
+
+    @Test
+    void givenValidName_whenFindByNameOrCode_thenFoundedMultipleOrganizations() {
+        List<String> names = Arrays.asList("Centro 1", "Centro 2", "Centro 3");
+        List<Organization> list = OrganizationOM.withNames(names);
+
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(list);
+
+        Assertions.assertEquals(3, organizationService.findByNameOrCode("Centro", "").size(),
+                "Expected results must be 3");
+    }
+
+
+    @Test
+    void givenValidName_whenFindByOrganizationTypeName_thenFoundedMultipleOrganizations() {
+        List<String> names = Arrays.asList("Centro 1", "Centro 2", "Centro 3");
+        List<Organization> list = OrganizationOM.withNames(names);
+
+        Mockito.when(organizationRepository.findByOrganizationType_Name(Mockito.anyString())).thenReturn(list);
+
+        Assertions.assertEquals(3, organizationService.findByOrganizationTypeName("Dummy").size(),
+                "Expected results must be 3");
+    }
 
 }

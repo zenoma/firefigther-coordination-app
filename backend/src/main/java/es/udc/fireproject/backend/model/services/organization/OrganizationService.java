@@ -8,11 +8,9 @@ import java.util.List;
 
 public interface OrganizationService {
 
-    Organization findByName(String name);
+    List<Organization> findByNameOrCode(String name, String code);
 
-    Organization findByCode(String code);
-
-    List<Organization> filterByOrganizationType(String organizationTypeName);
+    List<Organization> findByOrganizationTypeName(String organizationTypeName);
 
     List<OrganizationType> findAllOrganizationTypes();
 

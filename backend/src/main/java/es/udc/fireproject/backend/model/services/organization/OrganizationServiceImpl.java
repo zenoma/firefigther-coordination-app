@@ -25,21 +25,14 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationRepository organizationRepository;
 
     @Override
-    public Organization findByName(String name) {
-        return organizationRepository.findByName(name);
+    public List<Organization> findByNameOrCode(String name, String code) {
+        return organizationRepository.findByNameIgnoreCaseOrCode(name, code);
     }
 
-    @Override
-    public Organization findByCode(String code) {
-
-        // TODO
-        throw new UnsupportedOperationException();
-    }
 
     @Override
-    public List<Organization> filterByOrganizationType(String organizationTypeName) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public List<Organization> findByOrganizationTypeName(String organizationTypeName) {
+        return organizationRepository.findByOrganizationType_Name(organizationTypeName);
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {
