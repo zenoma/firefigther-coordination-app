@@ -1,28 +1,97 @@
-<databaseChangeLog
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+<databaseChangeLog xmlns:spatial="http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial
+                   http://lonnyj.github.io/liquibase-spatial/liquibase-spatial.xsd">
+    <property name="srid" value="25829"/>
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
 
-    <changeSet author="adriangvazquez" id="1">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="user"/>
-            </not>
+    <changeSet author="adriangvazquez" id="Create user table">
+        <preConditions>
+            <spatial:spatialSupported/>
         </preConditions>
         <createTable tableName="user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="username" type="VARCHAR(255)">
+            <column name="user_name" type="VARCHAR(255)">
                 <constraints unique="true"/>
             </column>
-            <column name="password" type="VARCHAR(255)">
-            </column>
-            <column name="firstname" type="VARCHAR(255)"/>
-            <column name="lastname" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)"/>
             <column name="role" type="INT"/>
         </createTable>
+    </changeSet>
+    <changeSet author="adriangvazquez" id="Create organization type table">
+        <createTable tableName="organization_type">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="adriangvazquez" id="Create organization table">
+        <createTable tableName="organization">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="headquarters_address" type="VARCHAR(255)">
+            </column>
+            <column name="location" type="geometry"/>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organization_type_id" type="INT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="organization_type_id"
+                                 baseTableName="organization"
+                                 constraintName="fk_organization_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organization_type"/>
+
+    </changeSet>
+    <changeSet author="adriangvazquez" id="Create cuadrants table">
+        <createTable tableName="cuadrants">
+            <column autoIncrement="true" name="gid" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="clasico" type="VARCHAR(50)"/>
+            <column name="ccff" type="VARCHAR(50)"/>
+            <column name="escala" type="VARCHAR(50)"/>
+            <column name="nombre" type="VARCHAR(50)"/>
+            <column name="folla50" type="VARCHAR(50)"/>
+            <column name="folla25" type="VARCHAR(50)"/>
+            <column name="folla5" type="VARCHAR(50)"/>
+            <column name="revision" type="VARCHAR(50)"/>
+            <column name="GEOM" type="GEOMETRY(MULTIPOLYGON,${srid})"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adriangvazquez" id="Initialize Data">
+        <sqlFile
+                endDelimiter="\nGO"
+                path="classpath:InitData.sql"
+                relativeToChangelogFile="false"
+                splitStatements="true"
+                stripComments="true"/>
+        <sqlFile
+                endDelimiter="\nGO"
+                path="classpath:cuadrants_v1.sql"
+                relativeToChangelogFile="false"
+                splitStatements="true"
+                stripComments="true"/>
     </changeSet>
 </databaseChangeLog>

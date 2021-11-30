@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.rest.controllers;
 
-import es.udc.fireproject.backend.model.entities.User;
+import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.*;
-import es.udc.fireproject.backend.model.services.UserService;
+import es.udc.fireproject.backend.model.services.user.UserService;
 import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.JwtGenerator;
 import es.udc.fireproject.backend.rest.common.JwtInfo;

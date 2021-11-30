@@ -13,6 +13,7 @@ public class PostgreSQLConfiguration {
 
     @Bean
     public DataSource dataSource() {
+        
         DriverManagerDataSource driver = new DriverManagerDataSource();
         driver.setDriverClassName("org.postgresql.Driver");
         driver.setUrl("jdbc:postgresql:postgis_database");
