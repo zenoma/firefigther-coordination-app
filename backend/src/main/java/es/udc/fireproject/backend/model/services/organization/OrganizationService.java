@@ -18,13 +18,13 @@ public interface OrganizationService {
 
     OrganizationType createOrganizationType(String name);
 
-    Organization createOrganization(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName);
+    Organization create(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName);
 
-    Organization createOrganization(Organization organization);
+    Organization create(Organization organization);
 
-    void deleteOrganization();
+    void deleteById(Long id);
 
-    Organization updateOrganization();
+    Organization update();
 
 
 }

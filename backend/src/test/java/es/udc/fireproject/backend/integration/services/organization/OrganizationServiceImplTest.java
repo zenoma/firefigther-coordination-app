@@ -46,7 +46,7 @@ class OrganizationServiceImplTest {
 
         Organization organization = OrganizationOM.withDefaultValues();
 
-        Organization result = organizationService.createOrganization(organization.getCode(),
+        Organization result = organizationService.create(organization.getCode(),
                 organization.getName(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation(),
@@ -64,7 +64,7 @@ class OrganizationServiceImplTest {
         organizationList.add(organization);
 
         organizationService.createOrganizationType(organization.getOrganizationType().getName());
-        organizationService.createOrganization(organization);
+        organizationService.create(organization);
 
         Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), ""));
     }

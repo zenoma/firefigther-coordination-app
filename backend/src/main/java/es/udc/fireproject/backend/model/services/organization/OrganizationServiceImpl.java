@@ -61,7 +61,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization createOrganization(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName) {
+    public Organization create(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName) {
         OrganizationType organizationType = organizationTypeRepository.findByName(organizationTypeName);
         Organization organization = new Organization(code, name, headquartersAddress, location, organizationType);
 
@@ -71,9 +71,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization createOrganization(Organization organization) {
+    public Organization create(Organization organization) {
 
-        return createOrganization(organization.getCode(),
+        return create(organization.getCode(),
                 organization.getName(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation(),
@@ -82,13 +82,13 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
     @Override
-    public void deleteOrganization() {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void deleteById(Long id) {
+        organizationRepository.deleteById(id);
     }
 
     @Override
-    public Organization updateOrganization() {
-        return null;
+    public Organization update() {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

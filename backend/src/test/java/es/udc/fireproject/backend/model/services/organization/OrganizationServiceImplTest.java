@@ -125,7 +125,7 @@ class OrganizationServiceImplTest {
         organization.setName("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                        organizationService.createOrganization(organization)
+                        organizationService.create(organization)
                 , "ConstraintViolationException error was expected");
     }
 
@@ -135,7 +135,7 @@ class OrganizationServiceImplTest {
         organization.setHeadquartersAddress("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+                organizationService.create(organization), "ConstraintViolationException error was expected");
     }
 
     @Test
@@ -144,7 +144,7 @@ class OrganizationServiceImplTest {
         organization.setLocation(null);
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+                organizationService.create(organization), "ConstraintViolationException error was expected");
     }
 
     @Test
@@ -152,7 +152,7 @@ class OrganizationServiceImplTest {
         final Organization organization = OrganizationOM.withDefaultValues();
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                organizationService.createOrganization(organization), "ConstraintViolationException error was expected");
+                organizationService.create(organization), "ConstraintViolationException error was expected");
     }
 
 
@@ -166,7 +166,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
 
-        final Organization result = organizationService.createOrganization(organization.getCode(),
+        final Organization result = organizationService.create(organization.getCode(),
                 organization.getName(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation(),
@@ -261,4 +261,14 @@ class OrganizationServiceImplTest {
                 "Expected results must be 3");
     }
 
+    @Test
+    void givenValidId_whenDelete_thenDeletedSuccessfully() {
+        Organization organization = OrganizationOM.withDefaultValues();
+
+        Mockito.when(organizationRepository.findAll()).thenReturn(new ArrayList<>());
+        organizationService.deleteById(organization.getId());
+
+        Assertions.assertTrue(organizationService.findAll().isEmpty(), "Expected result must be Empty");
+    }
+    
 }
