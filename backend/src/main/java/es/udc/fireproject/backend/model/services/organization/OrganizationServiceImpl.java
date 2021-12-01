@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,8 +26,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationRepository organizationRepository;
 
     @Override
-    public List<Organization> findByNameOrCode(String name, String code) {
-        return organizationRepository.findByNameIgnoreCaseOrCode(name, code);
+    public List<Organization> findByNameOrCode(String nameOrCode) {
+        return organizationRepository.findByNameIgnoreCaseOrCode(nameOrCode, nameOrCode);
+    }
+
+    @Override
+    public Optional<Organization> findById(Long id) {
+        return organizationRepository.findById(id);
     }
 
 
@@ -88,7 +94,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization update() {
-        // TODO
+        // TODO update
         throw new UnsupportedOperationException();
     }
 }

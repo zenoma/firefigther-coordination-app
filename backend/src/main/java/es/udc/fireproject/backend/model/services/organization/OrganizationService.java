@@ -5,10 +5,13 @@ import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import org.locationtech.jts.geom.Geometry;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrganizationService {
 
-    List<Organization> findByNameOrCode(String name, String code);
+    List<Organization> findByNameOrCode(String nameOrCode);
+
+    Optional<Organization> findById(Long id);
 
     List<Organization> findByOrganizationTypeName(String organizationTypeName);
 

@@ -66,12 +66,12 @@ class OrganizationServiceImplTest {
         organizationService.createOrganizationType(organization.getOrganizationType().getName());
         organizationService.create(organization);
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), ""));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
     }
 
     @Test
     void givenInvalidName_whenFindByNameOrCode_thenReturnEmptyList() {
 
-        Assertions.assertTrue(organizationService.findByNameOrCode("", "").isEmpty(), "The item founded must be null");
+        Assertions.assertTrue(organizationService.findByNameOrCode("").isEmpty(), "The item founded must be null");
     }
 }

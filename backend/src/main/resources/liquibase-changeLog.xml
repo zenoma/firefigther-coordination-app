@@ -55,7 +55,9 @@
             <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
                 <constraints nullable="false"/>
             </column>
-            <column name="organization_type_id" type="INT"/>
+            <column name="organization_type_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="organization_type_id"
                                  baseTableName="organization"
@@ -80,6 +82,27 @@
             <column name="GEOM" type="GEOMETRY(MULTIPOLYGON,${srid})"/>
         </createTable>
     </changeSet>
+
+    <changeSet author="adriangvazquez" id="Create Teams Table">
+        <createTable tableName="team">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organization_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="team" baseColumnNames="organization_id"
+                                 referencedTableName="organization"
+                                 referencedColumnNames="id" constraintName="fk_organization_id"/>
+    </changeSet>
+
     <changeSet author="adriangvazquez" id="Initialize Data">
         <sqlFile
                 endDelimiter="\nGO"
