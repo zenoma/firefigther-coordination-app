@@ -4,6 +4,7 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +94,22 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization update() {
-        // TODO update
-        throw new UnsupportedOperationException();
+    public Organization update(Long id, String name, String code, String headquartersAddress, Geometry location)
+            throws InstanceNotFoundException {
+        Optional<Organization> organizationOpt = organizationRepository.findById(id);
+
+        if (organizationOpt.isEmpty()) {
+            throw new InstanceNotFoundException("Organization not founded", id);
+
+        } else {
+            Organization organization = organizationOpt.get();
+            organization.setName(name);
+            organization.setCode(code);
+            organization.setHeadquartersAddress(headquartersAddress);
+            organization.setLocation(location);
+
+            ConstraintValidator.validate(organization);
+            return organizationRepository.save(organization);
+        }
     }
 }

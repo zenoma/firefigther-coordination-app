@@ -89,12 +89,35 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenInvalidTeam_whenUpdate_thenUpdateSuccessfully() {
+    void givenInvalidCode_whenUpdate_thenConstraintViolationException() {
         Team team = TeamOM.withDefaultValues();
         team.setCode("");
 
-        Assertions.assertThrows(ConstraintViolationException.class, () ->
-                teamService.update(team), "ConstraintViolationException error was expected");
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(TeamOM.withDefaultValues()));
+
+        Long id = team.getId();
+        String code = team.getCode();
+        Assertions.assertThrows(ConstraintViolationException.class, () -> teamService.update(id, code),
+                "ConstraintViolationException error was expected");
+    }
+
+    @Test
+    void givenInvalidId_whenUpdate_thenInstanceNotFoundException() {
+
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.update(-1L, ""),
+                "InstanceNotFoundException error was expected");
+    }
+
+    @Test
+    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException {
+        Team team = TeamOM.withDefaultValues();
+        team.setCode("New Name");
+
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(team);
+
+        Team updatedTeam = teamService.update(team.getId(), team.getCode());
+        Assertions.assertEquals(team, updatedTeam);
     }
 
 }

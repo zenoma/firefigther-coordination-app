@@ -12,7 +12,6 @@ public interface TeamService {
     Team create(String code, Long organizationId) throws InstanceNotFoundException;
 
     void deleteById(Long id);
-
-    Team update(Team team);
-
+    
+    Team update(Long id, String name) throws InstanceNotFoundException;
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -50,9 +51,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team update(Team team) {
+    public Team update(Long id, String code) throws InstanceNotFoundException {
+        Optional<Team> teamOpt = teamRepository.findById(id);
 
-        ConstraintValidator.validate(team);
-        return teamRepository.save(team);
+        if (teamOpt.isEmpty()) {
+            throw new InstanceNotFoundException("Team not founded", id);
+        } else {
+            Team team = teamOpt.get();
+            team.setCode(code);
+
+            ConstraintValidator.validate(team);
+            return teamRepository.save(team);
+        }
     }
 }

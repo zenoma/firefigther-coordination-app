@@ -2,12 +2,13 @@ package es.udc.fireproject.backend.integration.services.organization;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.organization.OrganizationService;
-import es.udc.fireproject.backend.model.services.team.TeamService;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,6 @@ class OrganizationServiceImplTest {
     @Autowired
     OrganizationService organizationService;
 
-    @Autowired
-    TeamService teamService;
-
     @Test
     void givenInvalidString_whenCreateOrganizationType_theConstraintViolationException() {
 
@@ -41,7 +39,7 @@ class OrganizationServiceImplTest {
     void givenValidData_whenCreationOrganization_thenReturnOrganizationWithId() {
 
         OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        organizationType = organizationService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
 
@@ -49,7 +47,7 @@ class OrganizationServiceImplTest {
                 organization.getName(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation(),
-                organization.getOrganizationType().getName());
+                organizationType.getName());
 
         Assertions.assertNotNull(result.getId(), "Id must be not Null");
         Assertions.assertNotNull(result.getCreatedAt(), "Created date must be not Null");
@@ -179,10 +177,6 @@ class OrganizationServiceImplTest {
         final Organization organization = OrganizationOM.withDefaultValues();
         organizationService.create(organization);
 
-        final List<Organization> list = new ArrayList<>();
-        list.add(organization);
-
-
         final List<Organization> result = organizationService.findAll();
 
         Assertions.assertFalse(result.isEmpty(), "Result must be not empty");
@@ -200,5 +194,64 @@ class OrganizationServiceImplTest {
         organizationService.deleteById(organization.getId());
 
         Assertions.assertTrue(organizationService.findAll().isEmpty(), "Expected result must be Empty");
+    }
+
+
+    @Test
+    void givenValidData_whenUpdate_thenUpdatedSuccessfully() throws InstanceNotFoundException {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organization = organizationService.create(organization);
+
+        Organization updatedOrganization = organizationService.update(organization.getId(),
+                "New Name",
+                "New Code",
+                "New HeadQuarters Address",
+                organization.getLocation());
+
+        Assertions.assertEquals(organization, updatedOrganization);
+
+
+    }
+
+    @Test
+    void givenInvadalidData_whenUpdate_thenConstraintViolationException() {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organization = organizationService.create(organization);
+
+        Long id = organization.getId();
+        Geometry location = organization.getLocation();
+        Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
+                        "",
+                        "",
+                        "",
+                        location)
+                , "ConstraintViolationException error was expected");
+
+
+    }
+
+    @Test
+    void givenInvadalidId_whenUpdate_thenInstanceNotFoundException() {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organization = organizationService.create(organization);
+
+        Geometry location = organization.getLocation();
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
+                        "",
+                        "",
+                        "",
+                        location)
+                , "InstanceNotFoundException error was expected");
+
+
     }
 }
