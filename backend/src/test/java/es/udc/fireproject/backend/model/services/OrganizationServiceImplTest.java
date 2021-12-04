@@ -1,13 +1,16 @@
-package es.udc.fireproject.backend.model.services.organization;
+package es.udc.fireproject.backend.model.services;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.services.organization.OrganizationServiceImpl;
+import es.udc.fireproject.backend.utils.OrganizationOM;
+import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -18,48 +21,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-
-class OrganizationTypeOM {
-    static OrganizationType withDefaultValues() {
-        return new OrganizationType("Dummy Type Name");
-    }
-
-    static OrganizationType withInvalidName() {
-        OrganizationType organizationType = withDefaultValues();
-        organizationType.setName(null);
-        return organizationType;
-    }
-}
-
-class OrganizationOM {
-    static Organization withDefaultValues() {
-        final GeometryFactory geoFactory = new GeometryFactory();
-
-        return new Organization("ORG-01",
-                "Centro de Coordinación Central",
-                "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
-                OrganizationTypeOM.withDefaultValues());
-    }
-
-    static List<Organization> withNames(List<String> names) {
-        final GeometryFactory geoFactory = new GeometryFactory();
-        final List<Organization> result = new ArrayList<>();
-        Organization organization;
-        int count = 0;
-
-        for (String name : names) {
-            organization = new Organization(name.substring(0, 3).toUpperCase() + "-" + count,
-                    name,
-                    "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
-                    OrganizationTypeOM.withDefaultValues());
-            result.add(organization);
-            count++;
-        }
-        return result;
-
-    }
-}
 
 @SpringBootTest
 @Transactional
@@ -190,7 +153,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), ""));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
 
     }
 
@@ -205,7 +168,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode("", organization.getCode()));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(""));
 
     }
 
@@ -220,7 +183,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName(), organization.getCode()));
+        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
     }
 
     @Test
@@ -232,7 +195,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode("", "")).thenReturn(null);
 
 
-        Assertions.assertTrue(organizationService.findByNameOrCode(null, null).isEmpty(), "The item founded must be null");
+        Assertions.assertTrue(organizationService.findByNameOrCode(null).isEmpty(), "The item founded must be null");
     }
 
 
@@ -245,7 +208,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
         Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(list);
 
-        Assertions.assertEquals(3, organizationService.findByNameOrCode("Centro", "").size(),
+        Assertions.assertEquals(3, organizationService.findByNameOrCode("Centro").size(),
                 "Expected results must be 3");
     }
 
@@ -270,5 +233,73 @@ class OrganizationServiceImplTest {
 
         Assertions.assertTrue(organizationService.findAll().isEmpty(), "Expected result must be Empty");
     }
-    
+
+    @Test
+    void givenValidData_whenUpdate_thenUpdatedSuccessfully() throws InstanceNotFoundException {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
+        organization = organizationService.create(organization);
+
+        Mockito.when(organizationRepository.findById(Mockito.isNull())).thenReturn(Optional.of(OrganizationOM.withDefaultValues()));
+        Organization updatedOrganization = organizationService.update(organization.getId(),
+                "New Name",
+                "New Code",
+                "New HeadQuarters Address",
+                organization.getLocation());
+
+        Assertions.assertEquals(organization, updatedOrganization);
+
+    }
+
+    @Test
+    void givenInvadalidData_whenUpdate_thenConstraintViolationException() {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
+        organization = organizationService.create(organization);
+
+        Mockito.when(organizationRepository.findById(Mockito.isNull())).thenReturn(Optional.of(OrganizationOM.withDefaultValues()));
+
+        Long id = organization.getId();
+        Geometry location = organization.getLocation();
+        Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
+                        "",
+                        "",
+                        "",
+                        location)
+                , "ConstraintViolationException error was expected");
+
+
+    }
+
+    @Test
+    void givenInvadalidId_whenUpdate_thenInstanceNotFoundException() {
+        final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
+        organizationService.createOrganizationType(organizationType.getName());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
+        Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
+        organization = organizationService.create(organization);
+
+        Geometry location = organization.getLocation();
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
+                        "",
+                        "",
+                        "",
+                        location)
+                , "InstanceNotFoundException error was expected");
+
+    }
+
 }

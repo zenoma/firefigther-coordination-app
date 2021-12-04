@@ -2,13 +2,17 @@ package es.udc.fireproject.backend.model.services.organization;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import org.locationtech.jts.geom.Geometry;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrganizationService {
 
-    List<Organization> findByNameOrCode(String name, String code);
+    List<Organization> findByNameOrCode(String nameOrCode);
+
+    Optional<Organization> findById(Long id);
 
     List<Organization> findByOrganizationTypeName(String organizationTypeName);
 
@@ -24,7 +28,5 @@ public interface OrganizationService {
 
     void deleteById(Long id);
 
-    Organization update();
-
-
+    Organization update(Long id, String name, String code, String headquartersAddress, Geometry location) throws InstanceNotFoundException;
 }

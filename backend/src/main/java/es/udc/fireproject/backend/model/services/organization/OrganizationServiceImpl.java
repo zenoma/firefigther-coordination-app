@@ -4,6 +4,7 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,8 +27,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationRepository organizationRepository;
 
     @Override
-    public List<Organization> findByNameOrCode(String name, String code) {
-        return organizationRepository.findByNameIgnoreCaseOrCode(name, code);
+    public List<Organization> findByNameOrCode(String nameOrCode) {
+        return organizationRepository.findByNameIgnoreCaseOrCode(nameOrCode, nameOrCode);
+    }
+
+    @Override
+    public Optional<Organization> findById(Long id) {
+        return organizationRepository.findById(id);
     }
 
 
@@ -87,8 +94,22 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization update() {
-        // TODO
-        throw new UnsupportedOperationException();
+    public Organization update(Long id, String name, String code, String headquartersAddress, Geometry location)
+            throws InstanceNotFoundException {
+        Optional<Organization> organizationOpt = organizationRepository.findById(id);
+
+        if (organizationOpt.isEmpty()) {
+            throw new InstanceNotFoundException("Organization not founded", id);
+
+        } else {
+            Organization organization = organizationOpt.get();
+            organization.setName(name);
+            organization.setCode(code);
+            organization.setHeadquartersAddress(headquartersAddress);
+            organization.setLocation(location);
+
+            ConstraintValidator.validate(organization);
+            return organizationRepository.save(organization);
+        }
     }
 }
