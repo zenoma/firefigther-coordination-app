@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class OrganizationOM {
+
     public static Organization withDefaultValues() {
         final GeometryFactory geoFactory = new GeometryFactory();
 
@@ -17,7 +18,6 @@ public class OrganizationOM {
                 "Centro de Coordinación Central",
                 "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withDefaultValues());
-
 
     }
 

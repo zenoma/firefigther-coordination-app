@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 public class Team {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "code")
