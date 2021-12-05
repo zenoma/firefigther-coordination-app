@@ -9,6 +9,17 @@
     <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
+    <changeSet author="adriangvazquez" id="Create user role table">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet author="adriangvazquez" id="Create user table">
         <preConditions>
             <spatial:spatialSupported/>
@@ -17,15 +28,26 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_name" type="VARCHAR(255)">
+            <column name="email" type="VARCHAR(255)">
                 <constraints unique="true"/>
             </column>
             <column name="password" type="VARCHAR(255)"/>
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="role" type="INT"/>
+            <column name="dni" type="VARCHAR(255)"/>
+            <column name="phone_number" type="INT(9)"/>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_role_id"
+                                 baseTableName="user"
+                                 constraintName="fk_user_role_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_role"/>
     </changeSet>
     <changeSet author="adriangvazquez" id="Create organization type table">
         <createTable tableName="organization_type">
