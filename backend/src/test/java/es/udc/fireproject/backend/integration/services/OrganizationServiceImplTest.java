@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.integration.services.organization;
+package es.udc.fireproject.backend.integration.services;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;

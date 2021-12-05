@@ -1,74 +1,93 @@
 package es.udc.fireproject.backend.model.entities.user;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.Instant;
 
 @Entity
-@Table(name = "user")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username")
-    private String userName;
-
-    private String password;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
+    @Email(message = "Email should be valid")
     private String email;
 
-    @Enumerated(EnumType.ORDINAL)
-    private RoleType role;
+    @Size(min = 3, message
+            = "Password must contain at least 3 characters")
+    private String password;
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Size(min = 9, max = 9, message
+            = "DNI must have 9 characters")
+    private String dni;
+
+    @Positive
+    @Digits(integer = 9, fraction = 0)
+    private Integer phoneNumber;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_role_id", nullable = false)
+    private UserRole userRole;
 
     public User() {
     }
 
-    public User(String userName, String password, String firstName, String lastName, String email) {
-
-        this.userName = userName;
+    public User(String email,
+                String password,
+                String firstName,
+                String lastName,
+                String dni,
+                Integer phoneNumber) {
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-
+        this.dni = dni;
+        this.phoneNumber = phoneNumber;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
-    public String getUserName() {
-        return userName;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDni() {
+        return dni;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getLastName() {
@@ -79,6 +98,22 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -87,13 +122,11 @@ public class User {
         this.email = email;
     }
 
-    public RoleType getRole() {
-        return role;
+    public Long getId() {
+        return id;
     }
 
-    public void setRole(RoleType role) {
-        this.role = role;
+    public void setId(Long id) {
+        this.id = id;
     }
-
-
 }

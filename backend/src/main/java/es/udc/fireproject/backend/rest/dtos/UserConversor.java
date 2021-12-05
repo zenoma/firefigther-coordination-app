@@ -7,18 +7,27 @@ public class UserConversor {
     private UserConversor() {
     }
 
-    public final static UserDto toUserDto(User user) {
-        return new UserDto(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getRole().toString());
+    public static UserDto toUserDto(User user) {
+        return new UserDto(user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getDni(),
+                user.getPhoneNumber());
     }
 
-    public final static User toUser(UserDto userDto) {
+    public static User toUser(UserDto userDto) {
 
-        return new User(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getLastName(),
-                userDto.getEmail());
+        return new User(userDto.getEmail(),
+                userDto.getPassword(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getDni(),
+                userDto.getPhoneNumber());
     }
 
-    public final static AuthenticatedUserDto toAuthenticatedUserDto(String serviceToken, User user) {
+    public static AuthenticatedUserDto toAuthenticatedUserDto(String serviceToken, User user) {
 
         return new AuthenticatedUserDto(serviceToken, toUserDto(user));
 

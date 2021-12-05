@@ -10,7 +10,7 @@ public interface UserService {
 
     void signUp(User user) throws DuplicateInstanceException;
 
-    User login(String userName, String password) throws IncorrectLoginException;
+    User login(String email, String password) throws IncorrectLoginException;
 
     User loginFromId(Long id) throws InstanceNotFoundException;
 
