@@ -4,10 +4,9 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
 
 public class OrganizationOM {
 
@@ -23,11 +22,9 @@ public class OrganizationOM {
 
     public static Organization withOrganizationTypeAndRandomNames(String name) {
         final GeometryFactory geoFactory = new GeometryFactory();
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        String generatedString = new String(array, StandardCharsets.UTF_8);
-        return new Organization(generatedString.substring(0, 4),
-                generatedString,
+        String randomString = usingUUID();
+        return new Organization(randomString.substring(0, 4),
+                randomString,
                 "Calle alguna",
                 geoFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withNames(List.of(name)).stream().findFirst().orElse(OrganizationTypeOM.withDefaultValues()));
@@ -57,6 +54,11 @@ public class OrganizationOM {
         }
         return result;
 
+    }
+
+    private static String usingUUID() {
+        UUID randomUUID = UUID.randomUUID();
+        return randomUUID.toString().replaceAll("-", "");
     }
 
 }

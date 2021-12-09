@@ -1,8 +1,10 @@
 package es.udc.fireproject.backend.model.entities.user;
 
+import es.udc.fireproject.backend.model.entities.team.Team;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class User {
@@ -34,12 +36,18 @@ public class User {
     private Integer phoneNumber;
 
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_role_id", nullable = false)
     private UserRole userRole;
+
+    @ManyToOne(
+            optional = false,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
     public User() {
     }
@@ -58,6 +66,14 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public UserRole getUserRole() {
         return userRole;
     }
@@ -66,11 +82,11 @@ public class User {
         this.userRole = userRole;
     }
 
-    public Instant getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

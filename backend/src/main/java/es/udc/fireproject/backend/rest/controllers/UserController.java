@@ -109,7 +109,7 @@ public class UserController {
         }
 
         return toUserDto(userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
-                userDto.getEmail()));
+                userDto.getEmail(), userDto.getPhoneNumber(), userDto.getDni()));
 
     }
 

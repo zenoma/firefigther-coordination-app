@@ -14,7 +14,7 @@ public interface UserService {
 
     User loginFromId(Long id) throws InstanceNotFoundException;
 
-    User updateProfile(Long id, String firstName, String lastName, String email) throws InstanceNotFoundException;
+    User updateProfile(Long id, String firstName, String lastName, String email, Integer phoneNumber, String dni) throws InstanceNotFoundException;
 
     void changePassword(Long id, String oldPassword, String newPassword)
             throws InstanceNotFoundException, IncorrectPasswordException;

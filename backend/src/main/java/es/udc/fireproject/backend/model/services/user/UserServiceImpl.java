@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
 
     }
@@ -64,13 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateProfile(Long id, String firstName, String lastName, String email) throws InstanceNotFoundException {
+    public User updateProfile(Long id, String firstName, String lastName, String email, Integer phoneNumber, String dni) throws InstanceNotFoundException {
 
         User user = permissionChecker.checkUser(id);
 
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setDni(dni);
 
         return user;
 

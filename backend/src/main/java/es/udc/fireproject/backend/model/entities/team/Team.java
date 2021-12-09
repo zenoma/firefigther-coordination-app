@@ -1,10 +1,12 @@
 package es.udc.fireproject.backend.model.entities.team;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
+import es.udc.fireproject.backend.model.entities.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,9 +26,24 @@ public class Team {
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
+    @OneToMany(
+            mappedBy = "team",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<User> userList;
+
+
     public Team(String code, Organization organization) {
         this.code = code;
         this.organization = organization;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
     public Organization getOrganization() {
