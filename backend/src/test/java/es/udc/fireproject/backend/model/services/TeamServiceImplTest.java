@@ -1,12 +1,18 @@
 package es.udc.fireproject.backend.model.services;
 
+import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
+import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.entities.user.UserRepository;
+import es.udc.fireproject.backend.model.entities.user.UserRole;
+import es.udc.fireproject.backend.model.entities.user.UserRoleRepository;
+import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationService;
+import es.udc.fireproject.backend.model.services.organization.OrganizationServiceImpl;
 import es.udc.fireproject.backend.model.services.team.TeamServiceImpl;
-import es.udc.fireproject.backend.utils.OrganizationOM;
-import es.udc.fireproject.backend.utils.TeamOM;
+import es.udc.fireproject.backend.model.services.user.UserServiceImpl;
+import es.udc.fireproject.backend.utils.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,19 +23,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
 class TeamServiceImplTest {
 
-    @Mock
-    OrganizationService organizationService;
+    private final Long INVALID_TEAM_ID = -1L;
+    private final Long INVALID_USER_ID = -1L;
 
     @Mock
     TeamRepository teamRepository;
 
+    @Mock
+    UserRoleRepository userRoleRepository;
+
+    @Mock
+    UserRepository userRepository;
+
     @InjectMocks
     TeamServiceImpl teamService;
+
+    @Mock
+    OrganizationServiceImpl organizationService;
+
+    @Mock
+    UserServiceImpl userService;
 
     @Test
     void givenNoData_whenCallFindByCode_thenReturnEmptyList() {
@@ -118,6 +137,280 @@ class TeamServiceImplTest {
 
         Team updatedTeam = teamService.update(team.getId(), team.getCode());
         Assertions.assertEquals(team, updatedTeam);
+    }
+
+    @Test
+    void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+        team = teamService.addMember(team.getId(), user.getId());
+        team.setUserList(List.of(user));
+
+        Assertions.assertTrue(team.getUserList().contains(user), "User must belong to the Team");
+    }
+
+    @Test
+    void givenInvalidUser_whenAddMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+
+
+        final Team finalTeam = team;
+        Assertions.assertThrows(InstanceNotFoundException.class, () ->
+                        teamService.addMember(finalTeam.getId(), INVALID_USER_ID),
+                "InstanceNotFoundException error was expected");
+        Assertions.assertThrows(InstanceNotFoundException.class, () ->
+                        teamService.addMember(INVALID_TEAM_ID, user.getId()),
+                "InstanceNotFoundException error was expected");
+
+    }
+
+
+    @Test
+    void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+        teamService.addMember(team.getId(), user.getId());
+
+        Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
+
+        teamService.deleteMember(team.getId(), user.getId());
+
+        Assertions.assertFalse(teamService.findAllUsers(team.getId()).contains(user), "User must not belong to the Team");
+    }
+
+    @Test
+    void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+
+        teamService.addMember(team.getId(), user.getId());
+
+
+        Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
+
+        final Team finalTeam = team;
+        Assertions.assertThrows(InstanceNotFoundException.class, () ->
+                        teamService.deleteMember(finalTeam.getId(), INVALID_USER_ID),
+                "InstanceNotFoundException error was expected");
+        Assertions.assertThrows(InstanceNotFoundException.class, () ->
+                        teamService.deleteMember(INVALID_TEAM_ID, user.getId()),
+                "InstanceNotFoundException error was expected");
+
+    }
+
+    @Test
+    void givenValidUsers_whenFindAllUsers_thenNumberFoundedCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        int itemNumber = 3;
+        List<User> userList = UserOM.withRandomNames(itemNumber);
+        for (User user : userList) {
+            user.setUserRole(userRole);
+            userService.signUp(user);
+            teamService.addMember(team.getId(), user.getId());
+        }
+
+        Assertions.assertEquals(userList.size(), itemNumber, "Size must be equal to added Members");
+    }
+
+    @Test
+    void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        int itemNumber = 3;
+        List<User> userList = UserOM.withRandomNames(itemNumber);
+        for (User user : userList) {
+            user.setUserRole(userRole);
+            userService.signUp(user);
+            teamService.addMember(team.getId(), user.getId());
+        }
+
+        Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findAllUsers(INVALID_TEAM_ID),
+                "InstanceNotFoundException error was expected");
+
+    }
+
+    @Test
+    void givenValidUsers_whenFindUserById_thenUserFounded() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+        teamService.addMember(team.getId(), user.getId());
+
+
+        Assertions.assertEquals(teamService.findUserById(team.getId(), user.getId()), user, "User must be the same as the Excepted user");
+    }
+
+    @Test
+    void givenInvalidData_whenFindUserById_thenUserFounded() throws InstanceNotFoundException, DuplicateInstanceException {
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(java.util.Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
+
+
+        Organization organization = OrganizationOM.withDefaultValues();
+        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = organizationService.create(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = teamService.create(team.getCode(),
+                organization.getId());
+
+
+        UserRole userRole = UserRoleOM.withDefaultValues();
+        userRole = userRoleRepository.save(userRole);
+
+        User user = UserOM.withDefaultValues();
+        user.setUserRole(userRole);
+        userService.signUp(user);
+        teamService.addMember(team.getId(), user.getId());
+
+
+        Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findUserById(INVALID_TEAM_ID, user.getId()),
+                "InstanceNotFoundException error was expected");
+        final Team finalTeam = team;
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findUserById(finalTeam.getId(), INVALID_USER_ID),
+                "InstanceNotFoundException error was expected");
     }
 
 }
