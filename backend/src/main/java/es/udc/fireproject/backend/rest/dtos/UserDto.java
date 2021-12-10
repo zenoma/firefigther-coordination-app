@@ -5,97 +5,101 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserDto {
-	
-	public interface AllValidations {}
-	
-	public interface UpdateValidations {}
 
-	private Long id;
-	private String userName;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String role;
+    private Long id;
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String dni;
+    private Integer phoneNumber;
 
-	public UserDto() {}
+    public UserDto() {
+    }
 
-	public UserDto(Long id, String userName, String firstName, String lastName, String email, String role) {
+    public UserDto(Long id, String email, String password, String firstName, String lastName, String dni, Integer phoneNumber) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dni = dni;
+        this.phoneNumber = phoneNumber;
+    }
 
-		this.id = id;
-		this.userName = userName != null ? userName.trim() : null;
-		this.firstName = firstName.trim();
-		this.lastName = lastName.trim();
-		this.email = email.trim();
-		this.role = role;
-		
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @NotNull(groups = {AllValidations.class, UpdateValidations.class})
+    @Size(min = 1, max = 60, groups = {AllValidations.class, UpdateValidations.class})
+    @Email(groups = {AllValidations.class, UpdateValidations.class})
+    public String getEmail() {
+        return email;
+    }
 
-	@NotNull(groups={AllValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class})
-	public String getUserName() {
-		return userName;
-	}
+    public void setEmail(String email) {
+        this.email = email.trim();
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName.trim();
-	}
+    @NotNull(groups = {AllValidations.class})
+    @Size(min = 1, max = 60, groups = {AllValidations.class})
+    public String getPassword() {
+        return password;
+    }
 
-	@NotNull(groups={AllValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class})
-	public String getPassword() {
-		return password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @NotNull(groups = {AllValidations.class, UpdateValidations.class})
+    @Size(min = 1, max = 60, groups = {AllValidations.class, UpdateValidations.class})
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName.trim();
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName.trim();
-	}
+    @NotNull(groups = {AllValidations.class, UpdateValidations.class})
+    @Size(min = 1, max = 60, groups = {AllValidations.class, UpdateValidations.class})
+    public String getLastName() {
+        return lastName;
+    }
 
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
-	public String getLastName() {
-		return lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName.trim();
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName.trim();
-	}
+    @NotNull(groups = {AllValidations.class, UpdateValidations.class})
+    @Size(min = 9, max = 9, groups = {AllValidations.class, UpdateValidations.class})
+    public String getDni() {
+        return dni;
+    }
 
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
-	@Email(groups={AllValidations.class, UpdateValidations.class})
-	public String getEmail() {
-		return email;
-	}
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
 
-	public void setEmail(String email) {
-		this.email = email.trim();
-	}
+    @NotNull(groups = {AllValidations.class, UpdateValidations.class})
+    @Size(min = 9, max = 9, groups = {AllValidations.class, UpdateValidations.class})
+    public Integer getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public interface AllValidations {
+    }
+
+    public interface UpdateValidations {
+    }
 
 }

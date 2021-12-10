@@ -1,7 +1,7 @@
 package es.udc.fireproject.backend.model.services.user;
 
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.entities.user.UserDao;
+import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ import java.util.Optional;
 public class PermissionCheckerImpl implements PermissionChecker {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Override
     public void checkUserExists(Long userId) throws InstanceNotFoundException {
 
-        if (!userDao.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new InstanceNotFoundException("project.entities.user", userId);
         }
 
@@ -28,9 +28,9 @@ public class PermissionCheckerImpl implements PermissionChecker {
     @Override
     public User checkUser(Long userId) throws InstanceNotFoundException {
 
-        Optional<User> user = userDao.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new InstanceNotFoundException("project.entities.user", userId);
         }
 

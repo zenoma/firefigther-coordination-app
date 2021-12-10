@@ -1,74 +1,110 @@
 package es.udc.fireproject.backend.model.entities.user;
 
+import es.udc.fireproject.backend.model.entities.team.Team;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name = "user")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username")
-    private String userName;
-
-    private String password;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
+    @Email(message = "Email should be valid")
     private String email;
 
-    @Enumerated(EnumType.ORDINAL)
-    private RoleType role;
+    @Size(min = 3, message
+            = "Password must contain at least 3 characters")
+    private String password;
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Size(min = 9, max = 9, message
+            = "DNI must have 9 characters")
+    private String dni;
+
+    @Positive
+    @Digits(integer = 9, fraction = 0)
+    private Integer phoneNumber;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_role_id", nullable = false)
+    private UserRole userRole;
+
+    @ManyToOne(
+            optional = false,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
     public User() {
     }
 
-    public User(String userName, String password, String firstName, String lastName, String email) {
-
-        this.userName = userName;
+    public User(String email,
+                String password,
+                String firstName,
+                String lastName,
+                String dni,
+                Integer phoneNumber) {
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-
+        this.dni = dni;
+        this.phoneNumber = phoneNumber;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public String getUserName() {
-        return userName;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
-    public String getPassword() {
-        return password;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Integer getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getLastName() {
@@ -79,6 +115,22 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -87,13 +139,29 @@ public class User {
         this.email = email;
     }
 
-    public RoleType getRole() {
-        return role;
+    public Long getId() {
+        return id;
     }
 
-    public void setRole(RoleType role) {
-        this.role = role;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName)
+                && Objects.equals(dni, user.dni)
+                && Objects.equals(phoneNumber, user.phoneNumber);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password, firstName, lastName, dni, phoneNumber);
+    }
 }

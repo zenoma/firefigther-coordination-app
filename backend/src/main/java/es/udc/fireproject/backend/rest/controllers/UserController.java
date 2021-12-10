@@ -27,8 +27,8 @@ import static es.udc.fireproject.backend.rest.dtos.UserConversor.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private final static String INCORRECT_LOGIN_EXCEPTION_CODE = "project.exceptions.IncorrectLoginException";
-    private final static String INCORRECT_PASSWORD_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
+    private static final String INCORRECT_LOGIN_EXCEPTION_CODE = "project.exceptions.IncorrectLoginException";
+    private static final String INCORRECT_PASSWORD_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
 
     @Autowired
     private MessageSource messageSource;
@@ -109,7 +109,7 @@ public class UserController {
         }
 
         return toUserDto(userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
-                userDto.getEmail()));
+                userDto.getEmail(), userDto.getPhoneNumber(), userDto.getDni()));
 
     }
 
@@ -129,7 +129,7 @@ public class UserController {
 
     private String generateServiceToken(User user) {
 
-        JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getUserName(), user.getRole().toString());
+        JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getEmail(), user.getUserRole().getName());
 
         return jwtGenerator.generate(jwtInfo);
 

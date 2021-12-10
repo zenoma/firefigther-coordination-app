@@ -1,8 +1,7 @@
 package es.udc.fireproject.backend.model.services.user;
 
-import es.udc.fireproject.backend.model.entities.user.RoleType;
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.entities.user.UserDao;
+import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
@@ -12,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,34 +25,33 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Override
     public void signUp(User user) throws DuplicateInstanceException {
 
-        if (userDao.existsByUserName(user.getUserName())) {
-            throw new DuplicateInstanceException("project.entities.user", user.getUserName());
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new DuplicateInstanceException("project.entities.user", user.getEmail());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(RoleType.USER);
-
-        userDao.save(user);
+        user.setCreatedAt(LocalDateTime.now());
+        userRepository.save(user);
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User login(String userName, String password) throws IncorrectLoginException {
+    public User login(String email, String password) throws IncorrectLoginException {
 
-        Optional<User> user = userDao.findByUserName(userName);
+        Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isEmpty()) {
-            throw new IncorrectLoginException(userName, password);
+            throw new IncorrectLoginException(email, password);
         }
 
         if (!passwordEncoder.matches(password, user.get().getPassword())) {
-            throw new IncorrectLoginException(userName, password);
+            throw new IncorrectLoginException(email, password);
         }
 
         return user.get();
@@ -66,13 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateProfile(Long id, String firstName, String lastName, String email) throws InstanceNotFoundException {
+    public User updateProfile(Long id, String firstName, String lastName, String email, Integer phoneNumber, String dni) throws InstanceNotFoundException {
 
         User user = permissionChecker.checkUser(id);
 
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setDni(dni);
 
         return user;
 
