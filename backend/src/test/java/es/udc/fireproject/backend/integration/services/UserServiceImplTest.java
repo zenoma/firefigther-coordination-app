@@ -2,14 +2,12 @@ package es.udc.fireproject.backend.integration.services;
 
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
-import es.udc.fireproject.backend.model.entities.user.UserRoleRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.user.UserService;
 import es.udc.fireproject.backend.utils.UserOM;
-import es.udc.fireproject.backend.utils.UserRoleOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class UserServiceTest {
+class UserServiceImplTest {
 
     private final Long INVALID_USER_ID = -1L;
-
-    @Autowired
-    UserRoleRepository userRoleRepository;
 
     @Autowired
     private UserService userService;
 
     @Test
-    void testSignUpAndLoginFromId() throws DuplicateInstanceException, InstanceNotFoundException {
+    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
 
         User user = UserOM.withDefaultValues();
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
         userService.signUp(user);
 
         User loggedInUser = userService.loginFromId(user.getId());
@@ -47,12 +39,8 @@ class UserServiceTest {
     }
 
     @Test
-    void testSignUpDuplicatedUserName() throws DuplicateInstanceException {
+    void givenDuplicatedData_whenSignUp_thenDuplicateInstanceException() throws DuplicateInstanceException {
         User user = UserOM.withDefaultValues();
-
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
 
         userService.signUp(user);
         Assertions.assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
@@ -60,18 +48,15 @@ class UserServiceTest {
     }
 
     @Test
-    void testLoginFromNonExistentId() {
+    void givenInvalidData_whenLoginFromId_thenInstanceNotFoundException() {
         Assertions.assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(INVALID_USER_ID));
     }
 
     @Test
-    void testLogin() throws DuplicateInstanceException, IncorrectLoginException {
+    void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicateInstanceException, IncorrectLoginException {
 
         User user = UserOM.withDefaultValues();
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
 
         String clearPassword = user.getPassword();
 
@@ -84,13 +69,9 @@ class UserServiceTest {
     }
 
     @Test
-    void testLoginWithIncorrectPassword() throws DuplicateInstanceException {
+    void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicateInstanceException {
 
         User user = UserOM.withDefaultValues();
-
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
 
         String clearPassword = user.getPassword();
 
@@ -101,19 +82,16 @@ class UserServiceTest {
     }
 
     @Test
-    void testLoginWithNonExistentUserName() {
+    void givenInvalidEmail_whenLogin_thenIncorrectLoginException() {
         Assertions.assertThrows(IncorrectLoginException.class, () -> userService.login("X", "Y"), " User must not exist");
     }
 
 
     @Test
-    void testUpdateProfile() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
 
         User user = UserOM.withDefaultValues();
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
         userService.signUp(user);
 
         user.setFirstName('X' + user.getFirstName());
@@ -131,20 +109,17 @@ class UserServiceTest {
 
 
     @Test
-    void testUpdateProfileWithNonExistentId() {
+    void givenInvalidData_whenUpdateProfile_thenInstanceNotFoundException() {
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
                 userService.updateProfile(INVALID_USER_ID, "X", "X", "X", 111111111, "11111111S"), "User not existent");
     }
 
     @Test
-    void testChangePassword() throws DuplicateInstanceException, InstanceNotFoundException,
+    void givenValidData_whenChangePassword_thenPasswordSuccessfullyChanged() throws DuplicateInstanceException, InstanceNotFoundException,
             IncorrectPasswordException {
 
         User user = UserOM.withDefaultValues();
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
 
         String oldPassword = user.getPassword();
         String newPassword = 'X' + oldPassword;
@@ -157,19 +132,15 @@ class UserServiceTest {
 
 
     @Test
-    void testChangePasswordWithNonExistentId() {
+    void givenInvalidID_whenChangePassword_thenInstanceNotFoundException() {
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
                 userService.changePassword(INVALID_USER_ID, "X", "Y"), "User non existent");
     }
 
 
     @Test
-    void testChangePasswordWithIncorrectPassword() throws DuplicateInstanceException {
+    void givenIncorrectPassword_whenChangePassword_thenInstanceNotFoundException() throws DuplicateInstanceException {
         User user = UserOM.withDefaultValues();
-
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-        user.setUserRole(userRole);
 
         String oldPassword = user.getPassword();
         String newPassword = 'X' + oldPassword;
@@ -177,6 +148,31 @@ class UserServiceTest {
         userService.signUp(user);
         Assertions.assertThrows(IncorrectPasswordException.class, () ->
                 userService.changePassword(user.getId(), 'Y' + oldPassword, newPassword), "IncorrectPassword Exception expected");
+
+    }
+
+
+    @Test
+    void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicateInstanceException {
+        User user = UserOM.withDefaultValues();
+
+        userService.signUp(user);
+
+        Assertions.assertEquals(UserRole.USER, user.getUserRole(), "Role must be USER");
+
+    }
+
+    @Test
+    void givenValidData_whenUpdateRole_thenUserHasManagerRole() throws DuplicateInstanceException, InstanceNotFoundException {
+        User user = UserOM.withDefaultValues();
+
+        userService.signUp(user);
+
+        Assertions.assertEquals(UserRole.USER, user.getUserRole(), "Role must be USER");
+
+        userService.updateRole(user.getId(), UserRole.MANAGER);
+
+        Assertions.assertEquals(UserRole.MANAGER, user.getUserRole(), "Role must be MANAGER");
 
     }
 

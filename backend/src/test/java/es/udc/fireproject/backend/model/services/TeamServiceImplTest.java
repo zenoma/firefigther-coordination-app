@@ -5,14 +5,15 @@ import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
-import es.udc.fireproject.backend.model.entities.user.UserRole;
-import es.udc.fireproject.backend.model.entities.user.UserRoleRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.organization.OrganizationServiceImpl;
 import es.udc.fireproject.backend.model.services.team.TeamServiceImpl;
 import es.udc.fireproject.backend.model.services.user.UserServiceImpl;
-import es.udc.fireproject.backend.utils.*;
+import es.udc.fireproject.backend.utils.OrganizationOM;
+import es.udc.fireproject.backend.utils.OrganizationTypeOM;
+import es.udc.fireproject.backend.utils.TeamOM;
+import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,9 +35,6 @@ class TeamServiceImplTest {
 
     @Mock
     TeamRepository teamRepository;
-
-    @Mock
-    UserRoleRepository userRoleRepository;
 
     @Mock
     UserRepository userRepository;
@@ -146,7 +144,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -156,11 +153,8 @@ class TeamServiceImplTest {
         team = teamService.create(team.getCode(),
                 organization.getId());
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
 
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
         team = teamService.addMember(team.getId(), user.getId());
         team.setUserList(List.of(user));
@@ -175,7 +169,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -185,11 +178,8 @@ class TeamServiceImplTest {
         team = teamService.create(team.getCode(),
                 organization.getId());
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
 
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
 
 
@@ -211,7 +201,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -221,11 +210,8 @@ class TeamServiceImplTest {
         team = teamService.create(team.getCode(),
                 organization.getId());
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
 
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
         teamService.addMember(team.getId(), user.getId());
 
@@ -244,7 +230,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -254,11 +239,8 @@ class TeamServiceImplTest {
         team = teamService.create(team.getCode(),
                 organization.getId());
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
 
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
 
         teamService.addMember(team.getId(), user.getId());
@@ -284,7 +266,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -295,13 +276,9 @@ class TeamServiceImplTest {
                 organization.getId());
 
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
-            user.setUserRole(userRole);
             userService.signUp(user);
             teamService.addMember(team.getId(), user.getId());
         }
@@ -316,7 +293,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -327,13 +303,9 @@ class TeamServiceImplTest {
                 organization.getId());
 
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
-            user.setUserRole(userRole);
             userService.signUp(user);
             teamService.addMember(team.getId(), user.getId());
         }
@@ -352,7 +324,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -363,11 +334,7 @@ class TeamServiceImplTest {
                 organization.getId());
 
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
         teamService.addMember(team.getId(), user.getId());
 
@@ -382,7 +349,6 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(userRoleRepository.save(Mockito.any())).thenReturn(UserRoleOM.withDefaultValues());
 
 
         Organization organization = OrganizationOM.withDefaultValues();
@@ -394,11 +360,7 @@ class TeamServiceImplTest {
                 organization.getId());
 
 
-        UserRole userRole = UserRoleOM.withDefaultValues();
-        userRole = userRoleRepository.save(userRole);
-
         User user = UserOM.withDefaultValues();
-        user.setUserRole(userRole);
         userService.signUp(user);
         teamService.addMember(team.getId(), user.getId());
 

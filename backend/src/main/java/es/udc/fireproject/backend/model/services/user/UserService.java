@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.model.services.user;
 
 import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
@@ -19,4 +20,5 @@ public interface UserService {
     void changePassword(Long id, String oldPassword, String newPassword)
             throws InstanceNotFoundException, IncorrectPasswordException;
 
+    void updateRole(Long id, UserRole userRole) throws InstanceNotFoundException;
 }
