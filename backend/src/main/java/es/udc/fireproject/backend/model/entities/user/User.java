@@ -39,9 +39,7 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_role_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @ManyToOne(

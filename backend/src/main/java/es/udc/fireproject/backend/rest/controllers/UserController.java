@@ -129,7 +129,7 @@ public class UserController {
 
     private String generateServiceToken(User user) {
 
-        JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getEmail(), user.getUserRole().getName());
+        JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getEmail(), user.getUserRole().name());
 
         return jwtGenerator.generate(jwtInfo);
 

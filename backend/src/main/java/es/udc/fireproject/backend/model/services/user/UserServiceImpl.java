@@ -2,6 +2,7 @@ package es.udc.fireproject.backend.model.services.user;
 
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
+import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
 import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
@@ -17,9 +18,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private PermissionChecker permissionChecker;
+    private static final String USER_NOT_FOUND = "User not found";
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -36,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
+        user.setUserRole(UserRole.USER);
         userRepository.save(user);
 
     }
@@ -61,21 +61,34 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User loginFromId(Long id) throws InstanceNotFoundException {
-        return permissionChecker.checkUser(id);
+
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (userOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
+        } else {
+            return userOpt.get();
+        }
     }
 
     @Override
     public User updateProfile(Long id, String firstName, String lastName, String email, Integer phoneNumber, String dni) throws InstanceNotFoundException {
 
-        User user = permissionChecker.checkUser(id);
+        Optional<User> userOpt = userRepository.findById(id);
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        user.setDni(dni);
+        if (userOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
+        } else {
+            User user = userOpt.get();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setPhoneNumber(phoneNumber);
+            user.setDni(dni);
 
-        return user;
+            userRepository.save(user);
+            return user;
+        }
 
     }
 
@@ -83,14 +96,35 @@ public class UserServiceImpl implements UserService {
     public void changePassword(Long id, String oldPassword, String newPassword)
             throws InstanceNotFoundException, IncorrectPasswordException {
 
-        User user = permissionChecker.checkUser(id);
+        Optional<User> userOpt = userRepository.findById(id);
 
-        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new IncorrectPasswordException();
+        if (userOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
         } else {
-            user.setPassword(passwordEncoder.encode(newPassword));
-        }
+            User user = userOpt.get();
 
+            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                throw new IncorrectPasswordException();
+            } else {
+                user.setPassword(passwordEncoder.encode(newPassword));
+            }
+
+            userRepository.save(user);
+        }
     }
 
+    @Override
+    public void updateRole(Long id, UserRole userRole) throws InstanceNotFoundException {
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (userOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
+        } else {
+            User user = userOpt.get();
+            user.setUserRole(userRole);
+
+            userRepository.save(user);
+
+        }
+    }
 }
