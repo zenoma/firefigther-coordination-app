@@ -23,6 +23,7 @@ public class CommonControllerAdvice {
     private static final String DUPLICATE_INSTANCE_EXCEPTION_CODE = "project.exceptions.DuplicateInstanceException";
     private static final String
             PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
+    private static final String ILLEGAL_ARGUMENT_EXCEPTION_CODE = "project.exceptions.IllegalArgumentException";
 
     @Autowired
     private MessageSource messageSource;
@@ -49,6 +50,18 @@ public class CommonControllerAdvice {
                 new Object[]{nameMessage, exception.getKey().toString()}, INSTANCE_NOT_FOUND_EXCEPTION_CODE, locale);
 
         return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleIllegalArgumentException(IllegalArgumentException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(ILLEGAL_ARGUMENT_EXCEPTION_CODE, null, ILLEGAL_ARGUMENT_EXCEPTION_CODE,
+                locale);
+
+        return new ErrorsDto(errorMessage + ": " + exception.getMessage());
 
     }
 
