@@ -163,7 +163,7 @@ class UserServiceImplTest {
 
     @Test
     void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
-            InstanceNotFoundException, PermissionException {
+            InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -181,7 +181,7 @@ class UserServiceImplTest {
 
     @Test
     void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
-            InstanceNotFoundException, PermissionException {
+            InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -198,7 +198,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUserWithLessRole_whenUpdateRole_thenPermissionException() throws DuplicateInstanceException {
+    void giveUserWithLessRole_whenUpdateRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -206,7 +206,7 @@ class UserServiceImplTest {
         userService.signUp(user);
         userService.signUp(targetUser);
 
-        Assertions.assertThrows(PermissionException.class,
+        Assertions.assertThrows(InsufficientRolePermissionException.class,
                 () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER),
                 "User has not enought permission");
 
@@ -214,7 +214,7 @@ class UserServiceImplTest {
 
     @Test
     void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
-            InstanceNotFoundException, PermissionException {
+            InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -232,7 +232,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithSameRole_whenUpdateHigherRole_thenPermissionException() throws DuplicateInstanceException {
+    void giveUsersWithSameRole_whenUpdateHigherRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -242,7 +242,7 @@ class UserServiceImplTest {
         userService.signUp(user);
         userService.signUp(targetUser);
 
-        Assertions.assertThrows(PermissionException.class,
+        Assertions.assertThrows(InsufficientRolePermissionException.class,
                 () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR),
                 "User has not enough permission");
 

@@ -17,5 +17,6 @@ public interface UserService {
     void changePassword(Long id, String oldPassword, String newPassword)
             throws InstanceNotFoundException, IncorrectPasswordException;
 
-    void updateRole(Long id, Long targetId, UserRole userRole) throws InstanceNotFoundException, PermissionException;
+    void updateRole(Long id, Long targetId, UserRole userRole) throws InstanceNotFoundException,
+            InsufficientRolePermissionException;
 }

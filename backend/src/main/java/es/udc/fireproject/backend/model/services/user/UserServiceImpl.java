@@ -112,26 +112,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateRole(Long id, Long targetId, UserRole userRole) throws InstanceNotFoundException,
-            PermissionException {
+            InsufficientRolePermissionException {
         Optional<User> userOpt = userRepository.findById(id);
+
+        if (userOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
+        }
+
         Optional<User> targetUserOpt = userRepository.findById(targetId);
 
         if (targetUserOpt.isEmpty()) {
             throw new InstanceNotFoundException(USER_NOT_FOUND, targetId);
         }
 
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, targetId);
-        }
 
         User user = userOpt.get();
         User targetUser = targetUserOpt.get();
 
         if (user.getUserRole().priority < targetUser.getUserRole().priority)
-            throw new PermissionException("User with " + id + " has not the needed permissions to update", id);
+            throw new InsufficientRolePermissionException(id, targetId);
 
         if (userRole.priority > user.getUserRole().priority)
-            throw new PermissionException("User with " + id + " has not the needed permissions to update", id);
+            throw new InsufficientRolePermissionException(id, targetId);
 
 
         targetUser.setUserRole(userRole);

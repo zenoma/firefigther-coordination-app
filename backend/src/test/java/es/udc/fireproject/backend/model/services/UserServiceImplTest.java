@@ -201,7 +201,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException, InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -229,7 +229,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws InstanceNotFoundException, PermissionException {
+    void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -253,7 +253,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUserWithLessRole_whenUpdateRole_thenPermissionException() {
+    void giveUserWithLessRole_whenUpdateRole_thenInsufficientRolePermissionException() {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -270,12 +270,12 @@ class UserServiceImplTest {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
-        Assertions.assertThrows(PermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER), "User has not enought permission");
+        Assertions.assertThrows(InsufficientRolePermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER), "User has not enought permission");
 
     }
 
     @Test
-    void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws InstanceNotFoundException, PermissionException {
+    void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -299,7 +299,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithSameRole_whenUpdateHigherRole_thenPermissionException() {
+    void giveUsersWithSameRole_whenUpdateHigherRole_thenInsufficientRolePermissionException() {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -316,7 +316,7 @@ class UserServiceImplTest {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
-        Assertions.assertThrows(PermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR), "User has not enough permission");
+        Assertions.assertThrows(InsufficientRolePermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR), "User has not enough permission");
 
     }
 
