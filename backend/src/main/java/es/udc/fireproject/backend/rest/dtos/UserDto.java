@@ -87,7 +87,7 @@ public class UserDto {
     }
 
     @NotNull(groups = {AllValidations.class, UpdateValidations.class})
-    @Size(min = 9, max = 9, groups = {AllValidations.class, UpdateValidations.class})
+//    @Size(min = 9, max = 9, groups = {AllValidations.class, UpdateValidations.class})
     public Integer getPhoneNumber() {
         return phoneNumber;
     }

@@ -1,15 +1,13 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.user.UserService;
 import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.JwtGenerator;
 import es.udc.fireproject.backend.rest.common.JwtInfo;
-import es.udc.fireproject.backend.rest.dtos.AuthenticatedUserDto;
-import es.udc.fireproject.backend.rest.dtos.ChangePasswordParamsDto;
-import es.udc.fireproject.backend.rest.dtos.LoginParamsDto;
-import es.udc.fireproject.backend.rest.dtos.UserDto;
+import es.udc.fireproject.backend.rest.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,7 @@ public class UserController {
 
     private static final String INCORRECT_LOGIN_EXCEPTION_CODE = "project.exceptions.IncorrectLoginException";
     private static final String INCORRECT_PASSWORD_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
+    private static final String INSUFFICIENT_ROLE_PERMISSION_EXCEPTION_CODE = "project.exceptions.InsufficientRolePermissionException";
 
     @Autowired
     private MessageSource messageSource;
@@ -58,6 +57,18 @@ public class UserController {
 
         String errorMessage = messageSource.getMessage(INCORRECT_PASSWORD_EXCEPTION_CODE, null,
                 INCORRECT_PASSWORD_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(InsufficientRolePermissionException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorsDto handleInsufficientRolePermissionException(InsufficientRolePermissionException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(INSUFFICIENT_ROLE_PERMISSION_EXCEPTION_CODE, null,
+                INSUFFICIENT_ROLE_PERMISSION_EXCEPTION_CODE, locale);
 
         return new ErrorsDto(errorMessage);
 
@@ -127,6 +138,21 @@ public class UserController {
 
     }
 
+    @PostMapping("/{id}/updateRole")
+    public void updateRole(@RequestAttribute Long userId, @PathVariable Long id,
+                           @Validated @RequestBody UserRoleDto userRoleDto)
+            throws InsufficientRolePermissionException, InstanceNotFoundException {
+
+        UserRole userRole;
+        try {
+            userRole = UserRole.valueOf(userRoleDto.getUserRole().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("userRole");
+        }
+        userService.updateRole(userId, id, userRole);
+
+    }
+
     private String generateServiceToken(User user) {
 
         JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getEmail(), user.getUserRole().name());
@@ -134,5 +160,6 @@ public class UserController {
         return jwtGenerator.generate(jwtInfo);
 
     }
+
 
 }

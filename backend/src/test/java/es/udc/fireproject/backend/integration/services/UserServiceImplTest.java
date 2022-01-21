@@ -2,10 +2,7 @@ package es.udc.fireproject.backend.integration.services;
 
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
-import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
-import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.user.UserService;
 import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -163,17 +162,89 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenUpdateRole_thenUserHasManagerRole() throws DuplicateInstanceException, InstanceNotFoundException {
-        User user = UserOM.withDefaultValues();
-
+    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+            InstanceNotFoundException, InsufficientRolePermissionException {
+        int totalUsers = 2;
+        List<User> userList = UserOM.withRandomNames(totalUsers);
+        User user = userList.get(0);
+        User targetUser = userList.get(1);
         userService.signUp(user);
+        user.setUserRole(UserRole.COORDINATOR);
+        userService.signUp(targetUser);
+        targetUser.setUserRole(UserRole.MANAGER);
 
-        Assertions.assertEquals(UserRole.USER, user.getUserRole(), "Role must be USER");
+        userService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
 
-        userService.updateRole(user.getId(), UserRole.MANAGER);
-
-        Assertions.assertEquals(UserRole.MANAGER, user.getUserRole(), "Role must be MANAGER");
+        Assertions.assertEquals(UserRole.USER, targetUser.getUserRole(), "Role must be MANAGER");
 
     }
 
+    @Test
+    void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+            InstanceNotFoundException, InsufficientRolePermissionException {
+        int totalUsers = 2;
+        List<User> userList = UserOM.withRandomNames(totalUsers);
+        User user = userList.get(0);
+        User targetUser = userList.get(1);
+        userService.signUp(user);
+        user.setUserRole(UserRole.COORDINATOR);
+        userService.signUp(targetUser);
+        targetUser.setUserRole(UserRole.MANAGER);
+
+        userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR);
+
+        Assertions.assertEquals(UserRole.COORDINATOR, targetUser.getUserRole(), "Role must be MANAGER");
+
+    }
+
+    @Test
+    void giveUserWithLessRole_whenUpdateRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
+        int totalUsers = 2;
+        List<User> userList = UserOM.withRandomNames(totalUsers);
+        User user = userList.get(0);
+        User targetUser = userList.get(1);
+        userService.signUp(user);
+        userService.signUp(targetUser);
+
+        Assertions.assertThrows(InsufficientRolePermissionException.class,
+                () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER),
+                "User has not enought permission");
+
+    }
+
+    @Test
+    void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+            InstanceNotFoundException, InsufficientRolePermissionException {
+        int totalUsers = 2;
+        List<User> userList = UserOM.withRandomNames(totalUsers);
+        User user = userList.get(0);
+        User targetUser = userList.get(1);
+        user.setUserRole(UserRole.MANAGER);
+        targetUser.setUserRole(UserRole.MANAGER);
+        userService.signUp(user);
+        userService.signUp(targetUser);
+
+        userService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
+
+        Assertions.assertEquals(UserRole.USER, targetUser.getUserRole(),
+                "Updated user role must be USER");
+
+    }
+
+    @Test
+    void giveUsersWithSameRole_whenUpdateHigherRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
+        int totalUsers = 2;
+        List<User> userList = UserOM.withRandomNames(totalUsers);
+        User user = userList.get(0);
+        User targetUser = userList.get(1);
+        user.setUserRole(UserRole.MANAGER);
+        targetUser.setUserRole(UserRole.MANAGER);
+        userService.signUp(user);
+        userService.signUp(targetUser);
+
+        Assertions.assertThrows(InsufficientRolePermissionException.class,
+                () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR),
+                "User has not enough permission");
+
+    }
 }

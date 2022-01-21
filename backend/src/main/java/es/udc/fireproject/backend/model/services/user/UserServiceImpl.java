@@ -3,10 +3,7 @@ package es.udc.fireproject.backend.model.services.user;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
-import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.fireproject.backend.model.exceptions.IncorrectLoginException;
-import es.udc.fireproject.backend.model.exceptions.IncorrectPasswordException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -114,17 +111,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateRole(Long id, UserRole userRole) throws InstanceNotFoundException {
+    public void updateRole(Long id, Long targetId, UserRole userRole) throws InstanceNotFoundException,
+            InsufficientRolePermissionException {
         Optional<User> userOpt = userRepository.findById(id);
 
         if (userOpt.isEmpty()) {
             throw new InstanceNotFoundException(USER_NOT_FOUND, id);
-        } else {
-            User user = userOpt.get();
-            user.setUserRole(userRole);
-
-            userRepository.save(user);
-
         }
+
+        Optional<User> targetUserOpt = userRepository.findById(targetId);
+
+        if (targetUserOpt.isEmpty()) {
+            throw new InstanceNotFoundException(USER_NOT_FOUND, targetId);
+        }
+
+
+        User user = userOpt.get();
+        User targetUser = targetUserOpt.get();
+
+        if (user.getUserRole().priority < targetUser.getUserRole().priority)
+            throw new InsufficientRolePermissionException(id, targetId);
+
+        if (userRole.priority > user.getUserRole().priority)
+            throw new InsufficientRolePermissionException(id, targetId);
+
+
+        targetUser.setUserRole(userRole);
+
+        userRepository.save(targetUser);
+
     }
 }
