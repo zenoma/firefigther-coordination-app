@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrganizationRepository extends PagingAndSortingRepository<Organization, Long> {
 
-    List<Organization> findByNameIgnoreCaseOrCode(String name, String code);
+    List<Organization> findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(String name, String code);
 
     List<Organization> findByOrganizationType_Name(String name);
 

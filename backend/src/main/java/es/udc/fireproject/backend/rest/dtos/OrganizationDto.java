@@ -12,7 +12,7 @@ import java.util.Map;
 public class OrganizationDto {
 
     @Id
-    @NotNull(groups = {OrganizationDto.AllValidations.class})
+    @NotBlank(groups = {OrganizationDto.AllValidations.class})
     private Long id;
 
     @NotBlank(groups = {OrganizationDto.AllValidations.class})
@@ -46,7 +46,8 @@ public class OrganizationDto {
     }
 
 
-    public OrganizationDto(String code, String name, String headquartersAddress, double lon, double lat, LocalDateTime createdAt, String organizationTypeName) {
+    public OrganizationDto(Long id, String code, String name, String headquartersAddress, double lon, double lat, LocalDateTime createdAt, String organizationTypeName) {
+        this.id = id;
         this.code = code;
         this.name = name;
         this.headquartersAddress = headquartersAddress;

@@ -5,6 +5,7 @@ import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.PermissionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,7 +25,7 @@ public class CommonControllerAdvice {
     private static final String
             PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
     private static final String ILLEGAL_ARGUMENT_EXCEPTION_CODE = "project.exceptions.IllegalArgumentException";
-
+    private static final String DATA_INTEGRITY_EXCEPTION_CODE = "project.exceptions.DataIntegrityViolationException";
     @Autowired
     private MessageSource messageSource;
 
@@ -87,6 +88,18 @@ public class CommonControllerAdvice {
                 locale);
 
         return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleDataIntegrityViolationException(DataIntegrityViolationException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(DATA_INTEGRITY_EXCEPTION_CODE, null,
+                DATA_INTEGRITY_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage + "\n" + exception.getMessage());
 
     }
 

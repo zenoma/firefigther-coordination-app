@@ -3,6 +3,7 @@ package es.udc.fireproject.backend.rest.dtos.conversors;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
+import es.udc.fireproject.backend.rest.dtos.OrganizationDtoBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -27,12 +28,6 @@ public class OrganizationConversor {
     }
 
     public static OrganizationDto toOrganizationDto(Organization organization) {
-        return new OrganizationDto(organization.getCode(),
-                organization.getName(),
-                organization.getHeadquartersAddress(),
-                organization.getLocation().getX(),
-                organization.getLocation().getY(),
-                organization.getCreatedAt(),
-                organization.getOrganizationType().getName());
+        return new OrganizationDtoBuilder().setId(organization.getId()).setCode(organization.getCode()).setName(organization.getName()).setHeadquartersAddress(organization.getHeadquartersAddress()).setLon(organization.getLocation().getX()).setLat(organization.getLocation().getY()).setCreatedAt(organization.getCreatedAt()).setOrganizationTypeName(organization.getOrganizationType().getName()).createOrganizationDto();
     }
 }

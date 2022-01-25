@@ -150,7 +150,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
         Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
@@ -165,7 +165,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
         Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(""));
@@ -180,7 +180,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
         Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
@@ -192,7 +192,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode("", "")).thenReturn(null);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains("", "")).thenReturn(null);
 
 
         Assertions.assertTrue(organizationService.findByNameOrCode(null).isEmpty(), "The item founded must be null");
@@ -206,7 +206,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationRepository.findByNameIgnoreCaseOrCode(Mockito.anyString(), Mockito.anyString())).thenReturn(list);
+        Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(list);
 
         Assertions.assertEquals(3, organizationService.findByNameOrCode("Centro").size(),
                 "Expected results must be 3");

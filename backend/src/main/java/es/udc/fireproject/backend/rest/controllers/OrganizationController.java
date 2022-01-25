@@ -32,22 +32,22 @@ public class OrganizationController {
         return organizationDtos;
     }
 
-    @GetMapping("/organizationTypes")
-    public List<OrganizationTypeDto> findAllOrganizationTypes(@RequestAttribute Long userId) {
+    @GetMapping("/{id}")
+    public OrganizationDto findById(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+        return OrganizationConversor.toOrganizationDto(organizationService.findById(id));
+    }
 
-        List<OrganizationTypeDto> organizationTypeDtos = new ArrayList<>();
-        for (OrganizationType organizationType : organizationService.findAllOrganizationTypes()) {
-            organizationTypeDtos.add(OrganizationTypeConversor.toOrganizationTypeDto(organizationType));
+    @GetMapping("")
+    public List<OrganizationDto> findByNameOrCode(@RequestAttribute Long userId, @RequestParam String nameOrCode) {
+
+        List<OrganizationDto> organizationDtos = new ArrayList<>();
+        for (Organization organization : organizationService.findByNameOrCode(nameOrCode)) {
+            organizationDtos.add(OrganizationConversor.toOrganizationDto(organization));
         }
-        return organizationTypeDtos;
+        return organizationDtos;
     }
 
-    @GetMapping("/organizationTypes/{id}")
-    public OrganizationTypeDto findAllOrganizationTypes(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException {
-        OrganizationType organizationType = organizationService.findOrganizationTypeById(id);
-        return OrganizationTypeConversor.toOrganizationTypeDto(organizationType);
-
-    }
 
     @PostMapping("/create")
     public OrganizationDto create(@RequestAttribute Long userId,
@@ -62,6 +62,22 @@ public class OrganizationController {
         organization = organizationService.create(organization);
 
         return OrganizationConversor.toOrganizationDto(organization);
+    }
+
+    @GetMapping("/organizationTypes")
+    public List<OrganizationTypeDto> findAllOrganizationTypes(@RequestAttribute Long userId) {
+
+        List<OrganizationTypeDto> organizationTypeDtos = new ArrayList<>();
+        for (OrganizationType organizationType : organizationService.findAllOrganizationTypes()) {
+            organizationTypeDtos.add(OrganizationTypeConversor.toOrganizationTypeDto(organizationType));
+        }
+        return organizationTypeDtos;
+    }
+
+    @GetMapping("/organizationTypes/{id}")
+    public OrganizationTypeDto findAllOrganizationTypes(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException {
+        OrganizationType organizationType = organizationService.findOrganizationTypeById(id);
+        return OrganizationTypeConversor.toOrganizationTypeDto(organizationType);
 
     }
 

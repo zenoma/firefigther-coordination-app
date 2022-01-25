@@ -28,7 +28,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> findByNameOrCode(String nameOrCode) {
-        return organizationRepository.findByNameIgnoreCaseOrCode(nameOrCode, nameOrCode);
+        return organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(nameOrCode, nameOrCode);
     }
 
     @Override
