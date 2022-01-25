@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @Email(message = "Email should be valid")
@@ -24,9 +24,11 @@ public class User {
     private String password;
 
     @NotBlank
+    @Column(name = "first_name")
     private String firstName;
 
     @NotBlank
+    @Column(name = "last_name")
     private String lastName;
 
     @Size(min = 9, max = 9, message
@@ -34,12 +36,14 @@ public class User {
     private String dni;
 
     @Positive
+    @Column(name = "phone_number")
     @Digits(integer = 9, fraction = 0)
     private Integer phoneNumber;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

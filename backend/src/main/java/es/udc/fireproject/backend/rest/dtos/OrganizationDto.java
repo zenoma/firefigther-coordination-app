@@ -1,10 +1,13 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class OrganizationDto extends OrganizationTypeDto {
 
@@ -112,6 +115,12 @@ public class OrganizationDto extends OrganizationTypeDto {
 
     public void getOrganizationTypeId(Long organizationTypeId) {
         this.organizationTypeId = organizationTypeId;
+    }
+
+    @JsonProperty("coordinates")
+    private void unpackNested(Map<String, Double> coordinates) {
+        this.lon = coordinates.get("lon");
+        this.lat = coordinates.get("lat");
     }
 
     public interface AllValidations {

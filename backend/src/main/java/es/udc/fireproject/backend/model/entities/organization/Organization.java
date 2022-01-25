@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "organization", schema = "public")
 public class Organization {
 
     @Id
