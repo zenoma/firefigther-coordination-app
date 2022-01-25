@@ -1,7 +1,8 @@
-package es.udc.fireproject.backend.rest.dtos;
+package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
+import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -32,6 +33,6 @@ public class OrganizationConversor {
                 organization.getLocation().getX(),
                 organization.getLocation().getY(),
                 organization.getCreatedAt(),
-                organization.getOrganizationType().getId());
+                organization.getOrganizationType().getName());
     }
 }

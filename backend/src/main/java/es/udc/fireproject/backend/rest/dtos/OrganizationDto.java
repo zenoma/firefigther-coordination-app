@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class OrganizationDto extends OrganizationTypeDto {
+public class OrganizationDto {
 
     @Id
     @NotNull(groups = {OrganizationDto.AllValidations.class})
@@ -38,18 +38,22 @@ public class OrganizationDto extends OrganizationTypeDto {
     @NotNull(groups = {OrganizationDto.AllValidations.class})
     private Long organizationTypeId;
 
+    @NotBlank(groups = {OrganizationDto.AllValidations.class})
+    @JsonProperty("organizationType")
+    private String organizationTypeName;
+
     public OrganizationDto() {
     }
 
 
-    public OrganizationDto(String code, String name, String headquartersAddress, double lon, double lat, LocalDateTime createdAt, Long organizationTypeId) {
+    public OrganizationDto(String code, String name, String headquartersAddress, double lon, double lat, LocalDateTime createdAt, String organizationTypeName) {
         this.code = code;
         this.name = name;
         this.headquartersAddress = headquartersAddress;
         this.lon = lon;
         this.lat = lat;
         this.createdAt = createdAt;
-        this.organizationTypeId = organizationTypeId;
+        this.organizationTypeName = organizationTypeName;
     }
 
 
@@ -115,6 +119,14 @@ public class OrganizationDto extends OrganizationTypeDto {
 
     public void getOrganizationTypeId(Long organizationTypeId) {
         this.organizationTypeId = organizationTypeId;
+    }
+
+    public String getOrganizationTypeName() {
+        return organizationTypeName;
+    }
+
+    public void setOrganizationTypeName(String organizationTypeName) {
+        this.organizationTypeName = organizationTypeName;
     }
 
     @JsonProperty("coordinates")

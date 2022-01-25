@@ -8,6 +8,7 @@ import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.JwtGenerator;
 import es.udc.fireproject.backend.rest.common.JwtInfo;
 import es.udc.fireproject.backend.rest.dtos.*;
+import es.udc.fireproject.backend.rest.dtos.conversors.UserConversor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

@@ -4,14 +4,16 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.organization.OrganizationService;
-import es.udc.fireproject.backend.rest.dtos.OrganizationConversor;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
 import es.udc.fireproject.backend.rest.dtos.OrganizationTypeDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
+import es.udc.fireproject.backend.rest.dtos.conversors.OrganizationConversor;
+import es.udc.fireproject.backend.rest.dtos.conversors.OrganizationTypeConversor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,16 +24,28 @@ public class OrganizationController {
     private OrganizationService organizationService;
 
     @GetMapping("/")
-    public OrganizationDto findAll(@RequestAttribute Long userId) {
-        // TODO Not implemented yed
-        throw new UnsupportedOperationException("Not implemented yed");
+    public List<OrganizationDto> findAll(@RequestAttribute Long userId) {
+        List<OrganizationDto> organizationDtos = new ArrayList<>();
+        for (Organization organization : organizationService.findAll()) {
+            organizationDtos.add(OrganizationConversor.toOrganizationDto(organization));
+        }
+        return organizationDtos;
     }
 
-    @GetMapping("/allTypes")
-    public OrganizationTypeDto findAllOrganizationTypes(@RequestAttribute Long userId) {
+    @GetMapping("/organizationTypes")
+    public List<OrganizationTypeDto> findAllOrganizationTypes(@RequestAttribute Long userId) {
 
-        List<OrganizationType> organizationTypeList = organizationService.findAllOrganizationTypes();
-        return new OrganizationTypeDto(organizationTypeList);
+        List<OrganizationTypeDto> organizationTypeDtos = new ArrayList<>();
+        for (OrganizationType organizationType : organizationService.findAllOrganizationTypes()) {
+            organizationTypeDtos.add(OrganizationTypeConversor.toOrganizationTypeDto(organizationType));
+        }
+        return organizationTypeDtos;
+    }
+
+    @GetMapping("/organizationTypes/{id}")
+    public OrganizationTypeDto findAllOrganizationTypes(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException {
+        OrganizationType organizationType = organizationService.findOrganizationTypeById(id);
+        return OrganizationTypeConversor.toOrganizationTypeDto(organizationType);
 
     }
 
@@ -51,8 +65,4 @@ public class OrganizationController {
 
     }
 
-    @GetMapping("/init")
-    public List<Organization> getShops() {
-        return organizationService.findAll();
-    }
 }

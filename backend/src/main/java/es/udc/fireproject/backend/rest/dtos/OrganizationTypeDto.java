@@ -1,32 +1,41 @@
 package es.udc.fireproject.backend.rest.dtos;
 
-import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class OrganizationTypeDto {
 
-
-    @Column(name = "organizationtypename")
     @NotNull(groups = {OrganizationTypeDto.AllValidations.class})
-    private List<OrganizationType> organizationTypeList;
+    private Long id;
+
+    @NotBlank
+    @JsonProperty("name")
+    private String name;
 
     public OrganizationTypeDto() {
     }
 
-    public OrganizationTypeDto(List<OrganizationType> organizationTypeName) {
-        this.organizationTypeList = organizationTypeName;
+    public OrganizationTypeDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-
-    public List<OrganizationType> getOrganizationTypeName() {
-        return organizationTypeList;
+    public Long getId() {
+        return id;
     }
 
-    public void setOrganizationTypeName(List<OrganizationType> organizationTypeName) {
-        this.organizationTypeList = organizationTypeName;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public interface AllValidations {
