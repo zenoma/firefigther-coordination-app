@@ -8,7 +8,7 @@ import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,18 +102,18 @@ class OrganizationServiceImplTest {
 
 
     @Test
-    void givenValidId_whenFindById_thenFoundedOrganization() {
+    void givenValidId_whenFindById_thenFoundedOrganization() throws InstanceNotFoundException {
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(organization.getOrganizationType().getName());
         organization = organizationService.create(organization);
 
-        Assertions.assertEquals(organization, organizationService.findById(organization.getId()).orElse(organization));
+        Assertions.assertEquals(organization, organizationService.findById(organization.getId()));
     }
 
     @Test
-    void givenInvalidName_whenFindById_thenReturnEmptyList() {
+    void givenInvalidName_whenFindById_thenInstanceNotFoundException() {
 
-        Assertions.assertFalse(organizationService.findById(-1L).isPresent(), "The item founded must be null");
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.findById(-1L), "InstanceNotFoundException not thrown");
     }
 
     @Test
@@ -225,7 +225,7 @@ class OrganizationServiceImplTest {
         organization = organizationService.create(organization);
 
         Long id = organization.getId();
-        Geometry location = organization.getLocation();
+        Point location = organization.getLocation();
         Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
                         "",
                         "",
@@ -244,7 +244,7 @@ class OrganizationServiceImplTest {
         Organization organization = OrganizationOM.withDefaultValues();
         organization = organizationService.create(organization);
 
-        Geometry location = organization.getLocation();
+        Point location = organization.getLocation();
         Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
                         "",
                         "",

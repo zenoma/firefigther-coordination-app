@@ -1,0 +1,122 @@
+package es.udc.fireproject.backend.rest.dtos;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+
+public class OrganizationDto extends OrganizationTypeDto {
+
+    @Id
+    @NotNull(groups = {OrganizationDto.AllValidations.class})
+    private Long id;
+
+    @NotBlank(groups = {OrganizationDto.AllValidations.class})
+    private String code;
+
+
+    @NotBlank(groups = {OrganizationDto.AllValidations.class})
+    private String name;
+
+
+    @NotBlank(groups = {OrganizationDto.AllValidations.class})
+    @Column(name = "headquarters_address")
+    private String headquartersAddress;
+
+
+    private double lon;
+
+    private double lat;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @NotNull(groups = {OrganizationDto.AllValidations.class})
+    private Long organizationTypeId;
+
+    public OrganizationDto() {
+    }
+
+
+    public OrganizationDto(String code, String name, String headquartersAddress, double lon, double lat, LocalDateTime createdAt, Long organizationTypeId) {
+        this.code = code;
+        this.name = name;
+        this.headquartersAddress = headquartersAddress;
+        this.lon = lon;
+        this.lat = lat;
+        this.createdAt = createdAt;
+        this.organizationTypeId = organizationTypeId;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHeadquartersAddress() {
+        return headquartersAddress;
+    }
+
+    public void setHeadquartersAddress(String headquartersAddress) {
+        this.headquartersAddress = headquartersAddress;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getOrganizationTypeId() {
+        return organizationTypeId;
+    }
+
+    public void getOrganizationTypeId(Long organizationTypeId) {
+        this.organizationTypeId = organizationTypeId;
+    }
+
+    public interface AllValidations {
+    }
+
+    public interface UpdateValidations {
+    }
+}

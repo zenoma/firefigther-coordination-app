@@ -10,7 +10,7 @@ import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -270,7 +270,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findById(Mockito.isNull())).thenReturn(Optional.of(OrganizationOM.withDefaultValues()));
 
         Long id = organization.getId();
-        Geometry location = organization.getLocation();
+        Point location = organization.getLocation();
         Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
                         "",
                         "",
@@ -292,7 +292,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
         organization = organizationService.create(organization);
 
-        Geometry location = organization.getLocation();
+        Point location = organization.getLocation();
         Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
                         "",
                         "",
