@@ -43,7 +43,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> findByOrganizationTypeName(String organizationTypeName) {
-        return organizationRepository.findByOrganizationType_Name(organizationTypeName);
+        return organizationRepository.findByOrganizationType_NameIgnoreCaseContains(organizationTypeName);
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {

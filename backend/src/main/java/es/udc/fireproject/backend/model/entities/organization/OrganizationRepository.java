@@ -8,7 +8,7 @@ public interface OrganizationRepository extends PagingAndSortingRepository<Organ
 
     List<Organization> findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(String name, String code);
 
-    List<Organization> findByOrganizationType_Name(String name);
+    List<Organization> findByOrganizationType_NameIgnoreCaseContains(String name);
 
 
 }
