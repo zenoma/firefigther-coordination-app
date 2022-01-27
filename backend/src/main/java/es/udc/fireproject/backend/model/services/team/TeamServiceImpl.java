@@ -23,7 +23,6 @@ public class TeamServiceImpl implements TeamService {
 
     private static final String USER_NOT_FOUNDED = "User not founded";
     private static final String TEAM_NOT_FOUNDED = "Team not founded";
-    private static final String ORGANIZATION_NOT_FOUNDED = "Organization not founded";
 
     @Autowired
     OrganizationService organizationService;
@@ -43,8 +42,7 @@ public class TeamServiceImpl implements TeamService {
     public Team create(String code, Long organizationId) throws InstanceNotFoundException {
 
         Organization organization;
-        organization = organizationService.findById(organizationId).orElseThrow(() ->
-                new InstanceNotFoundException(ORGANIZATION_NOT_FOUNDED, organizationId));
+        organization = organizationService.findById(organizationId);
 
         Team team = new Team(code, organization);
         team.setCreatedAt(LocalDateTime.now());

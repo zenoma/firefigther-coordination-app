@@ -6,7 +6,7 @@ import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +28,22 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> findByNameOrCode(String nameOrCode) {
-        return organizationRepository.findByNameIgnoreCaseOrCode(nameOrCode, nameOrCode);
+        return organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(nameOrCode, nameOrCode);
     }
 
     @Override
-    public Optional<Organization> findById(Long id) {
-        return organizationRepository.findById(id);
+    public Organization findById(Long id) throws InstanceNotFoundException {
+        Optional<Organization> organizationOpt = organizationRepository.findById(id);
+        if (organizationOpt.isEmpty()) {
+            throw new InstanceNotFoundException("Organization not found", id);
+        }
+        return organizationOpt.get();
     }
 
 
     @Override
     public List<Organization> findByOrganizationTypeName(String organizationTypeName) {
-        return organizationRepository.findByOrganizationType_Name(organizationTypeName);
+        return organizationRepository.findByOrganizationType_NameIgnoreCaseContains(organizationTypeName);
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {
@@ -68,7 +72,17 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization create(String code, String name, String headquartersAddress, Geometry location, String organizationTypeName) {
+    public OrganizationType findOrganizationTypeById(Long id) throws InstanceNotFoundException {
+        Optional<OrganizationType> organizationTypeOpt = organizationTypeRepository.findById(id);
+
+        if (organizationTypeOpt.isEmpty()) {
+            throw new InstanceNotFoundException("Organization type not founded", id);
+        }
+        return organizationTypeOpt.get();
+    }
+
+    @Override
+    public Organization create(String code, String name, String headquartersAddress, Point location, String organizationTypeName) {
         OrganizationType organizationType = organizationTypeRepository.findByName(organizationTypeName);
         Organization organization = new Organization(code, name, headquartersAddress, location, organizationType);
 
@@ -94,7 +108,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization update(Long id, String name, String code, String headquartersAddress, Geometry location)
+    public Organization update(Long id, String name, String code, String headquartersAddress, Point location)
             throws InstanceNotFoundException {
         Optional<Organization> organizationOpt = organizationRepository.findById(id);
 

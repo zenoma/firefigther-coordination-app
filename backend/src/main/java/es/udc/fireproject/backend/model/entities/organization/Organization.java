@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
-import org.locationtech.jts.geom.Geometry;
+import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "organization", schema = "public")
 public class Organization {
 
     @Id
@@ -25,8 +27,9 @@ public class Organization {
     @Column(name = "headquarters_address")
     private String headquartersAddress;
 
-    @Transient
-    private Geometry location;
+    @Type(type = "org.locationtech.jts.geom.Point")
+    @Column(name = "location")
+    private Point location;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -39,7 +42,7 @@ public class Organization {
     public Organization() {
     }
 
-    public Organization(String code, String name, String headquartersAddress, Geometry location, OrganizationType organizationType) {
+    public Organization(String code, String name, String headquartersAddress, Point location, OrganizationType organizationType) {
         this.code = code;
         this.name = name;
         this.headquartersAddress = headquartersAddress;
@@ -79,11 +82,11 @@ public class Organization {
         this.headquartersAddress = headquartersAddress;
     }
 
-    public Geometry getLocation() {
+    public Point getLocation() {
         return location;
     }
 
-    public void setLocation(Geometry location) {
+    public void setLocation(Point location) {
         this.location = location;
     }
 

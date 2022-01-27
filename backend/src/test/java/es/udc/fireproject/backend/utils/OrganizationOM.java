@@ -3,30 +3,30 @@ package es.udc.fireproject.backend.utils;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class OrganizationOM {
+    private static final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 25829);
 
     public static Organization withDefaultValues() {
-        final GeometryFactory geoFactory = new GeometryFactory();
 
         return new Organization("ORG-01",
                 "Centro de Coordinación Central",
-                "Calle alguna", geoFactory.createPoint(new Coordinate(-45, 45)),
+                "Calle alguna", geometryFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withDefaultValues());
 
     }
 
     public static Organization withOrganizationTypeAndRandomNames(String name) {
-        final GeometryFactory geoFactory = new GeometryFactory();
         String randomString = usingUUID();
         return new Organization(randomString.substring(0, 4),
                 randomString,
                 "Calle alguna",
-                geoFactory.createPoint(new Coordinate(-45, 45)),
+                geometryFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withNames(List.of(name)).stream().findFirst().orElse(OrganizationTypeOM.withDefaultValues()));
 
     }

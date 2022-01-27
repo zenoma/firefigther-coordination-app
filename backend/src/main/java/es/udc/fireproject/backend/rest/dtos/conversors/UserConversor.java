@@ -1,6 +1,8 @@
-package es.udc.fireproject.backend.rest.dtos;
+package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.rest.dtos.AuthenticatedUserDto;
+import es.udc.fireproject.backend.rest.dtos.UserDto;
 
 public class UserConversor {
 

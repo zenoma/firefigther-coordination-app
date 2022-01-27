@@ -8,6 +8,7 @@ import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.JwtGenerator;
 import es.udc.fireproject.backend.rest.common.JwtInfo;
 import es.udc.fireproject.backend.rest.dtos.*;
+import es.udc.fireproject.backend.rest.dtos.conversors.UserConversor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Locale;
 
-import static es.udc.fireproject.backend.rest.dtos.UserConversor.*;
 
 @RestController
 @RequestMapping("/users")
@@ -78,7 +78,7 @@ public class UserController {
     public ResponseEntity<AuthenticatedUserDto> signUp(
             @Validated({UserDto.AllValidations.class}) @RequestBody UserDto userDto) throws DuplicateInstanceException {
 
-        User user = toUser(userDto);
+        User user = UserConversor.toUser(userDto);
 
         userService.signUp(user);
 
@@ -86,7 +86,7 @@ public class UserController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
 
-        return ResponseEntity.created(location).body(toAuthenticatedUserDto(generateServiceToken(user), user));
+        return ResponseEntity.created(location).body(UserConversor.toAuthenticatedUserDto(generateServiceToken(user), user));
 
     }
 
@@ -96,7 +96,7 @@ public class UserController {
 
         User user = userService.login(params.getUserName(), params.getPassword());
 
-        return toAuthenticatedUserDto(generateServiceToken(user), user);
+        return UserConversor.toAuthenticatedUserDto(generateServiceToken(user), user);
 
     }
 
@@ -106,7 +106,7 @@ public class UserController {
 
         User user = userService.loginFromId(userId);
 
-        return toAuthenticatedUserDto(serviceToken, user);
+        return UserConversor.toAuthenticatedUserDto(serviceToken, user);
 
     }
 
@@ -119,7 +119,7 @@ public class UserController {
             throw new PermissionException();
         }
 
-        return toUserDto(userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
+        return UserConversor.toUserDto(userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
                 userDto.getEmail(), userDto.getPhoneNumber(), userDto.getDni()));
 
     }
