@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TeamRepository extends PagingAndSortingRepository<Team, Long> {
 
-    List<Team> findByCode(String code);
+    List<Team> findByCodeContains(String code);
 
 
 }

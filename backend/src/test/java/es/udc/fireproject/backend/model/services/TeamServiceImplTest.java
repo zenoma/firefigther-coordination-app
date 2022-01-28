@@ -60,7 +60,7 @@ class TeamServiceImplTest {
 
         List<Team> resultList = List.of(TeamOM.withDefaultValues());
 
-        Mockito.when(teamRepository.findByCode(Mockito.anyString())).thenReturn(resultList);
+        Mockito.when(teamRepository.findByCodeContains(Mockito.anyString())).thenReturn(resultList);
 
         final List<Team> result = teamService.findByCode("");
 
@@ -89,11 +89,29 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() {
-        Team team = TeamOM.withDefaultValues();
-        teamService.deleteById(1L);
+    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException {
 
-        Assertions.assertTrue(teamService.findByCode(team.getCode()).isEmpty(), "Expected result must be Empty");
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(organizationService.createOrganizationType(Mockito.any())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+
+
+        Team team = TeamOM.withDefaultValues();
+        organizationService.createOrganizationType(team.getOrganization().getOrganizationType().getName());
+        organizationService.create(team.getOrganization());
+        team = teamService.create(team.getCode(), team.getOrganization().getId());
+        team.setId(1L);
+        teamService.deleteById(team.getId());
+
+        Team finalTeam = team;
+
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+        Assertions.assertThrows(InstanceNotFoundException.class, () ->
+                        teamService.findById(finalTeam.getId())
+                , "InstanceNotFoundException error was expected");
     }
 
 
@@ -212,7 +230,7 @@ class TeamServiceImplTest {
 
         teamService.deleteMember(team.getId(), user.getId());
 
-        Assertions.assertFalse(teamService.findAllUsers(team.getId()).contains(user), "User must not belong to the Team");
+        Assertions.assertNull(user.getTeam(), "User must not belong to the Team");
     }
 
     @Test

@@ -28,10 +28,12 @@ public class Team {
 
     @OneToMany(
             mappedBy = "team",
-            orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<User> userList;
 
+    public Team() {
+
+    }
 
     public Team(String code, Organization organization) {
         this.code = code;

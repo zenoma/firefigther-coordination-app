@@ -41,7 +41,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenNoData_whenCallFindByCode_thenReturnEmptyList() {
-        final List<Team> result = teamService.findByCode(null);
+        final List<Team> result = teamService.findByCode("");
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
@@ -192,7 +192,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidUser_whenDeleteMember_thenMemberDeletedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         organization = organizationService.create(organization);
@@ -210,7 +210,7 @@ class TeamServiceImplTest {
 
         teamService.deleteMember(team.getId(), user.getId());
 
-        Assertions.assertFalse(teamService.findAllUsers(team.getId()).contains(user), "User must not belong to the Team");
+        Assertions.assertNull(user.getTeam(), "User must not belong to the Team");
     }
 
     @Test

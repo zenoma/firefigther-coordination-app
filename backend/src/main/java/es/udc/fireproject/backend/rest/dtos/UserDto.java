@@ -27,6 +27,15 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
     }
 
+    public UserDto(Long id, String email, String firstName, String lastName, String dni, Integer phoneNumber) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dni = dni;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getId() {
         return id;
     }
