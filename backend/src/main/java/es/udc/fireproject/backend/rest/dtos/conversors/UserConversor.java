@@ -19,6 +19,15 @@ public class UserConversor {
                 user.getPhoneNumber());
     }
 
+    public static UserDto toUserDtoWithoutPassword(User user) {
+        return new UserDto(user.getId(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getDni(),
+                user.getPhoneNumber());
+    }
+
     public static User toUser(UserDto userDto) {
 
         return new User(userDto.getEmail(),

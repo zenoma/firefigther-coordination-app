@@ -1,7 +1,6 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
-import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.organization.OrganizationService;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
@@ -62,9 +61,8 @@ public class OrganizationController {
                                   @RequestBody OrganizationDto organizationDto)
             throws InstanceNotFoundException {
 
-        OrganizationType organizationType;
-        organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
-        Organization organization = OrganizationConversor.toOrganization(organizationDto, organizationType);
+
+        Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
         organization = organizationService.create(organization);
 
@@ -77,9 +75,7 @@ public class OrganizationController {
                        @RequestBody OrganizationDto organizationDto,
                        @PathVariable Long id)
             throws InstanceNotFoundException {
-        OrganizationType organizationType;
-        organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
-        Organization organization = OrganizationConversor.toOrganization(organizationDto, organizationType);
+        Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
         organizationService.update(id, organization.getName(),
                 organization.getCode(),

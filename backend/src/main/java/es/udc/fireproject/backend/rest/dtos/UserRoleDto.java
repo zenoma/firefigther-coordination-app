@@ -7,7 +7,7 @@ public class UserRoleDto {
     UserRoleDto() {
 
     }
-    
+
 
     public String getUserRole() {
         return userRole;

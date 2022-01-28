@@ -12,9 +12,9 @@ public interface TeamService {
 
     Team create(String code, Long organizationId) throws InstanceNotFoundException;
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws InstanceNotFoundException;
 
-    Team update(Long id, String name) throws InstanceNotFoundException;
+    Team update(Long id, String code) throws InstanceNotFoundException;
 
     Team addMember(Long teamId, Long userId) throws InstanceNotFoundException;
 
@@ -22,7 +22,5 @@ public interface TeamService {
 
     List<User> findAllUsers(Long id) throws InstanceNotFoundException;
 
-    User findUserById(Long teamId, Long userId) throws InstanceNotFoundException;
-
-
+    Team findById(Long teamId) throws InstanceNotFoundException;
 }

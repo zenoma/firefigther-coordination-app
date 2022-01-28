@@ -35,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Team> findByCode(String code) {
-        return teamRepository.findByCode(code);
+        return teamRepository.findByCodeContains(code);
     }
 
     @Override
@@ -53,8 +53,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    @Transactional
+    public void deleteById(Long id) throws InstanceNotFoundException {
+        if (findAllUsers(id) != null) {
+            List<User> userList = new ArrayList<>(findAllUsers(id));
+            for (User user : userList) {
+                user.setTeam(null);
+                userRepository.save(user);
+            }
+        }
         teamRepository.deleteById(id);
     }
 
@@ -96,16 +103,14 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
-
         User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUNDED, userId));
+        if (!team.getUserList().contains(user)) {
+            throw new InstanceNotFoundException(USER_NOT_FOUNDED, userId);
+        }
 
         user.setTeam(null);
         userRepository.save(user);
 
-        List<User> userList = team.getUserList();
-        userList.remove(user);
-        team.setUserList(userList);
-        teamRepository.save(team);
     }
 
     @Override
@@ -114,10 +119,9 @@ public class TeamServiceImpl implements TeamService {
                 getUserList();
     }
 
+
     @Override
-    public User findUserById(Long teamId, Long userId) throws InstanceNotFoundException {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
-        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUNDED, userId));
-        return team.getUserList().get(team.getUserList().indexOf(user));
+    public Team findById(Long teamId) throws InstanceNotFoundException {
+        return teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
     }
 }
