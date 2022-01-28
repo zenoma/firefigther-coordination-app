@@ -3,7 +3,6 @@ package es.udc.fireproject.backend.integration.services;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.team.Team;
-import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
@@ -32,8 +31,6 @@ class TeamServiceImplTest {
 
     @Autowired
     OrganizationService organizationService;
-    @Autowired
-    TeamRepository teamRepository;
     @Autowired
     TeamServiceImpl teamService;
     @Autowired
@@ -281,49 +278,10 @@ class TeamServiceImplTest {
             teamService.addMember(team.getId(), user.getId());
         }
 
-        final Team finalTeam = team;
         Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findAllUsers(INVALID_TEAM_ID),
                 "InstanceNotFoundException error was expected");
 
     }
 
-    @Test
-    void givenValidUsers_whenFindUserById_thenUserFounded() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
 
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
-
-        User user = UserOM.withDefaultValues();
-        userService.signUp(user);
-        teamService.addMember(team.getId(), user.getId());
-
-        Assertions.assertEquals(teamService.findUserById(team.getId(), user.getId()), user, "User must be the same as the Excepted user");
-    }
-
-    @Test
-    void givenInvalidData_whenFindUserById_thenUserFounded() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
-
-        User user = UserOM.withDefaultValues();
-        userService.signUp(user);
-        teamService.addMember(team.getId(), user.getId());
-
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findUserById(INVALID_TEAM_ID, user.getId()),
-                "InstanceNotFoundException error was expected");
-        final Team finalTeam = team;
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findUserById(finalTeam.getId(), INVALID_USER_ID),
-                "InstanceNotFoundException error was expected");
-    }
 }

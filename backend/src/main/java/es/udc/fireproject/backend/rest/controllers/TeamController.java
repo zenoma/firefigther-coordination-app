@@ -1,11 +1,13 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.team.Team;
+import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.team.TeamService;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.TeamConversor;
+import es.udc.fireproject.backend.rest.dtos.conversors.UserConversor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -74,11 +76,21 @@ public class TeamController {
         teamService.deleteMember(id, memberId);
     }
 
+    @GetMapping("/{id}/listUsers")
+    public List<UserDto> findAllUsers(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : teamService.findAllUsers(id)) {
+            userDtoList.add(UserConversor.toUserDto(user));
+        }
+        return userDtoList;
+    }
 
-//deleteById
-//update
-//deleteMember
-//findAllUsers
-//findUserById
+    @PutMapping("/{id}")
+    public void update(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody TeamDto teamDto)
+            throws InstanceNotFoundException {
+        teamService.update(id, teamDto.getCode());
+    }
+
 
 }

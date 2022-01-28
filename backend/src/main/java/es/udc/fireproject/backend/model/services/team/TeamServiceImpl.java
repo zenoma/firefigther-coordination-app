@@ -53,6 +53,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws InstanceNotFoundException {
         if (findAllUsers(id) != null) {
             List<User> userList = new ArrayList<>(findAllUsers(id));
@@ -118,12 +119,6 @@ public class TeamServiceImpl implements TeamService {
                 getUserList();
     }
 
-    @Override
-    public User findUserById(Long teamId, Long userId) throws InstanceNotFoundException {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
-        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUNDED, userId));
-        return team.getUserList().get(team.getUserList().indexOf(user));
-    }
 
     @Override
     public Team findById(Long teamId) throws InstanceNotFoundException {

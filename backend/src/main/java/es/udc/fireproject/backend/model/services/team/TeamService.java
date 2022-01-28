@@ -14,15 +14,13 @@ public interface TeamService {
 
     void deleteById(Long id) throws InstanceNotFoundException;
 
-    Team update(Long id, String name) throws InstanceNotFoundException;
+    Team update(Long id, String code) throws InstanceNotFoundException;
 
     Team addMember(Long teamId, Long userId) throws InstanceNotFoundException;
 
     void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException;
 
     List<User> findAllUsers(Long id) throws InstanceNotFoundException;
-
-    User findUserById(Long teamId, Long userId) throws InstanceNotFoundException;
 
     Team findById(Long teamId) throws InstanceNotFoundException;
 }
