@@ -71,10 +71,8 @@ public class TeamController {
     @PutMapping("/{id}/deleteUser/{memberId}")
     public void deleteUser(@RequestAttribute Long userId, @PathVariable Long id, @PathVariable Long memberId)
             throws InstanceNotFoundException {
-        teamService.deleteMember(id,memberId);
+        teamService.deleteMember(id, memberId);
     }
-
-
 
 
 //deleteById

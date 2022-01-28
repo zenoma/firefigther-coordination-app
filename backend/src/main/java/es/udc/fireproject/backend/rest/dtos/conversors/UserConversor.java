@@ -18,6 +18,7 @@ public class UserConversor {
                 user.getDni(),
                 user.getPhoneNumber());
     }
+
     public static UserDto toUserDtoWithoutPassword(User user) {
         return new UserDto(user.getId(),
                 user.getEmail(),

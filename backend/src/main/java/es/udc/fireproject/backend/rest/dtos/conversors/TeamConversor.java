@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TeamConversor {
 
-    private TeamConversor(){
+    private TeamConversor() {
 
     }
 
@@ -21,9 +21,9 @@ public class TeamConversor {
 
     }
 
-    public static TeamDto toTeamDto(Team team){
+    public static TeamDto toTeamDto(Team team) {
         List<UserDto> userDtoList = new ArrayList<>();
-        if (team.getUserList() != null && !team.getUserList().isEmpty()){
+        if (team.getUserList() != null && !team.getUserList().isEmpty()) {
             for (User user : team.getUserList()) {
                 userDtoList.add(UserConversor.toUserDtoWithoutPassword(user));
             }
