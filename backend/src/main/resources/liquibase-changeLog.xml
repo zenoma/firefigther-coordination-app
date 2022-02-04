@@ -116,6 +116,31 @@
                                  referencedColumnNames="id"
                                  referencedTableName="team"/>
     </changeSet>
+    <changeSet author="adriangvazquez" id="Create notice table">
+        <createTable tableName="notice">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="body" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="GEOMETRY(POINT,${srid})">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="notice"
+                                 constraintName="fk_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+
     <changeSet author="adriangvazquez" id="Initialize Data">
         <sqlFile
                 endDelimiter="\nGO"
