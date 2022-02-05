@@ -13,4 +13,8 @@ public class NoticeOm {
         return new Notice("Default Body", NoticeStatus.PENDING, geometryFactory.createPoint(new Coordinate(-45, 45)));
     }
 
+    public static Notice withInvalidValues() {
+        return new Notice("", NoticeStatus.ACCEPTED, null);
+    }
+
 }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class Notice {
 
     @Type(type = "org.locationtech.jts.geom.Point")
     @Column(name = "location", nullable = false)
+    @NotNull
     private Point location;
 
 
