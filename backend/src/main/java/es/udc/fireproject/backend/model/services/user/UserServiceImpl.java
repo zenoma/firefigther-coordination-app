@@ -129,10 +129,10 @@ public class UserServiceImpl implements UserService {
         User user = userOpt.get();
         User targetUser = targetUserOpt.get();
 
-        if (user.getUserRole().priority < targetUser.getUserRole().priority)
+        if (user.getUserRole().priority > targetUser.getUserRole().priority)
             throw new InsufficientRolePermissionException(id, targetId);
 
-        if (userRole.priority > user.getUserRole().priority)
+        if (userRole.priority < user.getUserRole().priority)
             throw new InsufficientRolePermissionException(id, targetId);
 
 

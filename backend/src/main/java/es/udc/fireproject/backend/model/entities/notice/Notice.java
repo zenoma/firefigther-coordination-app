@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.model.entities.notice;
 
+import es.udc.fireproject.backend.model.entities.BaseObject;
 import es.udc.fireproject.backend.model.entities.user.User;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
@@ -10,7 +11,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Notice {
+public class Notice extends BaseObject {
+
+    private static final long serialVersionUID = 1801683026003370692L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -106,5 +110,17 @@ public class Notice {
     @Override
     public int hashCode() {
         return Objects.hash(body, status, location);
+    }
+
+    @Override
+    public String toString() {
+        return "Notice{" +
+                "id=" + id +
+                ", body='" + body + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", user=" + user +
+                ", location=" + location +
+                '}';
     }
 }

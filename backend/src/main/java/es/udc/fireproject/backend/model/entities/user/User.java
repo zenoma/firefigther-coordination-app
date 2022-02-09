@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.model.entities.user;
 
+import es.udc.fireproject.backend.model.entities.BaseObject;
 import es.udc.fireproject.backend.model.entities.team.Team;
 
 import javax.persistence.*;
@@ -9,7 +10,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user", schema = "public")
-public class User {
+public class User extends BaseObject {
+
+
+    private static final long serialVersionUID = 8394072118760207353L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +24,8 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
-    @Size(min = 3, message
-            = "Password must contain at least 3 characters")
+    @Size(min = 8, message
+            = "Password must contain at least 8 characters")
     private String password;
 
     @NotBlank
@@ -167,4 +172,22 @@ public class User {
     public int hashCode() {
         return Objects.hash(email, password, firstName, lastName, dni, phoneNumber);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dni='" + dni + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", createdAt=" + createdAt +
+                ", userRole=" + userRole +
+                ", team=" + team +
+                '}';
+    }
 }
+
+

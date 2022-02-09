@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.model.entities.team;
 
+import es.udc.fireproject.backend.model.entities.BaseObject;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.user.User;
 
@@ -10,7 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Team {
+public class Team extends BaseObject {
+
+    private static final long serialVersionUID = -6662567578161123656L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -92,5 +96,16 @@ public class Team {
     @Override
     public int hashCode() {
         return Objects.hash(code, organization);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", createdAt=" + createdAt +
+                ", organization=" + organization +
+                ", userList=" + userList +
+                '}';
     }
 }
