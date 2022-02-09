@@ -6,7 +6,7 @@ import es.udc.fireproject.backend.model.exceptions.*;
 
 public interface UserService {
 
-    void signUp(User user) throws DuplicateInstanceException;
+    void signUp(User user) throws DuplicatedInstanceException;
 
     User login(String email, String password) throws IncorrectLoginException;
 

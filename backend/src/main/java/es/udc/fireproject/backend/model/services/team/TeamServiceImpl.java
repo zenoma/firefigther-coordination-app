@@ -15,14 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class TeamServiceImpl implements TeamService {
 
-    private static final String USER_NOT_FOUNDED = "User not founded";
-    private static final String TEAM_NOT_FOUNDED = "Team not founded";
+    private static final String USER_NOT_FOUND = "User not found";
+    private static final String TEAM_NOT_FOUND = "Team not found";
 
     @Autowired
     OrganizationService organizationService;
@@ -67,24 +66,21 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team update(Long id, String code) throws InstanceNotFoundException {
-        Optional<Team> teamOpt = teamRepository.findById(id);
+        Team team = teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id));
 
-        if (teamOpt.isEmpty()) {
-            throw new InstanceNotFoundException(TEAM_NOT_FOUNDED, id);
-        } else {
-            Team team = teamOpt.get();
-            team.setCode(code);
+        team.setCode(code);
 
-            ConstraintValidator.validate(team);
-            return teamRepository.save(team);
-        }
+        ConstraintValidator.validate(team);
+        return teamRepository.save(team);
+
+
     }
 
     @Override
     public Team addMember(Long teamId, Long userId) throws InstanceNotFoundException {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUNDED, userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
 
         user.setTeam(team);
         userRepository.save(user);
@@ -102,10 +98,10 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
-        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUNDED, userId));
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
         if (!team.getUserList().contains(user)) {
-            throw new InstanceNotFoundException(USER_NOT_FOUNDED, userId);
+            throw new InstanceNotFoundException(USER_NOT_FOUND, userId);
         }
 
         user.setTeam(null);
@@ -115,13 +111,13 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<User> findAllUsers(Long id) throws InstanceNotFoundException {
-        return teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, id)).
+        return teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id)).
                 getUserList();
     }
 
 
     @Override
     public Team findById(Long teamId) throws InstanceNotFoundException {
-        return teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUNDED, teamId));
+        return teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
     }
 }

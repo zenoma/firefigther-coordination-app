@@ -82,7 +82,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidName_whenFindByNameOrCode_thenFoundedOrganization() {
+    void givenValidName_whenFindByNameOrCode_thenFoundOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
         final List<Organization> organizationList = new ArrayList<>();
         organizationList.add(organization);
@@ -97,12 +97,12 @@ class OrganizationServiceImplTest {
     void givenInvalidName_whenFindByNameOrCode_thenReturnEmptyList() {
 
         Assertions.assertTrue(organizationService.findByNameOrCode("").isEmpty(),
-                "The item founded must be null");
+                "Found item must be null");
     }
 
 
     @Test
-    void givenValidId_whenFindById_thenFoundedOrganization() throws InstanceNotFoundException {
+    void givenValidId_whenFindById_thenFoundOrganization() throws InstanceNotFoundException {
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(organization.getOrganizationType().getName());
         organization = organizationService.create(organization);
@@ -117,7 +117,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidId_whenFindByOrganizationTypeName_thenFoundedOrganization() {
+    void givenValidId_whenFindByOrganizationTypeName_thenFoundOrganization() {
         List<OrganizationType> organizationTypes = OrganizationTypeOM.withNames(Arrays.asList("Type1", "Type2", "Type3"));
         organizationTypes.forEach(organizationType ->
                 organizationService.createOrganizationType(organizationType.getName()));
@@ -154,7 +154,7 @@ class OrganizationServiceImplTest {
 
 
     @Test
-    void givenData_whenFindAllOrganizationTypes_thenReturnFoundedOrganizationType() {
+    void givenData_whenFindAllOrganizationTypes_thenReturnFoundOrganizationType() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
         organizationService.createOrganizationType(organizationType.getName());
 

@@ -143,7 +143,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidName_whenFindByNameOrCode_thenFoundedOrganization() {
+    void givenValidName_whenFindByNameOrCode_thenFoundOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
         final List<Organization> organizationList = new ArrayList<>();
         organizationList.add(organization);
@@ -158,7 +158,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidCode_whenFindByNameOrCode_thenFoundedOrganization() {
+    void givenValidCode_whenFindByNameOrCode_thenFoundOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
         final List<Organization> organizationList = new ArrayList<>();
         organizationList.add(organization);
@@ -173,7 +173,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenValidNameAndValidCode_whenFindByNameOrCode_thenFoundedOrganization() {
+    void givenValidNameAndValidCode_whenFindByNameOrCode_thenFoundOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
         final List<Organization> organizationList = new ArrayList<>();
         organizationList.add(organization);
@@ -187,7 +187,7 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenInvalidName_whenFindByNameOrCode_thenFoundedOrganization() {
+    void givenInvalidName_whenFindByNameOrCode_thenFoundOrganization() {
         final Organization organization = OrganizationOM.withDefaultValues();
 
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(organization);
@@ -195,12 +195,12 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains("", "")).thenReturn(null);
 
 
-        Assertions.assertTrue(organizationService.findByNameOrCode(null).isEmpty(), "The item founded must be null");
+        Assertions.assertTrue(organizationService.findByNameOrCode(null).isEmpty(), "Found item must be null");
     }
 
 
     @Test
-    void givenValidName_whenFindByNameOrCode_thenFoundedMultipleOrganizations() {
+    void givenValidName_whenFindByNameOrCode_thenFoundMultipleOrganizations() {
         List<String> names = Arrays.asList("Centro 1", "Centro 2", "Centro 3");
         List<Organization> list = OrganizationOM.withNames(names);
 
@@ -214,7 +214,7 @@ class OrganizationServiceImplTest {
 
 
     @Test
-    void givenValidName_whenFindByOrganizationTypeName_thenFoundedMultipleOrganizations() {
+    void givenValidName_whenFindByOrganizationTypeName_thenFoundMultipleOrganizations() {
         List<String> names = Arrays.asList("Centro 1", "Centro 2", "Centro 3");
         List<Organization> list = OrganizationOM.withNames(names);
 

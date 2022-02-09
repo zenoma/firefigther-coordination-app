@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,10 +23,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void signUp(User user) throws DuplicateInstanceException {
+    public void signUp(User user) throws DuplicatedInstanceException {
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicateInstanceException("project.entities.user", user.getEmail());
+            throw new DuplicatedInstanceException("project.entities.user", user.getEmail());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -41,17 +40,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User login(String email, String password) throws IncorrectLoginException {
 
-        Optional<User> user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IncorrectLoginException(email, password));
 
-        if (user.isEmpty()) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IncorrectLoginException(email, password);
         }
 
-        if (!passwordEncoder.matches(password, user.get().getPassword())) {
-            throw new IncorrectLoginException(email, password);
-        }
-
-        return user.get();
+        return user;
 
     }
 
@@ -59,33 +54,22 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User loginFromId(Long id) throws InstanceNotFoundException {
 
-        Optional<User> userOpt = userRepository.findById(id);
-
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
-        } else {
-            return userOpt.get();
-        }
+        return userRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, id));
     }
 
     @Override
     public User updateProfile(Long id, String firstName, String lastName, String email, Integer phoneNumber, String dni) throws InstanceNotFoundException {
 
-        Optional<User> userOpt = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, id));
 
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
-        } else {
-            User user = userOpt.get();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setPhoneNumber(phoneNumber);
-            user.setDni(dni);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setDni(dni);
 
-            userRepository.save(user);
-            return user;
-        }
+        userRepository.save(user);
+        return user;
 
     }
 
@@ -93,41 +77,28 @@ public class UserServiceImpl implements UserService {
     public void changePassword(Long id, String oldPassword, String newPassword)
             throws InstanceNotFoundException, IncorrectPasswordException {
 
-        Optional<User> userOpt = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, id));
 
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IncorrectPasswordException();
         } else {
-            User user = userOpt.get();
-
-            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-                throw new IncorrectPasswordException();
-            } else {
-                user.setPassword(passwordEncoder.encode(newPassword));
-            }
-
-            userRepository.save(user);
+            user.setPassword(passwordEncoder.encode(newPassword));
         }
+
+        userRepository.save(user);
+
     }
 
     @Override
     public void updateRole(Long id, Long targetId, UserRole userRole) throws InstanceNotFoundException,
             InsufficientRolePermissionException {
-        Optional<User> userOpt = userRepository.findById(id);
-
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, id);
-        }
-
-        Optional<User> targetUserOpt = userRepository.findById(targetId);
-
-        if (targetUserOpt.isEmpty()) {
-            throw new InstanceNotFoundException(USER_NOT_FOUND, targetId);
-        }
+        User user = userRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, id));
 
 
-        User user = userOpt.get();
-        User targetUser = targetUserOpt.get();
+        User targetUser = userRepository.findById(targetId).orElseThrow(
+                () -> new InstanceNotFoundException(USER_NOT_FOUND, targetId));
+
 
         if (user.getUserRole().priority > targetUser.getUserRole().priority)
             throw new InsufficientRolePermissionException(id, targetId);

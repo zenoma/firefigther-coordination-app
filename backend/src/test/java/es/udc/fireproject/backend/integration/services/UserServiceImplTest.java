@@ -25,7 +25,7 @@ class UserServiceImplTest {
     private UserService userService;
 
     @Test
-    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
+    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicatedInstanceException, InstanceNotFoundException {
 
         User user = UserOM.withDefaultValues();
 
@@ -38,11 +38,11 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenDuplicatedData_whenSignUp_thenDuplicateInstanceException() throws DuplicateInstanceException {
+    void givenDuplicatedData_whenSignUp_thenDuplicateInstanceException() throws DuplicatedInstanceException {
         User user = UserOM.withDefaultValues();
 
         userService.signUp(user);
-        Assertions.assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
+        Assertions.assertThrows(DuplicatedInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
 
     }
 
@@ -52,7 +52,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicateInstanceException, IncorrectLoginException {
+    void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicatedInstanceException, IncorrectLoginException {
 
         User user = UserOM.withDefaultValues();
 
@@ -68,7 +68,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicateInstanceException {
+    void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicatedInstanceException {
 
         User user = UserOM.withDefaultValues();
 
@@ -87,7 +87,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicatedInstanceException {
 
         User user = UserOM.withDefaultValues();
 
@@ -114,7 +114,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenChangePassword_thenPasswordSuccessfullyChanged() throws DuplicateInstanceException, InstanceNotFoundException,
+    void givenValidData_whenChangePassword_thenPasswordSuccessfullyChanged() throws DuplicatedInstanceException, InstanceNotFoundException,
             IncorrectPasswordException {
 
         User user = UserOM.withDefaultValues();
@@ -138,7 +138,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void givenIncorrectPassword_whenChangePassword_thenInstanceNotFoundException() throws DuplicateInstanceException {
+    void givenIncorrectPassword_whenChangePassword_thenInstanceNotFoundException() throws DuplicatedInstanceException {
         User user = UserOM.withDefaultValues();
 
         String oldPassword = user.getPassword();
@@ -152,7 +152,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicateInstanceException {
+    void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicatedInstanceException {
         User user = UserOM.withDefaultValues();
 
         userService.signUp(user);
@@ -162,7 +162,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicatedInstanceException,
             InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
@@ -180,7 +180,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+    void giveUsersWithHigherRole_whenUpdateHigherRole_thenUpdateRolSuccessfully() throws DuplicatedInstanceException,
             InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
@@ -198,7 +198,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUserWithLessRole_whenUpdateRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
+    void giveUserWithLessRole_whenUpdateRole_thenInsufficientRolePermissionException() throws DuplicatedInstanceException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
@@ -213,7 +213,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException,
+    void giveUsersWithSameRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicatedInstanceException,
             InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
@@ -232,7 +232,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithSameRole_whenUpdateHigherRole_thenInsufficientRolePermissionException() throws DuplicateInstanceException {
+    void giveUsersWithSameRole_whenUpdateHigherRole_thenInsufficientRolePermissionException() throws DuplicatedInstanceException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);

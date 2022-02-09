@@ -34,7 +34,7 @@ class UserServiceImplTest {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Test
-    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
+    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicatedInstanceException, InstanceNotFoundException {
 
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
@@ -57,7 +57,7 @@ class UserServiceImplTest {
 
         User user = UserOM.withDefaultValues();
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(true);
-        Assertions.assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
+        Assertions.assertThrows(DuplicatedInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
     }
 
     @Test
@@ -66,7 +66,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicateInstanceException, IncorrectLoginException {
+    void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicatedInstanceException, IncorrectLoginException {
 
         Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
@@ -85,7 +85,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicateInstanceException {
+    void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicatedInstanceException {
         Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString())).thenReturn(false);
@@ -108,7 +108,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicatedInstanceException {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
@@ -141,7 +141,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenChangePassword_thenPasswordSuccessfullyChanged() throws DuplicateInstanceException, InstanceNotFoundException, IncorrectPasswordException {
+    void givenValidData_whenChangePassword_thenPasswordSuccessfullyChanged() throws DuplicatedInstanceException, InstanceNotFoundException, IncorrectPasswordException {
 
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
@@ -169,7 +169,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenIncorrectPassword_whenChangePassword_thenInstanceNotFoundException() throws DuplicateInstanceException {
+    void givenIncorrectPassword_whenChangePassword_thenInstanceNotFoundException() throws DuplicatedInstanceException {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
@@ -187,7 +187,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicateInstanceException {
+    void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicatedInstanceException {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
@@ -201,7 +201,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicateInstanceException, InstanceNotFoundException, InsufficientRolePermissionException {
+    void giveUsersWithHigherRole_whenUpdateLowerRole_thenUpdateRolSuccessfully() throws DuplicatedInstanceException, InstanceNotFoundException, InsufficientRolePermissionException {
         int totalUsers = 2;
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
