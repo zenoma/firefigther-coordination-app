@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class LiquibaseConfiguration {
+public class LiquibaseConfig {
     @Autowired
     private DataSource dataSource;
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
         liquibase.setDataSource(dataSource);

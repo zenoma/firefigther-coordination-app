@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class LiquibaseConfiguration {
+public class LiquibaseConfig {
     @Autowired
     private DataSource dataSource;
 
