@@ -10,7 +10,10 @@
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
 
-    <changeSet author="adriangvazquez" id="Create organization type table">
+    <changeSet author="adriangvazquez" id="Create initial tables">
+        <preConditions>
+            <spatial:spatialSupported/>
+        </preConditions>
         <createTable tableName="organization_type">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -19,9 +22,7 @@
                 <constraints unique="true"/>
             </column>
         </createTable>
-    </changeSet>
 
-    <changeSet author="adriangvazquez" id="Create organization table">
         <createTable tableName="organization">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -48,8 +49,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="organization_type"/>
 
-    </changeSet>
-    <changeSet author="adriangvazquez" id="Create cuadrants table">
         <createTable tableName="cuadrants">
             <column autoIncrement="true" name="gid" type="SERIAL">
                 <constraints primaryKey="true"/>
@@ -64,9 +63,7 @@
             <column name="revision" type="VARCHAR(50)"/>
             <column name="GEOM" type="GEOMETRY(MULTIPOLYGON,${srid})"/>
         </createTable>
-    </changeSet>
 
-    <changeSet author="adriangvazquez" id="Create Teams Table">
         <createTable tableName="team">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -84,11 +81,7 @@
         <addForeignKeyConstraint baseTableName="team" baseColumnNames="organization_id"
                                  referencedTableName="organization"
                                  referencedColumnNames="id" constraintName="fk_organization_id"/>
-    </changeSet>
-    <changeSet author="adriangvazquez" id="Create user table">
-        <preConditions>
-            <spatial:spatialSupported/>
-        </preConditions>
+
         <createTable tableName="user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -115,8 +108,6 @@
                                  constraintName="fk_team_id"
                                  referencedColumnNames="id"
                                  referencedTableName="team"/>
-    </changeSet>
-    <changeSet author="adriangvazquez" id="Create notice table">
         <createTable tableName="notice">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
