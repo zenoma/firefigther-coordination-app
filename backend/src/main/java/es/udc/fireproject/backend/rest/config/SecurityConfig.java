@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.rest.common;
+package es.udc.fireproject.backend.rest.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

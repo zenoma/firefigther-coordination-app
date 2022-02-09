@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.rest.common;
+package es.udc.fireproject.backend.rest.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
