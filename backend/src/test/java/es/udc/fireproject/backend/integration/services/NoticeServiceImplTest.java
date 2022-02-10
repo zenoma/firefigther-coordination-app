@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.integration.services;
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.exceptions.DuplicatedInstanceException;
+import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
 import es.udc.fireproject.backend.model.services.notice.NoticeService;
@@ -173,7 +173,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenFindByUserId_thenNoticesFound() throws InstanceNotFoundException, DuplicatedInstanceException {
+    void givenValidData_whenFindByUserId_thenNoticesFound() throws InstanceNotFoundException, DuplicateInstanceException {
         Notice notice = NoticeOm.withDefaultValues();
         User user = UserOM.withDefaultValues();
         userService.signUp(user);

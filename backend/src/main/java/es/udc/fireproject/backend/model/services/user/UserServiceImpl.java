@@ -23,10 +23,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void signUp(User user) throws DuplicatedInstanceException {
+    public void signUp(User user) throws DuplicateInstanceException {
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicatedInstanceException("project.entities.user", user.getEmail());
+            throw new DuplicateInstanceException("project.entities.user", user.getEmail());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

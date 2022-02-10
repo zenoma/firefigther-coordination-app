@@ -1,6 +1,6 @@
 package es.udc.fireproject.backend.rest.common;
 
-import es.udc.fireproject.backend.model.exceptions.DuplicatedInstanceException;
+import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.PermissionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +66,10 @@ public class CommonControllerAdvice {
 
     }
 
-    @ExceptionHandler(DuplicatedInstanceException.class)
+    @ExceptionHandler(DuplicateInstanceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorsDto handleDuplicateInstanceException(DuplicatedInstanceException exception, Locale locale) {
+    public ErrorsDto handleDuplicateInstanceException(DuplicateInstanceException exception, Locale locale) {
 
         String nameMessage = messageSource.getMessage(exception.getName(), null, exception.getName(), locale);
         String errorMessage = messageSource.getMessage(DUPLICATE_INSTANCE_EXCEPTION_CODE,

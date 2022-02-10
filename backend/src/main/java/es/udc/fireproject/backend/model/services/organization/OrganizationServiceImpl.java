@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,19 +42,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {
+        return organizationTypeRepository.findAll();
 
-        List<OrganizationType> organizationTypes = new ArrayList<>();
-
-        organizationTypeRepository.findAll().forEach(organizationTypes::add);
-        return organizationTypes;
     }
 
     @Override
     public List<Organization> findAll() {
-        List<Organization> organizations = new ArrayList<>();
-
-        organizationRepository.findAll().forEach(organizations::add);
-        return organizations;
+        return organizationRepository.findAll();
     }
 
     @Override
