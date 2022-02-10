@@ -102,14 +102,14 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidCode_whenUpdate_thenConstraintViolationException() throws InstanceNotFoundException {
-        OrganizationType organizationType = organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        Organization organization = OrganizationOM.withDefaultValues();
-        organization.setOrganizationType(organizationType);
+        Team team = TeamOM.withDefaultValues();
+        Organization organization = team.getOrganization();
+        OrganizationType organizationType = organization.getOrganizationType();
+        organizationService.createOrganizationType(organizationType.getName());
         organization = organizationService.create(organization);
 
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
+
+        team = teamService.create(team.getCode(), organization.getId());
         team.setCode("");
 
 

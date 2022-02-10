@@ -135,12 +135,6 @@
     <changeSet author="adriangvazquez" id="Initialize Data">
         <sqlFile
                 endDelimiter="\nGO"
-                path="classpath:InitData.sql"
-                relativeToChangelogFile="false"
-                splitStatements="true"
-                stripComments="true"/>
-        <sqlFile
-                endDelimiter="\nGO"
                 path="classpath:cuadrants_v1.sql"
                 relativeToChangelogFile="false"
                 splitStatements="true"
