@@ -40,8 +40,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team create(String code, Long organizationId) throws InstanceNotFoundException {
 
-        Organization organization;
-        organization = organizationService.findById(organizationId);
+        Organization organization = organizationService.findById(organizationId);
 
         Team team = new Team(code, organization);
         team.setCreatedAt(LocalDateTime.now());

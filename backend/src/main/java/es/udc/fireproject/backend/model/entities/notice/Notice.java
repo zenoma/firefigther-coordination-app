@@ -1,6 +1,6 @@
 package es.udc.fireproject.backend.model.entities.notice;
 
-import es.udc.fireproject.backend.model.entities.BaseObject;
+import es.udc.fireproject.backend.model.entities.BaseEntity;
 import es.udc.fireproject.backend.model.entities.user.User;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
@@ -11,13 +11,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Notice extends BaseObject {
+public class Notice extends BaseEntity {
 
     private static final long serialVersionUID = 1801683026003370692L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "body")
     private String body;
@@ -88,14 +85,6 @@ public class Notice extends BaseObject {
         this.body = body;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -115,7 +104,7 @@ public class Notice extends BaseObject {
     @Override
     public String toString() {
         return "Notice{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", body='" + body + '\'' +
                 ", status=" + status +
                 ", createdAt=" + createdAt +

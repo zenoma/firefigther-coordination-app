@@ -22,7 +22,6 @@ import java.util.Optional;
 @Transactional
 class UserServiceImplTest {
 
-    private static final String USER_NOT_FOUND = "User not found";
     private final Long INVALID_USER_ID = -1L;
     @Mock
     UserRepository userRepository;

@@ -1,6 +1,6 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
-import es.udc.fireproject.backend.model.entities.BaseObject;
+import es.udc.fireproject.backend.model.entities.BaseEntity;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
 
@@ -12,14 +12,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "organization", schema = "public")
-public class Organization extends BaseObject {
-
+public class Organization extends BaseEntity {
 
     private static final long serialVersionUID = -4807580144244128235L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotBlank
     private String code;
@@ -54,13 +49,6 @@ public class Organization extends BaseObject {
         this.organizationType = organizationType;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;
@@ -126,7 +114,7 @@ public class Organization extends BaseObject {
     @Override
     public String toString() {
         return "Organization{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", headquartersAddress='" + headquartersAddress + '\'' +
