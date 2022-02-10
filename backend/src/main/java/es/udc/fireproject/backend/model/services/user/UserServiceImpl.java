@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Transactional
 public class UserServiceImpl implements UserService {
     private static final String USER_NOT_FOUND = "User not found";
+    private static final String TARGET_USER_NOT_FOUND = "Target user not found";
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -95,17 +96,13 @@ public class UserServiceImpl implements UserService {
             InsufficientRolePermissionException {
         User user = userRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, id));
 
-
         User targetUser = userRepository.findById(targetId).orElseThrow(
-                () -> new InstanceNotFoundException(USER_NOT_FOUND, targetId));
+                () -> new InstanceNotFoundException(TARGET_USER_NOT_FOUND, targetId));
 
 
-        if (user.getUserRole().priority > targetUser.getUserRole().priority)
+        if (user.getUserRole().isHigherThan(targetUser.getUserRole()) || userRole.isLowerThan(user.getUserRole())) {
             throw new InsufficientRolePermissionException(id, targetId);
-
-        if (userRole.priority < user.getUserRole().priority)
-            throw new InsufficientRolePermissionException(id, targetId);
-
+        }
 
         targetUser.setUserRole(userRole);
 

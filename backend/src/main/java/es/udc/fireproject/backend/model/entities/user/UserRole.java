@@ -9,4 +9,17 @@ public enum UserRole {
     UserRole(Integer priority) {
         this.priority = priority;
     }
+
+    public boolean isHigherThan(UserRole userRole) {
+        return this.priority > userRole.priority;
+    }
+
+    public boolean isEqualThan(UserRole userRole) {
+        return this.priority.equals(userRole.priority);
+    }
+
+    public boolean isLowerThan(UserRole userRole) {
+        return this.priority < userRole.priority;
+    }
+
 }
