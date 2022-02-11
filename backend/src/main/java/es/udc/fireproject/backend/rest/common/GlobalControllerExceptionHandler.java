@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class CommonControllerAdvice {
+public class GlobalControllerExceptionHandler {
 
     private static final String INSTANCE_NOT_FOUND_EXCEPTION_CODE = "project.exceptions.InstanceNotFoundException";
     private static final String DUPLICATE_INSTANCE_EXCEPTION_CODE = "project.exceptions.DuplicateInstanceException";
@@ -26,6 +26,8 @@ public class CommonControllerAdvice {
             PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
     private static final String ILLEGAL_ARGUMENT_EXCEPTION_CODE = "project.exceptions.IllegalArgumentException";
     private static final String DATA_INTEGRITY_EXCEPTION_CODE = "project.exceptions.DataIntegrityViolationException";
+
+
     @Autowired
     private MessageSource messageSource;
 

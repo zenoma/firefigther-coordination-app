@@ -15,6 +15,7 @@ import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import es.udc.fireproject.backend.utils.TeamOM;
 import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,6 +49,18 @@ class TeamServiceImplTest {
     @Mock
     UserServiceImpl userService;
 
+    @BeforeEach
+    public void setUp() throws InstanceNotFoundException {
+
+        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(organizationService.createOrganizationType(Mockito.any())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+
+    }
+
     @Test
     void givenNoData_whenCallFindByCode_thenReturnEmptyList() {
         final List<Team> result = teamService.findByCode(null);
@@ -70,17 +83,12 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidData_whenCallCreate_thenReturnCreatedTeam() throws InstanceNotFoundException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-
 
         Assertions.assertEquals(TeamOM.withDefaultValues(), teamService.create("a", 1L), "Elements are not equal");
     }
 
     @Test
     void givenInvalidData_whenCallCreate_thenReturnConstraintViolationException() throws InstanceNotFoundException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
                         teamService.create("", 1L)
@@ -90,13 +98,6 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException {
-
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.createOrganizationType(Mockito.any())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
 
 
         Team team = TeamOM.withDefaultValues();
@@ -130,6 +131,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidId_whenUpdate_thenInstanceNotFoundException() {
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.update(-1L, ""),
                 "InstanceNotFoundException error was expected");
@@ -148,12 +150,8 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws
+            InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -173,11 +171,9 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenInvalidUser_whenAddMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+    void givenInvalidUser_whenAddMember_thenConstraintViolationException() throws
+            InstanceNotFoundException, DuplicateInstanceException {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         Organization organization = OrganizationOM.withDefaultValues();
@@ -205,12 +201,8 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws
+            InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -234,12 +226,8 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws
+            InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -270,12 +258,8 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws
+            InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -297,12 +281,8 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws
+            InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
