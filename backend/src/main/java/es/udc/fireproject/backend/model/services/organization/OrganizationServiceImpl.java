@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,11 +31,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization findById(Long id) throws InstanceNotFoundException {
-        Optional<Organization> organizationOpt = organizationRepository.findById(id);
-        if (organizationOpt.isEmpty()) {
-            throw new InstanceNotFoundException("Organization not found", id);
-        }
-        return organizationOpt.get();
+        return organizationRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException("Organization not found", id));
+
     }
 
 
@@ -47,19 +42,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {
+        return organizationTypeRepository.findAll();
 
-        List<OrganizationType> organizationTypes = new ArrayList<>();
-
-        organizationTypeRepository.findAll().forEach(organizationTypes::add);
-        return organizationTypes;
     }
 
     @Override
     public List<Organization> findAll() {
-        List<Organization> organizations = new ArrayList<>();
-
-        organizationRepository.findAll().forEach(organizations::add);
-        return organizations;
+        return organizationRepository.findAll();
     }
 
     @Override
@@ -73,12 +62,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public OrganizationType findOrganizationTypeById(Long id) throws InstanceNotFoundException {
-        Optional<OrganizationType> organizationTypeOpt = organizationTypeRepository.findById(id);
+        return organizationTypeRepository.findById(id).orElseThrow(
+                () -> new InstanceNotFoundException("Organization type not found", id));
 
-        if (organizationTypeOpt.isEmpty()) {
-            throw new InstanceNotFoundException("Organization type not founded", id);
-        }
-        return organizationTypeOpt.get();
     }
 
     @Override
@@ -110,20 +96,17 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public Organization update(Long id, String name, String code, String headquartersAddress, Point location)
             throws InstanceNotFoundException {
-        Optional<Organization> organizationOpt = organizationRepository.findById(id);
 
-        if (organizationOpt.isEmpty()) {
-            throw new InstanceNotFoundException("Organization not founded", id);
 
-        } else {
-            Organization organization = organizationOpt.get();
-            organization.setName(name);
-            organization.setCode(code);
-            organization.setHeadquartersAddress(headquartersAddress);
-            organization.setLocation(location);
+        Organization organization = organizationRepository.findById(id).orElseThrow(
+                () -> new InstanceNotFoundException("Organization not found", id));
 
-            ConstraintValidator.validate(organization);
-            return organizationRepository.save(organization);
-        }
+        organization.setName(name);
+        organization.setCode(code);
+        organization.setHeadquartersAddress(headquartersAddress);
+        organization.setLocation(location);
+
+        ConstraintValidator.validate(organization);
+        return organizationRepository.save(organization);
     }
 }

@@ -8,8 +8,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 
-public class OrganizationDto {
+public class OrganizationDto extends BaseDto {
+
+
+    private static final long serialVersionUID = 6003901619347671472L;
 
     @Id
     @NotBlank(groups = {OrganizationDto.AllValidations.class})
@@ -134,6 +138,34 @@ public class OrganizationDto {
     private void unpackNested(Map<String, Double> coordinates) {
         this.lon = coordinates.get("lon");
         this.lat = coordinates.get("lat");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganizationDto that = (OrganizationDto) o;
+        return Double.compare(that.lon, lon) == 0 && Double.compare(that.lat, lat) == 0 && Objects.equals(id, that.id) && Objects.equals(code, that.code) && Objects.equals(name, that.name) && Objects.equals(headquartersAddress, that.headquartersAddress) && Objects.equals(createdAt, that.createdAt) && Objects.equals(organizationTypeId, that.organizationTypeId) && Objects.equals(organizationTypeName, that.organizationTypeName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, name, headquartersAddress, lon, lat, createdAt, organizationTypeId, organizationTypeName);
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationDto{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", headquartersAddress='" + headquartersAddress + '\'' +
+                ", lon=" + lon +
+                ", lat=" + lat +
+                ", createdAt=" + createdAt +
+                ", organizationTypeId=" + organizationTypeId +
+                ", organizationTypeName='" + organizationTypeName + '\'' +
+                '}';
     }
 
     public interface AllValidations {

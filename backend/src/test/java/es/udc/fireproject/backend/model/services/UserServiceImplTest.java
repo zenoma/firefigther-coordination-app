@@ -7,6 +7,7 @@ import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.user.UserServiceImpl;
 import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +23,6 @@ import java.util.Optional;
 @Transactional
 class UserServiceImplTest {
 
-    private static final String USER_NOT_FOUND = "User not found";
     private final Long INVALID_USER_ID = -1L;
     @Mock
     UserRepository userRepository;
@@ -33,13 +33,17 @@ class UserServiceImplTest {
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Test
-    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
-
+    @BeforeEach
+    public void setUp() {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
+        Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(UserOM.withDefaultValues()));
+    }
 
+
+    @Test
+    void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
 
         User user = UserOM.withDefaultValues();
         userService.signUp(user);
@@ -52,9 +56,6 @@ class UserServiceImplTest {
     @Test
     void givenDuplicatedData_whenSignUp_thenDuplicateInstanceException() {
 
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
-
         User user = UserOM.withDefaultValues();
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(true);
         Assertions.assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
@@ -62,14 +63,14 @@ class UserServiceImplTest {
 
     @Test
     void givenInvalidData_whenLoginFromId_thenInstanceNotFoundException() {
+
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+
         Assertions.assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(INVALID_USER_ID));
     }
 
     @Test
     void givenValidData_whenLogin_thenUserLoggedSuccessfully() throws DuplicateInstanceException, IncorrectLoginException {
-
-        Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
 
         User user = UserOM.withDefaultValues();
@@ -86,8 +87,6 @@ class UserServiceImplTest {
 
     @Test
     void givenInvalidPassword_whenLogin_thenIncorrectLoginException() throws DuplicateInstanceException {
-        Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString())).thenReturn(false);
 
         User user = UserOM.withDefaultValues();
@@ -110,7 +109,6 @@ class UserServiceImplTest {
     @Test
     void givenValidData_whenUpdateProfile_thenUserUpdatedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
         Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
         Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
 
@@ -135,7 +133,7 @@ class UserServiceImplTest {
 
     @Test
     void givenInvalidData_whenUpdateProfile_thenInstanceNotFoundException() {
-        Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(InstanceNotFoundException.class, () -> userService.updateProfile(INVALID_USER_ID, "X", "X", "X", 111111111, "11111111S"), "User not existent");
     }
@@ -188,9 +186,6 @@ class UserServiceImplTest {
 
     @Test
     void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicateInstanceException {
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
         User user = UserOM.withDefaultValues();
 
@@ -215,8 +210,6 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(targetUser));
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
 
         userService.signUp(user);
@@ -243,8 +236,6 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(targetUser));
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
         userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR);
 
@@ -267,8 +258,6 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(targetUser));
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
         Assertions.assertThrows(InsufficientRolePermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER), "User has not enought permission");
 
@@ -289,8 +278,6 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(targetUser));
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
         userService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
 
@@ -313,8 +300,6 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findById(0L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(targetUser));
-        Mockito.when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(passwordEncoder.encode(("password"))).thenReturn("password");
 
         Assertions.assertThrows(InsufficientRolePermissionException.class, () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR), "User has not enough permission");
 

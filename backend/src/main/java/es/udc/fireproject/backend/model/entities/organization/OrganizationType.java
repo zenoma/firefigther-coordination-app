@@ -1,16 +1,17 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
-import javax.persistence.*;
+import es.udc.fireproject.backend.model.entities.BaseEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
 @Table(name = "organization_type")
-public class OrganizationType {
+public class OrganizationType extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final long serialVersionUID = 3441744938370182772L;
 
     @NotBlank
     private String name;
@@ -23,17 +24,10 @@ public class OrganizationType {
     }
 
     public OrganizationType(Long id, String name) {
-        this.id = id;
+        setId(id);
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -54,5 +48,13 @@ public class OrganizationType {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationType{" +
+                "id=" + getId() +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,8 +1,11 @@
 package es.udc.fireproject.backend.rest.dtos;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
-public class LoginParamsDto {
+public class LoginParamsDto extends BaseDto {
+
+    private static final long serialVersionUID = 8764926106493209546L;
 
     private String userName;
     private String password;
@@ -28,4 +31,24 @@ public class LoginParamsDto {
         this.password = password;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LoginParamsDto that = (LoginParamsDto) o;
+        return Objects.equals(userName, that.userName) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, password);
+    }
+
+    @Override
+    public String toString() {
+        return "LoginParamsDto{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.model.entities.team;
 
+import es.udc.fireproject.backend.model.entities.BaseEntity;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.user.User;
 
@@ -10,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Team {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Team extends BaseEntity {
+
+    private static final long serialVersionUID = -6662567578161123656L;
 
     @Column(name = "code")
     @NotBlank
@@ -72,14 +72,6 @@ public class Team {
         this.code = code;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -92,5 +84,16 @@ public class Team {
     @Override
     public int hashCode() {
         return Objects.hash(code, organization);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + getId() +
+                ", code='" + code + '\'' +
+                ", createdAt=" + createdAt +
+                ", organization=" + organization +
+                ", userList=" + userList +
+                '}';
     }
 }

@@ -9,17 +9,8 @@ public class UserConversor {
     private UserConversor() {
     }
 
-    public static UserDto toUserDto(User user) {
-        return new UserDto(user.getId(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getDni(),
-                user.getPhoneNumber());
-    }
 
-    public static UserDto toUserDtoWithoutPassword(User user) {
+    public static UserDto toUserDto(User user) {
         return new UserDto(user.getId(),
                 user.getEmail(),
                 user.getFirstName(),

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -40,11 +39,8 @@ public class NoticeServiceImpl implements NoticeService {
     public Notice create(String body, Point location, Long userId) throws InstanceNotFoundException {
         Notice notice = new Notice(body, NoticeStatus.PENDING, location);
 
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isEmpty()) {
-            throw new InstanceNotFoundException("User not found", userId);
-        }
-        User user = userOpt.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException("User not found", userId));
+
         notice.setUser(user);
         notice.setCreatedAt(LocalDateTime.now());
 
@@ -55,12 +51,9 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Notice update(Long id, String body, Point location) throws NoticeStatusException, InstanceNotFoundException {
-        Optional<Notice> noticeOpt = noticeRepository.findById(id);
-        if (noticeOpt.isEmpty()) {
-            throw new InstanceNotFoundException(NOTICE_NOT_FOUND, id);
-        }
 
-        Notice notice = noticeOpt.get();
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+
         if (notice.getStatus() != NoticeStatus.PENDING) {
             throw new NoticeStatusException(notice.getId(), "can not be updated, current status: " + notice.getStatus());
         }
@@ -72,12 +65,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void deleteById(Long id) throws InstanceNotFoundException, NoticeStatusException {
 
-        Optional<Notice> noticeOpt = noticeRepository.findById(id);
-        if (noticeOpt.isEmpty()) {
-            throw new InstanceNotFoundException(NOTICE_NOT_FOUND, id);
-        }
-
-        Notice notice = noticeOpt.get();
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
 
         if (notice.getStatus() != NoticeStatus.PENDING) {
             throw new NoticeStatusException(notice.getId(), "can not be deleted, current status: " + notice.getStatus());
@@ -93,22 +81,14 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Notice findById(Long id) throws InstanceNotFoundException {
 
-        Optional<Notice> noticeOpt = noticeRepository.findById(id);
-        if (noticeOpt.isEmpty()) {
-            throw new InstanceNotFoundException(NOTICE_NOT_FOUND, id);
-        }
-        return noticeOpt.get();
+        return noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
     }
 
     @Override
     public void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeStatusException {
 
-        Optional<Notice> noticeOpt = noticeRepository.findById(id);
-        if (noticeOpt.isEmpty()) {
-            throw new InstanceNotFoundException(NOTICE_NOT_FOUND, id);
-        }
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
 
-        Notice notice = noticeOpt.get();
 
         if (notice.getStatus() == NoticeStatus.REJECTED || notice.getStatus() == NoticeStatus.ACCEPTED) {
             throw new NoticeStatusException(notice.getId(), "can not be checked, current status: " + notice.getStatus());

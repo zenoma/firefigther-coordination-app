@@ -6,8 +6,11 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-public class TeamDto {
+public class TeamDto extends BaseDto {
+
+    private static final long serialVersionUID = -9141625918440183253L;
 
     @Id
     @NotBlank(groups = {TeamDto.AllValidations.class})
@@ -72,6 +75,30 @@ public class TeamDto {
 
     public void setUserDtoList(List<UserDto> userDtoList) {
         this.userDtoList = userDtoList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamDto teamDto = (TeamDto) o;
+        return Objects.equals(id, teamDto.id) && Objects.equals(code, teamDto.code) && Objects.equals(createdAt, teamDto.createdAt) && Objects.equals(organizationDto, teamDto.organizationDto) && Objects.equals(userDtoList, teamDto.userDtoList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, createdAt, organizationDto, userDtoList);
+    }
+
+    @Override
+    public String toString() {
+        return "TeamDto{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", createdAt=" + createdAt +
+                ", organizationDto=" + organizationDto +
+                ", userDtoList=" + userDtoList +
+                '}';
     }
 
     public interface AllValidations {

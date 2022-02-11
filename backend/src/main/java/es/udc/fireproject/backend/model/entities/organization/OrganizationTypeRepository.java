@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrganizationTypeRepository extends PagingAndSortingRepository<OrganizationType, Long> {
+public interface OrganizationTypeRepository extends JpaRepository<OrganizationType, Long> {
 
     OrganizationType findByName(String name);
 

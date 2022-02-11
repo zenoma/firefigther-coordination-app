@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.model.entities.user;
 
+import es.udc.fireproject.backend.model.entities.BaseEntity;
 import es.udc.fireproject.backend.model.entities.team.Team;
 
 import javax.persistence.*;
@@ -9,18 +10,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user", schema = "public")
-public class User {
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    private static final long serialVersionUID = 8394072118760207353L;
 
     @Email(message = "Email should be valid")
     private String email;
 
-    @Size(min = 3, message
-            = "Password must contain at least 3 characters")
+    @Size(min = 8, message
+            = "Password must contain at least 8 characters")
     private String password;
 
     @NotBlank
@@ -142,21 +140,12 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(email, user.email)
-                && Objects.equals(password, user.password)
                 && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName)
                 && Objects.equals(dni, user.dni)
@@ -165,6 +154,24 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, firstName, lastName, dni, phoneNumber);
+        return Objects.hash(email, firstName, lastName, dni, phoneNumber);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + getId() +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dni='" + dni + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", createdAt=" + createdAt +
+                ", userRole=" + userRole +
+                ", team=" + team +
+                '}';
     }
 }
+
+

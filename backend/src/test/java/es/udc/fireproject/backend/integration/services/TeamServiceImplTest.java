@@ -44,7 +44,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenCallFindByCode_thenReturnFoundedTeam() throws InstanceNotFoundException {
+    void givenValidData_whenCallFindByCode_thenReturnFoundTeam() throws InstanceNotFoundException {
         OrganizationType organizationType = organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -102,14 +102,14 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidCode_whenUpdate_thenConstraintViolationException() throws InstanceNotFoundException {
-        OrganizationType organizationType = organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        Organization organization = OrganizationOM.withDefaultValues();
-        organization.setOrganizationType(organizationType);
+        Team team = TeamOM.withDefaultValues();
+        Organization organization = team.getOrganization();
+        OrganizationType organizationType = organization.getOrganizationType();
+        organizationService.createOrganizationType(organizationType.getName());
         organization = organizationService.create(organization);
 
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
+
+        team = teamService.create(team.getCode(), organization.getId());
         team.setCode("");
 
 
@@ -240,7 +240,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidUsers_whenFindAllUsers_thenNumberFoundedCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
         Organization organization = OrganizationOM.withDefaultValues();
         organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         organization = organizationService.create(organization);

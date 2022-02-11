@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BlockDto<T> {
 
@@ -33,4 +34,24 @@ public class BlockDto<T> {
         this.existMoreItems = existMoreItems;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlockDto<?> blockDto = (BlockDto<?>) o;
+        return existMoreItems == blockDto.existMoreItems && Objects.equals(items, blockDto.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(items, existMoreItems);
+    }
+
+    @Override
+    public String toString() {
+        return "BlockDto{" +
+                "items=" + items +
+                ", existMoreItems=" + existMoreItems +
+                '}';
+    }
 }

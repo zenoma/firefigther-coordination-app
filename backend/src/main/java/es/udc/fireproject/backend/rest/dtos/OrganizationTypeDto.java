@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
-public class OrganizationTypeDto {
+public class OrganizationTypeDto extends BaseDto {
+
+    private static final long serialVersionUID = 7299775820290018478L;
 
     @NotNull(groups = {OrganizationTypeDto.AllValidations.class})
     private Long id;
@@ -38,10 +41,30 @@ public class OrganizationTypeDto {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganizationTypeDto that = (OrganizationTypeDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationTypeDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public interface AllValidations {
     }
 
     public interface UpdateValidations {
     }
-
 }

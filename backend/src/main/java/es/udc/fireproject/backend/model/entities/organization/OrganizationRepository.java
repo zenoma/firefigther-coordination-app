@@ -1,10 +1,10 @@
 package es.udc.fireproject.backend.model.entities.organization;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface OrganizationRepository extends PagingAndSortingRepository<Organization, Long> {
+public interface OrganizationRepository extends JpaRepository<Organization, Long> {
 
     List<Organization> findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(String name, String code);
 

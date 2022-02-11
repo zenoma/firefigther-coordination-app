@@ -25,7 +25,7 @@ public class TeamConversor {
         List<UserDto> userDtoList = new ArrayList<>();
         if (team.getUserList() != null && !team.getUserList().isEmpty()) {
             for (User user : team.getUserList()) {
-                userDtoList.add(UserConversor.toUserDtoWithoutPassword(user));
+                userDtoList.add(UserConversor.toUserDto(user));
             }
         }
         return new TeamDto(team.getId(), team.getCode(), team.getCreatedAt(), OrganizationConversor.toOrganizationDto(team.getOrganization()), userDtoList);

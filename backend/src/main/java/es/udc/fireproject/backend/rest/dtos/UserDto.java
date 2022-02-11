@@ -3,8 +3,11 @@ package es.udc.fireproject.backend.rest.dtos;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
-public class UserDto {
+public class UserDto extends BaseDto {
+
+    private static final long serialVersionUID = -6531781678159378396L;
 
     private Long id;
     private String email;
@@ -105,10 +108,35 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) && Objects.equals(email, userDto.email) && Objects.equals(password, userDto.password) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(dni, userDto.dni) && Objects.equals(phoneNumber, userDto.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, firstName, lastName, dni, phoneNumber);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dni='" + dni + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                '}';
+    }
+
     public interface AllValidations {
     }
 
     public interface UpdateValidations {
     }
-
 }

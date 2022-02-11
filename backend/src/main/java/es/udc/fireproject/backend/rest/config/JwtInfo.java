@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.rest.common;
+package es.udc.fireproject.backend.rest.config;
 
 public class JwtInfo {
 
