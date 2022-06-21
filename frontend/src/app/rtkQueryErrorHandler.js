@@ -1,4 +1,4 @@
-import { isFulfilled, isRejectedWithValue } from "@reduxjs/toolkit";
+import { isRejectedWithValue } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 /**
