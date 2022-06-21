@@ -1,17 +1,10 @@
-// Import the RTK Query methods from the React-specific entry point
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "./baseApi";
 
-var URL = process.env.REACT_APP_BACKEND_URL;
-
-export const userApi = createApi({
-  reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: URL + "/users",
-  }),
+export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation({
       query: (payload) => ({
-        url: "/login",
+        url: "/users/login",
         method: "POST",
         body: payload,
       }),
@@ -21,7 +14,7 @@ export const userApi = createApi({
     }),
     signUp: build.mutation({
       query: (payload) => ({
-        url: "/signUp",
+        url: "/users/signUp",
         method: "POST",
         body: payload,
       }),
@@ -31,7 +24,7 @@ export const userApi = createApi({
     }),
     changePassowrd: build.mutation({
       query: (payload) => ({
-        url: "/" + payload.id + "/changePassword",
+        url: "/users/" + payload.id + "/changePassword",
         method: "POST",
         body: { oldPassword: payload.oldPassword, newPassword: payload.newPassword },
         headers: {
