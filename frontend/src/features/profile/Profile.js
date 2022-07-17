@@ -15,7 +15,6 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const user = useSelector(selectUser);
-  const userStr = JSON.stringify(user, null, 4);
 
   const handleClick = (e) => {
     if (e.target.id === "change-password") {

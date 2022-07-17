@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 import Profile from "./features/profile/Profile";
 import Login from "./features/login/Login";
@@ -16,9 +18,33 @@ import { darkTheme, lightTheme } from "./theme/theme";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { useLoginFromTokenMutation } from "./api/userApi";
+import { validLogin } from "./features/login/LoginSlice";
 
 function App() {
+  const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
+  const [token, setToken] = useState("");
+
+  const [login, { loginError }] = useLoginFromTokenMutation();
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+
+    const payload = {
+      token: token,
+    };
+
+    if (token !== "") {
+      login(payload)
+        .unwrap()
+        .then((payload) => {
+          dispatch(validLogin(payload));
+          toast.info("Successfully logged in.");
+          localStorage.setItem("token", token);
+        });
+    }
+  }, [token]);
 
   return (
     <ThemeProvider theme={theme.darkTheme ? darkTheme : lightTheme}>

@@ -12,6 +12,19 @@ export const userApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    loginFromToken: build.mutation({
+      query: (payload) => ({
+        url: "/users/loginFromServiceToken",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+        body: payload,
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
     signUp: build.mutation({
       query: (payload) => ({
         url: "/users/signUp",
@@ -38,4 +51,4 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation, useChangePassowrdMutation } = userApi;
+export const { useLoginMutation, useSignUpMutation, useChangePassowrdMutation, useLoginFromTokenMutation } = userApi;

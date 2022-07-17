@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 import { Button, TextField, FormControl, FormLabel } from "@mui/material";
 
 import { useLoginMutation } from "../../api/userApi.js";
-import { validLogin } from "./LoginSlice.js";
+import { selectToken, validLogin } from "./LoginSlice.js";
 import { emailValidation } from "../../app/utils/validations.js";
 import "./Login.css";
 
@@ -19,6 +19,8 @@ export default function Login() {
 
   const [login, { loginError }] = useLoginMutation();
   const navigate = useNavigate();
+
+  const token = useSelector(selectToken);
 
   const handleChange = (event) => {
     if (event.target.id === "email") {
