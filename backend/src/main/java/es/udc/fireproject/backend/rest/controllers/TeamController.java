@@ -37,24 +37,40 @@ public class TeamController {
     }
 
     @GetMapping("")
-    public List<TeamDto> findByCode(@RequestAttribute Long userId, @RequestParam String code) {
+    public List<TeamDto> findAll(@RequestAttribute Long userId,
+                                 @RequestParam(required = false) String code,
+                                 @RequestParam(required = false) Long organizationId) {
+
         List<TeamDto> teamDtoList = new ArrayList<>();
-        for (Team team : teamService.findByCode(code)) {
-            teamDtoList.add(TeamConversor.toTeamDto(team));
+
+
+        if (code != null) {
+            for (Team team : teamService.findByCode(code)) {
+                teamDtoList.add(TeamConversor.toTeamDto(team));
+            }
+        } else if (organizationId != null) {
+            for (Team team : teamService.findByOrganizationId(organizationId)) {
+                teamDtoList.add(TeamConversor.toTeamDto(team));
+            }
+        } else {
+            for (Team team : teamService.findByCode("")) {
+                teamDtoList.add(TeamConversor.toTeamDto(team));
+            }
         }
 
         return teamDtoList;
-    }
-
-    @GetMapping("/")
-    public List<TeamDto> findAll(@RequestAttribute Long userId) {
-        return findByCode(userId, "");
     }
 
     @GetMapping("/{id}")
     public TeamDto findById(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
         return TeamConversor.toTeamDto(teamService.findById(id));
+    }
+
+    @GetMapping("/myTeam")
+    public TeamDto findMyTeam(@RequestAttribute Long userId)
+            throws InstanceNotFoundException {
+        return TeamConversor.toTeamDto(teamService.findByUserId(userId));
     }
 
     @PutMapping("/{id}/addUser/{memberId}")

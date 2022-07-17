@@ -134,8 +134,6 @@ class OrganizationServiceImplTest {
 
         Assertions.assertNotNull(result.getId(), "Id must be not Null");
 
-        // Create At must be null because the Object never persist in the Database
-        Assertions.assertNull(result.getCreatedAt(), "Created date must be Null");
 
     }
 

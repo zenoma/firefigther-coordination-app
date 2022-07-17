@@ -8,5 +8,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findByCodeContains(String code);
 
+    List<Team> findByOrganizationId(Long organizationId);
+
 
 }

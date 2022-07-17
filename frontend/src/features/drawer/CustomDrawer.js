@@ -22,6 +22,9 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
+import GroupsIcon from "@mui/icons-material/Groups";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import ArticleIcon from "@mui/icons-material/Article";
 
 import { Menu, Avatar, Tooltip, MenuItem } from "@mui/material";
 import { logout } from "../login/LoginSlice";
@@ -46,6 +49,21 @@ export default function PersistentDrawerLeft() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const pages = [
+    {
+      name: "Organizations",
+      icon: <GroupsIcon />,
+    },
+    {
+      name: "My team",
+      icon: <GroupWorkIcon />,
+    },
+    {
+      name: "PAGE_3",
+      icon: <ArticleIcon />,
+    },
+  ];
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -77,8 +95,11 @@ export default function PersistentDrawerLeft() {
 
   const handleClickItemList = (e, text) => {
     switch (text.toLocaleLowerCase()) {
-      case "team":
-        navigate("/team");
+      case "my team":
+        navigate("/my-team");
+        break;
+      case "organizations":
+        navigate("/organizations");
         break;
       default:
         navigate("/");
@@ -180,11 +201,11 @@ export default function PersistentDrawerLeft() {
 
         <Divider />
         <List>
-          {["Team", "PAGE 2", "PAGE 3"].map((text, index) => (
-            <ListItem key={text} disablePadding onClick={(e) => handleClickItemList(e, text)}>
+          {pages.map((item, index) => (
+            <ListItem key={item.name} disablePadding onClick={(e) => handleClickItemList(e, item.name)}>
               <ListItemButton>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           ))}

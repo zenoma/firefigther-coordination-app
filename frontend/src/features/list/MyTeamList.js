@@ -5,16 +5,21 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
 
-import { selectToken } from "../login/LoginSlice";
-import { useGetOrganizationsQuery } from "../../api/organizationApi";
+import { selectToken, selectUser } from "../login/LoginSlice";
+import { useGetMyTeamQuery } from "../../api/teamApi";
 
-import TeamItem from "./TeamItem";
+import UsersList from "./UsersList";
 
-export default function NestedList() {
+export default function MyTeamList() {
   const [list, setList] = useState("");
 
   const token = useSelector(selectToken);
-  const { data, error, isLoading } = useGetOrganizationsQuery(token);
+
+  const payload = {
+    token: token,
+  };
+
+  const { data, error, isLoading } = useGetMyTeamQuery(payload);
 
   if (data === "") {
     setList(data);
@@ -41,9 +46,7 @@ export default function NestedList() {
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (
-        data.map((item, index) => {
-          return <TeamItem name={item.name} />;
-        })
+        <UsersList name={data.code} teamId={data.id} />
       ) : null}
     </List>
   );

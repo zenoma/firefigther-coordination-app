@@ -6,8 +6,9 @@ import Profile from "./features/profile/Profile";
 import Login from "./features/login/Login";
 import SignUp from "./features/signUp/SignUp";
 import ChangePassword from "./features/changePasword/ChangePassword";
-import NestedList from "./features/list/NestedList";
-import CustomDrawer from "./features/navbar/CustomDrawer";
+import OrganizationsList from "./features/list/OrganizationsList";
+import MyTeamList from "./features/list/MyTeamList";
+import CustomDrawer from "./features/drawer/CustomDrawer";
 import Home from "./features/home/Home";
 
 import { ThemeProvider } from "@mui/material/styles";
@@ -31,7 +32,8 @@ function App() {
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/change-password" element={<ChangePassword />} />
-              <Route path="/team" element={<NestedList />} />
+              <Route path="/organizations" element={<OrganizationsList />} />
+              <Route path="/my-team" element={<MyTeamList />} />
             </Routes>
           </BrowserRouter>
         </header>
