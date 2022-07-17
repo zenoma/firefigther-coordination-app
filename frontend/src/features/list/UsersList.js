@@ -58,9 +58,9 @@ export default function TeamItem(props) {
                 <div key={item.id}>
                   <ListItemButton sx={{ pl: 4 }}>
                     <ListItemAvatar>
-                      <Avatar />
+                      <Avatar alt={item.firstName} src="/static/images/avatar/2.jpg" />
                     </ListItemAvatar>
-                    <ListItemText primary={item.firstName} />
+                    <ListItemText primary={item.firstName} secondary={item.lastName} />
                   </ListItemButton>
                 </div>
               );
