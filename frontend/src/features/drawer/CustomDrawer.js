@@ -121,7 +121,7 @@ export default function PersistentDrawerLeft() {
   };
 
   return (
-    <Box sx={{ display: "flex", bgcolor: "secondary.light" }}>
+    <Box mt={10} sx={{ display: "flex", bgcolor: "secondary.light" }}>
       <CssBaseline />
       <MuiAppBar position="fixed" open={open} sx={{ bgcolor: "primary.main" }}>
         <Toolbar>

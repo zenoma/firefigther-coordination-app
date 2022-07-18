@@ -11,7 +11,7 @@ import ChangePassword from "./features/changePasword/ChangePassword";
 import OrganizationsList from "./features/list/OrganizationsList";
 import MyTeamList from "./features/list/MyTeamList";
 import CustomDrawer from "./features/drawer/CustomDrawer";
-import Home from "./features/home/Home";
+import Dashboard from "./features/dashboard/Dashboard";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme/theme";
@@ -55,7 +55,7 @@ function App() {
           <BrowserRouter>
             <CustomDrawer />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
               {!logged && <Route path="/sign-up" element={<SignUp />} />}
               {logged && <Route path="/profile" element={<Profile />} />}
