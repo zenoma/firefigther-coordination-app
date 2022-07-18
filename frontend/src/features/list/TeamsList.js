@@ -42,7 +42,9 @@ export default function TeamsList(props) {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
-          Teams
+          <Typography variant="h3" sx={{ padding: 3 }}>
+            Teams
+          </Typography>
         </ListSubheader>
       }
     >

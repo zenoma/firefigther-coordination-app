@@ -27,7 +27,7 @@ export default function Profile() {
   };
 
   return (
-    <Box style={{ padding: "1rem 0" }}>
+    <Box sx={{ padding: 3 }}>
       {user && (
         <Container>
           <Grid container>

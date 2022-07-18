@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import ListSubheader from "@mui/material/ListSubheader";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import List from "@mui/material/List";
 
 import { selectToken, selectUser } from "../login/LoginSlice";
@@ -37,7 +37,9 @@ export default function MyTeamList() {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
-          Teams
+          <Typography variant="h3" sx={{ padding: 3 }}>
+            My team
+          </Typography>
         </ListSubheader>
       }
     >

@@ -32,7 +32,8 @@ import { logout, selectToken } from "../login/LoginSlice";
 import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;
-const settings = ["Profile", "Logout"];
+const loggedSettingsMenu = ["Profile", "Logout"];
+const notLoggedSettingsMenu = ["Login", "Sign Up"];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -159,11 +160,17 @@ export default function PersistentDrawerLeft() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key={"login"} onClick={handleCloseUserMenu}>
-                  <Typography id={"login"} textAlign="center" onClick={(e) => handleClickUserMenu(e)}>
-                    Login
-                  </Typography>
-                </MenuItem>
+                {notLoggedSettingsMenu.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography
+                      id={setting.toLocaleLowerCase()}
+                      textAlign="center"
+                      onClick={(e) => handleClickUserMenu(e)}
+                    >
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
               </Menu>
             </Box>
           )}
@@ -190,7 +197,7 @@ export default function PersistentDrawerLeft() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
+                {loggedSettingsMenu.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography
                       id={setting.toLocaleLowerCase()}

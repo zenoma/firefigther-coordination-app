@@ -57,7 +57,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
+              {!logged && <Route path="/sign-up" element={<SignUp />} />}
               {logged && <Route path="/profile" element={<Profile />} />}
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="/organizations" element={<OrganizationsList />} />

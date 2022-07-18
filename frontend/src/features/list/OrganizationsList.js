@@ -62,7 +62,9 @@ export default function OrganizationsList() {
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Organizations
+              <Typography variant="h3" sx={{ padding: 3 }}>
+                Organizations
+              </Typography>
             </ListSubheader>
           }
         >

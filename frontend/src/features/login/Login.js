@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { Button, TextField, FormControl, FormLabel } from "@mui/material";
+import { Button, TextField, FormControl, FormLabel, Paper, Typography } from "@mui/material";
 
 import { useLoginMutation } from "../../api/userApi.js";
 import { selectToken, validLogin } from "./LoginSlice.js";
@@ -47,39 +47,50 @@ export default function Login() {
   };
 
   return (
-    <form>
-      <FormControl>
-        <FormLabel>Login</FormLabel>
-        <TextField
-          id="email"
-          label="Email"
-          type="email"
-          margin="normal"
-          autoComplete="current-email"
-          error={!isValidEmail && email !== ""}
-          helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
-          value={email}
-          onChange={(e) => handleChange(e)}
-        />
-        <TextField
-          id="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          margin="normal"
-          value={password}
-          onChange={(e) => handleChange(e)}
-        />
-        <Button
-          type="button"
-          color="primary"
-          className="form-button"
-          disabled={!isValidEmail}
-          onClick={(e) => handleClick(e)}
-        >
-          Log in
-        </Button>
-      </FormControl>
-    </form>
+    <Paper
+      sx={{
+        maxWidth: 500,
+        padding: 3,
+        textAlign: "center",
+      }}
+      elevation={4}
+    >
+      <form>
+        <FormControl>
+          <FormLabel>
+            <Typography variant="h5">Login</Typography>
+          </FormLabel>
+          <TextField
+            id="email"
+            label="Email"
+            type="email"
+            margin="normal"
+            autoComplete="current-email"
+            error={!isValidEmail && email !== ""}
+            helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+            value={email}
+            onChange={(e) => handleChange(e)}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            margin="normal"
+            value={password}
+            onChange={(e) => handleChange(e)}
+          />
+          <Button
+            type="button"
+            color="primary"
+            className="form-button"
+            disabled={!isValidEmail}
+            onClick={(e) => handleClick(e)}
+          >
+            Log in
+          </Button>
+        </FormControl>
+      </form>
+    </Paper>
   );
 }
