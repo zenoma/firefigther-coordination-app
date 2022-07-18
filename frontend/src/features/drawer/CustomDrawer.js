@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -22,13 +22,18 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
+import GroupsIcon from "@mui/icons-material/Groups";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import ArticleIcon from "@mui/icons-material/Article";
 
 import { Menu, Avatar, Tooltip, MenuItem } from "@mui/material";
-import { logout } from "../login/LoginSlice";
+import LoginIcon from "@mui/icons-material/Login";
+import { logout, selectToken } from "../login/LoginSlice";
 import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;
-const settings = ["Login", "Profile", "Logout"];
+const loggedSettingsMenu = ["Profile", "Logout"];
+const notLoggedSettingsMenu = ["Login", "Sign Up"];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -44,8 +49,25 @@ export default function PersistentDrawerLeft() {
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
+  const token = useSelector(selectToken);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const pages = [
+    {
+      name: "Organizations",
+      icon: <GroupsIcon />,
+    },
+    {
+      name: "My team",
+      icon: <GroupWorkIcon />,
+    },
+    {
+      name: "PAGE_3",
+      icon: <ArticleIcon />,
+    },
+  ];
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -77,8 +99,11 @@ export default function PersistentDrawerLeft() {
 
   const handleClickItemList = (e, text) => {
     switch (text.toLocaleLowerCase()) {
-      case "team":
-        navigate("/team");
+      case "my team":
+        navigate("/my-team");
+        break;
+      case "organizations":
+        navigate("/organizations");
         break;
       default:
         navigate("/");
@@ -112,41 +137,80 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Main title
           </Typography>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography
-                    id={setting.toLocaleLowerCase()}
-                    textAlign="center"
-                    onClick={(e) => handleClickUserMenu(e)}
-                  >
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {!token && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <LoginIcon />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {notLoggedSettingsMenu.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography
+                      id={setting.toLocaleLowerCase()}
+                      textAlign="center"
+                      onClick={(e) => handleClickUserMenu(e)}
+                    >
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
+          {token && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {loggedSettingsMenu.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography
+                      id={setting.toLocaleLowerCase()}
+                      textAlign="center"
+                      onClick={(e) => handleClickUserMenu(e)}
+                    >
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </MuiAppBar>
       <Drawer
@@ -180,11 +244,11 @@ export default function PersistentDrawerLeft() {
 
         <Divider />
         <List>
-          {["Team", "PAGE 2", "PAGE 3"].map((text, index) => (
-            <ListItem key={text} disablePadding onClick={(e) => handleClickItemList(e, text)}>
+          {pages.map((item, index) => (
+            <ListItem key={item.name} disablePadding onClick={(e) => handleClickItemList(e, item.name)}>
               <ListItemButton>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           ))}

@@ -76,7 +76,7 @@ public class UserController {
 
     @PostMapping("/signUp")
     public ResponseEntity<AuthenticatedUserDto> signUp(
-            @Validated({UserDto.AllValidations.class}) @RequestBody UserDto userDto) throws DuplicateInstanceException {
+            @Validated({UserDto.AllValidations.class}) @RequestBody UserDto userDto) throws DuplicateInstanceException, InstanceNotFoundException {
 
         User user = UserConversor.toUser(userDto);
 

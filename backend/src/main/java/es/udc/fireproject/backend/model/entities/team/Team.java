@@ -22,13 +22,15 @@ public class Team extends BaseEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
     @OneToMany(
             mappedBy = "team",
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<User> userList;
 
     public Team() {
@@ -38,6 +40,7 @@ public class Team extends BaseEntity {
     public Team(String code, Organization organization) {
         this.code = code;
         this.organization = organization;
+        this.createdAt = LocalDateTime.now();
     }
 
     public List<User> getUserList() {

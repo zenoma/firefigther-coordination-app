@@ -47,7 +47,8 @@ public class User extends BaseEntity {
 
     @ManyToOne(
             optional = false,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
@@ -66,6 +67,7 @@ public class User extends BaseEntity {
         this.lastName = lastName;
         this.dni = dni;
         this.phoneNumber = phoneNumber;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Team getTeam() {

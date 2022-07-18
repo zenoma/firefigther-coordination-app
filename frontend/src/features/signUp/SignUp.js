@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { Button, TextField, FormControl, FormLabel, Grid, Link } from "@mui/material";
+import { Button, TextField, FormControl, FormLabel, Grid, Link, Paper, Typography } from "@mui/material";
 
 import { useSignUpMutation } from "../../api/userApi.js";
 import { emailValidation, dniValidation, phoneNumberValidation } from "../../app/utils/validations.js";
@@ -90,109 +90,120 @@ export default function Login() {
   };
 
   return (
-    <form>
-      <FormControl>
-        <FormLabel>Login</FormLabel>
-        <Grid container spacing={2}>
-          <Grid item md={3} xs={6}>
-            <TextField
-              id="firstName"
-              label="First Name"
-              type="text"
-              autoComplete="current-firstName"
-              margin="dense"
-              value={firstName}
-              onChange={(e) => handleChange(e)}
-              helperText=" "
-              required
-              variant="standard"
-            />
+    <Paper
+      sx={{
+        maxWidth: 500,
+        padding: 3,
+        textAlign: "center",
+      }}
+      elevation={4}
+    >
+      <form>
+        <FormControl>
+          <FormLabel>
+            <Typography variant="h5">Sign Up</Typography>
+          </FormLabel>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                id="firstName"
+                label="First Name"
+                type="text"
+                autoComplete="current-firstName"
+                margin="dense"
+                value={firstName}
+                onChange={(e) => handleChange(e)}
+                helperText=" "
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="lastName"
+                label="Last Name"
+                type="text"
+                autoComplete="current-lastName"
+                margin="dense"
+                value={lastName}
+                onChange={(e) => handleChange(e)}
+                helperText=" "
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="dni"
+                label="DNI"
+                type="text"
+                autoComplete="current-dni"
+                margin="dense"
+                value={dni}
+                error={!isValidDni && dni !== ""}
+                helperText={!isValidDni && dni !== "" ? "Must have 8 numbers and a letter" : " "}
+                onChange={(e) => handleChange(e)}
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="phoneNumber"
+                label="Phone Number"
+                type="text"
+                autoComplete="current-phoneNumber"
+                margin="dense"
+                value={phoneNumber}
+                error={!isValidPhoneNumber && phoneNumber !== ""}
+                helperText={!isValidPhoneNumber && phoneNumber !== "" ? `Must have 9 digits` : " "}
+                onChange={(e) => handleChange(e)}
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="email"
+                label="Email"
+                type="email"
+                margin="dense"
+                autoComplete="current-email"
+                error={!isValidEmail && email !== ""}
+                helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+                value={email}
+                onChange={(e) => handleChange(e)}
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="password"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                margin="dense"
+                value={password}
+                onChange={(e) => handleChange(e)}
+                helperText=" "
+                variant="standard"
+              />
+            </Grid>
           </Grid>
-          <Grid item md={3} xs={6}>
-            <TextField
-              id="lastName"
-              label="Last Name"
-              type="text"
-              autoComplete="current-lastName"
-              margin="dense"
-              value={lastName}
-              onChange={(e) => handleChange(e)}
-              helperText=" "
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item md={3} xs={6}>
-            <TextField
-              id="dni"
-              label="DNI"
-              type="text"
-              autoComplete="current-dni"
-              margin="dense"
-              value={dni}
-              error={!isValidDni && dni !== ""}
-              helperText={!isValidDni && dni !== "" ? "Must have 8 numbers and a letter" : " "}
-              onChange={(e) => handleChange(e)}
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item md={3} xs={6}>
-            <TextField
-              id="phoneNumber"
-              label="Phone Number"
-              type="text"
-              autoComplete="current-phoneNumber"
-              margin="dense"
-              value={phoneNumber}
-              error={!isValidPhoneNumber && phoneNumber !== ""}
-              helperText={!isValidPhoneNumber && phoneNumber !== "" ? `Must have 9 digits` : " "}
-              onChange={(e) => handleChange(e)}
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item md={6} xs={6}>
-            <TextField
-              id="email"
-              label="Email"
-              type="email"
-              margin="dense"
-              autoComplete="current-email"
-              error={!isValidEmail && email !== ""}
-              helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
-              value={email}
-              onChange={(e) => handleChange(e)}
-              variant="standard"
-            />
-          </Grid>
-          <Grid item md={6} xs={6}>
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              margin="dense"
-              value={password}
-              onChange={(e) => handleChange(e)}
-              helperText=" "
-              variant="standard"
-            />
-          </Grid>
-        </Grid>
-        <Button
-          type="button"
-          color="primary"
-          className="form-button"
-          disabled={!isValidEmail}
-          onClick={(e) => handleClick(e)}
-        >
-          Sign Up
-        </Button>
-        <Link component="button" variant="body2" fontSize={15} onClick={(e) => handleLinkClick(e)}>
-          Already have a account?
-        </Link>
-      </FormControl>
-    </form>
+          <Button
+            type="button"
+            color="primary"
+            className="form-button"
+            disabled={!isValidEmail}
+            onClick={(e) => handleClick(e)}
+          >
+            Sign Up
+          </Button>
+          <Link component="button" variant="body2" fontSize={15} onClick={(e) => handleLinkClick(e)}>
+            Already have a account?
+          </Link>
+        </FormControl>
+      </form>
+    </Paper>
   );
 }

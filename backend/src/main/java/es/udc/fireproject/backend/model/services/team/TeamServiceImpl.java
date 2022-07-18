@@ -119,4 +119,15 @@ public class TeamServiceImpl implements TeamService {
     public Team findById(Long teamId) throws InstanceNotFoundException {
         return teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
     }
+
+    @Override
+    public Team findByUserId(Long userId) throws InstanceNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
+        return teamRepository.findById(user.getTeam().getId()).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, user.getTeam().getId()));
+    }
+
+    @Override
+    public List<Team> findByOrganizationId(Long organizationId) {
+        return teamRepository.findByOrganizationId(organizationId);
+    }
 }

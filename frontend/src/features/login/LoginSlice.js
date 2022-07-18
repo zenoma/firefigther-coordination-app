@@ -9,10 +9,12 @@ export const loginSlice = createSlice({
     validLogin(state, action) {
       state.user = action.payload.user;
       state.token = action.payload.serviceToken;
+      localStorage.setItem("token", state.token);
     },
     logout(state) {
       state.user = "";
       state.token = "";
+      localStorage.setItem("token", "");
     },
   },
   extraReducers: {},

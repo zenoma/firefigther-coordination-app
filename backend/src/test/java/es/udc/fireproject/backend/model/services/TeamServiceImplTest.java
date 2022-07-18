@@ -204,25 +204,19 @@ class TeamServiceImplTest {
     void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws
             InstanceNotFoundException, DuplicateInstanceException {
 
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
 
         User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
         userService.signUp(user);
-        teamService.addMember(team.getId(), user.getId());
+        teamService.addMember(user.getTeam().getId(), user.getId());
 
         Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
         Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
 
-        teamService.deleteMember(team.getId(), user.getId());
+        teamService.deleteMember(user.getTeam().getId(), user.getId());
 
-        Assertions.assertNull(user.getTeam(), "User must not belong to the Team");
+        Assertions.assertNull(user.getTeam().getUserList(), "User must not belong to the Team");
     }
 
     @Test
