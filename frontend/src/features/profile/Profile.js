@@ -7,6 +7,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 
 import { logout, selectUser } from "../login/LoginSlice";
 
@@ -26,7 +27,7 @@ export default function Profile() {
   };
 
   return (
-    <main style={{ padding: "1rem 0" }}>
+    <Box style={{ padding: "1rem 0" }}>
       {user && (
         <Container>
           <Grid container>
@@ -46,7 +47,6 @@ export default function Profile() {
           </Grid>
         </Container>
       )}
-
       <Button id="change-password" type="button" color="primary" onClick={(e) => handleClick(e)}>
         <Typography margin={5} variant="caption">
           Change Password
@@ -55,6 +55,6 @@ export default function Profile() {
       <Button id="logout" type="button" variant="contained" color="primary" onClick={(e) => handleClick(e)}>
         <Typography variant="body1">Logout</Typography>
       </Button>
-    </main>
+    </Box>
   );
 }

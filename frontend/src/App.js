@@ -19,7 +19,7 @@ import { darkTheme, lightTheme } from "./theme/theme";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
-import { validLogin } from "./features/login/LoginSlice";
+import { validLogin, selectToken } from "./features/login/LoginSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +27,8 @@ function App() {
   const [token, setToken] = useState("");
 
   const [login, { loginError }] = useLoginFromTokenMutation();
+
+  const logged = useSelector(selectToken);
 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
@@ -56,7 +58,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/profile" element={<Profile />} />
+              {logged && <Route path="/profile" element={<Profile />} />}
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="/organizations" element={<OrganizationsList />} />
               <Route path="/my-team" element={<MyTeamList />} />
