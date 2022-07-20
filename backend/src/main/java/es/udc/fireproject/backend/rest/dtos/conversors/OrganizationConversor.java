@@ -5,7 +5,6 @@ import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
 public class OrganizationConversor {
@@ -20,31 +19,12 @@ public class OrganizationConversor {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 25829);
         Coordinate coordinate = new Coordinate(organizationDto.getLat(), organizationDto.getLon());
 
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), SRID);
-        Coordinate coordinate = new Coordinate(organizationDto.getLon(), organizationDto.getLat());
-        Point point = geometryFactory.createPoint(coordinate);
-        point.setSRID(SRID);
 
         return new Organization(organizationDto.getCode(),
                 organizationDto.getName(),
                 organizationDto.getHeadquartersAddress(),
-                point,
+                geometryFactory.createPoint(coordinate),
                 organizationType);
-    }
-
-    public static Organization toOrganization(OrganizationDto organizationDto) {
-
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), SRID);
-        Coordinate coordinate = new Coordinate(organizationDto.getLon(), organizationDto.getLat());
-        Point point = geometryFactory.createPoint(coordinate);
-        point.setSRID(SRID);
-
-
-        return new Organization(organizationDto.getCode(),
-                organizationDto.getName(),
-                organizationDto.getHeadquartersAddress(),
-                point,
-                new OrganizationType());
     }
 
 

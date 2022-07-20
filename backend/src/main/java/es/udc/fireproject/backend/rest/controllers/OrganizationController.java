@@ -62,8 +62,7 @@ public class OrganizationController {
                                   @RequestBody OrganizationDto organizationDto)
             throws InstanceNotFoundException {
 
-        OrganizationType organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
-        Organization organization = OrganizationConversor.toOrganization(organizationDto, organizationType);
+        Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
         OrganizationType organizationType = organizationService.findOrganizationTypeById(organization.getOrganizationType().getId());
         organization.setOrganizationType(organizationType);
@@ -80,7 +79,7 @@ public class OrganizationController {
             throws InstanceNotFoundException {
 
         OrganizationType organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
-        Organization organization = OrganizationConversor.toOrganization(organizationDto, organizationType);
+        Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
         organizationService.update(id, organization.getName(),
                 organization.getCode(),
