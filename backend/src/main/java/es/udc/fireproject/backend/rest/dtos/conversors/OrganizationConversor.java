@@ -2,26 +2,23 @@ package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
-import es.udc.fireproject.backend.model.services.organization.OrganizationService;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class OrganizationConversor {
 
-    public static final int SRID = 25829;
-    @Autowired
-    static
-    OrganizationService organizationService;
 
     private OrganizationConversor() {
 
     }
 
-    public static Organization toOrganization(OrganizationDto organizationDto, OrganizationType organizationType) {
+    public static Organization toOrganization(OrganizationDto organizationDto) {
+        OrganizationType organizationType = new OrganizationType(organizationDto.getOrganizationTypeId(), "");
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 25829);
+        Coordinate coordinate = new Coordinate(organizationDto.getLat(), organizationDto.getLon());
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), SRID);
         Coordinate coordinate = new Coordinate(organizationDto.getLon(), organizationDto.getLat());

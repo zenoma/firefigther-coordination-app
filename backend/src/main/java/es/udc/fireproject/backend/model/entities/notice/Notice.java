@@ -43,6 +43,7 @@ public class Notice extends BaseEntity {
         this.body = body;
         this.status = status;
         this.location = location;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Point getLocation() {

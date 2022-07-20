@@ -30,11 +30,11 @@ public class Organization extends BaseEntity {
     @Column(name = "location")
     private Point location;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_type_id")
     private OrganizationType organizationType;
 
@@ -47,6 +47,7 @@ public class Organization extends BaseEntity {
         this.headquartersAddress = headquartersAddress;
         this.location = location;
         this.organizationType = organizationType;
+        this.createdAt = LocalDateTime.now();
     }
 
 

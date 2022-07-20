@@ -65,6 +65,8 @@ public class OrganizationController {
         OrganizationType organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
         Organization organization = OrganizationConversor.toOrganization(organizationDto, organizationType);
 
+        OrganizationType organizationType = organizationService.findOrganizationTypeById(organization.getOrganizationType().getId());
+        organization.setOrganizationType(organizationType);
         organization = organizationService.create(organization);
 
         return OrganizationConversor.toOrganizationDto(organization);

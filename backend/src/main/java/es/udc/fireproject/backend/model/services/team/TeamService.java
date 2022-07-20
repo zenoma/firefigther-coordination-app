@@ -23,4 +23,8 @@ public interface TeamService {
     List<User> findAllUsers(Long id) throws InstanceNotFoundException;
 
     Team findById(Long teamId) throws InstanceNotFoundException;
+
+    Team findByUserId(Long userId) throws InstanceNotFoundException;
+
+    List<Team> findByOrganizationId(Long organizationId);
 }

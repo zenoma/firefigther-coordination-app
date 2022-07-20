@@ -145,18 +145,12 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
 
         User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
         userService.signUp(user);
-        team = teamService.addMember(team.getId(), user.getId());
+        team = teamService.addMember(user.getTeam().getId(), user.getId());
 
 
         Assertions.assertTrue(teamService.findAllUsers(team.getId()).contains(user), "User must belong to the Team");
@@ -164,20 +158,14 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidUser_whenAddMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
 
         User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
         userService.signUp(user);
 
 
-        final Team finalTeam = team;
+        final Team finalTeam = user.getTeam();
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
                         teamService.addMember(finalTeam.getId(), INVALID_USER_ID),
                 "InstanceNotFoundException error was expected");
@@ -190,46 +178,36 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUser_whenDeleteMember_thenMemberDeletedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
 
 
         User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
         userService.signUp(user);
-        teamService.addMember(team.getId(), user.getId());
+        teamService.addMember(user.getTeam().getId(), user.getId());
 
-        Assertions.assertTrue(teamService.findAllUsers(team.getId()).contains(user), "User must belong to the Team");
+        Assertions.assertTrue(teamService.findAllUsers(user.getTeam().getId()).contains(user), "User must belong to the Team");
 
-        teamService.deleteMember(team.getId(), user.getId());
+        teamService.deleteMember(user.getTeam().getId(), user.getId());
 
         Assertions.assertNull(user.getTeam(), "User must not belong to the Team");
     }
 
     @Test
     void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
-        Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
 
 
         User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
         userService.signUp(user);
 
-        teamService.addMember(team.getId(), user.getId());
+        teamService.addMember(user.getTeam().getId(), user.getId());
 
-        Assertions.assertTrue(teamService.findAllUsers(team.getId()).contains(user), "User must belong to the Team");
+        Assertions.assertTrue(teamService.findAllUsers(user.getTeam().getId()).contains(user), "User must belong to the Team");
 
 
-        final Team finalTeam = team;
+        final Team finalTeam = user.getTeam();
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
                         teamService.deleteMember(finalTeam.getId(), INVALID_USER_ID),
                 "InstanceNotFoundException error was expected");
@@ -241,41 +219,30 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
-
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
-
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
+            user.setTeam(team);
             userService.signUp(user);
-            teamService.addMember(team.getId(), user.getId());
+            teamService.addMember(user.getTeam().getId(), user.getId());
         }
+        team = userList.get(0).getTeam();
 
         Assertions.assertEquals(teamService.findAllUsers(team.getId()).size(), itemNumber, "Size must be equal to added Members");
     }
 
     @Test
     void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
-        Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
-                organization.getId());
-
 
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
+            user.setTeam(team);
             userService.signUp(user);
-            teamService.addMember(team.getId(), user.getId());
+            teamService.addMember(user.getTeam().getId(), user.getId());
         }
 
         Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findAllUsers(INVALID_TEAM_ID),
