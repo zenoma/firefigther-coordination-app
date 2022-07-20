@@ -3,13 +3,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
-import { ToastContainer, toast } from "react-toastify";
-
 import CustomMap from "../map/CustomMap";
 import { Card, CardHeader, CardMedia } from "@mui/material";
 
 const theme = createTheme();
-const notify = () => toast("Wow so easy!");
 
 theme.typography.h3 = {
   fontSize: "1.2rem",

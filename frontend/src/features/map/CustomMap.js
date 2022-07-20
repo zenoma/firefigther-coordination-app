@@ -2,7 +2,6 @@
 import React from "react";
 import Map, { Layer, NavigationControl, Marker } from "react-map-gl";
 import RoomIcon from "@mui/icons-material/Room";
-import { Paper } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const MAPBOX_ACCESS_TOKEN2 =
@@ -18,7 +17,7 @@ const INITIAL_VIEW_STATE = {
 };
 
 // Data to be used by the LineLayer
-const data = [{ sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781] }];
+// const data = [{ sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781] }];
 
 // DeckGL react component
 export default function CustomMap() {
