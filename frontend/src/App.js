@@ -5,9 +5,9 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import Profile from "./features/profile/Profile";
-import Login from "./features/login/Login";
-import SignUp from "./features/signUp/SignUp";
-import ChangePassword from "./features/changePasword/ChangePassword";
+import Login from "./features/user/login/Login";
+import SignUp from "./features/user/signUp/SignUp";
+import ChangePassword from "./features/user/changePasword/ChangePassword";
 import OrganizationsList from "./features/list/OrganizationsList";
 import MyTeamList from "./features/list/MyTeamList";
 import CustomDrawer from "./features/drawer/CustomDrawer";
@@ -19,7 +19,7 @@ import { darkTheme, lightTheme } from "./theme/theme";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
-import { validLogin, selectToken } from "./features/login/LoginSlice";
+import { validLogin, selectToken } from "./features/user/login/LoginSlice";
 
 function App() {
   const dispatch = useDispatch();

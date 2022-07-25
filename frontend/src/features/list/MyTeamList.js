@@ -5,7 +5,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { CircularProgress, Typography } from "@mui/material";
 import List from "@mui/material/List";
 
-import { selectToken, selectUser } from "../login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 import { useGetMyTeamQuery } from "../../api/teamApi";
 
 import UsersList from "./UsersList";

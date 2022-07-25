@@ -9,7 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
-import { logout, selectUser } from "../login/LoginSlice";
+import { logout, selectUser } from "../user/login/LoginSlice";
 
 export default function Profile() {
   const dispatch = useDispatch();

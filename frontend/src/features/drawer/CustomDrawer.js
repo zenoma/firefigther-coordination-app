@@ -28,7 +28,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 
 import { Menu, Avatar, Tooltip, MenuItem } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import { logout, selectToken } from "../login/LoginSlice";
+import { logout, selectToken } from "../user/login/LoginSlice";
 import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;

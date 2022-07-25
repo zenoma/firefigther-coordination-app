@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { selectToken } from "../login/LoginSlice";
+import { selectToken } from "../user/login/LoginSlice";
 
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";

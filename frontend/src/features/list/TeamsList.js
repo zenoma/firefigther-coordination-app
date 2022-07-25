@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 
-import { selectToken } from "../login/LoginSlice";
+import { selectToken } from "../user/login/LoginSlice";
 import { useGetTeamsByOrganizationIdQuery } from "../../api/teamApi";
 
 import UsersList from "./UsersList";

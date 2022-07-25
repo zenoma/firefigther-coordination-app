@@ -12,7 +12,7 @@ import { CircularProgress } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import List from "@mui/material/List";
 
-import { selectToken } from "../login/LoginSlice";
+import { selectToken } from "../user/login/LoginSlice";
 import { useGetOrganizationsQuery } from "../../api/organizationApi";
 import TeamsList from "./TeamsList";
 
