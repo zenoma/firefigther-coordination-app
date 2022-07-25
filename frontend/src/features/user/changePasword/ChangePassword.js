@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectUser, selectToken } from "../login/LoginSlice";
 
 import { Button, TextField, FormControl, FormLabel } from "@mui/material";
-import { useChangePassowrdMutation } from "../../../api/userApi";
+import { useChangePasswordMutation } from "../../../api/userApi";
 
 export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -15,7 +15,7 @@ export default function ChangePassword() {
   const token = useSelector(selectToken);
   const navigate = useNavigate();
 
-  const [changePassword, error] = useChangePassowrdMutation();
+  const [changePassword, error] = useChangePasswordMutation();
 
   const handleChange = (event) => {
     if (event.target.id === "old-password") {

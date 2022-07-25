@@ -10,6 +10,7 @@ import SignUp from "./features/user/signUp/SignUp";
 import ChangePassword from "./features/user/changePasword/ChangePassword";
 import OrganizationsList from "./features/list/OrganizationsList";
 import MyTeamList from "./features/list/MyTeamList";
+import MyNoticesList from "./features/list/MyNoticesList";
 import CustomDrawer from "./features/drawer/CustomDrawer";
 import Dashboard from "./features/dashboard/Dashboard";
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="/organizations" element={<OrganizationsList />} />
               <Route path="/my-team" element={<MyTeamList />} />
+              <Route path="/my-notices" element={<MyNoticesList />} />
             </Routes>
           </BrowserRouter>
         </header>
@@ -76,7 +78,7 @@ function App() {
           draggable={false}
           pauseOnHover
           theme="colored"
-        />{" "}
+        />
       </div>
     </ThemeProvider>
   );

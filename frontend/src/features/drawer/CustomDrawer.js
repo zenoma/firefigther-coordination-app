@@ -64,7 +64,7 @@ export default function PersistentDrawerLeft() {
       icon: <GroupWorkIcon />,
     },
     {
-      name: "PAGE_3",
+      name: "My notices",
       icon: <ArticleIcon />,
     },
   ];
@@ -104,6 +104,9 @@ export default function PersistentDrawerLeft() {
         break;
       case "organizations":
         navigate("/organizations");
+        break;
+      case "my notices":
+        navigate("/my-notices");
         break;
       default:
         navigate("/");

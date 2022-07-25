@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/notices")
 public class NoticeController {
 
     @Autowired
