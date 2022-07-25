@@ -19,7 +19,7 @@ export default function MyTeamList() {
     token: token,
   };
 
-  const { data, error, isLoading } = useGetMyTeamQuery(payload);
+  const { data, error, isLoading } = useGetMyTeamQuery(payload, { refetchOnMountOrArgChange: true });
 
   if (data === "") {
     setList(data);

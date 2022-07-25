@@ -24,7 +24,7 @@ export default function OrganizationsList() {
 
   const token = useSelector(selectToken);
 
-  const { data, error, isLoading } = useGetOrganizationsQuery(token);
+  const { data, error, isLoading } = useGetOrganizationsQuery(token, { refetchOnMountOrArgChange: true });
 
   if (data === "") {
     setList(data);

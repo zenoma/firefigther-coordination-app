@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import ListSubheader from "@mui/material/ListSubheader";
@@ -8,6 +8,7 @@ import List from "@mui/material/List";
 import { selectToken } from "../user/login/LoginSlice";
 
 import { useGetMyNoticesQuery } from "../../api/noticeApi";
+import Notice from "../notice/Notice";
 
 export default function MyTeamList() {
   const [list, setList] = useState("");
@@ -18,9 +19,9 @@ export default function MyTeamList() {
     token: token,
   };
 
-  const { data, error, isLoading } = useGetMyNoticesQuery(payload);
+  const { data, error, isLoading } = useGetMyNoticesQuery(payload, { refetchOnMountOrArgChange: true });
 
-  if (data === "") {
+  if ((data === "") & (list === "")) {
     setList(data);
   }
 

@@ -31,7 +31,7 @@ export default function TeamItem(props) {
     teamId: props.teamId,
   };
 
-  const { data, error, isLoading } = useGetTeamsByIdQuery(payload);
+  const { data, error, isLoading } = useGetTeamsByIdQuery(payload, { refetchOnMountOrArgChange: true });
 
   return (
     <Paper key={props.name} sx={{ margin: 3 }} elevation={6}>

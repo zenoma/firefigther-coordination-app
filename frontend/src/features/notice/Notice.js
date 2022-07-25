@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import proj4 from "proj4";
 import { Button, TextField, Box } from "@mui/material";
 import { transformCoordinates } from "../../app/utils/coordinatesTransformations";
 import { useCreateNoticeMutation } from "../../api/noticeApi";
@@ -14,7 +13,7 @@ export default function Notice() {
 
   const token = useSelector(selectToken);
 
-  const [createNotice, error] = useCreateNoticeMutation();
+  const [createNotice] = useCreateNoticeMutation();
 
   const handleChange = (event) => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -37,6 +36,7 @@ export default function Notice() {
   return (
     <Box>
       <TextField
+        fullWidth
         id="notice-body"
         label="Comment"
         type="normal"
@@ -45,8 +45,14 @@ export default function Notice() {
         value={body}
         onChange={(e) => handleChange(e)}
       />
-      <Button type="button" color="primary" className="form-button" onClick={(e) => handleClick(e)}>
-        Summit
+      <Button
+        type="button"
+        variant="contained"
+        color="secondary"
+        className="form-button"
+        onClick={(e) => handleClick(e)}
+      >
+        Create notice
       </Button>
     </Box>
   );

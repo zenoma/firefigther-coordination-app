@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 
 import CustomMap from "../map/CustomMap";
 import Notice from "../notice/Notice";
-import MyNoticesList from "../list/MyNoticesList";
 import { Card, CardHeader, CardMedia } from "@mui/material";
 
 const theme = createTheme();
@@ -32,7 +31,13 @@ export default function Dashboard() {
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs>
               <Card sx={{ minWidth: "800px", minHeight: "600px" }} variant="outlined">
-                <CardHeader title="Fire Map" />
+                <CardHeader
+                  title={
+                    <Typography variant="h4" color="text.primary">
+                      Fire Map
+                    </Typography>
+                  }
+                />
                 <CardMedia>
                   <CustomMap />
                 </CardMedia>
@@ -40,7 +45,13 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={4}>
               <Card sx={{ padding: 2 }} variant="outlined">
-                <CardHeader title="Notices" />
+                <CardHeader
+                  title={
+                    <Typography variant="h4" color="text.primary">
+                      Notices
+                    </Typography>
+                  }
+                />
                 <CardMedia>
                   <Notice />
                 </CardMedia>

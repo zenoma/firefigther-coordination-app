@@ -24,7 +24,7 @@ export default function TeamsList(props) {
     organizationId: props.organizationId,
   };
 
-  const { data, error, isLoading } = useGetTeamsByOrganizationIdQuery(payload);
+  const { data, error, isLoading } = useGetTeamsByOrganizationIdQuery(payload, { refetchOnMountOrArgChange: true });
 
   if (data === "") {
     setList(data);
