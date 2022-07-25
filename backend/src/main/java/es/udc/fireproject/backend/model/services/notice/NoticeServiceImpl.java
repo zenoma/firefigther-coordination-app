@@ -57,6 +57,8 @@ public class NoticeServiceImpl implements NoticeService {
         if (notice.getStatus() != NoticeStatus.PENDING) {
             throw new NoticeStatusException(notice.getId(), "can not be updated, current status: " + notice.getStatus());
         }
+        notice.setBody(body);
+        notice.setLocation(location);
 
         ConstraintValidator.validate(notice);
         return noticeRepository.save(notice);
