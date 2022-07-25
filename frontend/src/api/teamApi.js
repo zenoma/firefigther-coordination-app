@@ -37,7 +37,7 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     getUsersById: build.query({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/listUsers",
+        url: "/teams/" + payload.teamId + "/users",
         headers: {
           Authorization: "Bearer " + payload.token,
         },

@@ -51,17 +51,16 @@ public class OrganizationController {
     }
 
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) {
         organizationService.deleteById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public OrganizationDto create(@RequestAttribute Long userId,
                                   @Validated({UserDto.AllValidations.class})
                                   @RequestBody OrganizationDto organizationDto)
             throws InstanceNotFoundException {
-
 
         Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
@@ -78,6 +77,8 @@ public class OrganizationController {
                        @RequestBody OrganizationDto organizationDto,
                        @PathVariable Long id)
             throws InstanceNotFoundException {
+
+        OrganizationType organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
         Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
         organizationService.update(id, organization.getName(),

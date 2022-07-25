@@ -25,7 +25,7 @@ public class TeamController {
     TeamService teamService;
 
 
-    @PostMapping("/create")
+    @PostMapping("")
     public TeamDto create(@RequestAttribute Long userId,
                           @Validated({UserDto.AllValidations.class})
                           @RequestBody Map<String, String> jsonParams)
@@ -73,26 +73,26 @@ public class TeamController {
         return TeamConversor.toTeamDto(teamService.findByUserId(userId));
     }
 
-    @PutMapping("/{id}/addUser/{memberId}")
-    public void addUser(@RequestAttribute Long userId, @PathVariable Long id, @PathVariable Long memberId)
+    @PostMapping("/{id}/addUser/")
+    public void addUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
-        teamService.addMember(id, memberId);
+        teamService.addMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public void delete(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
         teamService.deleteById(id);
     }
 
-    @PutMapping("/{id}/deleteUser/{memberId}")
-    public void deleteUser(@RequestAttribute Long userId, @PathVariable Long id, @PathVariable Long memberId)
+    @PostMapping("/{id}/deleteUser")
+    public void deleteUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
-        teamService.deleteMember(id, memberId);
+        teamService.deleteMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
-    @GetMapping("/{id}/listUsers")
+    @GetMapping("/{id}/users")
     public List<UserDto> findAllUsers(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
         List<UserDto> userDtoList = new ArrayList<>();
