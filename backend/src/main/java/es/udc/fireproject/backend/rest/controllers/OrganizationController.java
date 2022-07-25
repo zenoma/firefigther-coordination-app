@@ -51,7 +51,7 @@ public class OrganizationController {
     }
 
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) {
         organizationService.deleteById(id);
     }

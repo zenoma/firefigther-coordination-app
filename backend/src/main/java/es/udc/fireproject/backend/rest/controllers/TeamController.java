@@ -80,7 +80,7 @@ public class TeamController {
     }
 
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public void delete(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
         teamService.deleteById(id);
