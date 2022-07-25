@@ -47,8 +47,7 @@ public class User extends BaseEntity {
 
     @ManyToOne(
             optional = false,
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 

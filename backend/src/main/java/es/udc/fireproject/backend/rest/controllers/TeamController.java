@@ -25,7 +25,7 @@ public class TeamController {
     TeamService teamService;
 
 
-    @PostMapping("/create")
+    @PostMapping("")
     public TeamDto create(@RequestAttribute Long userId,
                           @Validated({UserDto.AllValidations.class})
                           @RequestBody Map<String, String> jsonParams)

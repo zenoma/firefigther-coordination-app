@@ -56,7 +56,7 @@ public class OrganizationController {
         organizationService.deleteById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public OrganizationDto create(@RequestAttribute Long userId,
                                   @Validated({UserDto.AllValidations.class})
                                   @RequestBody OrganizationDto organizationDto)

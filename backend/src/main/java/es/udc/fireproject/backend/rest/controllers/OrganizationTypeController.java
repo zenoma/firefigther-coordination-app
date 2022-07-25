@@ -38,7 +38,7 @@ public class OrganizationTypeController {
 
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public OrganizationTypeDto create(@RequestAttribute Long userId,
                                       @Validated({UserDto.AllValidations.class})
                                       @RequestBody OrganizationTypeDto organizationTypeDto) {

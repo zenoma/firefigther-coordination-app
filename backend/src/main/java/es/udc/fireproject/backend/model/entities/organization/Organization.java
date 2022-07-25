@@ -34,7 +34,7 @@ public class Organization extends BaseEntity {
     private LocalDateTime createdAt;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "organization_type_id")
     private OrganizationType organizationType;
 

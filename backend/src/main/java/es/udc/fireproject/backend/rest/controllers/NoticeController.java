@@ -24,7 +24,7 @@ public class NoticeController {
     @Autowired
     NoticeService noticeService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<NoticeDto> create(
             @Validated({NoticeDto.AllValidations.class}) @RequestBody NoticeDto noticeDto,
             @RequestAttribute(required = false) Long userId) throws InstanceNotFoundException {
