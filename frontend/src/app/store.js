@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import loginReducer from "../features/login/LoginSlice";
+import loginReducer from "../features/user/login/LoginSlice";
 import { baseApi } from "../api/baseApi";
 import { rtkQueryErrorLogger } from "../app/rtkQueryErrorHandler";
 import theme from "../features/theme/themeSlice";

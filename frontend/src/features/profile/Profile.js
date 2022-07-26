@@ -9,7 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
-import { logout, selectUser } from "../login/LoginSlice";
+import { logout, selectUser } from "../user/login/LoginSlice";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function Profile() {
           Change Password
         </Typography>
       </Button>
-      <Button id="logout" type="button" variant="contained" color="primary" onClick={(e) => handleClick(e)}>
+      <Button id="logout" type="button" variant="contained" color="secondary" onClick={(e) => handleClick(e)}>
         <Typography variant="body1">Logout</Typography>
       </Button>
     </Box>

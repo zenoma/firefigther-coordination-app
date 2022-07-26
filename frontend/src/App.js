@@ -5,11 +5,12 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import Profile from "./features/profile/Profile";
-import Login from "./features/login/Login";
-import SignUp from "./features/signUp/SignUp";
-import ChangePassword from "./features/changePasword/ChangePassword";
+import Login from "./features/user/login/Login";
+import SignUp from "./features/user/signUp/SignUp";
+import ChangePassword from "./features/user/changePasword/ChangePassword";
 import OrganizationsList from "./features/list/OrganizationsList";
 import MyTeamList from "./features/list/MyTeamList";
+import MyNoticesList from "./features/list/MyNoticesList";
 import CustomDrawer from "./features/drawer/CustomDrawer";
 import Dashboard from "./features/dashboard/Dashboard";
 
@@ -19,7 +20,7 @@ import { darkTheme, lightTheme } from "./theme/theme";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
-import { validLogin, selectToken } from "./features/login/LoginSlice";
+import { validLogin, selectToken } from "./features/user/login/LoginSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ function App() {
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="/organizations" element={<OrganizationsList />} />
               <Route path="/my-team" element={<MyTeamList />} />
+              <Route path="/my-notices" element={<MyNoticesList />} />
             </Routes>
           </BrowserRouter>
         </header>
@@ -76,7 +78,7 @@ function App() {
           draggable={false}
           pauseOnHover
           theme="colored"
-        />{" "}
+        />
       </div>
     </ThemeProvider>
   );

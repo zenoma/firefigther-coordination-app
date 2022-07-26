@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { selectToken } from "../login/LoginSlice";
+import { selectToken } from "../user/login/LoginSlice";
 
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -31,7 +31,7 @@ export default function TeamItem(props) {
     teamId: props.teamId,
   };
 
-  const { data, error, isLoading } = useGetTeamsByIdQuery(payload);
+  const { data, error, isLoading } = useGetTeamsByIdQuery(payload, { refetchOnMountOrArgChange: true });
 
   return (
     <Paper key={props.name} sx={{ margin: 3 }} elevation={6}>
