@@ -21,6 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
 import { validLogin, selectToken } from "./features/user/login/LoginSlice";
+import CustomMap from "./features/map/CustomMap";
 
 function App() {
   const dispatch = useDispatch();
