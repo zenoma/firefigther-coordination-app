@@ -9,6 +9,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
 import { selectToken } from "../user/login/LoginSlice";
 import ControlPanel from "./ControlPanel";
+import { Paper, Typography } from "@mui/material";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -37,6 +38,10 @@ export default function CustomMap() {
   const { data, error, isLoading } = useGetCuadrantsByScaleQuery(payload);
 
   const [cursor, setCursor] = useState("auto");
+  const [mouseCoords, setMouseCoords] = useState({
+    lng: 0,
+    lat: 0,
+  });
 
   const [settings, setSettings] = useState({
     minZoom: 7,
@@ -50,7 +55,7 @@ export default function CustomMap() {
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
-      onClick={(e) => console.log(e.lngLat)}
+      onClick={(e) => setMouseCoords(e.lngLat)}
       cursor={cursor}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
@@ -63,8 +68,8 @@ export default function CustomMap() {
             id: item.id1.toString(),
             type: "fill",
             paint: {
-              "fill-color": "green",
-              "fill-opacity": 0.5,
+              "fill-color": "blue",
+              "fill-opacity": 0.3,
               "fill-outline-color": "red",
             },
           };
@@ -93,8 +98,18 @@ export default function CustomMap() {
           );
         })}
 
-      <Marker longitude={-100} latitude={40} anchor="bottom">
-        <RoomIcon color="error" />
+      <Marker latitude={mouseCoords.lat} longitude={mouseCoords.lng} anchor="bottom">
+        <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
+          <Typography variant="body" color="white" sx={{ display: "block" }}>
+            Name:
+          </Typography>
+          <Typography variant="body" color="white" sx={{ display: "block" }}>
+            Coords:
+          </Typography>
+          <Typography variant="body" color="white" sx={{ display: "block" }}>
+            Temp stats:
+          </Typography>
+        </Paper>
       </Marker>
     </Map>
   );
