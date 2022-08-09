@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Map, { Layer, NavigationControl, Marker, Source } from "react-map-gl";
-import RoomIcon from "@mui/icons-material/Room";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
 import { selectToken } from "../user/login/LoginSlice";
-import ControlPanel from "./ControlPanel";
 import { Paper, Typography } from "@mui/material";
 
 const MAPBOX_ACCESS_TOKEN2 =
@@ -47,6 +45,10 @@ export default function CustomMap() {
     minZoom: 7,
     maxZoom: 15,
   });
+  const bounds = [
+    [-10.353521, 40.958984], // northeastern corner of the bounds
+    [-4.615985, 44.50585], // southwestern corner of the bounds
+  ];
 
   return (
     <Map
@@ -57,6 +59,7 @@ export default function CustomMap() {
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
       onClick={(e) => setMouseCoords(e.lngLat)}
       cursor={cursor}
+      maxBounds={bounds}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
         <NavigationControl />
