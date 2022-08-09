@@ -17,7 +17,7 @@ export default function Notice() {
 
   const handleChange = (event) => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      setCoordinates(transformCoordinates(position));
+      setCoordinates(transformCoordinates(position.coords.longitude, position.coords.latitude));
     });
 
     if (event.target.id === "notice-body") {
