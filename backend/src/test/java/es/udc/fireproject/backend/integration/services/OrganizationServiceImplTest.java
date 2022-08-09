@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.integration.services;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
@@ -24,14 +24,14 @@ import java.util.List;
 class OrganizationServiceImplTest {
 
     @Autowired
-    OrganizationService organizationService;
+    PersonalManagementService personalManagementService;
 
     @Test
     void givenInvalidString_whenCreateOrganizationType_theConstraintViolationException() {
 
         String name = OrganizationTypeOM.withInvalidName().getName();
         Assertions.assertThrows(ConstraintViolationException.class,
-                () -> organizationService.createOrganizationType(name),
+                () -> personalManagementService.createOrganizationType(name),
                 "ConstraintViolationException error was expected");
     }
 
@@ -39,11 +39,11 @@ class OrganizationServiceImplTest {
     void givenValidData_whenCreationOrganization_thenReturnOrganizationWithId() {
 
         OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationType = organizationService.createOrganizationType(organizationType.getName());
+        organizationType = personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
 
-        Organization result = organizationService.create(organization.getCode(),
+        Organization result = personalManagementService.createOrganization(organization.getCode(),
                 organization.getName(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation(),
@@ -58,11 +58,11 @@ class OrganizationServiceImplTest {
     void givenValidOrganization_whenCreationOrganization_thenReturnOrganizationWithId() {
 
         OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
 
-        Organization result = organizationService.create(organization);
+        Organization result = personalManagementService.createOrganization(organization);
 
         Assertions.assertNotNull(result.getId(), "Id must be not Null");
         Assertions.assertNotNull(result.getCreatedAt(), "Created date must be not Null");
@@ -76,7 +76,7 @@ class OrganizationServiceImplTest {
         Organization organization = OrganizationOM.withInvalidValues();
 
         Assertions.assertThrows(ConstraintViolationException.class,
-                () -> organizationService.create(organization),
+                () -> personalManagementService.createOrganization(organization),
                 "ConstraintViolationException error was expected");
 
     }
@@ -87,16 +87,16 @@ class OrganizationServiceImplTest {
         final List<Organization> organizationList = new ArrayList<>();
         organizationList.add(organization);
 
-        organizationService.createOrganizationType(organization.getOrganizationType().getName());
-        organizationService.create(organization);
+        personalManagementService.createOrganizationType(organization.getOrganizationType().getName());
+        personalManagementService.createOrganization(organization);
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(organization.getName()));
+        Assertions.assertEquals(organizationList, personalManagementService.findOrganizationByNameOrCode(organization.getName()));
     }
 
     @Test
     void givenInvalidName_whenFindByNameOrCode_thenReturnEmptyList() {
 
-        Assertions.assertTrue(organizationService.findByNameOrCode("").isEmpty(),
+        Assertions.assertTrue(personalManagementService.findOrganizationByNameOrCode("").isEmpty(),
                 "Found item must be null");
     }
 
@@ -104,51 +104,51 @@ class OrganizationServiceImplTest {
     @Test
     void givenValidId_whenFindById_thenFoundOrganization() throws InstanceNotFoundException {
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(organization.getOrganizationType().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(organization.getOrganizationType().getName());
+        organization = personalManagementService.createOrganization(organization);
 
-        Assertions.assertEquals(organization, organizationService.findById(organization.getId()));
+        Assertions.assertEquals(organization, personalManagementService.findOrganizationById(organization.getId()));
     }
 
     @Test
     void givenInvalidName_whenFindById_thenInstanceNotFoundException() {
 
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.findById(-1L), "InstanceNotFoundException not thrown");
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.findOrganizationById(-1L), "InstanceNotFoundException not thrown");
     }
 
     @Test
     void givenValidId_whenFindByOrganizationTypeName_thenFoundOrganization() {
         List<OrganizationType> organizationTypes = OrganizationTypeOM.withNames(Arrays.asList("Type1", "Type2", "Type3"));
         organizationTypes.forEach(organizationType ->
-                organizationService.createOrganizationType(organizationType.getName()));
+                personalManagementService.createOrganizationType(organizationType.getName()));
 
 
         List<Organization> organizations = new ArrayList<>();
         Organization organization = OrganizationOM.withOrganizationTypeAndRandomNames(organizationTypes.get(0).getName());
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
         organizations.add(organization);
 
         organization = OrganizationOM.withOrganizationTypeAndRandomNames(organizationTypes.get(0).getName());
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
         organizations.add(organization);
 
         organization = OrganizationOM.withOrganizationTypeAndRandomNames(organizationTypes.get(1).getName());
-        organizationService.create(organization);
+        personalManagementService.createOrganization(organization);
 
 
         Assertions.assertEquals(organizations.size(),
-                organizationService.findByOrganizationTypeName(organizationTypes.get(0).getName()).size(),
+                personalManagementService.findOrganizationByOrganizationTypeName(organizationTypes.get(0).getName()).size(),
                 "The result must contain the same number of items");
 
         Assertions.assertTrue(
-                organizationService.findByOrganizationTypeName(organizationTypes.get(0).getName()).containsAll(organizations),
+                personalManagementService.findOrganizationByOrganizationTypeName(organizationTypes.get(0).getName()).containsAll(organizations),
                 "The result must contain all items");
     }
 
     @Test
     void givenInvalidName_whenFindByOrganizationTypeName_thenReturnEmptyList() {
 
-        Assertions.assertTrue(organizationService.findByOrganizationTypeName("").isEmpty(),
+        Assertions.assertTrue(personalManagementService.findOrganizationByOrganizationTypeName("").isEmpty(),
                 "The result must be an empty list");
     }
 
@@ -156,16 +156,16 @@ class OrganizationServiceImplTest {
     @Test
     void givenData_whenFindAllOrganizationTypes_thenReturnFoundOrganizationType() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
-        final List<OrganizationType> result = organizationService.findAllOrganizationTypes();
+        final List<OrganizationType> result = personalManagementService.findAllOrganizationTypes();
 
         Assertions.assertTrue(result.contains(organizationType), "Result must contain the same Data");
     }
 
     @Test
     void givenNoData_whenCallFindAll_thenReturnEmptyList() {
-        final List<Organization> result = organizationService.findAll();
+        final List<Organization> result = personalManagementService.findAllOrganizations();
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
@@ -173,11 +173,11 @@ class OrganizationServiceImplTest {
     @Test
     void givenData_whenFindAll_thenReturnNotEmptyList() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
         final Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.create(organization);
+        personalManagementService.createOrganization(organization);
 
-        final List<Organization> result = organizationService.findAll();
+        final List<Organization> result = personalManagementService.findAllOrganizations();
 
         Assertions.assertFalse(result.isEmpty(), "Result must be not empty");
         Assertions.assertTrue(result.contains(organization), "Result must contain the same Data");
@@ -186,26 +186,26 @@ class OrganizationServiceImplTest {
     @Test
     void givenValidId_whenDelete_thenDeletedSuccessfully() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
 
-        organizationService.deleteById(organization.getId());
+        personalManagementService.deleteOrganizationById(organization.getId());
 
-        Assertions.assertTrue(organizationService.findAll().isEmpty(), "Expected result must be Empty");
+        Assertions.assertTrue(personalManagementService.findAllOrganizations().isEmpty(), "Expected result must be Empty");
     }
 
 
     @Test
     void givenValidData_whenUpdate_thenUpdatedSuccessfully() throws InstanceNotFoundException {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
 
-        Organization updatedOrganization = organizationService.update(organization.getId(),
+        Organization updatedOrganization = personalManagementService.updateOrganization(organization.getId(),
                 "New Name",
                 "New Code",
                 "New HeadQuarters Address",
@@ -219,14 +219,14 @@ class OrganizationServiceImplTest {
     @Test
     void givenInvadalidData_whenUpdate_thenConstraintViolationException() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
 
         Long id = organization.getId();
         Point location = organization.getLocation();
-        Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
+        Assertions.assertThrows(ConstraintViolationException.class, () -> personalManagementService.updateOrganization(id,
                         "",
                         "",
                         "",
@@ -239,13 +239,13 @@ class OrganizationServiceImplTest {
     @Test
     void givenInvadalidId_whenUpdate_thenInstanceNotFoundException() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
 
         Point location = organization.getLocation();
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.updateOrganization(-1L,
                         "",
                         "",
                         "",

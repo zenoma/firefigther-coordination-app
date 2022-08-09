@@ -7,7 +7,7 @@ import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
 import es.udc.fireproject.backend.model.services.notice.NoticeService;
-import es.udc.fireproject.backend.model.services.user.UserService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.NoticeOm;
 import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +30,7 @@ class NoticeServiceImplTest {
     NoticeService noticeService;
 
     @Autowired
-    UserService userService;
+    PersonalManagementService personalManagementService;
 
     @Test
     void givenValid_whenCreateNotice_thenCreatedSuccessfully() throws InstanceNotFoundException {
@@ -176,7 +176,7 @@ class NoticeServiceImplTest {
     void givenValidData_whenFindByUserId_thenNoticesFound() throws InstanceNotFoundException, DuplicateInstanceException {
         Notice notice = NoticeOm.withDefaultValues();
         User user = UserOM.withDefaultValues();
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
         List<Notice> noticeList = new ArrayList<>();
         noticeList.add(noticeService.create(notice.getBody(), notice.getLocation(), user.getId()));

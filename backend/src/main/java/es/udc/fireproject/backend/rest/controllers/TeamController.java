@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.team.TeamService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.TeamConversor;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class TeamController {
 
     @Autowired
-    TeamService teamService;
+    PersonalManagementService personalManagementService;
 
 
     @PostMapping("")
@@ -31,7 +31,7 @@ public class TeamController {
                           @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
 
-        Team team = teamService.create(jsonParams.get("code"), Long.valueOf(jsonParams.get("organizationId")));
+        Team team = personalManagementService.createTeam(jsonParams.get("code"), Long.valueOf(jsonParams.get("organizationId")));
         return TeamConversor.toTeamDto(team);
 
     }
@@ -45,15 +45,15 @@ public class TeamController {
 
 
         if (code != null) {
-            for (Team team : teamService.findByCode(code)) {
+            for (Team team : personalManagementService.findTeamByCode(code)) {
                 teamDtoList.add(TeamConversor.toTeamDto(team));
             }
         } else if (organizationId != null) {
-            for (Team team : teamService.findByOrganizationId(organizationId)) {
+            for (Team team : personalManagementService.findTeamByOrganizationId(organizationId)) {
                 teamDtoList.add(TeamConversor.toTeamDto(team));
             }
         } else {
-            for (Team team : teamService.findByCode("")) {
+            for (Team team : personalManagementService.findTeamByCode("")) {
                 teamDtoList.add(TeamConversor.toTeamDto(team));
             }
         }
@@ -64,39 +64,39 @@ public class TeamController {
     @GetMapping("/{id}")
     public TeamDto findById(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
-        return TeamConversor.toTeamDto(teamService.findById(id));
+        return TeamConversor.toTeamDto(personalManagementService.findTeamById(id));
     }
 
     @GetMapping("/myTeam")
     public TeamDto findMyTeam(@RequestAttribute Long userId)
             throws InstanceNotFoundException {
-        return TeamConversor.toTeamDto(teamService.findByUserId(userId));
+        return TeamConversor.toTeamDto(personalManagementService.findTeamByUserId(userId));
     }
 
     @PostMapping("/{id}/addUser/")
     public void addUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
-        teamService.addMember(id, Long.valueOf(jsonParams.get("memberId")));
+        personalManagementService.addMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
 
     @DeleteMapping("/{id}")
     public void delete(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
-        teamService.deleteById(id);
+        personalManagementService.deleteTeamById(id);
     }
 
     @PostMapping("/{id}/deleteUser")
     public void deleteUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
-        teamService.deleteMember(id, Long.valueOf(jsonParams.get("memberId")));
+        personalManagementService.deleteMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
     @GetMapping("/{id}/users")
     public List<UserDto> findAllUsers(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
         List<UserDto> userDtoList = new ArrayList<>();
-        for (User user : teamService.findAllUsers(id)) {
+        for (User user : personalManagementService.findAllUsersByTeamId(id)) {
             userDtoList.add(UserConversor.toUserDto(user));
         }
         return userDtoList;
@@ -105,7 +105,7 @@ public class TeamController {
     @PutMapping("/{id}")
     public void update(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody TeamDto teamDto)
             throws InstanceNotFoundException {
-        teamService.update(id, teamDto.getCode());
+        personalManagementService.updateTeam(id, teamDto.getCode());
     }
 
 

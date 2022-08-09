@@ -2,7 +2,7 @@ package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.OrganizationTypeDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.OrganizationTypeConversor;
@@ -18,13 +18,13 @@ import java.util.List;
 public class OrganizationTypeController {
 
     @Autowired
-    private OrganizationService organizationService;
+    private PersonalManagementService personalManagementService;
 
     @GetMapping("/")
     public List<OrganizationTypeDto> findAllOrganizationTypes(@RequestAttribute Long userId) {
 
         List<OrganizationTypeDto> organizationTypeDtos = new ArrayList<>();
-        for (OrganizationType organizationType : organizationService.findAllOrganizationTypes()) {
+        for (OrganizationType organizationType : personalManagementService.findAllOrganizationTypes()) {
             organizationTypeDtos.add(OrganizationTypeConversor.toOrganizationTypeDto(organizationType));
         }
         return organizationTypeDtos;
@@ -33,7 +33,7 @@ public class OrganizationTypeController {
     @GetMapping("/{id}")
     public OrganizationTypeDto findAllOrganizationTypes(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
-        OrganizationType organizationType = organizationService.findOrganizationTypeById(id);
+        OrganizationType organizationType = personalManagementService.findOrganizationTypeById(id);
         return OrganizationTypeConversor.toOrganizationTypeDto(organizationType);
 
     }
@@ -43,7 +43,7 @@ public class OrganizationTypeController {
                                       @Validated({UserDto.AllValidations.class})
                                       @RequestBody OrganizationTypeDto organizationTypeDto) {
 
-        OrganizationType organizationType = organizationService.createOrganizationType(organizationTypeDto.getName());
+        OrganizationType organizationType = personalManagementService.createOrganizationType(organizationTypeDto.getName());
 
         return OrganizationTypeConversor.toOrganizationTypeDto(organizationType);
     }

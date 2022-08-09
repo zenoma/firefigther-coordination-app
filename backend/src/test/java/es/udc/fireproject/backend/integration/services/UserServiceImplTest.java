@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.integration.services;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.exceptions.*;
-import es.udc.fireproject.backend.model.services.user.UserService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.UserOM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,16 +22,16 @@ class UserServiceImplTest {
     private final Long INVALID_USER_ID = -1L;
 
     @Autowired
-    private UserService userService;
+    private PersonalManagementService personalManagementService;
 
     @Test
     void givenValidData_whenSignUpAndLoginFromId_thenUserIsFound() throws DuplicateInstanceException, InstanceNotFoundException {
 
         User user = UserOM.withDefaultValues();
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
-        User loggedInUser = userService.loginFromId(user.getId());
+        User loggedInUser = personalManagementService.loginFromId(user.getId());
 
         Assertions.assertEquals(user, loggedInUser, "Users must be the same");
 
@@ -41,14 +41,14 @@ class UserServiceImplTest {
     void givenDuplicatedData_whenSignUp_thenDuplicateInstanceException() throws DuplicateInstanceException {
         User user = UserOM.withDefaultValues();
 
-        userService.signUp(user);
-        Assertions.assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user), "DuplicateInstanceException expected");
+        personalManagementService.signUp(user);
+        Assertions.assertThrows(DuplicateInstanceException.class, () -> personalManagementService.signUp(user), "DuplicateInstanceException expected");
 
     }
 
     @Test
     void givenInvalidData_whenLoginFromId_thenInstanceNotFoundException() {
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(INVALID_USER_ID));
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.loginFromId(INVALID_USER_ID));
     }
 
     @Test
@@ -59,9 +59,9 @@ class UserServiceImplTest {
 
         String clearPassword = user.getPassword();
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
-        User loggedInUser = userService.login(user.getEmail(), clearPassword);
+        User loggedInUser = personalManagementService.login(user.getEmail(), clearPassword);
 
         Assertions.assertEquals(user, loggedInUser, "Users must be the same");
 
@@ -74,15 +74,15 @@ class UserServiceImplTest {
 
         String clearPassword = user.getPassword();
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
         Assertions.assertThrows(IncorrectLoginException.class, () ->
-                userService.login(user.getEmail(), 'X' + clearPassword), " Password must be incorrect");
+                personalManagementService.login(user.getEmail(), 'X' + clearPassword), " Password must be incorrect");
 
     }
 
     @Test
     void givenInvalidEmail_whenLogin_thenIncorrectLoginException() {
-        Assertions.assertThrows(IncorrectLoginException.class, () -> userService.login("X", "Y"), " User must not exist");
+        Assertions.assertThrows(IncorrectLoginException.class, () -> personalManagementService.login("X", "Y"), " User must not exist");
     }
 
 
@@ -91,16 +91,16 @@ class UserServiceImplTest {
 
         User user = UserOM.withDefaultValues();
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
         user.setFirstName('X' + user.getFirstName());
         user.setLastName('X' + user.getLastName());
         user.setEmail('X' + user.getEmail());
 
-        userService.updateProfile(user.getId(), 'X' + user.getFirstName(), 'X' + user.getLastName(),
+        personalManagementService.updateProfile(user.getId(), 'X' + user.getFirstName(), 'X' + user.getLastName(),
                 'X' + user.getEmail(), 111111111, "11111111S");
 
-        User updatedUser = userService.loginFromId(user.getId());
+        User updatedUser = personalManagementService.loginFromId(user.getId());
 
         Assertions.assertEquals(user, updatedUser, "User must be updated");
 
@@ -110,7 +110,7 @@ class UserServiceImplTest {
     @Test
     void givenInvalidData_whenUpdateProfile_thenInstanceNotFoundException() {
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                userService.updateProfile(INVALID_USER_ID, "X", "X", "X", 111111111, "11111111S"), "User not existent");
+                personalManagementService.updateProfile(INVALID_USER_ID, "X", "X", "X", 111111111, "11111111S"), "User not existent");
     }
 
     @Test
@@ -122,18 +122,18 @@ class UserServiceImplTest {
 
         String oldPassword = user.getPassword();
         String newPassword = 'X' + oldPassword;
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
-        userService.changePassword(user.getId(), oldPassword, newPassword);
+        personalManagementService.changePassword(user.getId(), oldPassword, newPassword);
 
-        Assertions.assertDoesNotThrow(() -> userService.login(user.getEmail(), newPassword));
+        Assertions.assertDoesNotThrow(() -> personalManagementService.login(user.getEmail(), newPassword));
     }
 
 
     @Test
     void givenInvalidID_whenChangePassword_thenInstanceNotFoundException() {
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                userService.changePassword(INVALID_USER_ID, "X", "Y"), "User non existent");
+                personalManagementService.changePassword(INVALID_USER_ID, "X", "Y"), "User non existent");
     }
 
 
@@ -144,9 +144,9 @@ class UserServiceImplTest {
         String oldPassword = user.getPassword();
         String newPassword = 'X' + oldPassword;
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
         Assertions.assertThrows(IncorrectPasswordException.class, () ->
-                userService.changePassword(user.getId(), 'Y' + oldPassword, newPassword), "IncorrectPassword Exception expected");
+                personalManagementService.changePassword(user.getId(), 'Y' + oldPassword, newPassword), "IncorrectPassword Exception expected");
 
     }
 
@@ -155,7 +155,7 @@ class UserServiceImplTest {
     void givenValidData_whenSignUp_thenUserHasUserRole() throws DuplicateInstanceException {
         User user = UserOM.withDefaultValues();
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
         Assertions.assertEquals(UserRole.USER, user.getUserRole(), "Role must be USER");
 
@@ -168,12 +168,12 @@ class UserServiceImplTest {
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
         User targetUser = userList.get(1);
-        userService.signUp(user);
+        personalManagementService.signUp(user);
         user.setUserRole(UserRole.COORDINATOR);
-        userService.signUp(targetUser);
+        personalManagementService.signUp(targetUser);
         targetUser.setUserRole(UserRole.MANAGER);
 
-        userService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
+        personalManagementService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
 
         Assertions.assertEquals(UserRole.USER, targetUser.getUserRole(), "Role must be MANAGER");
 
@@ -186,12 +186,12 @@ class UserServiceImplTest {
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
         User targetUser = userList.get(1);
-        userService.signUp(user);
+        personalManagementService.signUp(user);
         user.setUserRole(UserRole.COORDINATOR);
-        userService.signUp(targetUser);
+        personalManagementService.signUp(targetUser);
         targetUser.setUserRole(UserRole.MANAGER);
 
-        userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR);
+        personalManagementService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR);
 
         Assertions.assertEquals(UserRole.COORDINATOR, targetUser.getUserRole(), "Role must be MANAGER");
 
@@ -203,11 +203,11 @@ class UserServiceImplTest {
         List<User> userList = UserOM.withRandomNames(totalUsers);
         User user = userList.get(0);
         User targetUser = userList.get(1);
-        userService.signUp(user);
-        userService.signUp(targetUser);
+        personalManagementService.signUp(user);
+        personalManagementService.signUp(targetUser);
 
         Assertions.assertThrows(InsufficientRolePermissionException.class,
-                () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER),
+                () -> personalManagementService.updateRole(user.getId(), targetUser.getId(), UserRole.MANAGER),
                 "User has not enought permission");
 
     }
@@ -221,10 +221,10 @@ class UserServiceImplTest {
         User targetUser = userList.get(1);
         user.setUserRole(UserRole.MANAGER);
         targetUser.setUserRole(UserRole.MANAGER);
-        userService.signUp(user);
-        userService.signUp(targetUser);
+        personalManagementService.signUp(user);
+        personalManagementService.signUp(targetUser);
 
-        userService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
+        personalManagementService.updateRole(user.getId(), targetUser.getId(), UserRole.USER);
 
         Assertions.assertEquals(UserRole.USER, targetUser.getUserRole(),
                 "Updated user role must be USER");
@@ -239,11 +239,11 @@ class UserServiceImplTest {
         User targetUser = userList.get(1);
         user.setUserRole(UserRole.MANAGER);
         targetUser.setUserRole(UserRole.MANAGER);
-        userService.signUp(user);
-        userService.signUp(targetUser);
+        personalManagementService.signUp(user);
+        personalManagementService.signUp(targetUser);
 
         Assertions.assertThrows(InsufficientRolePermissionException.class,
-                () -> userService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR),
+                () -> personalManagementService.updateRole(user.getId(), targetUser.getId(), UserRole.COORDINATOR),
                 "User has not enough permission");
 
     }

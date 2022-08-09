@@ -139,5 +139,11 @@
                 relativeToChangelogFile="false"
                 splitStatements="true"
                 stripComments="true"/>
+        <sqlFile
+                endDelimiter="\nGO"
+                path="classpath:InitData.sql"
+                relativeToChangelogFile="false"
+                splitStatements="true"
+                stripComments="true"/>
     </changeSet>
 </databaseChangeLog>
