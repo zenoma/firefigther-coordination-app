@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.OrganizationDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.OrganizationConversor;
@@ -19,7 +19,7 @@ import java.util.List;
 public class OrganizationController {
 
     @Autowired
-    private OrganizationService organizationService;
+    private PersonalManagementService personalManagementService;
 
 
     @GetMapping("")
@@ -29,15 +29,15 @@ public class OrganizationController {
 
         List<OrganizationDto> organizationDtos = new ArrayList<>();
         if (nameOrCode != null) {
-            for (Organization organization : organizationService.findByNameOrCode(nameOrCode)) {
+            for (Organization organization : personalManagementService.findOrganizationByNameOrCode(nameOrCode)) {
                 organizationDtos.add(OrganizationConversor.toOrganizationDto(organization));
             }
         } else if (organizationTypeName != null) {
-            for (Organization organization : organizationService.findByOrganizationTypeName(organizationTypeName)) {
+            for (Organization organization : personalManagementService.findOrganizationByOrganizationTypeName(organizationTypeName)) {
                 organizationDtos.add(OrganizationConversor.toOrganizationDto(organization));
             }
         } else {
-            for (Organization organization : organizationService.findAll()) {
+            for (Organization organization : personalManagementService.findAllOrganizations()) {
                 organizationDtos.add(OrganizationConversor.toOrganizationDto(organization));
             }
         }
@@ -47,13 +47,13 @@ public class OrganizationController {
     @GetMapping("/{id}")
     public OrganizationDto findById(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
-        return OrganizationConversor.toOrganizationDto(organizationService.findById(id));
+        return OrganizationConversor.toOrganizationDto(personalManagementService.findOrganizationById(id));
     }
 
 
     @DeleteMapping("/{id}")
     public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) {
-        organizationService.deleteById(id);
+        personalManagementService.deleteOrganizationById(id);
     }
 
     @PostMapping("")
@@ -64,9 +64,9 @@ public class OrganizationController {
 
         Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
-        OrganizationType organizationType = organizationService.findOrganizationTypeById(organization.getOrganizationType().getId());
+        OrganizationType organizationType = personalManagementService.findOrganizationTypeById(organization.getOrganizationType().getId());
         organization.setOrganizationType(organizationType);
-        organization = organizationService.create(organization);
+        organization = personalManagementService.createOrganization(organization);
 
         return OrganizationConversor.toOrganizationDto(organization);
     }
@@ -78,10 +78,9 @@ public class OrganizationController {
                        @PathVariable Long id)
             throws InstanceNotFoundException {
 
-        OrganizationType organizationType = organizationService.findOrganizationTypeById(organizationDto.getOrganizationTypeId());
         Organization organization = OrganizationConversor.toOrganization(organizationDto);
 
-        organizationService.update(id, organization.getName(),
+        personalManagementService.updateOrganization(id, organization.getName(),
                 organization.getCode(),
                 organization.getHeadquartersAddress(),
                 organization.getLocation());

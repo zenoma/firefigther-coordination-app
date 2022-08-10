@@ -1,15 +1,15 @@
 package es.udc.fireproject.backend.model.services;
 
 import es.udc.fireproject.backend.model.entities.organization.Organization;
+import es.udc.fireproject.backend.model.entities.organization.OrganizationRepository;
+import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationServiceImpl;
-import es.udc.fireproject.backend.model.services.team.TeamServiceImpl;
-import es.udc.fireproject.backend.model.services.user.UserServiceImpl;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import es.udc.fireproject.backend.utils.TeamOM;
@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
@@ -40,30 +41,36 @@ class TeamServiceImplTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    OrganizationRepository organizationRepository;
+
+    @Mock
+    OrganizationTypeRepository organizationTypeRepository;
     @InjectMocks
-    TeamServiceImpl teamService;
+    PersonalManagementServiceImpl personalManagementService;
 
     @Mock
-    OrganizationServiceImpl organizationService;
-
-    @Mock
-    UserServiceImpl userService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() throws InstanceNotFoundException {
 
-        Mockito.when(organizationService.create(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(organizationService.createOrganizationType(Mockito.any())).thenReturn(OrganizationTypeOM.withDefaultValues());
-        Mockito.when(organizationService.findById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
+       /* Mockito.when(personalManagementService.createOrganization(OrganizationOM.withDefaultValues())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(personalManagementService.findOrganizationById(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());*/
+
+        Mockito.when(organizationTypeRepository.findByName(Mockito.any())).thenReturn(OrganizationTypeOM.withDefaultValues());
+        Mockito.when(organizationRepository.findById(Mockito.any())).thenReturn(Optional.of(OrganizationOM.withDefaultValues()));
+        Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(TeamOM.withDefaultValues());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(UserOM.withDefaultValues()));
 
     }
 
     @Test
     void givenNoData_whenCallFindByCode_thenReturnEmptyList() {
-        final List<Team> result = teamService.findByCode(null);
+        final List<Team> result = personalManagementService.findTeamByCode("");
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
@@ -75,7 +82,7 @@ class TeamServiceImplTest {
 
         Mockito.when(teamRepository.findByCodeContains(Mockito.anyString())).thenReturn(resultList);
 
-        final List<Team> result = teamService.findByCode("");
+        final List<Team> result = personalManagementService.findTeamByCode("");
 
         Assertions.assertEquals(resultList, result, "Result must contain the same elements");
     }
@@ -84,14 +91,14 @@ class TeamServiceImplTest {
     @Test
     void givenValidData_whenCallCreate_thenReturnCreatedTeam() throws InstanceNotFoundException {
 
-        Assertions.assertEquals(TeamOM.withDefaultValues(), teamService.create("a", 1L), "Elements are not equal");
+        Assertions.assertEquals(TeamOM.withDefaultValues(), personalManagementService.createTeam("a", 1L), "Elements are not equal");
     }
 
     @Test
     void givenInvalidData_whenCallCreate_thenReturnConstraintViolationException() throws InstanceNotFoundException {
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                        teamService.create("", 1L)
+                        personalManagementService.createTeam("", 1L)
                 , "ConstraintViolationException error was expected");
     }
 
@@ -101,17 +108,17 @@ class TeamServiceImplTest {
 
 
         Team team = TeamOM.withDefaultValues();
-        organizationService.createOrganizationType(team.getOrganization().getOrganizationType().getName());
-        organizationService.create(team.getOrganization());
-        team = teamService.create(team.getCode(), team.getOrganization().getId());
+        personalManagementService.createOrganizationType(team.getOrganization().getOrganizationType().getName());
+        personalManagementService.createOrganization(team.getOrganization());
+        team = personalManagementService.createTeam(team.getCode(), team.getOrganization().getId());
         team.setId(1L);
-        teamService.deleteById(team.getId());
+        personalManagementService.deleteTeamById(team.getId());
 
         Team finalTeam = team;
 
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        teamService.findById(finalTeam.getId())
+                        personalManagementService.findTeamById(finalTeam.getId())
                 , "InstanceNotFoundException error was expected");
     }
 
@@ -125,7 +132,7 @@ class TeamServiceImplTest {
 
         Long id = team.getId();
         String code = team.getCode();
-        Assertions.assertThrows(ConstraintViolationException.class, () -> teamService.update(id, code),
+        Assertions.assertThrows(ConstraintViolationException.class, () -> personalManagementService.updateTeam(id, code),
                 "ConstraintViolationException error was expected");
     }
 
@@ -133,7 +140,7 @@ class TeamServiceImplTest {
     void givenInvalidId_whenUpdate_thenInstanceNotFoundException() {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.update(-1L, ""),
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.updateTeam(-1L, ""),
                 "InstanceNotFoundException error was expected");
     }
 
@@ -145,7 +152,7 @@ class TeamServiceImplTest {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(TeamOM.withDefaultValues()));
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(team);
 
-        Team updatedTeam = teamService.update(team.getId(), team.getCode());
+        Team updatedTeam = personalManagementService.updateTeam(team.getId(), team.getCode());
         Assertions.assertEquals(team, updatedTeam);
     }
 
@@ -154,17 +161,17 @@ class TeamServiceImplTest {
             InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = personalManagementService.createOrganization(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
+        team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
 
 
         User user = UserOM.withDefaultValues();
-        userService.signUp(user);
-        team = teamService.addMember(team.getId(), user.getId());
+        personalManagementService.signUp(user);
+        team = personalManagementService.addMember(team.getId(), user.getId());
         team.setUserList(List.of(user));
 
         Assertions.assertTrue(team.getUserList().contains(user), "User must belong to the Team");
@@ -177,24 +184,24 @@ class TeamServiceImplTest {
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = personalManagementService.createOrganization(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
+        team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
 
 
         User user = UserOM.withDefaultValues();
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
 
         final Team finalTeam = team;
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        teamService.addMember(finalTeam.getId(), INVALID_USER_ID),
+                        personalManagementService.addMember(finalTeam.getId(), INVALID_USER_ID),
                 "InstanceNotFoundException error was expected");
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        teamService.addMember(INVALID_TEAM_ID, user.getId()),
+                        personalManagementService.addMember(INVALID_TEAM_ID, user.getId()),
                 "InstanceNotFoundException error was expected");
 
     }
@@ -208,13 +215,13 @@ class TeamServiceImplTest {
         User user = UserOM.withDefaultValues();
         Team team = TeamOM.withDefaultValues();
         user.setTeam(team);
-        userService.signUp(user);
-        teamService.addMember(user.getTeam().getId(), user.getId());
+        personalManagementService.signUp(user);
+        personalManagementService.addMember(user.getTeam().getId(), user.getId());
 
         Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
         Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
 
-        teamService.deleteMember(user.getTeam().getId(), user.getId());
+        personalManagementService.deleteMember(user.getTeam().getId(), user.getId());
 
         Assertions.assertNull(user.getTeam().getUserList(), "User must not belong to the Team");
     }
@@ -224,18 +231,18 @@ class TeamServiceImplTest {
             InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = personalManagementService.createOrganization(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
+        team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
 
 
         User user = UserOM.withDefaultValues();
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
-        teamService.addMember(team.getId(), user.getId());
+        personalManagementService.addMember(team.getId(), user.getId());
 
 
         Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
@@ -243,10 +250,10 @@ class TeamServiceImplTest {
 
         final Team finalTeam = team;
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        teamService.deleteMember(finalTeam.getId(), INVALID_USER_ID),
+                        personalManagementService.deleteMember(finalTeam.getId(), INVALID_USER_ID),
                 "InstanceNotFoundException error was expected");
         Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        teamService.deleteMember(INVALID_TEAM_ID, user.getId()),
+                        personalManagementService.deleteMember(INVALID_TEAM_ID, user.getId()),
                 "InstanceNotFoundException error was expected");
 
     }
@@ -256,19 +263,19 @@ class TeamServiceImplTest {
             InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = personalManagementService.createOrganization(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
+        team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
 
 
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
-            userService.signUp(user);
-            teamService.addMember(team.getId(), user.getId());
+            personalManagementService.signUp(user);
+            personalManagementService.addMember(team.getId(), user.getId());
         }
 
         Assertions.assertEquals(userList.size(), itemNumber, "Size must be equal to added Members");
@@ -279,24 +286,24 @@ class TeamServiceImplTest {
             InstanceNotFoundException, DuplicateInstanceException {
 
         Organization organization = OrganizationOM.withDefaultValues();
-        organizationService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
-        organization = organizationService.create(organization);
+        personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        organization = personalManagementService.createOrganization(organization);
 
         Team team = TeamOM.withDefaultValues();
-        team = teamService.create(team.getCode(),
+        team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
 
 
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
         for (User user : userList) {
-            userService.signUp(user);
-            teamService.addMember(team.getId(), user.getId());
+            personalManagementService.signUp(user);
+            personalManagementService.addMember(team.getId(), user.getId());
         }
 
         Mockito.when(teamRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
         Mockito.when(userRepository.findById(INVALID_TEAM_ID)).thenReturn(Optional.empty());
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> teamService.findAllUsers(INVALID_TEAM_ID),
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.findAllUsersByTeamId(INVALID_TEAM_ID),
                 "InstanceNotFoundException error was expected");
 
     }

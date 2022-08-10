@@ -1,7 +1,7 @@
 package es.udc.fireproject.backend.integration.services;
 
 import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
-import es.udc.fireproject.backend.model.services.cuadrant.CuadrantService;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +12,28 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-public class CuadrantServiceImplTest {
+class FireManagementServiceImplTest {
 
     @Autowired
-    CuadrantService cuadrantService;
+    FireManagementService fireManagementService;
 
     @Test
     void givenNoData_whenCallFindAll_thenReturnNotEmptyList() {
-        Assertions.assertNotNull(cuadrantService.findAll());
+        Assertions.assertNotNull(fireManagementService.findAllCuadrants());
     }
 
     @Test
     void givenValidData_whenCallFindByEscala_thenReturnNotEmptyList() {
-        List<Cuadrant> cuadrantsScale50 = cuadrantService.findByEscala("50.0");
+        List<Cuadrant> cuadrantsScale50 = fireManagementService.findCuadrantsByEscala("50.0");
         Assertions.assertNotNull(cuadrantsScale50);
-        List<Cuadrant> cuadrantsScale25 = cuadrantService.findByEscala("25.0");
+        List<Cuadrant> cuadrantsScale25 = fireManagementService.findCuadrantsByEscala("25.0");
         Assertions.assertNotNull(cuadrantsScale25);
         Assertions.assertNotEquals(cuadrantsScale50.size(), cuadrantsScale25.size());
     }
 
     @Test
     void givenInvalidData_whenCallFindByEscala_thenReturnNotEmptyList() {
-        Assertions.assertNotNull(cuadrantService.findByEscala("Not a valid value"));
+        Assertions.assertNotNull(fireManagementService.findCuadrantsByEscala("Not a valid value"));
     }
 
 

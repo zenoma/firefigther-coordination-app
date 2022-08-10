@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.exceptions.*;
-import es.udc.fireproject.backend.model.services.user.UserService;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.config.JwtGenerator;
 import es.udc.fireproject.backend.rest.config.JwtInfo;
@@ -36,7 +36,7 @@ public class UserController {
     private JwtGenerator jwtGenerator;
 
     @Autowired
-    private UserService userService;
+    private PersonalManagementService personalManagementService;
 
     @ExceptionHandler(IncorrectLoginException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -80,7 +80,7 @@ public class UserController {
 
         User user = UserConversor.toUser(userDto);
 
-        userService.signUp(user);
+        personalManagementService.signUp(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
@@ -94,7 +94,7 @@ public class UserController {
     public AuthenticatedUserDto login(@Validated @RequestBody LoginParamsDto params)
             throws IncorrectLoginException {
 
-        User user = userService.login(params.getUserName(), params.getPassword());
+        User user = personalManagementService.login(params.getUserName(), params.getPassword());
 
         return UserConversor.toAuthenticatedUserDto(generateServiceToken(user), user);
 
@@ -104,7 +104,7 @@ public class UserController {
     public AuthenticatedUserDto loginFromServiceToken(@RequestAttribute Long userId,
                                                       @RequestAttribute String serviceToken) throws InstanceNotFoundException {
 
-        User user = userService.loginFromId(userId);
+        User user = personalManagementService.loginFromId(userId);
 
         return UserConversor.toAuthenticatedUserDto(serviceToken, user);
 
@@ -119,7 +119,7 @@ public class UserController {
             throw new PermissionException();
         }
 
-        return UserConversor.toUserDto(userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
+        return UserConversor.toUserDto(personalManagementService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(),
                 userDto.getEmail(), userDto.getPhoneNumber(), userDto.getDni()));
 
     }
@@ -134,7 +134,7 @@ public class UserController {
             throw new PermissionException();
         }
 
-        userService.changePassword(id, params.getOldPassword(), params.getNewPassword());
+        personalManagementService.changePassword(id, params.getOldPassword(), params.getNewPassword());
 
     }
 
@@ -149,7 +149,7 @@ public class UserController {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("userRole");
         }
-        userService.updateRole(userId, id, userRole);
+        personalManagementService.updateRole(userId, id, userRole);
 
     }
 

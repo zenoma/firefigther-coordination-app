@@ -1,7 +1,7 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
-import es.udc.fireproject.backend.model.services.cuadrant.CuadrantService;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.rest.dtos.CuadrantDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.CuadrantConversor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 public class CuadrantController {
 
     @Autowired
-    CuadrantService cuadrantService;
+    FireManagementService fireManagementService;
 
     @GetMapping("")
     public List<CuadrantDto> findAll(@RequestParam(required = false) String scale) {
@@ -26,11 +26,11 @@ public class CuadrantController {
         List<CuadrantDto> cuadrantDtos = new ArrayList<>();
 
         if (scale != null) {
-            for (Cuadrant cuadrant : cuadrantService.findByEscala(scale)) {
+            for (Cuadrant cuadrant : fireManagementService.findCuadrantsByEscala(scale)) {
                 cuadrantDtos.add(CuadrantConversor.toCuadrantDto(cuadrant));
             }
         } else {
-            for (Cuadrant cuadrant : cuadrantService.findAll()) {
+            for (Cuadrant cuadrant : fireManagementService.findAllCuadrants()) {
                 cuadrantDtos.add(CuadrantConversor.toCuadrantDto(cuadrant));
             }
         }

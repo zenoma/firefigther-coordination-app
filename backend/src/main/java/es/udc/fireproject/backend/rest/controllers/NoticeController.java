@@ -82,7 +82,7 @@ public class NoticeController {
 
     }
 
-    @PutMapping("/{id}/changeStatus")
+    @PutMapping("/{id}/status")
     public void checkNotice(@RequestAttribute Long userId,
                             @PathVariable Long id, @RequestParam("status") NoticeStatus status)
             throws InstanceNotFoundException, NoticeStatusException {

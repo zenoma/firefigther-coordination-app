@@ -5,7 +5,7 @@ import es.udc.fireproject.backend.model.entities.organization.OrganizationReposi
 import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.organization.OrganizationTypeRepository;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.services.organization.OrganizationServiceImpl;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +38,7 @@ class OrganizationServiceImplTest {
     OrganizationRepository organizationRepository;
 
     @InjectMocks
-    OrganizationServiceImpl organizationService;
+    PersonalManagementServiceImpl personalManagementService;
 
 
     @BeforeEach
@@ -55,7 +55,7 @@ class OrganizationServiceImplTest {
 
     @Test
     void givenNoData_whenCallFindAllOrganizationTypes_thenReturnEmptyList() {
-        final List<OrganizationType> result = organizationService.findAllOrganizationTypes();
+        final List<OrganizationType> result = personalManagementService.findAllOrganizationTypes();
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
@@ -69,14 +69,14 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationTypeRepository.findAll()).thenReturn(list);
 
-        final List<OrganizationType> result = organizationService.findAllOrganizationTypes();
+        final List<OrganizationType> result = personalManagementService.findAllOrganizationTypes();
 
         Assertions.assertTrue(result.contains(list.get(0)), "Result must contain the same Data");
     }
 
     @Test
     void givenNoData_whenCallFindAll_thenReturnEmptyList() {
-        final List<Organization> result = organizationService.findAll();
+        final List<Organization> result = personalManagementService.findAllOrganizations();
 
         Assertions.assertTrue(result.isEmpty(), "Result must be Empty");
     }
@@ -89,7 +89,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.findAll()).thenReturn(list);
 
-        final List<Organization> result = organizationService.findAll();
+        final List<Organization> result = personalManagementService.findAllOrganizations();
 
         Assertions.assertFalse(result.isEmpty(), "Result must be not empty");
         Assertions.assertTrue(result.contains(list.get(0)), "Result must contain the same Data");
@@ -101,7 +101,7 @@ class OrganizationServiceImplTest {
         defaultOrganization.setName("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                        organizationService.create(defaultOrganization)
+                        personalManagementService.createOrganization(defaultOrganization)
                 , "ConstraintViolationException error was expected");
     }
 
@@ -110,7 +110,7 @@ class OrganizationServiceImplTest {
         defaultOrganization.setHeadquartersAddress("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                organizationService.create(defaultOrganization), "ConstraintViolationException error was expected");
+                personalManagementService.createOrganization(defaultOrganization), "ConstraintViolationException error was expected");
     }
 
 
@@ -118,7 +118,7 @@ class OrganizationServiceImplTest {
     void givenEmptyOrganizationTypeName_whenCreateOrganization_thenConstraintViolationException() {
         defaultOrganization.setName("");
         Assertions.assertThrows(ConstraintViolationException.class, () ->
-                organizationService.create(defaultOrganization), "ConstraintViolationException error was expected");
+                personalManagementService.createOrganization(defaultOrganization), "ConstraintViolationException error was expected");
     }
 
 
@@ -126,7 +126,7 @@ class OrganizationServiceImplTest {
     void givenValidData_whenCreateOrganization_thenReturnOrganizationWithId() {
 
 
-        final Organization result = organizationService.create(defaultOrganization.getCode(),
+        final Organization result = personalManagementService.createOrganization(defaultOrganization.getCode(),
                 defaultOrganization.getName(),
                 defaultOrganization.getHeadquartersAddress(),
                 defaultOrganization.getLocation(),
@@ -145,7 +145,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(defaultOrganization.getName()));
+        Assertions.assertEquals(organizationList, personalManagementService.findOrganizationByNameOrCode(defaultOrganization.getName()));
 
     }
 
@@ -157,7 +157,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(""));
+        Assertions.assertEquals(organizationList, personalManagementService.findOrganizationByNameOrCode(""));
 
     }
 
@@ -169,7 +169,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(organizationList);
 
 
-        Assertions.assertEquals(organizationList, organizationService.findByNameOrCode(defaultOrganization.getName()));
+        Assertions.assertEquals(organizationList, personalManagementService.findOrganizationByNameOrCode(defaultOrganization.getName()));
     }
 
     @Test
@@ -178,7 +178,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains("", "")).thenReturn(null);
 
 
-        Assertions.assertTrue(organizationService.findByNameOrCode(null).isEmpty(), "Found item must be null");
+        Assertions.assertTrue(personalManagementService.findOrganizationByNameOrCode(null).isEmpty(), "Found item must be null");
     }
 
 
@@ -190,7 +190,7 @@ class OrganizationServiceImplTest {
         Mockito.when(organizationRepository.save(Mockito.any())).thenReturn(OrganizationOM.withDefaultValues());
         Mockito.when(organizationRepository.findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(Mockito.anyString(), Mockito.anyString())).thenReturn(list);
 
-        Assertions.assertEquals(3, organizationService.findByNameOrCode("Centro").size(),
+        Assertions.assertEquals(3, personalManagementService.findOrganizationByNameOrCode("Centro").size(),
                 "Expected results must be 3");
     }
 
@@ -202,7 +202,7 @@ class OrganizationServiceImplTest {
 
         Mockito.when(organizationRepository.findByOrganizationType_NameIgnoreCaseContains(Mockito.anyString())).thenReturn(list);
 
-        Assertions.assertEquals(3, organizationService.findByOrganizationTypeName("Dummy").size(),
+        Assertions.assertEquals(3, personalManagementService.findOrganizationByOrganizationTypeName("Dummy").size(),
                 "Expected results must be 3");
     }
 
@@ -211,22 +211,22 @@ class OrganizationServiceImplTest {
         Organization organization = OrganizationOM.withDefaultValues();
 
         Mockito.when(organizationRepository.findAll()).thenReturn(new ArrayList<>());
-        organizationService.deleteById(organization.getId());
+        personalManagementService.deleteOrganizationById(organization.getId());
 
-        Assertions.assertTrue(organizationService.findAll().isEmpty(), "Expected result must be Empty");
+        Assertions.assertTrue(personalManagementService.findAllOrganizations().isEmpty(), "Expected result must be Empty");
     }
 
     @Test
     void givenValidData_whenUpdate_thenUpdatedSuccessfully() throws InstanceNotFoundException {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
         Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
 
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
-        Organization createdOrganization = organizationService.create(defaultOrganization);
+        Organization createdOrganization = personalManagementService.createOrganization(defaultOrganization);
 
-        Organization updatedOrganization = organizationService.update(createdOrganization.getId(),
+        Organization updatedOrganization = personalManagementService.updateOrganization(createdOrganization.getId(),
                 "New Name",
                 "New Code",
                 "New HeadQuarters Address",
@@ -240,17 +240,17 @@ class OrganizationServiceImplTest {
     void givenInvadalidData_whenUpdate_thenConstraintViolationException() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
         Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
 
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
-        Organization createdOrganization = organizationService.create(defaultOrganization);
+        Organization createdOrganization = personalManagementService.createOrganization(defaultOrganization);
 
         Mockito.when(organizationRepository.findById(Mockito.isNull())).thenReturn(Optional.of(OrganizationOM.withDefaultValues()));
 
         Long id = createdOrganization.getId();
         Point location = createdOrganization.getLocation();
-        Assertions.assertThrows(ConstraintViolationException.class, () -> organizationService.update(id,
+        Assertions.assertThrows(ConstraintViolationException.class, () -> personalManagementService.updateOrganization(id,
                         "",
                         "",
                         "",
@@ -264,16 +264,16 @@ class OrganizationServiceImplTest {
     void givenInvadalidId_whenUpdate_thenInstanceNotFoundException() {
         final OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
         Mockito.when(organizationTypeRepository.save(Mockito.any())).thenReturn(organizationType);
-        organizationService.createOrganizationType(organizationType.getName());
+        personalManagementService.createOrganizationType(organizationType.getName());
 
 
         Mockito.when(organizationTypeRepository.findByName(Mockito.anyString())).thenReturn(organizationType);
-        Organization createdOrganization = organizationService.create(defaultOrganization);
+        Organization createdOrganization = personalManagementService.createOrganization(defaultOrganization);
 
         Point location = createdOrganization.getLocation();
 
         Mockito.when(organizationRepository.findById(-1L)).thenReturn(Optional.empty());
-        Assertions.assertThrows(InstanceNotFoundException.class, () -> organizationService.update(-1L,
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.updateOrganization(-1L,
                         "",
                         "",
                         "",
