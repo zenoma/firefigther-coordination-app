@@ -1,17 +1,18 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.rest.dtos.CuadrantDto;
+import es.udc.fireproject.backend.rest.dtos.CuadrantInfoDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.CuadrantConversor;
+import es.udc.fireproject.backend.rest.dtos.conversors.CuadrantInfoConversor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cuadrants")
@@ -36,4 +37,19 @@ public class CuadrantController {
         }
         return cuadrantDtos;
     }
+
+    @GetMapping("/{gid}")
+    public CuadrantInfoDto findCuadrantById(@PathVariable Integer gid)
+            throws InstanceNotFoundException {
+        return CuadrantInfoConversor.toCuadrantDto(fireManagementService.findCuadrantById(gid));
+    }
+
+    @PostMapping("/{gid}/linkFire")
+    public void linkFire(@RequestAttribute Long userId, @PathVariable Integer gid, @RequestBody Map<String, String> jsonParams)
+            throws InstanceNotFoundException {
+
+        fireManagementService.linkFire(gid, Long.valueOf(jsonParams.get("fireId")));
+    }
+
+
 }

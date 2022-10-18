@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.model.entities.team;
 
 import es.udc.fireproject.backend.model.entities.BaseEntity;
+import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.user.User;
 
@@ -30,6 +31,13 @@ public class Team extends BaseEntity {
             mappedBy = "team",
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<User> userList;
+
+    @ManyToOne(
+            optional = false,
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "cuadrant_gid", nullable = false)
+    private Cuadrant cuadrant;
+
 
     public Team() {
 
@@ -73,28 +81,35 @@ public class Team extends BaseEntity {
         this.code = code;
     }
 
+    public Cuadrant getCuadrant() {
+        return cuadrant;
+    }
+
+    public void setCuadrant(Cuadrant cuadrant) {
+        this.cuadrant = cuadrant;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return Objects.equals(code, team.code) && Objects.equals(organization, team.organization);
+        return Objects.equals(code, team.code) && Objects.equals(organization, team.organization) && Objects.equals(userList, team.userList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, organization);
+        return Objects.hash(code, createdAt, organization, userList, cuadrant);
     }
 
     @Override
     public String toString() {
         return "Team{" +
-                "id=" + getId() +
-                ", code='" + code + '\'' +
+                "code='" + code + '\'' +
                 ", createdAt=" + createdAt +
                 ", organization=" + organization +
                 ", userList=" + userList +
+                ", cuadrant=" + cuadrant +
                 '}';
     }
 }
