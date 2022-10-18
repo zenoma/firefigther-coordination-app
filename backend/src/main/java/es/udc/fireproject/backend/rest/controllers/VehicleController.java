@@ -2,6 +2,7 @@ package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 import es.udc.fireproject.backend.rest.dtos.VehicleDto;
@@ -20,6 +21,9 @@ public class VehicleController {
 
     @Autowired
     PersonalManagementService personalManagementService;
+
+    @Autowired
+    FireManagementService fireManagementService;
 
     @PostMapping("")
     public VehicleDto create(@RequestAttribute Long userId,
@@ -67,6 +71,21 @@ public class VehicleController {
             }
         }
         return vehicleDtos;
+    }
+
+    @PostMapping("/{id}/deploy")
+    public VehicleDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
+            throws InstanceNotFoundException {
+
+        return VehicleConversor.toVehicleDto(fireManagementService.deployVehicle(id, Integer.valueOf(jsonParams.get("gid"))));
+    }
+
+    @PostMapping("/{id}/retract")
+    public VehicleDto retract(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+
+        return VehicleConversor.toVehicleDto(fireManagementService.retractVehicle(id));
+
     }
 }
 

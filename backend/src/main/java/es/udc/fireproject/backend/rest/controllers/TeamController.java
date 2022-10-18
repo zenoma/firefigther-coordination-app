@@ -117,14 +117,14 @@ public class TeamController {
     public TeamDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {
 
-        return TeamConversor.toTeamDto(fireManagementService.deploy(id, Integer.valueOf(jsonParams.get("gid"))));
+        return TeamConversor.toTeamDto(fireManagementService.deployTeam(id, Integer.valueOf(jsonParams.get("gid"))));
     }
 
     @PostMapping("/{id}/retract")
     public TeamDto retract(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {
 
-        return TeamConversor.toTeamDto(fireManagementService.retract(id));
+        return TeamConversor.toTeamDto(fireManagementService.retractTeam(id));
 
     }
 
