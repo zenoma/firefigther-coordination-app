@@ -1,6 +1,7 @@
 package es.udc.fireproject.backend.model.entities.notice;
 
 import es.udc.fireproject.backend.model.entities.BaseEntity;
+import es.udc.fireproject.backend.model.entities.image.Image;
 import es.udc.fireproject.backend.model.entities.user.User;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
@@ -8,6 +9,7 @@ import org.locationtech.jts.geom.Point;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,6 +36,11 @@ public class Notice extends BaseEntity {
     @Column(name = "location", nullable = false)
     @NotNull
     private Point location;
+
+    @OneToMany(
+            mappedBy = "notice",
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Image> imageList;
 
 
     public Notice() {
@@ -86,6 +93,13 @@ public class Notice extends BaseEntity {
         this.body = body;
     }
 
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
 
     @Override
     public boolean equals(Object o) {

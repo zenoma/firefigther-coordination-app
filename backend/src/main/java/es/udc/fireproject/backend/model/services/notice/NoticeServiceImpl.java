@@ -1,10 +1,13 @@
 package es.udc.fireproject.backend.model.services.notice;
 
+import es.udc.fireproject.backend.model.entities.image.Image;
+import es.udc.fireproject.backend.model.entities.image.ImageRepository;
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeRepository;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
+import es.udc.fireproject.backend.model.exceptions.ImageAlreadyUploadedException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
@@ -21,6 +24,9 @@ public class NoticeServiceImpl implements NoticeService {
     public static final String NOTICE_NOT_FOUND = "Notice not found";
     @Autowired
     NoticeRepository noticeRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -96,6 +102,23 @@ public class NoticeServiceImpl implements NoticeService {
             throw new NoticeStatusException(notice.getId(), "can not be checked, current status: " + notice.getStatus());
         }
         notice.setStatus(status);
+    }
+
+    @Override
+    public Notice addImage(Long id, String name) throws InstanceNotFoundException, ImageAlreadyUploadedException {
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+
+
+        Image image = imageRepository.findByName(name);
+        if (image != null) {
+            throw new ImageAlreadyUploadedException(image.getId(), "another image with that name is already uploaded");
+        }
+
+        image = new Image(notice, name);
+        imageRepository.save(image);
+
+        return notice;
+
     }
 
 }

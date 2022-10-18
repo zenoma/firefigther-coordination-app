@@ -2,17 +2,23 @@ package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
+import es.udc.fireproject.backend.model.exceptions.ImageAlreadyUploadedException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
 import es.udc.fireproject.backend.model.services.notice.NoticeService;
+import es.udc.fireproject.backend.rest.common.FileUploadUtil;
 import es.udc.fireproject.backend.rest.dtos.NoticeDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.NoticeConversor;
+import es.udc.fireproject.backend.rest.exceptions.ImageRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,4 +97,23 @@ public class NoticeController {
 
     }
 
+    @PostMapping("/{id}/images")
+    public NoticeDto addImage(@RequestAttribute Long userId, @PathVariable Long id,
+                              @RequestParam("image") MultipartFile multipartFile) throws IOException, InstanceNotFoundException, ImageAlreadyUploadedException, ImageRequiredException {
+
+
+        if (multipartFile.isEmpty()) {
+            throw new ImageRequiredException();
+        }
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+
+        NoticeDto noticeDto = NoticeConversor.toNoticeDto(noticeService.addImage(id, fileName));
+
+
+        String uploadDir = "notice-photos/" + id;
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+        return noticeDto;
+    }
 }

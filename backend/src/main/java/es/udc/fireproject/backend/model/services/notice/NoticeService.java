@@ -2,6 +2,7 @@ package es.udc.fireproject.backend.model.services.notice;
 
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
+import es.udc.fireproject.backend.model.exceptions.ImageAlreadyUploadedException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
 import org.locationtech.jts.geom.Point;
@@ -24,5 +25,7 @@ public interface NoticeService {
     Notice findById(Long id) throws InstanceNotFoundException;
 
     void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeStatusException;
+
+    Notice addImage(Long id, String name) throws InstanceNotFoundException, ImageAlreadyUploadedException;
 
 }

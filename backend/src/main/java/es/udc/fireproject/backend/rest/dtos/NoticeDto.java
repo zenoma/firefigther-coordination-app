@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,10 +35,14 @@ public class NoticeDto extends BaseDto {
     @NotNull(groups = {NoticeDto.AllValidations.class})
     private double lat;
 
+
+    @JsonProperty("images")
+    private List<ImageDto> imageList;
+
     public NoticeDto() {
     }
 
-    public NoticeDto(Long id, String body, NoticeStatus status, LocalDateTime createdAt, UserDto user, double lon, double lat) {
+    public NoticeDto(Long id, String body, NoticeStatus status, LocalDateTime createdAt, UserDto user, double lon, double lat, List<ImageDto> imageList) {
         this.id = id;
         this.body = body;
         this.status = status;
@@ -45,15 +50,17 @@ public class NoticeDto extends BaseDto {
         this.user = user;
         this.lon = lon;
         this.lat = lat;
+        this.imageList = imageList;
     }
 
-    public NoticeDto(Long id, String body, NoticeStatus status, LocalDateTime createdAt, double lon, double lat) {
+    public NoticeDto(Long id, String body, NoticeStatus status, LocalDateTime createdAt, double lon, double lat, List<ImageDto> imageList) {
         this.id = id;
         this.body = body;
         this.status = status;
         this.createdAt = createdAt;
         this.lon = lon;
         this.lat = lat;
+        this.imageList = imageList;
     }
 
     public Long getId() {
