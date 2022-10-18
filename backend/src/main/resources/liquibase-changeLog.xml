@@ -112,6 +112,30 @@
                                  referencedTableName="cuadrants"
                                  referencedColumnNames="gid" constraintName="fk_cuadrant_gid"/>
 
+        <createTable tableName="vehicle">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="vehicle_plate" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organization_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cuadrant_gid" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="vehicle" baseColumnNames="organization_id"
+                                 referencedTableName="organization"
+                                 referencedColumnNames="id" constraintName="fk_vehicle_organization_id"/>
+
+        <addForeignKeyConstraint baseTableName="vehicle" baseColumnNames="cuadrant_gid"
+                                 referencedTableName="cuadrants"
+                                 referencedColumnNames="gid" constraintName="fk_vehicle_cuadrant_gid"/>
+
         <createTable tableName="user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>

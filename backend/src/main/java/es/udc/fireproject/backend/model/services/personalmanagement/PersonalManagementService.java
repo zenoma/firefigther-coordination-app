@@ -5,6 +5,7 @@ import es.udc.fireproject.backend.model.entities.organization.OrganizationType;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.exceptions.*;
 import org.locationtech.jts.geom.Point;
 
@@ -56,6 +57,21 @@ public interface PersonalManagementService {
     Team findTeamByUserId(Long userId) throws InstanceNotFoundException;
 
     List<Team> findTeamByOrganizationId(Long organizationId);
+
+
+    // VEHICLE SERVICES
+
+    Vehicle createVehicle(String vehiclePlate, String type, Long organizationId) throws InstanceNotFoundException;
+
+    void deleteVehicleById(Long id) throws InstanceNotFoundException;
+
+    Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException;
+
+    Vehicle findVehicleById(Long teamId) throws InstanceNotFoundException;
+
+    List<Vehicle> findVehiclesByOrganizationId(Long organizationId);
+
+    List<Vehicle> findAllVehicles();
 
     // USER SERVICES
 

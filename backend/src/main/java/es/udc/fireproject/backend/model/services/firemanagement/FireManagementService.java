@@ -4,6 +4,7 @@ import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
 import es.udc.fireproject.backend.model.entities.fire.Fire;
 import es.udc.fireproject.backend.model.entities.fire.FireIndex;
 import es.udc.fireproject.backend.model.entities.team.Team;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 
@@ -33,9 +34,13 @@ public interface FireManagementService {
 
     // EXTINCTION SERVICES
 
-    Team deploy(Long teamId, Integer gid) throws InstanceNotFoundException;
+    Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException;
 
-    Team retract(Long teamId) throws InstanceNotFoundException;
+    Team retractTeam(Long teamId) throws InstanceNotFoundException;
+
+    Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException;
+
+    Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException;
 
 
 }

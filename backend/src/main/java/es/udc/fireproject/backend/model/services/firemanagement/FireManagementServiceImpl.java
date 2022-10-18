@@ -7,6 +7,8 @@ import es.udc.fireproject.backend.model.entities.fire.FireIndex;
 import es.udc.fireproject.backend.model.entities.fire.FireRepository;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
+import es.udc.fireproject.backend.model.entities.vehicle.VehicleRepository;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
@@ -24,6 +26,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     public static final String CUADRANT_NOT_FOUND = "Cuadrant not found";
     public static final String FIRE_NOT_FOUND = "Fire not found";
     public static final String TEAM_NOT_FOUND = "Team not found";
+    public static final String VEHICLE_NOT_FOUND = "Vehicle not found";
 
 
     @Autowired
@@ -34,6 +37,9 @@ public class FireManagementServiceImpl implements FireManagementService {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    VehicleRepository vehicleRepository;
 
     // CUADRANT SERVICES
     @Override
@@ -130,7 +136,7 @@ public class FireManagementServiceImpl implements FireManagementService {
 
     // EXTINCTION SERVICES
     @Override
-    public Team deploy(Long teamId, Integer gid) throws InstanceNotFoundException {
+    public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
         Cuadrant cuadrant = cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
 
@@ -141,12 +147,33 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Team retract(Long teamId) throws InstanceNotFoundException {
+    public Team retractTeam(Long teamId) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
 
         team.setCuadrant(null);
 
         return teamRepository.save(team);
+
+    }
+
+    @Override
+    public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
+        Cuadrant cuadrant = cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
+
+        vehicle.setCuadrant(cuadrant);
+
+        return vehicleRepository.save(vehicle);
+
+    }
+
+    @Override
+    public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
+
+        vehicle.setCuadrant(null);
+
+        return vehicleRepository.save(vehicle);
 
     }
 

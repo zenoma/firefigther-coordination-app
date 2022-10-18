@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class UserDto extends BaseDto {
 
-    private static final long serialVersionUID = -6531781678159378396L;
+    private static final long serialVersionUID = -2717277403627016569L;
 
     private Long id;
     private String email;
