@@ -9,6 +9,8 @@ import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.entities.user.UserRole;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
+import es.udc.fireproject.backend.model.entities.vehicle.VehicleRepository;
 import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Point;
@@ -27,10 +29,15 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     private static final String USER_NOT_FOUND = "User not found";
     private static final String TEAM_NOT_FOUND = "Team not found";
+    private static final String VEHICLE_NOT_FOUND = "Vehicle not found";
     private static final String TARGET_USER_NOT_FOUND = "Target user not found";
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    VehicleRepository vehicleRepository;
+
     @Autowired
     UserRepository userRepository;
 
@@ -227,6 +234,52 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     @Override
     public List<Team> findTeamByOrganizationId(Long organizationId) {
         return teamRepository.findByOrganizationId(organizationId);
+    }
+
+
+    // VEHICLE SERVICES
+    @Override
+    public Vehicle createVehicle(String vehiclePlate, String type, Long organizationId) throws InstanceNotFoundException {
+        Organization organization = findOrganizationById(organizationId);
+
+        Vehicle vehicle = new Vehicle(vehiclePlate, type, organization);
+        vehicle.setCreatedAt(LocalDateTime.now());
+
+        ConstraintValidator.validate(vehicle);
+
+        return vehicleRepository.save(vehicle);
+    }
+
+    @Override
+    public void deleteVehicleById(Long id) throws InstanceNotFoundException {
+        vehicleRepository.deleteById(id);
+    }
+
+    @Override
+    public Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
+
+        vehicle.setVehiclePlate(vehiclePlate);
+        vehicle.setType(type);
+
+        ConstraintValidator.validate(vehicle);
+        return vehicleRepository.save(vehicle);
+    }
+
+
+    @Override
+    public Vehicle findVehicleById(Long id) throws InstanceNotFoundException {
+        return vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
+    }
+
+    @Override
+    public List<Vehicle> findVehiclesByOrganizationId(Long organizationId) {
+        return vehicleRepository.findByOrganizationId(organizationId);
+    }
+
+    @Override
+    public List<Vehicle> findAllVehicles() {
+        return vehicleRepository.findAll();
     }
 
     // USER SERVICES

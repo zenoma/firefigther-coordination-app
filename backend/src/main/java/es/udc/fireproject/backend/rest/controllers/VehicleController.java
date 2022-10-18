@@ -1,0 +1,72 @@
+package es.udc.fireproject.backend.rest.controllers;
+
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
+import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
+import es.udc.fireproject.backend.rest.dtos.UserDto;
+import es.udc.fireproject.backend.rest.dtos.VehicleDto;
+import es.udc.fireproject.backend.rest.dtos.conversors.VehicleConversor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/vehicles")
+public class VehicleController {
+
+    @Autowired
+    PersonalManagementService personalManagementService;
+
+    @PostMapping("")
+    public VehicleDto create(@RequestAttribute Long userId,
+                             @Validated({UserDto.AllValidations.class})
+                             @RequestBody Map<String, String> jsonParams)
+            throws InstanceNotFoundException {
+
+        Vehicle vehicle = personalManagementService.createVehicle(jsonParams.get("vehiclePlate"), jsonParams.get("type"), Long.valueOf(jsonParams.get("organizationId")));
+        return VehicleConversor.toVehicleDto(vehicle);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+        personalManagementService.deleteVehicleById(id);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody VehicleDto vehicleDto)
+            throws InstanceNotFoundException {
+        personalManagementService.updateVehicle(id, vehicleDto.getVehiclePlate(), vehicleDto.getType());
+    }
+
+    @GetMapping("/{id}")
+    public VehicleDto findById(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+        return VehicleConversor.toVehicleDto(personalManagementService.findVehicleById(id));
+    }
+
+    @GetMapping("")
+    public List<VehicleDto> findAll(@RequestAttribute Long userId,
+                                    @RequestParam(required = false) Long organizationId) {
+
+
+        List<VehicleDto> vehicleDtos = new ArrayList<>();
+
+        if (organizationId != null)
+            for (Vehicle vehicle : personalManagementService.findVehiclesByOrganizationId(organizationId)) {
+                vehicleDtos.add(VehicleConversor.toVehicleDto(vehicle));
+            }
+        else {
+            for (Vehicle vehicle : personalManagementService.findAllVehicles()) {
+                vehicleDtos.add(VehicleConversor.toVehicleDto(vehicle));
+            }
+        }
+        return vehicleDtos;
+    }
+}
+
