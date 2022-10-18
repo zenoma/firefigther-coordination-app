@@ -159,6 +159,22 @@
                                  constraintName="fk_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="user"/>
+
+        <createTable tableName="image">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="notice_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(64)"/>
+            <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="notice_id"
+                                 baseTableName="image"
+                                 constraintName="fk_notice_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="notice"/>
     </changeSet>
 
 
