@@ -29,13 +29,18 @@ public class TeamDto extends BaseDto {
     private List<UserDto> userDtoList;
 
 
-    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList) {
+    private CuadrantInfoDto cuadrantInfoDto;
+
+
+    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList, CuadrantInfoDto cuadrantInfoDto) {
         this.id = id;
         this.code = code;
         this.createdAt = createdAt;
         this.organizationDto = organizationDto;
         this.userDtoList = userDtoList;
+        this.cuadrantInfoDto = cuadrantInfoDto;
     }
+
 
     public Long getId() {
         return id;
@@ -77,17 +82,12 @@ public class TeamDto extends BaseDto {
         this.userDtoList = userDtoList;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TeamDto teamDto = (TeamDto) o;
-        return Objects.equals(id, teamDto.id) && Objects.equals(code, teamDto.code) && Objects.equals(createdAt, teamDto.createdAt) && Objects.equals(organizationDto, teamDto.organizationDto) && Objects.equals(userDtoList, teamDto.userDtoList);
+    public CuadrantInfoDto getCuadrantInfoDto() {
+        return cuadrantInfoDto;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, code, createdAt, organizationDto, userDtoList);
+    public void setCuadrantInfoDto(CuadrantInfoDto cuadrantInfoDto) {
+        this.cuadrantInfoDto = cuadrantInfoDto;
     }
 
     @Override
@@ -98,7 +98,21 @@ public class TeamDto extends BaseDto {
                 ", createdAt=" + createdAt +
                 ", organizationDto=" + organizationDto +
                 ", userDtoList=" + userDtoList +
+                ", cuadrantInfoDto=" + cuadrantInfoDto +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamDto teamDto = (TeamDto) o;
+        return Objects.equals(id, teamDto.id) && Objects.equals(code, teamDto.code) && Objects.equals(createdAt, teamDto.createdAt) && Objects.equals(organizationDto, teamDto.organizationDto) && Objects.equals(userDtoList, teamDto.userDtoList) && Objects.equals(cuadrantInfoDto, teamDto.cuadrantInfoDto);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, createdAt, organizationDto, userDtoList, cuadrantInfoDto);
     }
 
     public interface AllValidations {

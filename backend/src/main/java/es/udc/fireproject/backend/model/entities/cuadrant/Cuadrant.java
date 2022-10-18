@@ -1,21 +1,23 @@
 package es.udc.fireproject.backend.model.entities.cuadrant;
 
+import es.udc.fireproject.backend.model.entities.fire.Fire;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "cuadrants", schema = "public")
-public class Cuadrant {
+public class Cuadrant implements Serializable {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "gid", nullable = false)
-    private Integer id1;
+    private Integer id;
 
     @Column(name = "escala", length = 50)
     private String escala;
@@ -36,7 +38,21 @@ public class Cuadrant {
     @Column(name = "geom")
     private MultiPolygon geom;
 
+    @ManyToOne(
+            optional = false,
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "fire_id", nullable = false)
+    private Fire fire;
+
     public Cuadrant() {
+    }
+
+    public Fire getFire() {
+        return fire;
+    }
+
+    public void setFire(Fire fire) {
+        this.fire = fire;
     }
 
     public MultiPolygon getGeom() {
@@ -87,12 +103,12 @@ public class Cuadrant {
         this.escala = escala;
     }
 
-    public Integer getId1() {
-        return id1;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId1(Integer id1) {
-        this.id1 = id1;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
@@ -100,23 +116,25 @@ public class Cuadrant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cuadrant cuadrant = (Cuadrant) o;
-        return Objects.equals(id1, cuadrant.id1) && Objects.equals(escala, cuadrant.escala) && Objects.equals(nombre, cuadrant.nombre) && Objects.equals(folla50, cuadrant.folla50) && Objects.equals(folla25, cuadrant.folla25) && Objects.equals(folla5, cuadrant.folla5);
+        return Objects.equals(id, cuadrant.id) && Objects.equals(escala, cuadrant.escala) && Objects.equals(nombre, cuadrant.nombre) && Objects.equals(folla50, cuadrant.folla50) && Objects.equals(folla25, cuadrant.folla25) && Objects.equals(folla5, cuadrant.folla5) && Objects.equals(geom, cuadrant.geom) && Objects.equals(fire, cuadrant.fire);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id1, escala, nombre, folla50, folla25, folla5);
+        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, geom, fire);
     }
 
     @Override
     public String toString() {
         return "Cuadrant{" +
-                "id1=" + id1 +
+                "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", folla50='" + folla50 + '\'' +
                 ", folla25='" + folla25 + '\'' +
                 ", folla5='" + folla5 + '\'' +
+                ", geom=" + geom +
+                ", fire=" + fire +
                 '}';
     }
 }

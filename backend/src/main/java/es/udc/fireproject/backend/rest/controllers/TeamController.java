@@ -3,6 +3,7 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
@@ -23,6 +24,9 @@ public class TeamController {
 
     @Autowired
     PersonalManagementService personalManagementService;
+
+    @Autowired
+    FireManagementService fireManagementService;
 
 
     @PostMapping("")
@@ -108,5 +112,20 @@ public class TeamController {
         personalManagementService.updateTeam(id, teamDto.getCode());
     }
 
+
+    @PostMapping("/{id}/deploy")
+    public TeamDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
+            throws InstanceNotFoundException {
+
+        return TeamConversor.toTeamDto(fireManagementService.deploy(id, Integer.valueOf(jsonParams.get("gid"))));
+    }
+
+    @PostMapping("/{id}/retract")
+    public TeamDto retract(@RequestAttribute Long userId, @PathVariable Long id)
+            throws InstanceNotFoundException {
+
+        return TeamConversor.toTeamDto(fireManagementService.retract(id));
+
+    }
 
 }

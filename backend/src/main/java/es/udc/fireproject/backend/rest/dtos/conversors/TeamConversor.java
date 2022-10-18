@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.rest.dtos.CuadrantInfoDto;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 
@@ -16,7 +16,7 @@ public class TeamConversor {
 
     }
 
-    public static Team toTeam(TeamDto teamDto) throws InstanceNotFoundException {
+    public static Team toTeam(TeamDto teamDto) {
         return new Team(teamDto.getCode(), OrganizationConversor.toOrganization(teamDto.getOrganizationDto()));
 
     }
@@ -28,7 +28,16 @@ public class TeamConversor {
                 userDtoList.add(UserConversor.toUserDto(user));
             }
         }
-        return new TeamDto(team.getId(), team.getCode(), team.getCreatedAt(), OrganizationConversor.toOrganizationDto(team.getOrganization()), userDtoList);
+        CuadrantInfoDto cuadrantInfoDto = new CuadrantInfoDto();
+        if (team.getCuadrant() != null) {
+            cuadrantInfoDto = CuadrantInfoConversor.toCuadrantDto(team.getCuadrant());
+        }
+        return new TeamDto(team.getId(),
+                team.getCode(),
+                team.getCreatedAt(),
+                OrganizationConversor.toOrganizationDto(team.getOrganization()),
+                userDtoList,
+                cuadrantInfoDto);
 
     }
 }

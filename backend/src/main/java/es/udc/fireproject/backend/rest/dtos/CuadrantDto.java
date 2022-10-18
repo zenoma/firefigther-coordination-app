@@ -14,7 +14,7 @@ public class CuadrantDto extends BaseDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id1;
+    private Integer id;
 
     private String escala;
 
@@ -26,10 +26,12 @@ public class CuadrantDto extends BaseDto {
 
     private String folla5;
 
+
     private List<Coordinates> coordinates;
 
-    public CuadrantDto(Integer id1, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
-        this.id1 = id1;
+
+    public CuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
+        this.id = id;
         this.escala = escala;
         this.nombre = nombre;
         this.folla50 = folla50;
@@ -38,12 +40,12 @@ public class CuadrantDto extends BaseDto {
         this.coordinates = coordinates;
     }
 
-    public Integer getId1() {
-        return id1;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId1(Integer id1) {
-        this.id1 = id1;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEscala() {
@@ -99,18 +101,18 @@ public class CuadrantDto extends BaseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuadrantDto that = (CuadrantDto) o;
-        return Objects.equals(id1, that.id1) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(coordinates, that.coordinates);
+        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(coordinates, that.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id1, escala, nombre, folla50, folla25, folla5, coordinates);
+        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, coordinates);
     }
 
     @Override
     public String toString() {
         return "CuadrantDto{" +
-                "id1=" + id1 +
+                "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", folla50='" + folla50 + '\'' +

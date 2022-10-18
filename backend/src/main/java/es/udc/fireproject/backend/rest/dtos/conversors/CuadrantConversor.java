@@ -12,7 +12,7 @@ public class CuadrantConversor {
     }
 
     public static CuadrantDto toCuadrantDto(Cuadrant cuadrant) {
-        return new CuadrantDto(cuadrant.getId1(),
+        return new CuadrantDto(cuadrant.getId(),
                 cuadrant.getEscala(),
                 cuadrant.getNombre(),
                 cuadrant.getFolla50(),
