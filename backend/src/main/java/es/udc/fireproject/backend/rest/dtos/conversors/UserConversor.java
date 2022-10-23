@@ -1,7 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.rest.dtos.AuthenticatedUserDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 
@@ -11,19 +10,17 @@ public class UserConversor {
     private UserConversor() {
     }
 
-
     public static UserDto toUserDto(User user) {
         return new UserDto(user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getDni(),
-                user.getPhoneNumber());
+                user.getPhoneNumber(),
+                user.getUserRole());
     }
 
-    public static User toUser(UserDto userDto) throws InstanceNotFoundException {
-
-
+    public static User toUser(UserDto userDto) {
         return new User(userDto.getEmail(),
                 userDto.getPassword(),
                 userDto.getFirstName(),

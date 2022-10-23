@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import es.udc.fireproject.backend.model.entities.user.UserRole;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,11 +18,12 @@ public class UserDto extends BaseDto {
     private String lastName;
     private String dni;
     private Integer phoneNumber;
+    private UserRole userRole;
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String email, String password, String firstName, String lastName, String dni, Integer phoneNumber) {
+    public UserDto(Long id, String email, String password, String firstName, String lastName, String dni, Integer phoneNumber, UserRole userRole) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -28,15 +31,17 @@ public class UserDto extends BaseDto {
         this.lastName = lastName;
         this.dni = dni;
         this.phoneNumber = phoneNumber;
+        this.userRole = userRole;
     }
 
-    public UserDto(Long id, String email, String firstName, String lastName, String dni, Integer phoneNumber) {
+    public UserDto(Long id, String email, String firstName, String lastName, String dni, Integer phoneNumber, UserRole userRole) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dni = dni;
         this.phoneNumber = phoneNumber;
+        this.userRole = userRole;
     }
 
     public Long getId() {
@@ -108,18 +113,25 @@ public class UserDto extends BaseDto {
         this.phoneNumber = phoneNumber;
     }
 
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(id, userDto.id) && Objects.equals(email, userDto.email) && Objects.equals(password, userDto.password) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(dni, userDto.dni) && Objects.equals(phoneNumber, userDto.phoneNumber);
+        return Objects.equals(id, userDto.id) && Objects.equals(email, userDto.email) && Objects.equals(password, userDto.password) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(dni, userDto.dni) && Objects.equals(phoneNumber, userDto.phoneNumber) && userRole == userDto.userRole;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstName, lastName, dni, phoneNumber);
+        return Objects.hash(id, email, password, firstName, lastName, dni, phoneNumber, userRole);
     }
 
     @Override
@@ -132,6 +144,7 @@ public class UserDto extends BaseDto {
                 ", lastName='" + lastName + '\'' +
                 ", dni='" + dni + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", userRole=" + userRole +
                 '}';
     }
 
@@ -140,4 +153,5 @@ public class UserDto extends BaseDto {
 
     public interface UpdateValidations {
     }
+
 }
