@@ -31,43 +31,48 @@ export default function TeamItem(props) {
     teamId: props.teamId,
   };
 
-  const { data, error, isLoading } = useGetTeamsByIdQuery(payload, { refetchOnMountOrArgChange: true });
+  const { data, error, isLoading } = useGetTeamsByIdQuery(payload, {
+    refetchOnMountOrArgChange: true,
+  });
 
   return (
     <Paper key={props.name} sx={{ margin: 3 }} elevation={6}>
-      <ListItemButton onClick={handleClick}>
-        <ListItemText primary={props.name} />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {error ? (
-            <h1>Oh no, there was an error</h1>
-          ) : isLoading ? (
-            <Typography variant="body1"> No data</Typography>
-          ) : data.users.length === 0 ? (
-            <Box sx={{ margin: "auto", textAlign: "center" }}>
-              <AnnouncementIcon color="warning"></AnnouncementIcon>
-              <Typography variant="body1" display="block">
-                No users
-              </Typography>
-            </Box>
-          ) : data.users.length !== 0 ? (
-            data.users.map((item, index) => {
-              return (
-                <div key={item.id}>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemAvatar>
-                      <Avatar alt={item.firstName} src="/static/images/avatar/2.jpg" />
-                    </ListItemAvatar>
-                    <ListItemText primary={item.firstName} secondary={item.lastName} />
-                  </ListItemButton>
-                </div>
-              );
-            })
-          ) : null}
-        </List>
-      </Collapse>
+      <Typography variant="h6" sx={{ padding: 3 }}>
+        Lista de usuarios
+      </Typography>
+      <List component="div" disablePadding>
+        {error ? (
+          <h1>Oh no, there was an error</h1>
+        ) : isLoading ? (
+          <Typography variant="body1"> No data</Typography>
+        ) : data.users.length === 0 ? (
+          <Box sx={{ margin: "auto", textAlign: "center" }}>
+            <AnnouncementIcon color="warning"></AnnouncementIcon>
+            <Typography variant="body1" display="block">
+              Todavía no hay usuarios en este equipo.
+            </Typography>
+          </Box>
+        ) : data.users.length !== 0 ? (
+          data.users.map((item, index) => {
+            return (
+              <div key={item.id}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={item.firstName}
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={item.firstName}
+                    secondary={item.lastName}
+                  />
+                </ListItemButton>
+              </div>
+            );
+          })
+        ) : null}
+      </List>
     </Paper>
   );
 }

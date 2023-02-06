@@ -68,7 +68,7 @@ export default function CustomMap() {
       {data &&
         data.map((item, index) => {
           const layerStyle = {
-            id: item.id1.toString(),
+            id: item.id.toString(),
             type: "fill",
             paint: {
               "fill-color": "blue",
@@ -78,7 +78,10 @@ export default function CustomMap() {
           };
 
           const coord = item.coordinates.map((item, index) => {
-            return [untransformCoordinates(item.x, item.y).longitude, untransformCoordinates(item.x, item.y).latitude];
+            return [
+              untransformCoordinates(item.x, item.y).longitude,
+              untransformCoordinates(item.x, item.y).latitude,
+            ];
           });
 
           const geoJson = {
@@ -95,13 +98,17 @@ export default function CustomMap() {
             ],
           };
           return (
-            <Source key={item.id1.toString()} type="geojson" data={geoJson}>
+            <Source key={item.id.toString()} type="geojson" data={geoJson}>
               <Layer {...layerStyle} />
             </Source>
           );
         })}
 
-      <Marker latitude={mouseCoords.lat} longitude={mouseCoords.lng} anchor="bottom">
+      <Marker
+        latitude={mouseCoords.lat}
+        longitude={mouseCoords.lng}
+        anchor="bottom"
+      >
         <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
           <Typography variant="body" color="white" sx={{ display: "block" }}>
             Name:

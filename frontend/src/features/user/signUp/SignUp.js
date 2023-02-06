@@ -95,6 +95,8 @@ export default function Login() {
         maxWidth: 500,
         padding: 3,
         textAlign: "center",
+        display: "inline-block",
+        boxShadow: "none",
       }}
       elevation={4}
     >

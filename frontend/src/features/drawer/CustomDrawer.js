@@ -32,7 +32,7 @@ import { logout, selectToken } from "../user/login/LoginSlice";
 import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;
-const loggedSettingsMenu = ["Profile", "Logout"];
+const loggedSettingsMenu = ["Perfil", "Logout"];
 const notLoggedSettingsMenu = ["Login", "Sign Up"];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -56,15 +56,15 @@ export default function PersistentDrawerLeft() {
 
   const pages = [
     {
-      name: "Organizations",
+      name: "Organizaciones",
       icon: <GroupsIcon />,
     },
     {
-      name: "My team",
+      name: "Mi equipo",
       icon: <GroupWorkIcon />,
     },
     {
-      name: "My notices",
+      name: "Mis avisos",
       icon: <ArticleIcon />,
     },
   ];
@@ -85,8 +85,8 @@ export default function PersistentDrawerLeft() {
       case "login":
         navigate("/login");
         break;
-      case "profile":
-        navigate("/profile");
+      case "perfil":
+        navigate("/perfil");
         break;
       case "logout":
         dispatch(logout());
@@ -99,14 +99,14 @@ export default function PersistentDrawerLeft() {
 
   const handleClickItemList = (e, text) => {
     switch (text.toLocaleLowerCase()) {
-      case "my team":
-        navigate("/my-team");
+      case "mi equipo":
+        navigate("/mi-equipo");
         break;
-      case "organizations":
-        navigate("/organizations");
+      case "organizaciones":
+        navigate("/organizaciones");
         break;
-      case "my notices":
-        navigate("/my-notices");
+      case "mis avisos":
+        navigate("/mis-avisos");
         break;
       default:
         navigate("/");
@@ -137,8 +137,8 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Main title
+          <Typography variant="h5"  noWrap component="div" sx={{ flexGrow: 1 }}>
+            Firefigther Coordination App
           </Typography>
           {!token && (
             <Box sx={{ flexGrow: 0 }}>
@@ -229,7 +229,7 @@ export default function PersistentDrawerLeft() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader sx={{ display: "flex", bgcolor: "secondary.light" }}>
+        <DrawerHeader sx={{ display: "flex" }}>
           <List sx={{ flexGrow: 10 }}>
             <ListItem key="Home" disablePadding onClick={(e) => handleClickItemList(e, "")}>
               <ListItemButton>

@@ -42,7 +42,7 @@ export default function Login() {
       .then((payload) => {
         dispatch(validLogin(payload));
         toast.info("Successfully logged in.");
-        navigate("/profile");
+        navigate("/perfil");
       });
   };
 
@@ -52,8 +52,9 @@ export default function Login() {
         maxWidth: 500,
         padding: 3,
         textAlign: "center",
+        display: "inline-block",
+        boxShadow: "none",
       }}
-      elevation={4}
     >
       <form>
         <FormControl>
@@ -82,6 +83,7 @@ export default function Login() {
           />
           <Button
             type="button"
+            variant="contained"
             color="primary"
             className="form-button"
             disabled={!isValidEmail}

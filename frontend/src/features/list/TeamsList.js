@@ -5,17 +5,21 @@ import { useSelector } from "react-redux";
 import ListSubheader from "@mui/material/ListSubheader";
 import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 
 import { selectToken } from "../user/login/LoginSlice";
 import { useGetTeamsByOrganizationIdQuery } from "../../api/teamApi";
 
-import UsersList from "./UsersList";
+import { useNavigate } from "react-router-dom";
 
 export default function TeamsList(props) {
   const [list, setList] = useState("");
+  const navigate = useNavigate();
 
   const token = useSelector(selectToken);
 
@@ -29,42 +33,57 @@ export default function TeamsList(props) {
   if (data === "") {
     setList(data);
   }
+  const handleClick = (e, id) => {
+    navigate("/detalles-equipo/" + id);
+  };
 
   return (
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 500,
-        maxHeight: 500,
-        overflow: "auto",
-      }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            Teams
-          </Typography>
-        </ListSubheader>
-      }
-    >
-      {error ? (
-        <h1>Oh no, there was an error</h1>
-      ) : isLoading ? (
-        <CircularProgress />
-      ) : data.length === 0 ? (
-        <Paper sx={{ width: 100, height: 100, margin: "auto", textAlign: "center" }} elevation={6}>
-          <AnnouncementIcon color="warning"></AnnouncementIcon>
-          <Typography variant="body1" display="block">
-            No teams
-          </Typography>
-        </Paper>
-      ) : data ? (
-        data.map((item, index) => {
-          return <UsersList name={item.code} teamId={item.id} key={item.code} />;
-        })
-      ) : null}
-    </List>
+    <Paper>
+      <List
+        sx={{
+          width: "50%",
+          overflow: "auto",
+        }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+      >
+        {error ? (
+          <h1>Oh no, there was an error</h1>
+        ) : isLoading ? (
+          <CircularProgress />
+        ) : data.length === 0 ? (
+          <Paper sx={{ height: 100, margin: "auto", textAlign: "center" }}>
+            <AnnouncementIcon color="warning"></AnnouncementIcon>
+            <Typography variant="body1" display="block">
+              Aún no hay equipos en esta organización
+            </Typography>
+          </Paper>
+        ) : data ? (
+          <Container>
+            <Typography
+              variant="h5"
+              display="block"
+              sx={{
+                color: "primary.dark",
+              }}
+            >
+              Equipos
+            </Typography>
+            {data.map((item, index) => (
+              <Container key={item.code}>
+                <ListItem sx={{ border: 1, borderRadius: "5px", margin: "5px" }}>
+                  <ListItemButton onClick={(e) => handleClick(e, item.id)}>
+                    <Typography variant="body1" component="body1" align="center">
+                      {item.code}
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+              </Container>
+            ))}
+          </Container>
+        ) : null}
+      </List>
+    </Paper>
   );
 }
 

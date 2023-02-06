@@ -20,7 +20,7 @@ public class OrganizationTypeController {
     @Autowired
     private PersonalManagementService personalManagementService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<OrganizationTypeDto> findAllOrganizationTypes(@RequestAttribute Long userId) {
 
         List<OrganizationTypeDto> organizationTypeDtos = new ArrayList<>();

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
@@ -87,7 +88,7 @@ class OrganizationServiceImplTest {
         final List<Organization> list = new ArrayList<>();
         list.add(defaultOrganization);
 
-        Mockito.when(organizationRepository.findAll()).thenReturn(list);
+        Mockito.when(organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))).thenReturn(list);
 
         final List<Organization> result = personalManagementService.findAllOrganizations();
 

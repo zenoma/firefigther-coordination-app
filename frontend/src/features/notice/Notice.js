@@ -38,21 +38,15 @@ export default function Notice() {
       <TextField
         fullWidth
         id="notice-body"
-        label="Comment"
+        label="Inserte la descipción del aviso..."
         type="normal"
         margin="normal"
         autoComplete="notice-body"
         value={body}
         onChange={(e) => handleChange(e)}
       />
-      <Button
-        type="button"
-        variant="contained"
-        color="secondary"
-        className="form-button"
-        onClick={(e) => handleClick(e)}
-      >
-        Create notice
+      <Button type="button" variant="contained" color="primary" className="form-button" onClick={(e) => handleClick(e)}>
+        Crear aviso
       </Button>
     </Box>
   );

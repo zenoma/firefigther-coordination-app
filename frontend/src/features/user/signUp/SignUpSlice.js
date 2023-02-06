@@ -18,9 +18,4 @@ export const signUpSlice = createSlice({
   extraReducers: {},
 });
 
-// export const selectUser = (state) => state.login.user;
-// export const selectToken = (state) => state.login.token;
-
-// export const { validLogin, logout } = signUpSlice.actions;
-
 export default signUpSlice.reducer;

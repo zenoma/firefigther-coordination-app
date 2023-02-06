@@ -38,7 +38,7 @@ export default function MyTeamList() {
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
           <Typography variant="h3" sx={{ padding: 3 }}>
-            My notices
+            Mis avisos
           </Typography>
         </ListSubheader>
       }
