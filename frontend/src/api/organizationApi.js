@@ -15,7 +15,8 @@ export const organizationApi = baseApi.injectEndpoints({
     }),
     getOrganizationsByOrganizationType: build.query({
       query: (payload) => ({
-        url: "/organizations?organizationTypeName=" + payload.organizationTypeName,
+        url:
+          "/organizations?organizationTypeName=" + payload.organizationTypeName,
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -46,8 +47,25 @@ export const organizationApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    deleteOrganizationById: build.mutation({
+      query: (payload) => ({
+        url: "/organizations/" + payload.organizationId,
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
+  refetchOnMountOrArgChange: true,
 });
 
-export const { useGetOrganizationsQuery, useCreateOrganizationMutation, useGetOrganizationsByOrganizationTypeQuery } =
-  organizationApi;
+export const {
+  useGetOrganizationsQuery,
+  useCreateOrganizationMutation,
+  useGetOrganizationsByOrganizationTypeQuery,
+  useDeleteOrganizationByIdMutation,
+} = organizationApi;

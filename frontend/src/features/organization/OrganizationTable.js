@@ -1,6 +1,5 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -11,36 +10,51 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
+import { Box, Button } from "@mui/material";
+import { useDeleteOrganizationByIdMutation } from "../../api/organizationApi";
 import { selectToken } from "../user/login/LoginSlice";
-import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { toast } from "react-toastify";
 
 const columns = [
-  { id: "code", label: "Código", minWidth: 100 },
-  { id: "name", label: "Nombre", minWidth: 170 },
-  { id: "address", label: "Dirección", minWidth: 170 },
+  { id: "code", label: "Código", minWidth: 50 },
+  { id: "name", label: "Nombre", minWidth: 250 },
+  { id: "address", label: "Dirección", minWidth: 250 },
+  { id: "options", label: "Opciones", minWidth: 50 },
 ];
 
-function createData(code, name, address) {
-  return { code, name, address };
+function createData(id, code, name, address) {
+  return { id, code, name, address };
 }
 
 export default function OrganizationTable(props) {
   const token = useSelector(selectToken);
 
-  const payload = {
-    token: token,
-    organizationTypeName: props.organizationTypeName,
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [organizationId, setOrganizationId] = useState("");
+
+  const organizations = props.organizations;
+
+  const [deleteOrganizationById] = useDeleteOrganizationByIdMutation();
+
+  const handleClickOpen = (organizationId) => {
+    setOrganizationId(organizationId);
+    setOpen(true);
   };
 
-  const { data, error, isLoading } = useGetOrganizationsByOrganizationTypeQuery(
-    payload,
-    {
-      refetchOnMountOrArgChange: true,
-    }
-  );
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -51,16 +65,37 @@ export default function OrganizationTable(props) {
     setPage(0);
   };
 
+  const handleDeleteClick = () => {
+    const payload = {
+      token: token,
+      organizationId: organizationId,
+    };
+
+    deleteOrganizationById(payload)
+      .unwrap()
+      .then((payload) => {
+        toast.success("Organización borrada satisfactoriamente");
+      });
+
+    handleClose();
+    props.realoadData();
+  };
+
+  const handleEditClick = (event) => {};
+
   var rows = [];
-  if (data) {
+  if (organizations) {
     rows = [];
-    data.forEach((item, index) => {
-      rows.push(createData(item.code, item.name, item.headquartersAddress));
+    organizations.forEach((item, index) => {
+      rows.push(
+        createData(item.id, item.code, item.name, item.headquartersAddress)
+      );
     });
   }
+
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <Paper sx={{ overflow: "hidden" }}>
+      <TableContainer sx={{ minWidth: 600, maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -68,8 +103,11 @@ export default function OrganizationTable(props) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  sx={{ color: "secondary.light", fontWeight: "bold" }}
                   style={{ minWidth: column.minWidth }}
+                  sx={{
+                    color: "secondary.light",
+                    fontWeight: "bold",
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -89,6 +127,26 @@ export default function OrganizationTable(props) {
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}
+                          {column.id === "options" ? (
+                            <Box>
+                              <Button
+                                color="primary"
+                                aria-label="add"
+                                size="small"
+                                onClick={(e) => handleEditClick(row.id)}
+                              >
+                                <EditIcon />
+                              </Button>
+                              <Button
+                                color="primary"
+                                aria-label="add"
+                                size="small"
+                                onClick={(e) => handleClickOpen(row.id)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Box>
+                          ) : null}
                         </TableCell>
                       );
                     })}
@@ -107,10 +165,26 @@ export default function OrganizationTable(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"¿Está seguro de eliminar esta organización?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleDeleteClick} color="error" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 }
 
 OrganizationTable.propTypes = {
-  organizationTypeName: PropTypes.string.isRequired,
+  organizations: PropTypes.array.isRequired,
 };

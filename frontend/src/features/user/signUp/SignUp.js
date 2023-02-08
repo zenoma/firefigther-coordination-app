@@ -12,7 +12,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [password, setPassword] = useState("");
-  const [isValidPassword, setIsValidPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dni, setDni] = useState("");
@@ -20,9 +19,8 @@ export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
 
-  //   const dispatch = useDispatch();
 
-  const [signUp, { signUpError }] = useSignUpMutation();
+  const [signUp] = useSignUpMutation();
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -57,7 +55,7 @@ export default function Login() {
     }
   };
 
-  const handleLinkClick = (e) => {
+  const handleLinkClick = () => {
     setEmail("");
     setIsValidEmail(true);
     setPassword("");
@@ -71,7 +69,7 @@ export default function Login() {
     navigate("/login");
   };
 
-  const handleClick = async (e) => {
+  const handleClick = async () => {
     const payload = {
       email: email,
       password: password,
@@ -83,7 +81,7 @@ export default function Login() {
 
     signUp(payload)
       .unwrap()
-      .then((payload) => {
+      .then(() => {
         toast.info("Successfully signed up.");
         navigate("/login");
       });

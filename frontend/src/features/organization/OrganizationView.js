@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -12,31 +10,48 @@ import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 
+import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
 import { useGetOrganizationTypesQuery } from "../../api/organizationTypeApi";
 import { selectToken } from "../user/login/LoginSlice";
 import OrganizationDialog from "./OrganizationDialog";
 import OrganizationTable from "./OrganizationTable";
+import { useState } from "react";
 
 export default function OrganizationsView() {
   const token = useSelector(selectToken);
-  const [value, setValue] = useState("");
+  const [selectedOrganizationType, setSelectedOrganizationType] = useState(".");
 
-  const { data, error, isLoading } = useGetOrganizationTypesQuery(token);
-
-  const handleRadioChange = (e) => {
-    setValue(e.target.value);
+  const payload = {
+    token: token,
+    organizationTypeName: selectedOrganizationType,
   };
 
-  const handleClick = () => {
-    setValue("");
+  const {
+    data: organizationTypes,
+    errorOrganizationTypesQuery,
+    isLoadingOrganizationTypesQuery,
+  } = useGetOrganizationTypesQuery(token);
+
+  const {
+    data: organizationsList,
+    isFetching,
+    refetch,
+  } = useGetOrganizationsByOrganizationTypeQuery(payload, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const handleRadioChange = (e) => {
+    setSelectedOrganizationType(e.target.value);
+    realoadData();
+  };
+
+  const realoadData = () => {
+    refetch();
   };
 
   return (
     <Paper
       sx={{
-        width: "100%",
-        maxWidth: 1000,
-        maxHeight: 1000,
         display: "inline-block",
         padding: "10px",
       }}
@@ -49,11 +64,11 @@ export default function OrganizationsView() {
       >
         Organizaciones
       </Typography>
-      {error ? (
+      {errorOrganizationTypesQuery ? (
         <h1>Oh no, ha ocurrido un error</h1>
-      ) : isLoading ? (
+      ) : isLoadingOrganizationTypesQuery ? (
         <CircularProgress />
-      ) : data ? (
+      ) : organizationTypes ? (
         <FormControl>
           <FormLabel id="demo-row-radio-buttons-group-label">
             <Typography
@@ -70,11 +85,11 @@ export default function OrganizationsView() {
               onChange={(e) => handleRadioChange(e)}
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
-              value={value}
+              value={selectedOrganizationType}
               name="row-radio-buttons-group"
               sx={{ padding: "10px" }}
             >
-              {data.map((item, index) => (
+              {organizationTypes.map((item, index) => (
                 <FormControlLabel
                   value={item.name}
                   key={index}
@@ -86,10 +101,17 @@ export default function OrganizationsView() {
             </RadioGroup>
           </FormLabel>
 
-          {value && <OrganizationTable organizationTypeName={value} />}
+          {isFetching ? (
+            <CircularProgress />
+          ) : organizationsList ? (
+            <OrganizationTable
+              realoadData={realoadData}
+              organizations={organizationsList}
+            />
+          ) : null}
 
-          <Box onClick={handleClick}>
-            <OrganizationDialog organizationTypes={data} />
+          <Box onClick={realoadData}>
+            <OrganizationDialog organizationTypes={organizationTypes} />
           </Box>
         </FormControl>
       ) : null}

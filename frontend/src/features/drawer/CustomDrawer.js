@@ -76,6 +76,7 @@ export default function PersistentDrawerLeft() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   const handleClickUserMenu = (e) => {
     var id = e.target.id;
     switch (id) {

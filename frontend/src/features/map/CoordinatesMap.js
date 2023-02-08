@@ -1,9 +1,11 @@
-/// app.js
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Map, { Layer, NavigationControl, Marker, Source } from "react-map-gl";
-import { transformCoordinates, untransformCoordinates } from "../../app/utils/coordinatesTransformations";
+import {
+  transformCoordinates,
+  untransformCoordinates,
+} from "../../app/utils/coordinatesTransformations";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { selectToken } from "../user/login/LoginSlice";
 import Icon from "../../app/assets/images/pin.png";
@@ -66,7 +68,11 @@ export default function CoordinatesMap({ childToParent }) {
       <div style={{ position: "absolute", zIndex: 1 }}>
         <NavigationControl />
       </div>
-      <Marker latitude={mouseCoords.lat} longitude={mouseCoords.lng} anchor="bottom">
+      <Marker
+        latitude={mouseCoords.lat}
+        longitude={mouseCoords.lng}
+        anchor="bottom"
+      >
         <img src={Icon} alt="map icon" width="50" />
       </Marker>
     </Map>
