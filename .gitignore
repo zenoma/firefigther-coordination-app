@@ -13,3 +13,6 @@ backend/.settings/
 # IntelliJ IDEA configuration.
 .idea/
 pa-project-backend.iml
+
+# VSCode configuration
+.vscode/
