@@ -13,7 +13,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
 import { useGetOrganizationTypesQuery } from "../../api/organizationTypeApi";
 import { selectToken } from "../user/login/LoginSlice";
-import OrganizationDialog from "./OrganizationDialog";
+import OrganizationCreateDialog from "./OrganizationCreateDialog";
 import OrganizationTable from "./OrganizationTable";
 import { useState } from "react";
 
@@ -107,12 +107,14 @@ export default function OrganizationsView() {
             <OrganizationTable
               realoadData={realoadData}
               organizations={organizationsList}
+              organizationTypesList={organizationTypes}
             />
           ) : null}
 
-          <Box onClick={realoadData}>
-            <OrganizationDialog organizationTypes={organizationTypes} />
-          </Box>
+          <OrganizationCreateDialog
+            organizationTypes={organizationTypes}
+            realoadData={realoadData}
+          />
         </FormControl>
       ) : null}
     </Paper>

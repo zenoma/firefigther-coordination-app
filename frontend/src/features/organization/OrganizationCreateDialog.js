@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
@@ -18,11 +18,10 @@ import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 import AddIcon from "@mui/icons-material/Add";
 
-export default function OrganizationDialog(props) {
+export default function OrganizationCreateDialog(props) {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [headquartersAddress, setHeadquartersAddress] = useState("");
-  const [coordinates, setCoordinates] = useState("");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState("");
   const [organizationTypeId, setOrganizationTypeId] = useState(
@@ -37,13 +36,18 @@ export default function OrganizationDialog(props) {
   const token = useSelector(selectToken);
   const organizationTypesList = props.organizationTypes;
 
-  const [createOrganization, error] = useCreateOrganizationMutation();
+  const [createOrganization] = useCreateOrganizationMutation();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setCode("");
+    setName("");
+    setHeadquartersAddress("");
+    setData("");
+    setOrganizationTypeId("Elije un tipo de organización");
     setOpen(false);
   };
 
@@ -78,18 +82,24 @@ export default function OrganizationDialog(props) {
       organizationTypeId: organizationTypeId,
     };
 
-    if (data == "") {
+    if (data === "") {
       toast.error(
         "Por favor indique la dirección de la organización en el mapa."
       );
-    } else {
-      createOrganization(payload).unwrap();
-
-      handleClose();
     }
+    if (organizationTypeId === "Elije un tipo de organización") {
+      toast.error("Por favor indique el tipo de la organización .");
+    }
+    createOrganization(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Organización creada satisfactoriamente");
+        props.realoadData();
+        handleClose();
+      })
+      .catch((error) => toast.error("No se ha podido crear la organización"));
   };
 
-  
   useEffect(() => {}, [open]);
 
   return (
@@ -186,6 +196,6 @@ export default function OrganizationDialog(props) {
   );
 }
 
-OrganizationDialog.propTypes = {
+OrganizationCreateDialog.propTypes = {
   organizationTypes: PropTypes.array.isRequired,
 };

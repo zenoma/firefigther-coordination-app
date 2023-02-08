@@ -11,18 +11,26 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import { Box, Button } from "@mui/material";
-import { useDeleteOrganizationByIdMutation } from "../../api/organizationApi";
+import {
+  useDeleteOrganizationByIdMutation,
+  useUpdateOrganizationMutation,
+} from "../../api/organizationApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useState } from "react";
 import { toast } from "react-toastify";
+
+import DialogContent from "@mui/material/DialogContent";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import React from "react";
+import CoordinatesMap from "../map/CoordinatesMap";
 
 const columns = [
   { id: "code", label: "Código", minWidth: 50 },
@@ -31,8 +39,8 @@ const columns = [
   { id: "options", label: "Opciones", minWidth: 50 },
 ];
 
-function createData(id, code, name, address) {
-  return { id, code, name, address };
+function createData(id, code, name, address, lon, lat) {
+  return { id, code, name, address, lon, lat };
 }
 
 export default function OrganizationTable(props) {
@@ -40,21 +48,16 @@ export default function OrganizationTable(props) {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+
   const [organizationId, setOrganizationId] = useState("");
+  const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+  const [headquartersAddress, setHeadquartersAddress] = useState("");
+  const [data, setData] = useState("");
 
   const organizations = props.organizations;
-
-  const [deleteOrganizationById] = useDeleteOrganizationByIdMutation();
-
-  const handleClickOpen = (organizationId) => {
-    setOrganizationId(organizationId);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -63,6 +66,76 @@ export default function OrganizationTable(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleClickOpenEdit = (row) => {
+    setOrganizationId(row.id);
+    setCode(row.code);
+    setName(row.name);
+    setHeadquartersAddress(row.address);
+    setOpenEdit(true);
+    setData({ lat: row.lat, lng: row.lon });
+  };
+
+  const [updateOrganization] = useUpdateOrganizationMutation();
+
+  const handleEditClick = () => {
+    const payload = {
+      organizationId: organizationId,
+      code: code,
+      name: name,
+      headquartersAddress: headquartersAddress,
+      coordinates: data,
+      token: token,
+    };
+    updateOrganization(payload)
+      .unwrap()
+      .then((payload) => {
+        toast.success("Organización actualizada satisfactoriamente");
+      })
+      .catch((error) =>
+        toast.error("No se ha podido actualizar la organización")
+      );
+
+    handleCloseEdit();
+    props.realoadData();
+  };
+
+  const childToParent = (childdata) => {
+    setData({ lat: childdata[0], lng: childdata[1] });
+  };
+
+  const handleChange = (event) => {
+    var id = event.target.id;
+    var value = event.target.value;
+
+    switch (id) {
+      case "code":
+        setCode(value);
+        break;
+      case "name":
+        setName(value);
+        break;
+      case "headquartersAddress":
+        setHeadquartersAddress(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const [deleteOrganizationById] = useDeleteOrganizationByIdMutation();
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+  const handleClickOpenDelete = (organizationId) => {
+    setOrganizationId(organizationId);
+    setOpenDelete(true);
   };
 
   const handleDeleteClick = () => {
@@ -75,20 +148,28 @@ export default function OrganizationTable(props) {
       .unwrap()
       .then((payload) => {
         toast.success("Organización borrada satisfactoriamente");
-      });
+      })
+      .catch((error) =>
+        toast.error("No se ha podido eliminar la organización")
+      );
 
-    handleClose();
+    handleCloseDelete();
     props.realoadData();
   };
-
-  const handleEditClick = (event) => {};
 
   var rows = [];
   if (organizations) {
     rows = [];
     organizations.forEach((item, index) => {
       rows.push(
-        createData(item.id, item.code, item.name, item.headquartersAddress)
+        createData(
+          item.id,
+          item.code,
+          item.name,
+          item.headquartersAddress,
+          item.lon,
+          item.lat
+        )
       );
     });
   }
@@ -133,7 +214,7 @@ export default function OrganizationTable(props) {
                                 color="primary"
                                 aria-label="add"
                                 size="small"
-                                onClick={(e) => handleEditClick(row.id)}
+                                onClick={(e) => handleClickOpenEdit(row)}
                               >
                                 <EditIcon />
                               </Button>
@@ -141,7 +222,7 @@ export default function OrganizationTable(props) {
                                 color="primary"
                                 aria-label="add"
                                 size="small"
-                                onClick={(e) => handleClickOpen(row.id)}
+                                onClick={(e) => handleClickOpenDelete(row.id)}
                               >
                                 <DeleteIcon />
                               </Button>
@@ -166,8 +247,8 @@ export default function OrganizationTable(props) {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={openDelete}
+        onClose={handleCloseDelete}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -175,10 +256,68 @@ export default function OrganizationTable(props) {
           {"¿Está seguro de eliminar esta organización?"}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleCloseDelete}>Cancelar</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
             Aceptar
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog fullWidth={true} maxWidth={"md"} open={openEdit}>
+        <DialogTitle>Editar organización </DialogTitle>
+        <DialogContent>
+          <FormControl>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  id="code"
+                  label="Código"
+                  type="text"
+                  autoComplete="current-code"
+                  margin="normal"
+                  value={code}
+                  onChange={(e) => handleChange(e)}
+                  helperText=" "
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="name"
+                  label="Nombre"
+                  type="text"
+                  autoComplete="current-name"
+                  margin="normal"
+                  value={name}
+                  onChange={(e) => handleChange(e)}
+                  helperText=" "
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  id="headquartersAddress"
+                  label="Dirección de la organización"
+                  type="text"
+                  autoComplete="current-name"
+                  margin="normal"
+                  value={headquartersAddress}
+                  onChange={(e) => handleChange(e)}
+                  helperText=" "
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+            </Grid>
+            <CoordinatesMap childToParent={childToParent} />
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEdit}>Cancelar</Button>
+          <Button onClick={(e) => handleEditClick(e)}>Editar</Button>
         </DialogActions>
       </Dialog>
     </Paper>
