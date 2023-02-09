@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import Map, { Layer, NavigationControl, Marker, Source } from "react-map-gl";
-import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
-import { selectToken } from "../user/login/LoginSlice";
 import { Paper, Typography } from "@mui/material";
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
+import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
+import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
+import { selectToken } from "../user/login/LoginSlice";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -33,15 +33,15 @@ export default function CustomMap() {
     scale: "25.0",
   };
 
-  const { data, error, isLoading } = useGetCuadrantsByScaleQuery(payload);
+  const { data } = useGetCuadrantsByScaleQuery(payload);
 
-  const [cursor, setCursor] = useState("auto");
+  const [cursor] = useState("auto");
   const [mouseCoords, setMouseCoords] = useState({
     lng: 0,
     lat: 0,
   });
 
-  const [settings, setSettings] = useState({
+  const [settings] = useState({
     minZoom: 7,
     maxZoom: 15,
   });

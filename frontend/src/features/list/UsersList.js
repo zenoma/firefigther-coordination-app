@@ -1,25 +1,23 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 
 import { selectToken } from "../user/login/LoginSlice";
 
+import AnnouncementIcon from "@mui/icons-material/Announcement";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import List from "@mui/material/List";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import AnnouncementIcon from "@mui/icons-material/Announcement";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useGetTeamsByIdQuery } from "../../api/teamApi";
 
 export default function TeamItem(props) {
   const [open, setOpen] = useState(false);
+  
   const handleClick = () => {
     setOpen(!open);
   };

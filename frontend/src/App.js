@@ -27,7 +27,9 @@ import {
   validLogin,
 } from "./features/user/login/LoginSlice";
 
-function App() {
+import { withTranslation } from "react-i18next";
+
+function App({ t }) {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
   const [token, setToken] = useState("");
@@ -103,4 +105,4 @@ function App() {
   );
 }
 
-export default App;
+export default withTranslation()(App);

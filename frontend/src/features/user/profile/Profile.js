@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
 import { Button, Typography } from "@mui/material";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 
@@ -40,25 +39,45 @@ export default function Profile() {
           <Typography variant="h4" margin={1}>
             {user.firstName} {user.lastName}
           </Typography>
-          <Typography variant="h6" margin={1} color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h6"
+            margin={1}
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
             Email:
           </Typography>
           <Typography variant="h6" margin={1}>
             {user.email}
           </Typography>
-          <Typography variant="h6" margin={1} color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h6"
+            margin={1}
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
             DNI:
           </Typography>
           <Typography variant="h6" margin={1}>
             {user.dni}
           </Typography>
-          <Typography variant="h6" margin={1} color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h6"
+            margin={1}
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
             PhoneNumber:
           </Typography>
           <Typography variant="h6" margin={1}>
             {user.phoneNumber}
           </Typography>
-          <Typography variant="h6" margin={1} color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h6"
+            margin={1}
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
             Role:
           </Typography>
           <Typography variant="h6" margin={1}>
@@ -66,12 +85,23 @@ export default function Profile() {
           </Typography>
         </Paper>
       )}
-      <Button id="cambiar-password" type="button" color="primary" onClick={(e) => handleClick(e)}>
+      <Button
+        id="cambiar-password"
+        type="button"
+        color="primary"
+        onClick={(e) => handleClick(e)}
+      >
         <Typography margin={5} variant="caption">
           Cambiar contraseña
         </Typography>
       </Button>
-      <Button id="logout" type="button" variant="contained" color="secondary" onClick={(e) => handleClick(e)}>
+      <Button
+        id="logout"
+        type="button"
+        variant="contained"
+        color="secondary"
+        onClick={(e) => handleClick(e)}
+      >
         <Typography variant="body1">Logout</Typography>
       </Button>
     </Paper>

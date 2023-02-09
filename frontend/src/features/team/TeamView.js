@@ -1,15 +1,14 @@
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { CircularProgress } from "@mui/material";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
-import { CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { selectToken } from "../user/login/LoginSlice";
 
-import { useGetMyTeamQuery, useGetTeamsByIdQuery } from "../../api/teamApi";
-import TeamCard from "./TeamCard";
+import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import UsersList from "../list/UsersList";
+import TeamCard from "./TeamCard";
 
 export default function TeamView(props) {
   const token = useSelector(selectToken);

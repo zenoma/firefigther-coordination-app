@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
@@ -10,12 +10,12 @@ import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 
+import { useState } from "react";
 import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
 import { useGetOrganizationTypesQuery } from "../../api/organizationTypeApi";
 import { selectToken } from "../user/login/LoginSlice";
 import OrganizationCreateDialog from "./OrganizationCreateDialog";
 import OrganizationTable from "./OrganizationTable";
-import { useState } from "react";
 
 export default function OrganizationsView() {
   const token = useSelector(selectToken);

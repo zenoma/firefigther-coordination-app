@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { Button, TextField, FormControl, FormLabel, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { useLoginMutation } from "../../../api/userApi.js";
-import { selectToken, validLogin } from "./LoginSlice.js";
 import { emailValidation } from "../../../app/utils/validations.js";
 import "./Login.css";
+import { validLogin } from "./LoginSlice.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,10 +24,8 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
-  const [login, { loginError }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const navigate = useNavigate();
-
-  const token = useSelector(selectToken);
 
   const handleChange = (event) => {
     if (event.target.id === "email") {
@@ -68,7 +73,9 @@ export default function Login() {
             margin="normal"
             autoComplete="current-email"
             error={!isValidEmail && email !== ""}
-            helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+            helperText={
+              !isValidEmail && email !== "" ? "Not valid email!" : " "
+            }
             value={email}
             onChange={(e) => handleChange(e)}
           />

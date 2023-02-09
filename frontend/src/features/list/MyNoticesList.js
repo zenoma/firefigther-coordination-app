@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import ListSubheader from "@mui/material/ListSubheader";
-import { CircularProgress, ListItemButton, Typography, ListItemText, Divider } from "@mui/material";
+import { CircularProgress, Divider, ListItemButton, ListItemText, Typography } from "@mui/material";
 import List from "@mui/material/List";
+import ListSubheader from "@mui/material/ListSubheader";
 
 import { selectToken } from "../user/login/LoginSlice";
 
 import { useGetMyNoticesQuery } from "../../api/noticeApi";
-import Notice from "../notice/Notice";
 
 export default function MyTeamList() {
   const [list, setList] = useState("");

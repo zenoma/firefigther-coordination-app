@@ -1,16 +1,13 @@
-import * as React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 
+import { Card, CardHeader, CardMedia } from "@mui/material";
 import CustomMap from "../map/CustomMap";
 import Notice from "../notice/Notice";
-import { Card, CardHeader, CardMedia } from "@mui/material";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-
 
 export default function Dashboard() {
   return (

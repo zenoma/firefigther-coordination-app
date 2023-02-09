@@ -1,35 +1,37 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import ArticleIcon from "@mui/icons-material/Article";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import GroupsIcon from "@mui/icons-material/Groups";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import HomeIcon from "@mui/icons-material/Home";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MuiAppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import HomeIcon from "@mui/icons-material/Home";
-import GroupsIcon from "@mui/icons-material/Groups";
-import GroupWorkIcon from "@mui/icons-material/GroupWork";
-import ArticleIcon from "@mui/icons-material/Article";
+import { styled, useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
-import { Menu, Avatar, Tooltip, MenuItem } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
+import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { logout, selectToken } from "../user/login/LoginSlice";
 import { SwitchThemeButton } from "./SwitchThemeButton";
+import { SwitchLanguajeDropdown } from "./SwitchLanguajeDropdown";
 
 const drawerWidth = 240;
 const loggedSettingsMenu = ["Perfil", "Logout"];
@@ -45,6 +47,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+  const { t } = useTranslation();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -138,8 +142,8 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5"  noWrap component="div" sx={{ flexGrow: 1 }}>
-            Firefigther Coordination App
+          <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 1 }}>
+            {t("title")}
           </Typography>
           {!token && (
             <Box sx={{ flexGrow: 0 }}>
@@ -232,7 +236,11 @@ export default function PersistentDrawerLeft() {
       >
         <DrawerHeader sx={{ display: "flex" }}>
           <List sx={{ flexGrow: 10 }}>
-            <ListItem key="Home" disablePadding onClick={(e) => handleClickItemList(e, "")}>
+            <ListItem
+              key="Home"
+              disablePadding
+              onClick={(e) => handleClickItemList(e, "")}
+            >
               <ListItemButton>
                 <ListItemIcon>
                   <HomeIcon />
@@ -242,14 +250,22 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           </List>
           <IconButton sx={{ flexGrow: 10 }} onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </DrawerHeader>
 
         <Divider />
         <List>
           {pages.map((item, index) => (
-            <ListItem key={item.name} disablePadding onClick={(e) => handleClickItemList(e, item.name)}>
+            <ListItem
+              key={item.name}
+              disablePadding
+              onClick={(e) => handleClickItemList(e, item.name)}
+            >
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.name} />
@@ -262,13 +278,16 @@ export default function PersistentDrawerLeft() {
           {["PAGE 4", "PAGE 5", "PAGE 6"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
+        <SwitchLanguajeDropdown />
         <SwitchThemeButton />
       </Drawer>
     </Box>

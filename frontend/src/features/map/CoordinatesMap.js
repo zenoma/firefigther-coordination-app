@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 
-import Map, { Layer, NavigationControl, Marker, Source } from "react-map-gl";
-import {
-  transformCoordinates,
-  untransformCoordinates,
-} from "../../app/utils/coordinatesTransformations";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { selectToken } from "../user/login/LoginSlice";
+import Map, { Marker, NavigationControl } from "react-map-gl";
 import Icon from "../../app/assets/images/pin.png";
+import { transformCoordinates } from "../../app/utils/coordinatesTransformations";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -27,16 +22,14 @@ const INITIAL_VIEW_STATE = {
 
 // DeckGL react component
 export default function CoordinatesMap({ childToParent }) {
-  const token = useSelector(selectToken);
-
-  const [cursor, setCursor] = useState("auto");
+  const [cursor] = useState("auto");
 
   const [mouseCoords, setMouseCoords] = useState({
     lng: 0,
     lat: 0,
   });
 
-  const [settings, setSettings] = useState({
+  const [settings] = useState({
     minZoom: 7,
     maxZoom: 15,
   });

@@ -17,7 +17,7 @@ export default function ChangePassword() {
   const token = useSelector(selectToken);
   const navigate = useNavigate();
 
-  const [changePassword, error] = useChangePasswordMutation();
+  const [changePassword] = useChangePasswordMutation();
 
   const handleChange = (event) => {
     if (event.target.id === "old-password") {
@@ -74,7 +74,12 @@ export default function ChangePassword() {
             value={newPassword}
             onChange={(e) => handleChange(e)}
           />
-          <Button type="button" color="primary" className="form-button" onClick={(e) => handleClick(e)}>
+          <Button
+            type="button"
+            color="primary"
+            className="form-button"
+            onClick={(e) => handleClick(e)}
+          >
             Enviar
           </Button>
         </FormControl>
