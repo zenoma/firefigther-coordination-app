@@ -14,7 +14,8 @@ import glFlag from "../../assets/images/gl.svg";
 import i18n from "../../i18n";
 
 export const SwitchLanguajeDropdown = () => {
-  const [language, setLanguage] = useState(i18n.language);
+  const [language, setLanguage] = useState(i18n.language.substring(0,2));
+
 
   const handleChange = (event) => {
     setLanguage(event.target.value);

@@ -1,4 +1,4 @@
-import { Box, Fab, MenuItem, Select } from "@mui/material";
+import { Box, Fab, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,6 +17,7 @@ import CoordinatesMap from "../map/CoordinatesMap";
 import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 import AddIcon from "@mui/icons-material/Add";
+import { useTranslation } from "react-i18next";
 
 export default function OrganizationCreateDialog(props) {
   const [code, setCode] = useState("");
@@ -24,9 +25,9 @@ export default function OrganizationCreateDialog(props) {
   const [headquartersAddress, setHeadquartersAddress] = useState("");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState("");
-  const [organizationTypeId, setOrganizationTypeId] = useState(
-    "Elije un tipo de organización"
-  );
+  const [organizationTypeId, setOrganizationTypeId] = useState();
+
+  const { t } = useTranslation();
 
   const childToParent = (childdata) => {
     setData({ lat: childdata[0], lng: childdata[1] });
@@ -47,7 +48,7 @@ export default function OrganizationCreateDialog(props) {
     setName("");
     setHeadquartersAddress("");
     setData("");
-    setOrganizationTypeId("Elije un tipo de organización");
+    setOrganizationTypeId("");
     setOpen(false);
   };
 
@@ -117,12 +118,12 @@ export default function OrganizationCreateDialog(props) {
       >
         <DialogTitle>Crear nueva organización </DialogTitle>
         <DialogContent>
-          <FormControl>
+          <FormControl fullWidth>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   id="code"
-                  label="Código"
+                  label={t("organization-code")}
                   type="text"
                   autoComplete="current-code"
                   margin="normal"
@@ -136,7 +137,7 @@ export default function OrganizationCreateDialog(props) {
               <Grid item xs={6}>
                 <TextField
                   id="name"
-                  label="Nombre"
+                  label={t("organization-name")}
                   type="text"
                   autoComplete="current-name"
                   margin="normal"
@@ -148,31 +149,31 @@ export default function OrganizationCreateDialog(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <Select
-                  id="organizationTypes"
-                  labelId="organizationTypes"
-                  defaultValue="asdasd"
-                  placeholder="Selecciona un tipo de organización"
-                  value={organizationTypeId}
-                  sx={{ display: "flex" }}
-                  onChange={(e) => handleChange(e)}
-                  required
-                >
-                  <MenuItem value="Elije un tipo de organización" disabled>
-                    <em>Elije un tipo de organización</em>
-                  </MenuItem>
-                  {organizationTypesList.map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <FormControl fullWidth>
+                  <InputLabel id="input-label-id">
+                    {t("organization-type-name")}
+                  </InputLabel>
+                  <Select
+                    id="organizationTypes"
+                    labelId="input-label-id"
+                    label="Tipo de organización"
+                    value={organizationTypeId}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  >
+                    {organizationTypesList.map((item, index) => (
+                      <MenuItem key={index} value={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   id="headquartersAddress"
-                  label="Dirección de la organización"
+                  label={t("organization-address")}
                   type="text"
                   autoComplete="current-headquartersAddress"
                   margin="normal"

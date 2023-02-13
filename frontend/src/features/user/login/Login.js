@@ -16,11 +16,14 @@ import { useLoginMutation } from "../../../api/userApi.js";
 import { emailValidation } from "../../../app/utils/validations.js";
 import "./Login.css";
 import { validLogin } from "./LoginSlice.js";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [password, setPassword] = useState("");
+
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -47,7 +50,7 @@ export default function Login() {
       .then((payload) => {
         dispatch(validLogin(payload));
         toast.info("Successfully logged in.");
-        navigate("/perfil");
+        navigate("/profile");
       });
   };
 
@@ -68,7 +71,7 @@ export default function Login() {
           </FormLabel>
           <TextField
             id="email"
-            label="Email"
+            label={t("email")}
             type="email"
             margin="normal"
             autoComplete="current-email"
@@ -81,7 +84,7 @@ export default function Login() {
           />
           <TextField
             id="password"
-            label="Password"
+            label={t("password")}
             type="password"
             autoComplete="current-password"
             margin="normal"

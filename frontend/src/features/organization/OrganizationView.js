@@ -11,6 +11,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
 import { useGetOrganizationTypesQuery } from "../../api/organizationTypeApi";
 import { selectToken } from "../user/login/LoginSlice";
@@ -20,6 +21,7 @@ import OrganizationTable from "./OrganizationTable";
 export default function OrganizationsView() {
   const token = useSelector(selectToken);
   const [selectedOrganizationType, setSelectedOrganizationType] = useState(".");
+  const { t } = useTranslation();
 
   const payload = {
     token: token,
@@ -62,10 +64,10 @@ export default function OrganizationsView() {
         margin={1}
         sx={{ fontWeight: "bold", color: "primary.light" }}
       >
-        Organizaciones
+        {t("organizations")}
       </Typography>
       {errorOrganizationTypesQuery ? (
-        <h1>Oh no, ha ocurrido un error</h1>
+        <h1>{t("generic-error")}</h1>
       ) : isLoadingOrganizationTypesQuery ? (
         <CircularProgress />
       ) : organizationTypes ? (
@@ -79,7 +81,7 @@ export default function OrganizationsView() {
                 padding: "2px",
               }}
             >
-              Seleciona el tipo de organización a mostrar
+              {t("select-organization-type")}
             </Typography>
             <RadioGroup
               onChange={(e) => handleRadioChange(e)}

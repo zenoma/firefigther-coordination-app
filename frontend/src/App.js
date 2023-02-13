@@ -71,20 +71,20 @@ function App({ t }) {
               element={!logged ? <SignUp /> : <Navigate replace to={"/"} />}
             />
             <Route
-              path="/perfil"
+              path="/profile"
               element={logged ? <Profile /> : <Navigate replace to={"/"} />}
             />
             <Route path="/cambiar-password" element={<ChangePassword />} />
             <Route
-              path="/organizaciones"
+              path="/organizations"
               // TODO: Change when roles implemented
               element={
                 userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
               }
             />
-            <Route path="/mi-equipo" element={<MyTeamView />} />
+            <Route path="/my-team" element={<MyTeamView />} />
             <Route path="/detalles-equipo/:id" element={<TeamView />} />
-            <Route path="/mis-avisos" element={<MyNoticesList />} />
+            <Route path="/my-notices" element={<MyNoticesList />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

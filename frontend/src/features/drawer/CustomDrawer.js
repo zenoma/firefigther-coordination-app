@@ -34,8 +34,22 @@ import { SwitchThemeButton } from "./SwitchThemeButton";
 import { SwitchLanguajeDropdown } from "./SwitchLanguajeDropdown";
 
 const drawerWidth = 240;
-const loggedSettingsMenu = ["Perfil", "Logout"];
-const notLoggedSettingsMenu = ["Login", "Sign Up"];
+const loggedSettingsMenu = ["profile", "logout"];
+const notLoggedSettingsMenu = ["login", "sign-up"];
+const pages = [
+  {
+    name: "organizations",
+    icon: <GroupsIcon />,
+  },
+  {
+    name: "my-team",
+    icon: <GroupWorkIcon />,
+  },
+  {
+    name: "my-notices",
+    icon: <ArticleIcon />,
+  },
+];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -58,21 +72,6 @@ export default function PersistentDrawerLeft() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const pages = [
-    {
-      name: "Organizaciones",
-      icon: <GroupsIcon />,
-    },
-    {
-      name: "Mi equipo",
-      icon: <GroupWorkIcon />,
-    },
-    {
-      name: "Mis avisos",
-      icon: <ArticleIcon />,
-    },
-  ];
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -81,17 +80,16 @@ export default function PersistentDrawerLeft() {
     setAnchorElUser(null);
   };
 
-  const handleClickUserMenu = (e) => {
-    var id = e.target.id;
+  const handleClickUserMenu = (id) => {
     switch (id) {
-      case "sign up":
+      case "sign-up":
         navigate("/sign-up");
         break;
       case "login":
         navigate("/login");
         break;
-      case "perfil":
-        navigate("/perfil");
+      case "profile":
+        navigate("/profile");
         break;
       case "logout":
         dispatch(logout());
@@ -103,15 +101,15 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleClickItemList = (e, text) => {
-    switch (text.toLocaleLowerCase()) {
-      case "mi equipo":
-        navigate("/mi-equipo");
+    switch (text) {
+      case "my-team":
+        navigate("/my-team");
         break;
-      case "organizaciones":
-        navigate("/organizaciones");
+      case "organizations":
+        navigate("/organizations");
         break;
-      case "mis avisos":
-        navigate("/mis-avisos");
+      case "my-notices":
+        navigate("/my-notices");
         break;
       default:
         navigate("/");
@@ -147,7 +145,7 @@ export default function PersistentDrawerLeft() {
           </Typography>
           {!token && (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title={t("open-settings")}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <LoginIcon />
                 </IconButton>
@@ -171,11 +169,11 @@ export default function PersistentDrawerLeft() {
                 {notLoggedSettingsMenu.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography
-                      id={setting.toLocaleLowerCase()}
+                      id={setting}
                       textAlign="center"
-                      onClick={(e) => handleClickUserMenu(e)}
+                      onClick={(e) => handleClickUserMenu(setting)}
                     >
-                      {setting}
+                      {t(setting)}
                     </Typography>
                   </MenuItem>
                 ))}
@@ -208,11 +206,11 @@ export default function PersistentDrawerLeft() {
                 {loggedSettingsMenu.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography
-                      id={setting.toLocaleLowerCase()}
+                      id={setting}
                       textAlign="center"
-                      onClick={(e) => handleClickUserMenu(e)}
+                      onClick={(e) => handleClickUserMenu(setting)}
                     >
-                      {setting}
+                      {t(setting)}
                     </Typography>
                   </MenuItem>
                 ))}
@@ -260,7 +258,7 @@ export default function PersistentDrawerLeft() {
 
         <Divider />
         <List>
-          {pages.map((item, index) => (
+          {pages.map((item) => (
             <ListItem
               key={item.name}
               disablePadding
@@ -268,7 +266,7 @@ export default function PersistentDrawerLeft() {
             >
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.name} />
+                <ListItemText primary={t(item.name)} />
               </ListItemButton>
             </ListItem>
           ))}

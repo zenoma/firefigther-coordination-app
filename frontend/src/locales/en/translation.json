@@ -1,4 +1,37 @@
 {
   "language": "Language",
-  "title": "Firefigther Coordination App"
+  "title": "Firefigther Coordination App",
+  "open-settings": "Open options",
+
+  "sign-up": "Sign up",
+  "sign-up-tittle": "Create new user",
+  "sign-up-button": "Create",
+  "first-name": "Name",
+  "last-name": "Surname",
+  "dni": "DNI",
+  "phone-number": "Phone Nnmber",
+  "email": "Email",
+  "password": "Password",
+  "already-account": "Already an account?",
+
+  "login": "Login",
+  "logout": "Logout",
+  "profile": "Profila",
+  "organizations": "Organizations",
+  "my-team": "My team",
+  "my-notices": "My notices",
+  "notices": "Notices",
+
+  "geographic-map": "Geographic Map",
+  "create-notice": "Create notice",
+  "create-notice-placeholder": "Write notice description...",
+
+  "select-organization-type": "Select organization type to show",
+  "choose-organization-type": "Select organization type",
+  "organization-code": "Code",
+  "organization-name": "Name",
+  "organization-type-name": "Organization type",
+  "organization-address": "Organization address",
+
+  "generic-error": "Oh no, an error has occurred"
 }

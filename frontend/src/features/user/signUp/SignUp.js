@@ -2,11 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { Button, TextField, FormControl, FormLabel, Grid, Link, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  TextField,
+  FormControl,
+  FormLabel,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from "@mui/material";
 
 import { useSignUpMutation } from "../../../api/userApi";
-import { emailValidation, dniValidation, phoneNumberValidation } from "../../../app/utils/validations.js";
+import {
+  emailValidation,
+  dniValidation,
+  phoneNumberValidation,
+} from "../../../app/utils/validations.js";
 import "./SignUp.css";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,6 +33,7 @@ export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
 
+  const { t } = useTranslation();
 
   const [signUp] = useSignUpMutation();
   const navigate = useNavigate();
@@ -101,13 +116,13 @@ export default function Login() {
       <form>
         <FormControl>
           <FormLabel>
-            <Typography variant="h5">Sign Up</Typography>
+            <Typography variant="h5">{t("sign-up-tittle")}</Typography>
           </FormLabel>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
                 id="firstName"
-                label="First Name"
+                label={t("first-name")}
                 type="text"
                 autoComplete="current-firstName"
                 margin="dense"
@@ -121,7 +136,7 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="lastName"
-                label="Last Name"
+                label={t("last-name")}
                 type="text"
                 autoComplete="current-lastName"
                 margin="dense"
@@ -135,13 +150,17 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="dni"
-                label="DNI"
+                label={t("dni")}
                 type="text"
                 autoComplete="current-dni"
                 margin="dense"
                 value={dni}
                 error={!isValidDni && dni !== ""}
-                helperText={!isValidDni && dni !== "" ? "Must have 8 numbers and a letter" : " "}
+                helperText={
+                  !isValidDni && dni !== ""
+                    ? "Must have 8 numbers and a letter"
+                    : " "
+                }
                 onChange={(e) => handleChange(e)}
                 required
                 variant="standard"
@@ -150,13 +169,17 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="phoneNumber"
-                label="Phone Number"
+                label={t("phone-number")}
                 type="text"
                 autoComplete="current-phoneNumber"
                 margin="dense"
                 value={phoneNumber}
                 error={!isValidPhoneNumber && phoneNumber !== ""}
-                helperText={!isValidPhoneNumber && phoneNumber !== "" ? `Must have 9 digits` : " "}
+                helperText={
+                  !isValidPhoneNumber && phoneNumber !== ""
+                    ? `Must have 9 digits`
+                    : " "
+                }
                 onChange={(e) => handleChange(e)}
                 required
                 variant="standard"
@@ -165,12 +188,14 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="email"
-                label="Email"
+                label={t("email")}
                 type="email"
                 margin="dense"
                 autoComplete="current-email"
                 error={!isValidEmail && email !== ""}
-                helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+                helperText={
+                  !isValidEmail && email !== "" ? "Not valid email!" : " "
+                }
                 value={email}
                 onChange={(e) => handleChange(e)}
                 variant="standard"
@@ -179,7 +204,7 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="password"
-                label="Password"
+                label={t("password")}
                 type="password"
                 autoComplete="current-password"
                 margin="dense"
@@ -197,10 +222,16 @@ export default function Login() {
             disabled={!isValidEmail}
             onClick={(e) => handleClick(e)}
           >
-            Sign Up
+            {t("sign-up-button")}
           </Button>
-          <Link component="button" variant="body2" fontSize={15} onClick={(e) => handleLinkClick(e)}>
+          <Link
+            component="button"
+            variant="body2"
+            fontSize={15}
+            onClick={(e) => handleLinkClick(e)}
+          >
             Already have a account?
+            {t("already-account")}
           </Link>
         </FormControl>
       </form>

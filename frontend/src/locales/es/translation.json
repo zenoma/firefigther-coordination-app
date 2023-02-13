@@ -1,4 +1,37 @@
 {
   "language": "Idioma",
-  "title": "Aplicación de Coordinación de Bomberos"
+  "title": "Aplicación de Coordinación de Bomberos",
+  "open-settings": "Abrir opciones",
+
+  "sign-up": "Sign up",
+  "sign-up-tittle": "Crear nuevo usuario",
+  "sign-up-button": "Crear",
+  "first-name": "Nombre",
+  "last-name": "Apellido",
+  "dni": "DNI",
+  "phone-number": "Número teléfono",
+  "email": "Email",
+  "password": "Contraseña",
+  "already-account": "¿Ya estás registrado?",
+
+  "login": "Login",
+  "logout": "Logout",
+  "profile": "Perfil",
+  "organizations": "Organizaciones",
+  "my-team": "Mi equipo",
+  "my-notices": "Mis avisos",
+  "notices": "Avisos",
+
+  "geographic-map": "Mapa geográfico",
+  "create-notice": "Crear aviso",
+  "create-notice-placeholder": "Inserte la descripción del aviso...",
+
+  "select-organization-type": "Seleciona el tipo de organización a mostrar",
+  "choose-organization-type": "Selecciona el tipo de organización",
+  "organization-code": "Código",
+  "organization-name": "Nombre",
+  "organization-type-name": "Tipo de organización",
+  "organization-address": "Dirección de la organización",
+
+  "generic-error": "Oh no, ha ocurrido un error"
 }
