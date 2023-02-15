@@ -44,10 +44,10 @@ export default function OrganizationsView() {
 
   const handleRadioChange = (e) => {
     setSelectedOrganizationType(e.target.value);
-    realoadData();
+    reloadData();
   };
 
-  const realoadData = () => {
+  const reloadData = () => {
     refetch();
   };
 
@@ -107,7 +107,7 @@ export default function OrganizationsView() {
             <CircularProgress />
           ) : organizationsList ? (
             <OrganizationTable
-              realoadData={realoadData}
+              reloadData={reloadData}
               organizations={organizationsList}
               organizationTypesList={organizationTypes}
             />
@@ -115,7 +115,7 @@ export default function OrganizationsView() {
 
           <OrganizationCreateDialog
             organizationTypes={organizationTypes}
-            realoadData={realoadData}
+            reloadData={reloadData}
           />
         </FormControl>
       ) : null}

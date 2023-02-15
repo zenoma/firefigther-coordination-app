@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 
@@ -15,8 +15,8 @@ export default function Profile() {
   const user = useSelector(selectUser);
 
   const handleClick = (e) => {
-    if (e.target.id === "cambiar-password") {
-      navigate("/cambiar-password");
+    if (e.target.id === "change-password") {
+      navigate("/change-password");
     } else if (e.target.id === "logout") {
       dispatch(logout());
       navigate("/");
@@ -26,6 +26,7 @@ export default function Profile() {
   return (
     <Paper
       sx={{
+        minWidth: 400,
         maxWidth: 1000,
         padding: 3,
         textAlign: "center",
@@ -34,7 +35,7 @@ export default function Profile() {
       }}
     >
       {user && (
-        <Paper sx={{ padding: 2 }} elevation={3}>
+        <Box>
           <Avatar alt={user.firstName} src="/static/images/avatar/2.jpg" />
           <Typography variant="h4" margin={1}>
             {user.firstName} {user.lastName}
@@ -83,27 +84,26 @@ export default function Profile() {
           <Typography variant="h6" margin={1}>
             {user.userRole}
           </Typography>
-        </Paper>
+          <Button
+            id="change-password"
+            type="button"
+            color="primary"
+            onClick={(e) => handleClick(e)}
+            sx={{ margin: "20px" }}
+          >
+            Cambiar contraseña
+          </Button>
+          <Button
+            id="logout"
+            type="button"
+            variant="contained"
+            color="secondary"
+            onClick={(e) => handleClick(e)}
+          >
+            Logout
+          </Button>
+        </Box>
       )}
-      <Button
-        id="cambiar-password"
-        type="button"
-        color="primary"
-        onClick={(e) => handleClick(e)}
-      >
-        <Typography margin={5} variant="caption">
-          Cambiar contraseña
-        </Typography>
-      </Button>
-      <Button
-        id="logout"
-        type="button"
-        variant="contained"
-        color="secondary"
-        onClick={(e) => handleClick(e)}
-      >
-        <Typography variant="body1">Logout</Typography>
-      </Button>
     </Paper>
   );
 }

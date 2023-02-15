@@ -20,7 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
 import "./App.css";
 import MyTeamView from "./features/team/MyTeamView";
-import TeamView from "./features/team/TeamView";
+import TeamsView from "./features/team/TeamsView";
 import {
   selectToken,
   selectUser,
@@ -74,7 +74,7 @@ function App({ t }) {
               path="/profile"
               element={logged ? <Profile /> : <Navigate replace to={"/"} />}
             />
-            <Route path="/cambiar-password" element={<ChangePassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route
               path="/organizations"
               // TODO: Change when roles implemented
@@ -83,7 +83,7 @@ function App({ t }) {
               }
             />
             <Route path="/my-team" element={<MyTeamView />} />
-            <Route path="/detalles-equipo/:id" element={<TeamView />} />
+            <Route path="/organizations/:organizationId/teams" element={<TeamsView />} />
             <Route path="/my-notices" element={<MyNoticesList />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>

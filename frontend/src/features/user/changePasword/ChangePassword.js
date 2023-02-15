@@ -45,11 +45,13 @@ export default function ChangePassword() {
   return (
     <Paper
       sx={{
-        maxWidth: 500,
+        minWidth: 400,
+        maxWidth: 1000,
         padding: 3,
         textAlign: "center",
+        display: "inline-block",
+        boxShadow: "none",
       }}
-      elevation={4}
     >
       <form>
         <FormControl>
@@ -79,6 +81,7 @@ export default function ChangePassword() {
             color="primary"
             className="form-button"
             onClick={(e) => handleClick(e)}
+            variant="contained"
           >
             Enviar
           </Button>

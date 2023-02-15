@@ -64,45 +64,41 @@ export default function Login() {
         boxShadow: "none",
       }}
     >
-      <form>
-        <FormControl>
-          <FormLabel>
-            <Typography variant="h5">Login</Typography>
-          </FormLabel>
-          <TextField
-            id="email"
-            label={t("email")}
-            type="email"
-            margin="normal"
-            autoComplete="current-email"
-            error={!isValidEmail && email !== ""}
-            helperText={
-              !isValidEmail && email !== "" ? "Not valid email!" : " "
-            }
-            value={email}
-            onChange={(e) => handleChange(e)}
-          />
-          <TextField
-            id="password"
-            label={t("password")}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-            value={password}
-            onChange={(e) => handleChange(e)}
-          />
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            className="form-button"
-            disabled={!isValidEmail}
-            onClick={(e) => handleClick(e)}
-          >
-            Log in
-          </Button>
-        </FormControl>
-      </form>
+      <FormControl>
+        <FormLabel>
+          <Typography variant="h5">Login</Typography>
+        </FormLabel>
+        <TextField
+          id="email"
+          label={t("email")}
+          type="email"
+          margin="normal"
+          autoComplete="current-email"
+          error={!isValidEmail && email !== ""}
+          helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+          value={email}
+          onChange={(e) => handleChange(e)}
+        />
+        <TextField
+          id="password"
+          label={t("password")}
+          type="password"
+          autoComplete="current-password"
+          margin="normal"
+          value={password}
+          onChange={(e) => handleChange(e)}
+        />
+        <Button
+          type="button"
+          variant="contained"
+          color="primary"
+          className="form-button"
+          disabled={!isValidEmail}
+          onClick={(e) => handleClick(e)}
+        >
+          Log in
+        </Button>
+      </FormControl>
     </Paper>
   );
 }

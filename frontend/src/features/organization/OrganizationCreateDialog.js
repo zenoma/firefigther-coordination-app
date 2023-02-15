@@ -33,7 +33,6 @@ export default function OrganizationCreateDialog(props) {
     setData({ lat: childdata[0], lng: childdata[1] });
   };
 
-  const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const organizationTypesList = props.organizationTypes;
 
@@ -78,25 +77,25 @@ export default function OrganizationCreateDialog(props) {
       name: name,
       headquartersAddress: headquartersAddress,
       coordinates: data,
-      id: user.id,
       token: token,
       organizationTypeId: organizationTypeId,
     };
 
     if (data === "") {
-      toast.error(
+      toast.warning(
         "Por favor indique la dirección de la organización en el mapa."
       );
     }
-    if (organizationTypeId === "Elije un tipo de organización") {
-      toast.error("Por favor indique el tipo de la organización .");
+    if (!organizationTypeId) {
+      toast.warning("Por favor indique el tipo de la organización");
     }
+
     createOrganization(payload)
       .unwrap()
       .then(() => {
         toast.success("Organización creada satisfactoriamente");
-        props.realoadData();
         handleClose();
+        props.reloadData();
       })
       .catch((error) => toast.error("No se ha podido crear la organización"));
   };
@@ -106,8 +105,8 @@ export default function OrganizationCreateDialog(props) {
   return (
     <div>
       <Box m={1}>
-        <Fab color="primary" aria-label="add">
-          <AddIcon onClick={handleClickOpen} />
+        <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
+          <AddIcon />
         </Fab>
       </Box>
       <Dialog

@@ -9,11 +9,13 @@ import { selectToken } from "../user/login/LoginSlice";
 import { useGetMyTeamQuery } from "../../api/teamApi";
 import UsersList from "../list/UsersList";
 import TeamCard from "./TeamCard";
+import { useTranslation } from "react-i18next";
 
 export default function MyTeamView(props) {
   const token = useSelector(selectToken);
 
   const teamId = useParams()["id"];
+  const { t } = useTranslation();
 
   const payload = {
     token: token,
@@ -37,7 +39,7 @@ export default function MyTeamView(props) {
     >
       {/* TODO: Handle user without team */}
       {error ? (
-        <h1>Oh no, there was an error</h1>
+        <h1>{t("generic-error")}</h1>
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (
