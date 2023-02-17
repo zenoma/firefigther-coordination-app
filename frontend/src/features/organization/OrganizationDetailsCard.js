@@ -5,21 +5,23 @@ import Typography from "@mui/material/Typography";
 
 export default function OrganizationDetailsCard(props) {
   return (
-    <Container>
+    <Container
+      sx={{
+        maxWidth: "500px",
+      }}
+    >
       <Typography
         variant="h4"
-        margin={1}
+        margin="10px"
         sx={{
           fontWeight: "bold",
           color: "primary.light",
-          display: "flex",
         }}
       >
         Detalles de organización
       </Typography>
       <Typography
         variant="h6"
-        margin={1}
         sx={{
           fontWeight: "bold",
           display: "inline-block",
@@ -28,12 +30,11 @@ export default function OrganizationDetailsCard(props) {
       >
         Código organización:
       </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline" }}>
+      <Typography variant="body" margin={1} sx={{ display: "inline" }}>
         {props.data["code"]}
       </Typography>
       <Typography
         variant="h6"
-        margin={1}
         sx={{
           fontWeight: "bold",
           display: "inline-block",
@@ -42,12 +43,11 @@ export default function OrganizationDetailsCard(props) {
       >
         Nombre organización:
       </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
         {props.data["name"]}
       </Typography>
       <Typography
         variant="h6"
-        margin={1}
         sx={{
           fontWeight: "bold",
           display: "inline-block",
@@ -56,12 +56,11 @@ export default function OrganizationDetailsCard(props) {
       >
         Dirección de la organización:
       </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
         {props.data["headquartersAddress"]}
       </Typography>
       <Typography
         variant="h6"
-        margin={1}
         sx={{
           fontWeight: "bold",
           display: "inline-block",
@@ -70,7 +69,7 @@ export default function OrganizationDetailsCard(props) {
       >
         Tipo de organización:
       </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
         {props.data["organizationType"]}
       </Typography>
     </Container>

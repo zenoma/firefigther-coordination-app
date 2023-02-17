@@ -13,6 +13,17 @@ export const organizationApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    getOrganizationById: build.query({
+      query: (payload) => ({
+        url: "/organizations/" + payload.organizationId,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
     getOrganizationsByOrganizationType: build.query({
       query: (payload) => ({
         url:
@@ -86,6 +97,7 @@ export const organizationApi = baseApi.injectEndpoints({
 
 export const {
   useGetOrganizationsQuery,
+  useGetOrganizationByIdQuery,
   useCreateOrganizationMutation,
   useUpdateOrganizationMutation,
   useGetOrganizationsByOrganizationTypeQuery,
