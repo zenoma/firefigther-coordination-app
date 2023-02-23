@@ -15,6 +15,7 @@ import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +74,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<Organization> findAllOrganizations() {
-        return organizationRepository.findAll();
+        return organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Override
@@ -233,7 +234,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<Team> findTeamByOrganizationId(Long organizationId) {
-        return teamRepository.findByOrganizationId(organizationId);
+        return teamRepository.findByOrganizationIdOrderByCode(organizationId);
     }
 
 

@@ -5,11 +5,13 @@ import { transformCoordinates } from "../../app/utils/coordinatesTransformations
 import { useCreateNoticeMutation } from "../../api/noticeApi";
 import { selectToken } from "../user/login/LoginSlice";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function Notice() {
   const [body, setBody] = useState("");
-
   const [coordinates, setCoordinates] = useState("");
+
+  const { t } = useTranslation();
 
   const token = useSelector(selectToken);
 
@@ -17,7 +19,12 @@ export default function Notice() {
 
   const handleChange = (event) => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      setCoordinates(transformCoordinates(position.coords.longitude, position.coords.latitude));
+      setCoordinates(
+        transformCoordinates(
+          position.coords.longitude,
+          position.coords.latitude
+        )
+      );
     });
 
     if (event.target.id === "notice-body") {
@@ -38,7 +45,7 @@ export default function Notice() {
       <TextField
         fullWidth
         id="notice-body"
-        label="Comment"
+        placeholder={t("create-notice-placeholder")}
         type="normal"
         margin="normal"
         autoComplete="notice-body"
@@ -48,11 +55,11 @@ export default function Notice() {
       <Button
         type="button"
         variant="contained"
-        color="secondary"
+        color="primary"
         className="form-button"
         onClick={(e) => handleClick(e)}
       >
-        Create notice
+        {t("create-notice")}
       </Button>
     </Box>
   );

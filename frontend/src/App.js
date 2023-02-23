@@ -1,36 +1,44 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
-import Profile from "./features/profile/Profile";
-import Login from "./features/user/login/Login";
-import SignUp from "./features/user/signUp/SignUp";
-import ChangePassword from "./features/user/changePasword/ChangePassword";
-import OrganizationsList from "./features/list/OrganizationsList";
-import MyTeamList from "./features/list/MyTeamList";
-import MyNoticesList from "./features/list/MyNoticesList";
-import CustomDrawer from "./features/drawer/CustomDrawer";
+import PageNotFound from "./errors/PageNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
+import CustomDrawer from "./features/drawer/CustomDrawer";
+import MyNoticesList from "./features/list/MyNoticesList";
+import OrganizationView from "./features/organization/OrganizationView";
+import ChangePassword from "./features/user/changePasword/ChangePassword";
+import Login from "./features/user/login/Login";
+import Profile from "./features/user/profile/Profile";
+import SignUp from "./features/user/signUp/SignUp";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme/theme";
 
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
-import { validLogin, selectToken } from "./features/user/login/LoginSlice";
-import CustomMap from "./features/map/CustomMap";
+import "./App.css";
+import MyTeamView from "./features/team/MyTeamView";
+import TeamsView from "./features/team/TeamsView";
+import {
+  selectToken,
+  selectUser,
+  validLogin,
+} from "./features/user/login/LoginSlice";
 
-function App() {
+import { withTranslation } from "react-i18next";
+
+function App({ t }) {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
   const [token, setToken] = useState("");
 
-  const [login, { loginError }] = useLoginFromTokenMutation();
+  const [login] = useLoginFromTokenMutation();
 
   const logged = useSelector(selectToken);
+
+  const userRole = useSelector(selectUser).userRole;
 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
@@ -48,26 +56,38 @@ function App() {
           localStorage.setItem("token", token);
         });
     }
-  }, [token]);
+  }, [token, dispatch, login]);
 
   return (
     <ThemeProvider theme={theme.darkTheme ? darkTheme : lightTheme}>
       <div className="App">
-        <header className="App-header">
-          <BrowserRouter>
-            <CustomDrawer />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/login" element={<Login />} />
-              {!logged && <Route path="/sign-up" element={<SignUp />} />}
-              {logged && <Route path="/profile" element={<Profile />} />}
-              <Route path="/change-password" element={<ChangePassword />} />
-              <Route path="/organizations" element={<OrganizationsList />} />
-              <Route path="/my-team" element={<MyTeamList />} />
-              <Route path="/my-notices" element={<MyNoticesList />} />
-            </Routes>
-          </BrowserRouter>
-        </header>
+        <BrowserRouter>
+          <CustomDrawer />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/sign-up"
+              element={!logged ? <SignUp /> : <Navigate replace to={"/"} />}
+            />
+            <Route
+              path="/profile"
+              element={logged ? <Profile /> : <Navigate replace to={"/"} />}
+            />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route
+              path="/organizations"
+              // TODO: Change when roles implemented
+              element={
+                userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
+              }
+            />
+            <Route path="/my-team" element={<MyTeamView />} />
+            <Route path="/organizations/:organizationId/teams" element={<TeamsView />} />
+            <Route path="/my-notices" element={<MyNoticesList />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
         <ToastContainer
           position="bottom-center"
           autoClose={5000}
@@ -85,4 +105,4 @@ function App() {
   );
 }
 
-export default App;
+export default withTranslation()(App);

@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import Map, { Layer, NavigationControl, Marker, Source } from "react-map-gl";
-import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
-import { selectToken } from "../user/login/LoginSlice";
 import { Paper, Typography } from "@mui/material";
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
+import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
+import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
+import { selectToken } from "../user/login/LoginSlice";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -33,15 +33,15 @@ export default function CustomMap() {
     scale: "25.0",
   };
 
-  const { data, error, isLoading } = useGetCuadrantsByScaleQuery(payload);
+  const { data } = useGetCuadrantsByScaleQuery(payload);
 
-  const [cursor, setCursor] = useState("auto");
+  const [cursor] = useState("auto");
   const [mouseCoords, setMouseCoords] = useState({
     lng: 0,
     lat: 0,
   });
 
-  const [settings, setSettings] = useState({
+  const [settings] = useState({
     minZoom: 7,
     maxZoom: 15,
   });
@@ -68,7 +68,7 @@ export default function CustomMap() {
       {data &&
         data.map((item, index) => {
           const layerStyle = {
-            id: item.id1.toString(),
+            id: item.id.toString(),
             type: "fill",
             paint: {
               "fill-color": "blue",
@@ -78,7 +78,10 @@ export default function CustomMap() {
           };
 
           const coord = item.coordinates.map((item, index) => {
-            return [untransformCoordinates(item.x, item.y).longitude, untransformCoordinates(item.x, item.y).latitude];
+            return [
+              untransformCoordinates(item.x, item.y).longitude,
+              untransformCoordinates(item.x, item.y).latitude,
+            ];
           });
 
           const geoJson = {
@@ -95,13 +98,17 @@ export default function CustomMap() {
             ],
           };
           return (
-            <Source key={item.id1.toString()} type="geojson" data={geoJson}>
+            <Source key={item.id.toString()} type="geojson" data={geoJson}>
               <Layer {...layerStyle} />
             </Source>
           );
         })}
 
-      <Marker latitude={mouseCoords.lat} longitude={mouseCoords.lng} anchor="bottom">
+      <Marker
+        latitude={mouseCoords.lat}
+        longitude={mouseCoords.lng}
+        anchor="bottom"
+      >
         <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
           <Typography variant="body" color="white" sx={{ display: "block" }}>
             Name:
