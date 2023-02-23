@@ -20,14 +20,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLoginFromTokenMutation } from "./api/userApi";
 import "./App.css";
 import MyTeamView from "./features/team/MyTeamView";
-import TeamsView from "./features/team/TeamsView";
 import {
   selectToken,
   selectUser,
-  validLogin,
+  validLogin
 } from "./features/user/login/LoginSlice";
 
 import { withTranslation } from "react-i18next";
+import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 
 function App({ t }) {
   const dispatch = useDispatch();
@@ -83,7 +83,10 @@ function App({ t }) {
               }
             />
             <Route path="/my-team" element={<MyTeamView />} />
-            <Route path="/organizations/:organizationId/teams" element={<TeamsView />} />
+            <Route
+              path="/organizations/:organizationId/teams"
+              element={<OrganizationTeamsVehiclesView />}
+            />
             <Route path="/my-notices" element={<MyNoticesList />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>

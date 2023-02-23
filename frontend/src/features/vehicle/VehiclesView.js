@@ -12,13 +12,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGetOrganizationByIdQuery } from "../../api/organizationApi";
-import { useGetTeamsByOrganizationIdQuery } from "../../api/teamApi";
+import { useGetVehiclesByOrganizationIdQuery } from "../../api/vehicleApi";
 import OrganizationDetailsCard from "../organization/OrganizationDetailsCard";
 import { selectToken } from "../user/login/LoginSlice";
-import TeamCreateDialog from "./TeamCreateDialog";
-import TeamsTable from "./TeamsTable";
+import VehicleCreateDialog from "./VehicleCreateDialog";
+import VehicleTable from "./VehicleTable";
 
-export default function TeamsView(props) {
+export default function VehiclesView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -32,10 +32,10 @@ export default function TeamsView(props) {
   };
 
   const {
-    data: teamsList,
+    data: vehicleList,
     isFetching,
     refetch,
-  } = useGetTeamsByOrganizationIdQuery(payload, {
+  } = useGetVehiclesByOrganizationIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -70,7 +70,7 @@ export default function TeamsView(props) {
           margin={1}
           sx={{ fontWeight: "bold", color: "primary.light" }}
         >
-          {t("teams-list")}
+          {t("vehicle-list")}
         </Typography>
         {organizationData && (
           <Box display="flex" alignItems="center" justifyContent="center">
@@ -90,11 +90,11 @@ export default function TeamsView(props) {
         </Dialog>
         {isFetching ? (
           <CircularProgress />
-        ) : teamsList ? (
-          <TeamsTable reloadData={reloadData} teams={teamsList} />
+        ) : vehicleList ? (
+          <VehicleTable reloadData={reloadData} vehicles={vehicleList} />
         ) : null}
 
-        <TeamCreateDialog
+        <VehicleCreateDialog
           reloadData={reloadData}
           organizationId={organizationId}
         />
@@ -103,6 +103,6 @@ export default function TeamsView(props) {
   );
 }
 
-TeamsView.propTypes = {
+VehiclesView.propTypes = {
   organizationId: PropTypes.number.isRequired
 };

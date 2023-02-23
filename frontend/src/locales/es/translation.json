@@ -35,5 +35,24 @@
 
   "teams-list": "Lista de Equipos",
 
+  "rowsPerPage": "Filas por página",
+
+  "vehicle-list": "Lista de Vehículos",
+  "vehicle-plate": "Matrícula",
+  "type": "Tipo vehículo",
+  "vehicle-create-title": "Crear un nuevo vehículo",
+  "vehicle-created-successfully": "Vehículo creado satisfactoriamente",
+  "vehicle-created-error": "No se ha podido crear el vehículo",
+  "vehicle-updated-successfully": "Vehículo actualizado satisfactoriamente",
+  "vehicle-updated-error": "No se ha podido actualizar el vehículo",
+  "vehicle-deleted-successfully": "Vehículo borrado satisfactoriamente",
+  "vehicle-deleted-error": "No se ha podido borrar el vehículo",
+  "vehicle-deleted-dialog": "¿Está seguro de eliminar este vehículo?",
+
+  "options": "Opciones",
+  "cancel": "Cancelar",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "create": "Crear",
   "generic-error": "Oh no, ha ocurrido un error"
 }
