@@ -35,7 +35,7 @@ export default function TeamView(props) {
       }}
     >
       {error ? (
-        <h1>Oh no, there was an error</h1>
+        <h1>{t("generic-error")}</h1>
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (

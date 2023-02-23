@@ -26,15 +26,15 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   useDeleteTeambyIdMutation,
-  useUpdateTeamMutation,
+  useUpdateTeamMutation
 } from "../../api/teamApi";
-import TeamCard from "./TeamCard";
 
 const columns = [
-  { id: "code", label: "Código", minWidth: 150 },
-  { id: "options", label: "Opciones", minWidth: 50 },
+  { id: "code", label: "team-code", minWidth: 150 },
+  { id: "options", label: "options", minWidth: 50 },
 ];
 
 function createData(id, code) {
@@ -43,6 +43,7 @@ function createData(id, code) {
 
 export default function TeamsTable(props) {
   const token = useSelector(selectToken);
+  const { t } = useTranslation();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -51,7 +52,6 @@ export default function TeamsTable(props) {
 
   const [teamId, setTeamId] = useState("");
   const [code, setCode] = useState("");
-  const [data, setData] = useState("");
 
   const teams = props.teams;
 
@@ -85,11 +85,9 @@ export default function TeamsTable(props) {
     updateTeam(payload)
       .unwrap()
       .then((payload) => {
-        toast.success("Organización actualizada satisfactoriamente");
+        toast.success(t("team-updated-successfully"));
       })
-      .catch((error) =>
-        toast.error("No se ha podido actualizar la organización")
-      );
+      .catch((error) => toast.error(t("team-updated-error")));
 
     props.reloadData();
     handleCloseEdit();
@@ -127,11 +125,9 @@ export default function TeamsTable(props) {
     deleteTeambyId(payload)
       .unwrap()
       .then((payload) => {
-        toast.success("Organización borrada satisfactoriamente");
+        toast.success(t("team-deleted-successfully"));
       })
-      .catch((error) =>
-        toast.error("No se ha podido eliminar la organización")
-      );
+      .catch((error) => toast.error(t("team-deleted-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -146,7 +142,7 @@ export default function TeamsTable(props) {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ minWidth: 300, maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 400 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -160,7 +156,7 @@ export default function TeamsTable(props) {
                     fontWeight: "bold",
                   }}
                 >
-                  {column.label}
+                  {t(column.label)}
                 </TableCell>
               ))}
             </TableRow>
@@ -223,6 +219,7 @@ export default function TeamsTable(props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={t("rows-per-page")}
       />
       <Dialog
         open={openDelete}
@@ -231,25 +228,25 @@ export default function TeamsTable(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"¿Está seguro de eliminar esta organización?"}
+          {t("team-deleted-dialog")}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleCloseDelete}>Cancelar</Button>
+          <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            Aceptar
+          {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>Editar organización </DialogTitle>
+        <DialogTitle>{t("team-updated-title")}</DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   id="code"
-                  label="Código"
+                  label={t("team-code")}
                   type="text"
                   autoComplete="current-code"
                   margin="normal"
@@ -264,13 +261,13 @@ export default function TeamsTable(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEdit}>Cancelar</Button>
+          <Button onClick={handleCloseEdit}>{t("cancel")}</Button>
           <Button
             autoFocus
             variant="contained"
             onClick={(e) => handleEditClick(e)}
           >
-            Editar
+            {t("edit")}
           </Button>
         </DialogActions>
       </Dialog>

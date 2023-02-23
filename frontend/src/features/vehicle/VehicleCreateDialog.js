@@ -12,14 +12,15 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
-import { useCreateTeamMutation } from "../../api/teamApi";
+import { useCreateVehicleMutation } from "../../api/vehicleApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
 
-export default function TeamCreateDialog(props) {
-  const [code, setCode] = useState("");
+export default function VehicleCreateDialog(props) {
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [type, setType] = useState("");
   const [open, setOpen] = useState(false);
   const organizationId = props.organizationId;
 
@@ -27,14 +28,15 @@ export default function TeamCreateDialog(props) {
 
   const token = useSelector(selectToken);
 
-  const [createTeam] = useCreateTeamMutation();
+  const [createVehicle] = useCreateVehicleMutation();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    setCode("");
+    setVehiclePlate("");
+    setType("");
     setOpen(false);
   };
 
@@ -42,26 +44,34 @@ export default function TeamCreateDialog(props) {
     var id = event.target.id;
     var value = event.target.value;
 
-    if (id === "code") {
-      setCode(value);
+    switch (id) {
+      case "vehiclePlate":
+        setVehiclePlate(value);
+        break;
+      case "type":
+        setType(value);
+        break;
+      default:
+        break;
     }
   };
 
   const handleClick = async (e) => {
     const payload = {
-      code: code,
+      vehiclePlate: vehiclePlate,
+      type: type,
       token: token,
       organizationId: organizationId,
     };
 
-    createTeam(payload)
+    createVehicle(payload)
       .unwrap()
       .then(() => {
-        toast.success(t("team-created-successfully"));
+        toast.success(t("vehicle-created-successfully"));
         props.reloadData();
         handleClose();
       })
-      .catch((error) => toast.error(t("team-created-error")));
+      .catch((error) => toast.error(t("vehicle-created-error")));
   };
 
   useEffect(() => {}, [open]);
@@ -74,18 +84,32 @@ export default function TeamCreateDialog(props) {
         </Fab>
       </Box>
       <Dialog maxWidth={"md"} open={open} onClose={handleClose}>
-        <DialogTitle>{t("team-created-title")} </DialogTitle>
+        <DialogTitle>{t("vehicle-create-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
-                  id="code"
-                  label={t("team-code")}
+                  id="vehiclePlate"
+                  label={t("vehicle-plate")}
                   type="text"
-                  autoComplete="current-code"
+                  autoComplete="current-vehicle-plate"
                   margin="normal"
-                  value={code}
+                  value={vehiclePlate}
+                  onChange={(e) => handleChange(e)}
+                  helperText=" "
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="type"
+                  label={t("type")}
+                  type="text"
+                  autoComplete="current-type"
+                  margin="normal"
+                  value={type}
                   onChange={(e) => handleChange(e)}
                   helperText=" "
                   required
@@ -106,6 +130,6 @@ export default function TeamCreateDialog(props) {
   );
 }
 
-TeamCreateDialog.propTypes = {
+VehicleCreateDialog.propTypes = {
   organizationId: PropTypes.string.isRequired,
 };

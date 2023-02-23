@@ -10,11 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-import { Box, Button, Container, IconButton } from "@mui/material";
-import {
-  useDeleteOrganizationByIdMutation,
-  useUpdateOrganizationMutation,
-} from "../../api/organizationApi";
+import { Box, Button } from "@mui/material";
 import { selectToken } from "../user/login/LoginSlice";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -30,24 +26,24 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import CoordinatesMap from "../map/CoordinatesMap";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  useDeleteVehiclebyIdMutation,
+  useUpdateVehicleMutation,
+} from "../../api/vehicleApi";
 
 const columns = [
-  { id: "code", label: "organization-code", minWidth: 50 },
-  { id: "name", label: "organization-name", minWidth: 250 },
-  { id: "address", label: "organization-address", minWidth: 250 },
+  { id: "vehiclePlate", label: "vehicle-plate", minWidth: 150 },
+  { id: "type", label: "type", minWidth: 150 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, code, name, address, lon, lat) {
-  return { id, code, name, address, lon, lat };
+function createData(id, vehiclePlate, type) {
+  return { id, vehiclePlate, type };
 }
 
-export default function OrganizationTable(props) {
+export default function VehicleTable(props) {
   const token = useSelector(selectToken);
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [page, setPage] = useState(0);
@@ -55,13 +51,12 @@ export default function OrganizationTable(props) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
-  const [organizationId, setOrganizationId] = useState("");
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
-  const [headquartersAddress, setHeadquartersAddress] = useState("");
+  const [vehicleId, setVehicleId] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [type, setType] = useState("");
   const [data, setData] = useState("");
 
-  const organizations = props.organizations;
+  const vehicles = props.vehicles;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -77,40 +72,30 @@ export default function OrganizationTable(props) {
   };
 
   const handleClickOpenEdit = (row) => {
-    setOrganizationId(row.id);
-    setCode(row.code);
-    setName(row.name);
-    setHeadquartersAddress(row.address);
+    setVehicleId(row.id);
+    setVehiclePlate(row.vehiclePlate);
+    setType(row.type);
     setOpenEdit(true);
-    setData({ lat: row.lat, lng: row.lon });
   };
 
-  const [updateOrganization] = useUpdateOrganizationMutation();
+  const [updateVehicle] = useUpdateVehicleMutation();
 
   const handleEditClick = () => {
     const payload = {
-      organizationId: organizationId,
-      code: code,
-      name: name,
-      headquartersAddress: headquartersAddress,
-      coordinates: data,
+      vehicleId: vehicleId,
+      vehiclePlate: vehiclePlate,
+      type: type,
       token: token,
     };
-    updateOrganization(payload)
+    updateVehicle(payload)
       .unwrap()
       .then((payload) => {
-        toast.success("Organización actualizada satisfactoriamente");
+        toast.success(t("vehicle-updated-successfully"));
       })
-      .catch((error) =>
-        toast.error("No se ha podido actualizar la organización")
-      );
+      .catch((error) => toast.error(t("vehicle-updated-error")));
 
-    handleCloseEdit();
     props.reloadData();
-  };
-
-  const childToParent = (childdata) => {
-    setData({ lat: childdata[0], lng: childdata[1] });
+    handleCloseEdit();
   };
 
   const handleChange = (event) => {
@@ -118,73 +103,54 @@ export default function OrganizationTable(props) {
     var value = event.target.value;
 
     switch (id) {
-      case "code":
-        setCode(value);
+      case "vehiclePlate":
+        setVehiclePlate(value);
         break;
-      case "name":
-        setName(value);
-        break;
-      case "headquartersAddress":
-        setHeadquartersAddress(value);
+      case "type":
+        setType(value);
         break;
       default:
         break;
     }
   };
 
-  const [deleteOrganizationById] = useDeleteOrganizationByIdMutation();
+  const [deleteVehicleById] = useDeleteVehiclebyIdMutation();
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-  const handleClickOpenDelete = (organizationId) => {
-    setOrganizationId(organizationId);
+  const handleClickOpenDelete = (vehicleId) => {
+    setVehicleId(vehicleId);
     setOpenDelete(true);
   };
 
   const handleDeleteClick = () => {
     const payload = {
       token: token,
-      organizationId: organizationId,
+      vehicleId: vehicleId,
     };
 
-    deleteOrganizationById(payload)
+    deleteVehicleById(payload)
       .unwrap()
       .then((payload) => {
-        toast.success("Organización borrada satisfactoriamente");
+        toast.success(t("vehicle-deleted-successfully"));
       })
-      .catch((error) =>
-        toast.error("No se ha podido eliminar la organización")
-      );
-
+      .catch((error) => toast.error(t("vehicle-deleted-error")));
     handleCloseDelete();
     props.reloadData();
   };
 
-  const handleClickOrganization = (organizationId) => {
-    navigate("/organizations/" + organizationId + "/teams");
-  };
-
   var rows = [];
-  if (organizations) {
+  if (vehicles) {
     rows = [];
-    organizations.forEach((item, index) => {
-      rows.push(
-        createData(
-          item.id,
-          item.code,
-          item.name,
-          item.headquartersAddress,
-          item.lon,
-          item.lat
-        )
-      );
+    vehicles.forEach((item, index) => {
+      rows.push(createData(item.id, item.vehiclePlate, item.type));
     });
   }
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ minWidth: 600, maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 400 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -208,45 +174,40 @@ export default function OrganizationTable(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover tabIndex={-1} key={row.code}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.vehiclePlate}
+                  >
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell
                           key={column.id}
                           align={column.align}
-                          onClick={
-                            column.id !== "options"
-                              ? () => handleClickOrganization(row.id)
-                              : undefined
-                          }
-                          sx={{
-                            "&:hover": {
-                              cursor: "pointer",
-                            },
-                          }}
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}
                           {column.id === "options" ? (
                             <Box>
-                              <IconButton
+                              <Button
                                 color="primary"
                                 aria-label="add"
                                 size="small"
                                 onClick={(e) => handleClickOpenEdit(row)}
                               >
                                 <EditIcon />
-                              </IconButton>
-                              <IconButton
+                              </Button>
+                              <Button
                                 color="primary"
                                 aria-label="add"
                                 size="small"
                                 onClick={(e) => handleClickOpenDelete(row.id)}
                               >
                                 <DeleteIcon />
-                              </IconButton>
+                              </Button>
                             </Box>
                           ) : null}
                         </TableCell>
@@ -275,29 +236,29 @@ export default function OrganizationTable(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"¿Está seguro de eliminar esta organización?"}
+          {t("vehicle-deleted-dialog")}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleCloseDelete}>Cancelar</Button>
+          <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            Aceptar
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog fullWidth={true} maxWidth={"md"} open={openEdit}>
-        <DialogTitle>Editar organización </DialogTitle>
+      <Dialog maxWidth={"md"} open={openEdit}>
+        <DialogTitle>{t("vehicle-updated-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
-                  id="code"
-                  label="Código"
+                  id="vehiclePlate"
+                  label={t("vehicle-plate")}
                   type="text"
-                  autoComplete="current-code"
+                  autoComplete="current-vehicle-plate"
                   margin="normal"
-                  value={code}
+                  value={vehiclePlate}
                   onChange={(e) => handleChange(e)}
                   helperText=" "
                   required
@@ -306,27 +267,12 @@ export default function OrganizationTable(props) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  id="name"
-                  label="Nombre"
+                  id="type"
+                  label={t("type")}
                   type="text"
-                  autoComplete="current-name"
+                  autoComplete="current-type"
                   margin="normal"
-                  value={name}
-                  onChange={(e) => handleChange(e)}
-                  helperText=" "
-                  required
-                  sx={{ display: "flex" }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  id="headquartersAddress"
-                  label="Dirección de la organización"
-                  type="text"
-                  autoComplete="current-name"
-                  margin="normal"
-                  value={headquartersAddress}
+                  value={type}
                   onChange={(e) => handleChange(e)}
                   helperText=" "
                   required
@@ -334,18 +280,23 @@ export default function OrganizationTable(props) {
                 />
               </Grid>
             </Grid>
-            <CoordinatesMap childToParent={childToParent} />
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEdit}>Cancelar</Button>
-          <Button onClick={(e) => handleEditClick(e)}>Editar</Button>
+          <Button onClick={handleCloseEdit}>{t("cancel")}</Button>
+          <Button
+            autoFocus
+            variant="contained"
+            onClick={(e) => handleEditClick(e)}
+          >
+            {t("edit")}
+          </Button>
         </DialogActions>
       </Dialog>
     </Paper>
   );
 }
 
-OrganizationTable.propTypes = {
-  organizations: PropTypes.array.isRequired,
+VehicleTable.propTypes = {
+  vehicles: PropTypes.array.isRequired,
 };
