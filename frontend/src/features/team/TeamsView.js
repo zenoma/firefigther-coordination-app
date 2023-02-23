@@ -1,16 +1,14 @@
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-import { Box, Button, CircularProgress, Dialog } from "@mui/material";
+import { Box, CircularProgress, Dialog } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useGetOrganizationByIdQuery } from "../../api/organizationApi";
 import { useGetTeamsByOrganizationIdQuery } from "../../api/teamApi";
 import OrganizationDetailsCard from "../organization/OrganizationDetailsCard";
@@ -21,7 +19,6 @@ import TeamsTable from "./TeamsTable";
 export default function TeamsView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const organizationId = props.organizationId;
@@ -54,13 +51,11 @@ export default function TeamsView(props) {
   };
 
   return (
-    <Box>
-      <Button onClick={() => navigate("/organizations")} color="secondary">
-        <ArrowBackIcon />
-      </Button>
+    <Box maxWidth="600px">
       <Paper
         sx={{
           display: "inline-block",
+          minWidth: "450px",
           padding: "10px",
         }}
         elevation={5}
@@ -104,5 +99,5 @@ export default function TeamsView(props) {
 }
 
 TeamsView.propTypes = {
-  organizationId: PropTypes.number.isRequired
+  organizationId: PropTypes.number.isRequired,
 };

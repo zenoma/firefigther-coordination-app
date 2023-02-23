@@ -57,11 +57,11 @@ export default function TeamCreateDialog(props) {
     createTeam(payload)
       .unwrap()
       .then(() => {
-        toast.success("Organización creada satisfactoriamente");
+        toast.success(t("team-created-successfully"));
         props.reloadData();
         handleClose();
       })
-      .catch((error) => toast.error("No se ha podido crear la organización"));
+      .catch((error) => toast.error(t("team-created-error")));
   };
 
   useEffect(() => {}, [open]);
@@ -74,14 +74,14 @@ export default function TeamCreateDialog(props) {
         </Fab>
       </Box>
       <Dialog maxWidth={"md"} open={open} onClose={handleClose}>
-        <DialogTitle>Crear nueva organización </DialogTitle>
+        <DialogTitle>{t("team-created-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   id="code"
-                  label="Código"
+                  label={t("team-code")}
                   type="text"
                   autoComplete="current-code"
                   margin="normal"
@@ -96,9 +96,9 @@ export default function TeamCreateDialog(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleClose}>{t("cancel")}</Button>
           <Button autoFocus variant="contained" onClick={(e) => handleClick(e)}>
-            Crear
+            {t("create")}
           </Button>
         </DialogActions>
       </Dialog>

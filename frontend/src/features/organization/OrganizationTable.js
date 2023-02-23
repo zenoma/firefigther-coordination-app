@@ -32,12 +32,13 @@ import TextField from "@mui/material/TextField";
 import React from "react";
 import CoordinatesMap from "../map/CoordinatesMap";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const columns = [
-  { id: "code", label: "Código", minWidth: 50 },
-  { id: "name", label: "Nombre", minWidth: 250 },
-  { id: "address", label: "Dirección", minWidth: 250 },
-  { id: "options", label: "Opciones", minWidth: 50 },
+  { id: "code", label: "organization-code", minWidth: 50 },
+  { id: "name", label: "organization-name", minWidth: 250 },
+  { id: "address", label: "organization-address", minWidth: 250 },
+  { id: "options", label: "options", minWidth: 50 },
 ];
 
 function createData(id, code, name, address, lon, lat) {
@@ -47,6 +48,7 @@ function createData(id, code, name, address, lon, lat) {
 export default function OrganizationTable(props) {
   const token = useSelector(selectToken);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -196,7 +198,7 @@ export default function OrganizationTable(props) {
                     fontWeight: "bold",
                   }}
                 >
-                  {column.label}
+                  {t(column.label)}
                 </TableCell>
               ))}
             </TableRow>
@@ -264,6 +266,7 @@ export default function OrganizationTable(props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={t("rows-per-page")}
       />
       <Dialog
         open={openDelete}

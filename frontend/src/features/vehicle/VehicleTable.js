@@ -29,7 +29,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   useDeleteVehiclebyIdMutation,
-  useUpdateVehicleMutation
+  useUpdateVehicleMutation,
 } from "../../api/vehicleApi";
 
 const columns = [
@@ -92,9 +92,7 @@ export default function VehicleTable(props) {
       .then((payload) => {
         toast.success(t("vehicle-updated-successfully"));
       })
-      .catch((error) =>
-        toast.error(t("vehicle-updated-error"))
-      );
+      .catch((error) => toast.error(t("vehicle-updated-error")));
 
     props.reloadData();
     handleCloseEdit();
@@ -137,9 +135,7 @@ export default function VehicleTable(props) {
       .then((payload) => {
         toast.success(t("vehicle-deleted-successfully"));
       })
-      .catch((error) =>
-        toast.error(t("vehicle-deleted-error"))
-      );
+      .catch((error) => toast.error(t("vehicle-deleted-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -154,7 +150,7 @@ export default function VehicleTable(props) {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ minWidth: 300, maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 400 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -188,11 +184,6 @@ export default function VehicleTable(props) {
                       const value = row[column.id];
                       return (
                         <TableCell
-                          sx={{
-                            "&:hover": {
-                              cursor: "pointer",
-                            },
-                          }}
                           key={column.id}
                           align={column.align}
                         >
@@ -236,7 +227,7 @@ export default function VehicleTable(props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={t("rowsPerPage")}
+        labelRowsPerPage={t("rows-per-page")}
       />
       <Dialog
         open={openDelete}
@@ -250,13 +241,13 @@ export default function VehicleTable(props) {
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-          {t("delete")}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>Editar organización </DialogTitle>
+        <DialogTitle>{t("vehicle-updated-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>

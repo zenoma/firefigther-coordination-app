@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-import { Box, Button, CircularProgress, Dialog } from "@mui/material";
+import { Box, CircularProgress, Dialog } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -55,12 +54,10 @@ export default function VehiclesView(props) {
 
   return (
     <Box>
-      <Button onClick={() => navigate("/organizations")} color="secondary">
-        <ArrowBackIcon />
-      </Button>
       <Paper
         sx={{
           display: "inline-block",
+          minWidth: "450px",
           padding: "10px",
         }}
         elevation={5}
@@ -104,5 +101,5 @@ export default function VehiclesView(props) {
 }
 
 VehiclesView.propTypes = {
-  organizationId: PropTypes.number.isRequired
+  organizationId: PropTypes.number.isRequired,
 };

@@ -2,74 +2,74 @@ import PropTypes from "prop-types";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 
 export default function OrganizationDetailsCard(props) {
+  const { t } = useTranslation();
+
   return (
     <Container
       sx={{
-        maxWidth: "500px",
+        minWidth: "600px",
+        padding: "10px",
       }}
     >
       <Typography
         variant="h4"
         margin="10px"
         sx={{
-          fontWeight: "bold",
           color: "primary.light",
+          textAlign: "center",
         }}
       >
-        Detalles de organización
+        {t("organization-details-title")}
       </Typography>
       <Typography
         variant="h6"
         sx={{
-          fontWeight: "bold",
-          display: "inline-block",
+          display: "flex",
           color: "secondary.light",
         }}
       >
-        Código organización:
+        {t("organization-details-code")}
       </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "inline" }}>
+      <Typography variant="body" margin={1} sx={{ display: "block" }}>
         {props.data["code"]}
       </Typography>
       <Typography
         variant="h6"
         sx={{
-          fontWeight: "bold",
-          display: "inline-block",
+          display: "flex",
           color: "secondary.light",
         }}
       >
-        Nombre organización:
+        {t("organization-details-name")}
       </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "block" }}>
         {props.data["name"]}
       </Typography>
       <Typography
         variant="h6"
         sx={{
-          fontWeight: "bold",
-          display: "inline-block",
+          display: "flex",
           color: "secondary.light",
         }}
       >
-        Dirección de la organización:
+        {t("organization-address")}
       </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "block" }}>
         {props.data["headquartersAddress"]}
       </Typography>
       <Typography
         variant="h6"
         sx={{
-          fontWeight: "bold",
-          display: "inline-block",
+          display: "flex",
           color: "secondary.light",
         }}
       >
-        Tipo de organización:
+        {t("organization-type-name")}
       </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "inline-block" }}>
+      <Typography variant="body" margin={1} sx={{ display: "block" }}>
         {props.data["organizationType"]}
       </Typography>
     </Container>
