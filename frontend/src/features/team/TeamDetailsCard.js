@@ -34,7 +34,6 @@ export default function TeamView(props) {
         boxShadow: "none",
       }}
     >
-      {/* TODO: Handle user without team */}
       {error ? (
         <h1>Oh no, there was an error</h1>
       ) : isLoading ? (

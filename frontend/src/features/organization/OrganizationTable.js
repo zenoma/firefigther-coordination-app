@@ -218,6 +218,11 @@ export default function OrganizationTable(props) {
                               ? () => handleClickOrganization(row.id)
                               : undefined
                           }
+                          sx={{
+                            "&:hover": {
+                              cursor: "pointer",
+                            },
+                          }}
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)

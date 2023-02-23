@@ -37,7 +37,6 @@ export default function MyTeamView(props) {
       }}
       elevation={5}
     >
-      {/* TODO: Handle user without team */}
       {error ? (
         <h1>{t("generic-error")}</h1>
       ) : isLoading ? (
