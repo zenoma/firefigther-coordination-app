@@ -8,7 +8,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     List<Organization> findByNameIgnoreCaseContainsOrCodeIgnoreCaseContains(String name, String code);
 
-    List<Organization> findByOrganizationType_NameIgnoreCaseContains(String name);
+    List<Organization> findByOrganizationType_NameIgnoreCaseContainsOrderByCodeAsc(String name);
 
 
 }

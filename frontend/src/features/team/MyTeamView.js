@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { selectToken } from "../user/login/LoginSlice";
 
 import { useGetMyTeamQuery } from "../../api/teamApi";
-import UsersList from "../list/UsersList";
+import UsersList from "../user/UsersList";
 import TeamCard from "./TeamCard";
 import { useTranslation } from "react-i18next";
 

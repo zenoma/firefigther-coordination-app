@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -64,7 +65,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<Organization> findOrganizationByOrganizationTypeName(String organizationTypeName) {
-        return organizationRepository.findByOrganizationType_NameIgnoreCaseContains(organizationTypeName);
+        return organizationRepository.findByOrganizationType_NameIgnoreCaseContainsOrderByCodeAsc(organizationTypeName);
     }
 
     public List<OrganizationType> findAllOrganizationTypes() {
@@ -216,8 +217,11 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<User> findAllUsersByTeamId(Long teamId) throws InstanceNotFoundException {
-        return teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId)).
-                getUserList();
+        List<User> response = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId)).getUserList();
+        if (response != null) {
+            response.sort(Comparator.comparing(User::getId));
+        }
+        return response;
     }
 
 
@@ -275,7 +279,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<Vehicle> findVehiclesByOrganizationId(Long organizationId) {
-        return vehicleRepository.findByOrganizationId(organizationId);
+        return vehicleRepository.findByOrganizationIdOrderByVehiclePlate(organizationId);
     }
 
     @Override
@@ -284,6 +288,12 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     // USER SERVICES
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
     @Override
     public void signUp(User user) throws DuplicateInstanceException {
 

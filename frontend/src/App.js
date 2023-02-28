@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import PageNotFound from "./errors/PageNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
 import CustomDrawer from "./features/drawer/CustomDrawer";
-import MyNoticesList from "./features/list/MyNoticesList";
+import MyNoticesList from "./features/notice/MyNoticesList";
 import OrganizationView from "./features/organization/OrganizationView";
 import ChangePassword from "./features/user/changePasword/ChangePassword";
 import Login from "./features/user/login/Login";
@@ -23,11 +23,12 @@ import MyTeamView from "./features/team/MyTeamView";
 import {
   selectToken,
   selectUser,
-  validLogin
+  validLogin,
 } from "./features/user/login/LoginSlice";
 
 import { withTranslation } from "react-i18next";
 import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
+import TeamView from "./features/team/TeamView";
 
 function App({ t }) {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ function App({ t }) {
                 userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
               }
             />
+            <Route path="/teams/:teamId" element={<TeamView />} />
             <Route path="/my-team" element={<MyTeamView />} />
             <Route
               path="/organizations/:organizationId/teams"

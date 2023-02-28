@@ -75,6 +75,8 @@ public interface PersonalManagementService {
 
     // USER SERVICES
 
+    List<User> findAllUsers();
+
     void signUp(User user) throws DuplicateInstanceException;
 
     User login(String email, String password) throws IncorrectLoginException;

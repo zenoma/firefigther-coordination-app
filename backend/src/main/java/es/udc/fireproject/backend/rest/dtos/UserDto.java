@@ -19,6 +19,8 @@ public class UserDto extends BaseDto {
     private String dni;
     private Integer phoneNumber;
     private UserRole userRole;
+    private Long teamId;
+
 
     public UserDto() {
     }
@@ -34,7 +36,7 @@ public class UserDto extends BaseDto {
         this.userRole = userRole;
     }
 
-    public UserDto(Long id, String email, String firstName, String lastName, String dni, Integer phoneNumber, UserRole userRole) {
+    public UserDto(Long id, String email, String firstName, String lastName, String dni, Integer phoneNumber, UserRole userRole, Long teamId) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -42,6 +44,7 @@ public class UserDto extends BaseDto {
         this.dni = dni;
         this.phoneNumber = phoneNumber;
         this.userRole = userRole;
+        this.teamId = teamId;
     }
 
     public Long getId() {
@@ -121,6 +124,14 @@ public class UserDto extends BaseDto {
         this.userRole = userRole;
     }
 
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,6 +156,7 @@ public class UserDto extends BaseDto {
                 ", dni='" + dni + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", userRole=" + userRole +
+                ", teamId=" + teamId +
                 '}';
     }
 
