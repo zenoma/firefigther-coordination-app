@@ -217,9 +217,10 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<User> findAllUsersByTeamId(Long teamId) throws InstanceNotFoundException {
-        List<User> response = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId)).
-                getUserList();
-        response.sort(Comparator.comparing(User::getId));
+        List<User> response = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId)).getUserList();
+        if (response != null) {
+            response.sort(Comparator.comparing(User::getId));
+        }
         return response;
     }
 
