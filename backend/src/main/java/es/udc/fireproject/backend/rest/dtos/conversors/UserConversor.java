@@ -11,13 +11,20 @@ public class UserConversor {
     }
 
     public static UserDto toUserDto(User user) {
+        Long teamId = null;
+
+        if (user.getTeam() != null) {
+            teamId = user.getTeam().getId();
+        }
+
         return new UserDto(user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getDni(),
                 user.getPhoneNumber(),
-                user.getUserRole());
+                user.getUserRole(),
+                teamId);
     }
 
     public static User toUser(UserDto userDto) {

@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useCreateOrganizationMutation } from "../../api/organizationApi";
 import CoordinatesMap from "../map/CoordinatesMap";
-import { selectToken, selectUser } from "../user/login/LoginSlice";
+import { selectToken } from "../user/login/LoginSlice";
 
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
@@ -102,6 +102,8 @@ export default function OrganizationCreateDialog(props) {
 
   useEffect(() => {}, [open]);
 
+
+  //FIXME: Update translations
   return (
     <div>
       <Box m={1}>

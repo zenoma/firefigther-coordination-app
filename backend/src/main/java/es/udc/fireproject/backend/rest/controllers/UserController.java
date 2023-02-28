@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -72,6 +74,17 @@ public class UserController {
 
         return new ErrorsDto(errorMessage);
 
+    }
+
+    @GetMapping("/")
+    public List<UserDto> findAll(@RequestAttribute Long userId) throws InstanceNotFoundException {
+
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : personalManagementService.findAllUsers()) {
+            userDtos.add(UserConversor.toUserDto(user));
+        }
+
+        return userDtos;
     }
 
     @PostMapping("/signUp")

@@ -2,6 +2,17 @@ import { baseApi } from "./baseApi";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getUsers: build.query({
+      query: (payload) => ({
+        url: "/users/",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
     login: build.mutation({
       query: (payload) => ({
         url: "/users/login",
@@ -39,7 +50,10 @@ export const userApi = baseApi.injectEndpoints({
       query: (payload) => ({
         url: "/users/" + payload.id + "/changePassword",
         method: "POST",
-        body: { oldPassword: payload.oldPassword, newPassword: payload.newPassword },
+        body: {
+          oldPassword: payload.oldPassword,
+          newPassword: payload.newPassword,
+        },
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -51,4 +65,10 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation, useChangePasswordMutation, useLoginFromTokenMutation } = userApi;
+export const {
+  useGetUsersQuery,
+  useLoginMutation,
+  useSignUpMutation,
+  useChangePasswordMutation,
+  useLoginFromTokenMutation,
+} = userApi;

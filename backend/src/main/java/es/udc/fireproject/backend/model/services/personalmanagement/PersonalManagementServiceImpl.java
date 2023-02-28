@@ -287,6 +287,12 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     // USER SERVICES
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
     @Override
     public void signUp(User user) throws DuplicateInstanceException {
 

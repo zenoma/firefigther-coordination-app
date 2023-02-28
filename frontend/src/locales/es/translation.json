@@ -13,6 +13,7 @@
   "email": "Email",
   "password": "Contraseña",
   "already-account": "¿Ya estás registrado?",
+  "has-team?": "¿Tiene equipo asginado?",
 
   "login": "Login",
   "logout": "Logout",
@@ -49,10 +50,18 @@
   "team-deleted-successfully": "Equipo borrado satisfactoriamente",
   "team-deleted-error": "No se ha podido borrar el equipo",
   "team-deleted-dialog": "¿Está seguro de eliminar este equipo?",
+  "team-user-add": "Añadir nuevo miembro al equipo",
+  "team-user-add-error": "Debe seleccionar un usuario",
 
   "firstName": "Nombre",
   "lastName": "Apellido",
   "phoneNumber": "Número de teléfono",
+
+  "user-added-successfully": "Usuario añadido satisfactoriamente",
+  "user-added-error": "No se ha podido añadir el usuario",
+  "user-deleted-dialog": "¿Está seguro de eliminar este usuario?",
+  "user-deleted-successfully": "Usuario eliminado satisfactoriamente",
+  "user-deleted-error": "No se ha podido eliminar el usuario",
 
   "vehicle-list": "Lista de Vehículos",
   "vehicle-plate": "Matrícula",
@@ -72,6 +81,7 @@
   "edit": "Editar",
   "delete": "Eliminar",
   "create": "Crear",
+  "add": "Añadir",
   "rows-per-page": "Filas por página",
   "generic-error": "Oh no, ha ocurrido un error"
 }

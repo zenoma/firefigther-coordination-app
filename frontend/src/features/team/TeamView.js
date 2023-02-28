@@ -1,11 +1,12 @@
-import { CircularProgress, Container, Paper } from "@mui/material";
+import { Box, CircularProgress, Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useGetMyTeamQuery, useGetTeamsByIdQuery } from "../../api/teamApi";
+import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
-import UsersList from "../list/UsersList";
+import UsersList from "../user/UsersList";
 import TeamCard from "./TeamCard";
+import TeamUserAdd from "./TeamUserAdd";
 
 export default function TeamView() {
   const token = useSelector(selectToken);
@@ -18,9 +19,13 @@ export default function TeamView() {
 
   const { t } = useTranslation();
 
-  const { data, error, isLoading } = useGetTeamsByIdQuery(payload, {
+  const { data, error, isLoading, refetch } = useGetTeamsByIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
+
+  const reloadData = () => {
+    refetch();
+  };
 
   return (
     <Paper
@@ -38,10 +43,16 @@ export default function TeamView() {
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (
-        <Container>
+        <Box>
           <TeamCard data={data} />
-          <UsersList teamId={data.id} name={teamId} />
-        </Container>
+          <UsersList
+            teamId={data.id}
+            name={teamId}
+            users={data.users}
+            reloadData={reloadData}
+          />
+          <TeamUserAdd teamId={data.id} reloadData={reloadData} />
+        </Box>
       ) : null}
     </Paper>
   );

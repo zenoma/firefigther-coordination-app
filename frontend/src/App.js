@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import PageNotFound from "./errors/PageNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
 import CustomDrawer from "./features/drawer/CustomDrawer";
-import MyNoticesList from "./features/list/MyNoticesList";
+import MyNoticesList from "./features/notice/MyNoticesList";
 import OrganizationView from "./features/organization/OrganizationView";
 import ChangePassword from "./features/user/changePasword/ChangePassword";
 import Login from "./features/user/login/Login";
