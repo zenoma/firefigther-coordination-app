@@ -7,6 +7,7 @@ import { selectToken } from "../user/login/LoginSlice";
 import UsersList from "../user/UsersList";
 import TeamCard from "./TeamCard";
 import TeamUserAdd from "./TeamUserAdd";
+import BackButton from "../utils/BackButton";
 
 export default function TeamView() {
   const token = useSelector(selectToken);
@@ -28,32 +29,35 @@ export default function TeamView() {
   };
 
   return (
-    <Paper
-      sx={{
-        width: "100%",
-        maxWidth: 1000,
-        maxHeight: 1000,
-        display: "inline-block",
-        padding: "10px",
-      }}
-      elevation={5}
-    >
-      {error ? (
-        <h1>{t("generic-error")}</h1>
-      ) : isLoading ? (
-        <CircularProgress />
-      ) : data ? (
-        <Box>
-          <TeamCard data={data} />
-          <UsersList
-            teamId={data.id}
-            name={teamId}
-            users={data.users}
-            reloadData={reloadData}
-          />
-          <TeamUserAdd teamId={data.id} reloadData={reloadData} />
-        </Box>
-      ) : null}
-    </Paper>
+    <div>
+      <BackButton />
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: 1000,
+          maxHeight: 1000,
+          display: "inline-block",
+          padding: "10px",
+        }}
+        elevation={5}
+      >
+        {error ? (
+          <h1>{t("generic-error")}</h1>
+        ) : isLoading ? (
+          <CircularProgress />
+        ) : data ? (
+          <Box>
+            <TeamCard data={data} />
+            <UsersList
+              teamId={data.id}
+              name={teamId}
+              users={data.users}
+              reloadData={reloadData}
+            />
+            <TeamUserAdd teamId={data.id} reloadData={reloadData} />
+          </Box>
+        ) : null}
+      </Paper>
+    </div>
   );
 }

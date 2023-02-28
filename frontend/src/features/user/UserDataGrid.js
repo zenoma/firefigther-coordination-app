@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import {
   DataGrid,
   esES,
@@ -8,6 +8,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import * as React from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useGetUsersQuery } from "../../api/userApi";
@@ -19,9 +20,11 @@ export default function UserDataGrid({ childToParent }) {
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
 
+  const [showWarning, setShowWarning] = useState(false);
+
   var localeText;
 
-  if (i18n.language == "es") {
+  if (i18n.language === "es") {
     localeText = esES.components.MuiDataGrid.defaultProps.localeText;
   }
 
@@ -106,6 +109,11 @@ export default function UserDataGrid({ childToParent }) {
     },
   };
 
+  function handleRowClick(e) {
+    setShowWarning(e.row.hasTeam);
+    return childToParent(e.row);
+  }
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -118,6 +126,9 @@ export default function UserDataGrid({ childToParent }) {
 
   return (
     <Box style={{ height: 400 }}>
+      {showWarning && (
+        <Alert severity="warning">{t("user-selected-has-team-warning")}</Alert>
+      )}
       {error ? (
         <h1>{t("generic-error")}</h1>
       ) : isLoading ? (
@@ -136,7 +147,7 @@ export default function UserDataGrid({ childToParent }) {
           rowsPerPageOptions={[10, 25, 50]}
           pagination
           localeText={localeText}
-          onRowClick={(e) => childToParent(e.row.id)}
+          onRowClick={(e) => handleRowClick(e)}
         />
       ) : null}
     </Box>

@@ -30,6 +30,7 @@ export default function TeamUserAdd(props) {
     setOpen(true);
   };
   const handleClose = () => {
+    setSelectedId("-1");
     setOpen(false);
   };
 
@@ -56,7 +57,7 @@ export default function TeamUserAdd(props) {
   };
 
   const childToParent = (childdata) => {
-    setSelectedId(childdata);
+    setSelectedId(childdata.id);
   };
 
   return (
@@ -69,6 +70,11 @@ export default function TeamUserAdd(props) {
         maxWidth={"md"}
         open={open}
         onClose={handleClose}
+        PaperProps={{
+          sx: {
+            height: 600,
+          },
+        }}
       >
         <DialogTitle>{t("team-user-add")} </DialogTitle>
         <DialogContent>
