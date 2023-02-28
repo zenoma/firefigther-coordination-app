@@ -10,8 +10,8 @@ export default function OrganizationDetailsCard(props) {
   return (
     <Container
       sx={{
-        minWidth: "600px",
         padding: "10px",
+        textAlign:"center"
       }}
     >
       <Typography
@@ -27,7 +27,6 @@ export default function OrganizationDetailsCard(props) {
       <Typography
         variant="h6"
         sx={{
-          display: "flex",
           color: "secondary.light",
         }}
       >
@@ -39,7 +38,6 @@ export default function OrganizationDetailsCard(props) {
       <Typography
         variant="h6"
         sx={{
-          display: "flex",
           color: "secondary.light",
         }}
       >
@@ -51,7 +49,6 @@ export default function OrganizationDetailsCard(props) {
       <Typography
         variant="h6"
         sx={{
-          display: "flex",
           color: "secondary.light",
         }}
       >
@@ -63,7 +60,6 @@ export default function OrganizationDetailsCard(props) {
       <Typography
         variant="h6"
         sx={{
-          display: "flex",
           color: "secondary.light",
         }}
       >

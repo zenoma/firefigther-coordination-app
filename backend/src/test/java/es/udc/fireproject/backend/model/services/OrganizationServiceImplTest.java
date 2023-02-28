@@ -201,7 +201,7 @@ class OrganizationServiceImplTest {
         List<String> names = Arrays.asList("Centro 1", "Centro 2", "Centro 3");
         List<Organization> list = OrganizationOM.withNames(names);
 
-        Mockito.when(organizationRepository.findByOrganizationType_NameIgnoreCaseContains(Mockito.anyString())).thenReturn(list);
+        Mockito.when(organizationRepository.findByOrganizationType_NameIgnoreCaseContainsOrderByCodeAsc(Mockito.anyString())).thenReturn(list);
 
         Assertions.assertEquals(3, personalManagementService.findOrganizationByOrganizationTypeName("Dummy").size(),
                 "Expected results must be 3");

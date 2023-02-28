@@ -10,9 +10,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import OrganizationDetailsCard from "../organization/OrganizationDetailsCard";
+import { useTranslation } from "react-i18next";
 
 export default function TeamCard(props) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleClickToOpen = () => {
     setOpen(true);
@@ -37,7 +39,7 @@ export default function TeamCard(props) {
         margin={1}
         sx={{ fontWeight: "bold", color: "primary.light" }}
       >
-        Detalles de equipo
+        {t("team-details")}
       </Typography>
       <Typography
         variant="h6"
@@ -48,9 +50,9 @@ export default function TeamCard(props) {
           color: "secondary.light",
         }}
       >
-        Código de equipo:
+        {t("team-code")}:
       </Typography>
-      <Typography variant="h6" margin={1}  sx={{ display: "inline" }}>
+      <Typography variant="h6" margin={1} sx={{ display: "inline" }}>
         {props.data["code"]}
       </Typography>
       <Typography
@@ -58,11 +60,11 @@ export default function TeamCard(props) {
         margin={1}
         sx={{
           fontWeight: "bold",
-          display: "block",
+          display: "inline-block",
           color: "secondary.light",
         }}
       >
-        Organización asociada :
+        {t("team-organization-belong")}:
       </Typography>
       <Typography variant="h6" margin={1} sx={{ display: "inline-block" }}>
         {props.data["organization"]["name"]}

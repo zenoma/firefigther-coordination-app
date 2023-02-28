@@ -1,26 +1,22 @@
-import { CircularProgress } from "@mui/material";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import { CircularProgress, Container, Paper } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import { useGetMyTeamQuery, useGetTeamsByIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
-
-import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import UsersList from "../list/UsersList";
 import TeamCard from "./TeamCard";
-import { useTranslation } from "react-i18next";
 
-export default function TeamView(props) {
+export default function TeamView() {
   const token = useSelector(selectToken);
-  const { t } = useTranslation();
-
-  const teamId = useParams()["id"];
+  let { teamId } = useParams();
 
   const payload = {
     token: token,
     teamId: teamId,
   };
+
+  const { t } = useTranslation();
 
   const { data, error, isLoading } = useGetTeamsByIdQuery(payload, {
     refetchOnMountOrArgChange: true,
@@ -29,12 +25,13 @@ export default function TeamView(props) {
   return (
     <Paper
       sx={{
-        maxWidth: 500,
-        padding: 3,
-        textAlign: "center",
+        width: "100%",
+        maxWidth: 1000,
+        maxHeight: 1000,
         display: "inline-block",
-        boxShadow: "none",
+        padding: "10px",
       }}
+      elevation={5}
     >
       {error ? (
         <h1>{t("generic-error")}</h1>
@@ -43,7 +40,7 @@ export default function TeamView(props) {
       ) : data ? (
         <Container>
           <TeamCard data={data} />
-          <UsersList teamId={teamId} name={teamId} />
+          <UsersList teamId={data.id} name={teamId} />
         </Container>
       ) : null}
     </Paper>

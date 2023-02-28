@@ -29,8 +29,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   useDeleteTeambyIdMutation,
-  useUpdateTeamMutation
+  useUpdateTeamMutation,
 } from "../../api/teamApi";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "code", label: "team-code", minWidth: 150 },
@@ -44,6 +45,7 @@ function createData(id, code) {
 export default function TeamsTable(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -178,6 +180,11 @@ export default function TeamsTable(props) {
                           }}
                           key={column.id}
                           align={column.align}
+                          onClick={
+                            column.id !== "options"
+                              ? () => navigate("/teams/" + row.id)
+                              : undefined
+                          }
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)
@@ -233,7 +240,7 @@ export default function TeamsTable(props) {
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-          {t("delete")}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>

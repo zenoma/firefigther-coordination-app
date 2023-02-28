@@ -36,7 +36,9 @@
   "organization-type-name": "Tipo de organización",
   "organization-address": "Dirección de la organización",
 
-  "teams-list": "Lista de Equipos",
+  "teams-list": "Lista de equipos",
+  "team-details": "Detalles de equipo",
+  "team-organization-belong": "Organización asociada",
   "team-code": "Código",
   "team-created-title": "Crear un nuevo equipo",
   "team-created-successfully": "Equipo creado satisfactoriamente",
@@ -47,6 +49,10 @@
   "team-deleted-successfully": "Equipo borrado satisfactoriamente",
   "team-deleted-error": "No se ha podido borrar el equipo",
   "team-deleted-dialog": "¿Está seguro de eliminar este equipo?",
+
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "phoneNumber": "Número de teléfono",
 
   "vehicle-list": "Lista de Vehículos",
   "vehicle-plate": "Matrícula",

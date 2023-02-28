@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    List<Vehicle> findByOrganizationId(Long organizationId);
+    List<Vehicle> findByOrganizationIdOrderByVehiclePlate(Long organizationId);
 }
