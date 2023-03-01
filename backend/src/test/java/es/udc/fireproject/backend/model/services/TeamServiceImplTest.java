@@ -9,6 +9,7 @@ import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
@@ -80,7 +81,7 @@ class TeamServiceImplTest {
 
         List<Team> resultList = List.of(TeamOM.withDefaultValues());
 
-        Mockito.when(teamRepository.findByCodeContains(Mockito.anyString())).thenReturn(resultList);
+        Mockito.when(teamRepository.findTeamsByCodeContains(Mockito.anyString())).thenReturn(resultList);
 
         final List<Team> result = personalManagementService.findTeamByCode("");
 
@@ -89,7 +90,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidData_whenCallCreate_thenReturnCreatedTeam() throws InstanceNotFoundException {
+    void givenValidData_whenCallCreate_thenReturnCreatedTeam() throws InstanceNotFoundException, TeamAlreadyExistException {
 
         Assertions.assertEquals(TeamOM.withDefaultValues(), personalManagementService.createTeam("a", 1L), "Elements are not equal");
     }
@@ -104,7 +105,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException {
+    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
 
 
         Team team = TeamOM.withDefaultValues();
@@ -158,7 +159,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -179,7 +180,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidUser_whenAddMember_thenConstraintViolationException() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
         Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
@@ -228,7 +229,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -260,7 +261,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -283,7 +284,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());

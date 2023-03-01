@@ -40,7 +40,7 @@ public interface PersonalManagementService {
 
     List<Team> findTeamByCode(String code);
 
-    Team createTeam(String code, Long organizationId) throws InstanceNotFoundException;
+    Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, TeamAlreadyExistException;
 
     void deleteTeamById(Long id) throws InstanceNotFoundException;
 
@@ -56,7 +56,7 @@ public interface PersonalManagementService {
 
     Team findTeamByUserId(Long userId) throws InstanceNotFoundException;
 
-    List<Team> findTeamByOrganizationId(Long organizationId);
+    List<Team> findTeamsByOrganizationId(Long organizationId);
 
 
     // VEHICLE SERVICES

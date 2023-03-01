@@ -94,7 +94,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="code" type="VARCHAR(255)">
-                <constraints unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP(3)" defaultValueComputed="CURRENT_TIMESTAMP(3)">
                 <constraints nullable="false"/>

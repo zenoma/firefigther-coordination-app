@@ -6,6 +6,7 @@ import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
@@ -38,7 +39,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidData_whenCallFindByCode_thenReturnFoundTeam() throws InstanceNotFoundException {
+    void givenValidData_whenCallFindByCode_thenReturnFoundTeam() throws InstanceNotFoundException, TeamAlreadyExistException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -79,7 +80,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException {
+    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -95,7 +96,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenInvalidCode_whenUpdate_thenConstraintViolationException() throws InstanceNotFoundException {
+    void givenInvalidCode_whenUpdate_thenConstraintViolationException() throws InstanceNotFoundException, TeamAlreadyExistException {
         Team team = TeamOM.withDefaultValues();
         Organization organization = team.getOrganization();
         OrganizationType organizationType = organization.getOrganizationType();
@@ -121,7 +122,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException {
+    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
