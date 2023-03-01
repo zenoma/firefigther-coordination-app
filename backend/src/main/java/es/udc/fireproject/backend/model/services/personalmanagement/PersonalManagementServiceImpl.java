@@ -141,14 +141,21 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<Team> findTeamByCode(String code) {
-        return teamRepository.findByCodeContains(code);
+        return teamRepository.findTeamsByCodeContains(code);
     }
 
     @Override
-    public Team createTeam(String code, Long organizationId) throws InstanceNotFoundException {
+    public Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, TeamAlreadyExistException {
 
         Organization organization = findOrganizationById(organizationId);
 
+        List<Team> teams = findTeamsByOrganizationId(organizationId);
+
+        for (Team item : teams) {
+            if (item.getCode().equals(code)) {
+                throw new TeamAlreadyExistException(code);
+            }
+        }
         Team team = new Team(code, organization);
         team.setCreatedAt(LocalDateTime.now());
 
@@ -237,8 +244,8 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public List<Team> findTeamByOrganizationId(Long organizationId) {
-        return teamRepository.findByOrganizationIdOrderByCode(organizationId);
+    public List<Team> findTeamsByOrganizationId(Long organizationId) {
+        return teamRepository.findTeamsByOrganizationIdOrderByCode(organizationId);
     }
 
 

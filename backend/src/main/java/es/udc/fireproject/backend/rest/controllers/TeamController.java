@@ -3,6 +3,7 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
@@ -33,7 +34,7 @@ public class TeamController {
     public TeamDto create(@RequestAttribute Long userId,
                           @Validated({UserDto.AllValidations.class})
                           @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException {
+            throws InstanceNotFoundException, TeamAlreadyExistException {
 
         Team team = personalManagementService.createTeam(jsonParams.get("code"), Long.valueOf(jsonParams.get("organizationId")));
         return TeamConversor.toTeamDto(team);
@@ -53,7 +54,7 @@ public class TeamController {
                 teamDtoList.add(TeamConversor.toTeamDto(team));
             }
         } else if (organizationId != null) {
-            for (Team team : personalManagementService.findTeamByOrganizationId(organizationId)) {
+            for (Team team : personalManagementService.findTeamsByOrganizationId(organizationId)) {
                 teamDtoList.add(TeamConversor.toTeamDto(team));
             }
         } else {
