@@ -1,4 +1,4 @@
-package es.udc.fireproject.backend.model.entities.cuadrant;
+package es.udc.fireproject.backend.model.entities.quadrant;
 
 import es.udc.fireproject.backend.model.entities.fire.Fire;
 import org.hibernate.annotations.Type;
@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cuadrants", schema = "public")
-public class Cuadrant implements Serializable {
+@Table(name = "quadrants", schema = "public")
+public class Quadrant implements Serializable {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
@@ -44,7 +44,7 @@ public class Cuadrant implements Serializable {
     @JoinColumn(name = "fire_id", nullable = false)
     private Fire fire;
 
-    public Cuadrant() {
+    public Quadrant() {
     }
 
     public Fire getFire() {
@@ -115,8 +115,8 @@ public class Cuadrant implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cuadrant cuadrant = (Cuadrant) o;
-        return Objects.equals(id, cuadrant.id) && Objects.equals(escala, cuadrant.escala) && Objects.equals(nombre, cuadrant.nombre) && Objects.equals(folla50, cuadrant.folla50) && Objects.equals(folla25, cuadrant.folla25) && Objects.equals(folla5, cuadrant.folla5) && Objects.equals(geom, cuadrant.geom) && Objects.equals(fire, cuadrant.fire);
+        Quadrant quadrant = (Quadrant) o;
+        return Objects.equals(id, quadrant.id) && Objects.equals(escala, quadrant.escala) && Objects.equals(nombre, quadrant.nombre) && Objects.equals(folla50, quadrant.folla50) && Objects.equals(folla25, quadrant.folla25) && Objects.equals(folla5, quadrant.folla5) && Objects.equals(geom, quadrant.geom) && Objects.equals(fire, quadrant.fire);
     }
 
     @Override

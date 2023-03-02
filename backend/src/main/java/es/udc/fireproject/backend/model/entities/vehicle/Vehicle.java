@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.entities.vehicle;
 
 import es.udc.fireproject.backend.model.entities.BaseEntity;
-import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
+import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class Vehicle extends BaseEntity {
     @ManyToOne(optional = false,
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "cuadrant_gid", nullable = false)
-    private Cuadrant cuadrant;
+    private Quadrant quadrant;
 
 
     public Vehicle() {
@@ -75,12 +75,12 @@ public class Vehicle extends BaseEntity {
         this.organization = organization;
     }
 
-    public Cuadrant getCuadrant() {
-        return cuadrant;
+    public Quadrant getQuadrant() {
+        return quadrant;
     }
 
-    public void setCuadrant(Cuadrant cuadrant) {
-        this.cuadrant = cuadrant;
+    public void setQuadrant(Quadrant quadrant) {
+        this.quadrant = quadrant;
     }
 
     @Override
@@ -88,12 +88,12 @@ public class Vehicle extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Objects.equals(vehiclePlate, vehicle.vehiclePlate) && Objects.equals(type, vehicle.type) && Objects.equals(organization, vehicle.organization) && Objects.equals(cuadrant, vehicle.cuadrant);
+        return Objects.equals(vehiclePlate, vehicle.vehiclePlate) && Objects.equals(type, vehicle.type) && Objects.equals(organization, vehicle.organization) && Objects.equals(quadrant, vehicle.quadrant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehiclePlate, type, organization, cuadrant);
+        return Objects.hash(vehiclePlate, type, organization, quadrant);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Vehicle extends BaseEntity {
                 ", type='" + type + '\'' +
                 ", createdAt=" + createdAt +
                 ", organization=" + organization +
-                ", cuadrant=" + cuadrant +
+                ", cuadrant=" + quadrant +
                 '}';
     }
 }

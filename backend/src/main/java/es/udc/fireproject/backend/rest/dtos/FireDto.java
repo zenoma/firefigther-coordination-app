@@ -21,18 +21,18 @@ public class FireDto extends BaseDto {
 
     private LocalDateTime extinguishedAt;
 
-    @JsonProperty("cuadrants")
-    private List<CuadrantInfoDto> cuadrantDtoList;
+    @JsonProperty("quadrants")
+    private List<QuadrantInfoDto> quadrantDtoList;
 
 
     public FireDto() {
     }
 
-    public FireDto(String description, String type, FireIndex fireIndex, List<CuadrantInfoDto> cuadrantDtoList, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
+    public FireDto(String description, String type, FireIndex fireIndex, List<QuadrantInfoDto> quadrantDtoList, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
         this.description = description;
         this.type = type;
         this.fireIndex = fireIndex;
-        this.cuadrantDtoList = cuadrantDtoList;
+        this.quadrantDtoList = quadrantDtoList;
         this.createdAt = createdAt;
         this.extinguishedAt = extinguishedAt;
     }
@@ -61,12 +61,12 @@ public class FireDto extends BaseDto {
         this.fireIndex = fireIndex;
     }
 
-    public List<CuadrantInfoDto> getCuadrantDtoList() {
-        return cuadrantDtoList;
+    public List<QuadrantInfoDto> getQuadrantDtoList() {
+        return quadrantDtoList;
     }
 
-    public void setCuadrantDtoList(List<CuadrantInfoDto> cuadrantDtoList) {
-        this.cuadrantDtoList = cuadrantDtoList;
+    public void setQuadrantDtoList(List<QuadrantInfoDto> quadrantDtoList) {
+        this.quadrantDtoList = quadrantDtoList;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -93,7 +93,7 @@ public class FireDto extends BaseDto {
                 ", fireIndex=" + fireIndex +
                 ", createdAt=" + createdAt +
                 ", extinguishedAt=" + extinguishedAt +
-                ", cuadrantDtoList=" + cuadrantDtoList +
+                ", cuadrantDtoList=" + quadrantDtoList +
                 '}';
     }
 
@@ -102,11 +102,11 @@ public class FireDto extends BaseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FireDto fireDto = (FireDto) o;
-        return Objects.equals(description, fireDto.description) && Objects.equals(type, fireDto.type) && fireIndex == fireDto.fireIndex && Objects.equals(createdAt, fireDto.createdAt) && Objects.equals(extinguishedAt, fireDto.extinguishedAt) && Objects.equals(cuadrantDtoList, fireDto.cuadrantDtoList);
+        return Objects.equals(description, fireDto.description) && Objects.equals(type, fireDto.type) && fireIndex == fireDto.fireIndex && Objects.equals(createdAt, fireDto.createdAt) && Objects.equals(extinguishedAt, fireDto.extinguishedAt) && Objects.equals(quadrantDtoList, fireDto.quadrantDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, type, fireIndex, createdAt, extinguishedAt, cuadrantDtoList);
+        return Objects.hash(description, type, fireIndex, createdAt, extinguishedAt, quadrantDtoList);
     }
 }

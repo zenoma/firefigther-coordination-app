@@ -3,7 +3,7 @@ package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.rest.dtos.CuadrantInfoDto;
+import es.udc.fireproject.backend.rest.dtos.QuadrantInfoDto;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
 
@@ -28,16 +28,16 @@ public class TeamConversor {
                 userDtoList.add(UserConversor.toUserDto(user));
             }
         }
-        CuadrantInfoDto cuadrantInfoDto = new CuadrantInfoDto();
-        if (team.getCuadrant() != null) {
-            cuadrantInfoDto = CuadrantInfoConversor.toCuadrantDto(team.getCuadrant());
+        QuadrantInfoDto quadrantInfoDto = new QuadrantInfoDto();
+        if (team.getQuadrant() != null) {
+            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDto(team.getQuadrant());
         }
         return new TeamDto(team.getId(),
                 team.getCode(),
                 team.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(team.getOrganization()),
                 userDtoList,
-                cuadrantInfoDto);
+                quadrantInfoDto);
 
     }
 }

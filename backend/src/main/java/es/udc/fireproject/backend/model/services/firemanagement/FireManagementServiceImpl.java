@@ -1,10 +1,10 @@
 package es.udc.fireproject.backend.model.services.firemanagement;
 
-import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
-import es.udc.fireproject.backend.model.entities.cuadrant.CuadrantRepository;
 import es.udc.fireproject.backend.model.entities.fire.Fire;
 import es.udc.fireproject.backend.model.entities.fire.FireIndex;
 import es.udc.fireproject.backend.model.entities.fire.FireRepository;
+import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
+import es.udc.fireproject.backend.model.entities.quadrant.QuadrantRepository;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
@@ -23,14 +23,14 @@ import java.util.List;
 @Transactional
 public class FireManagementServiceImpl implements FireManagementService {
 
-    public static final String CUADRANT_NOT_FOUND = "Cuadrant not found";
+    public static final String QUADRANT_NOT_FOUND = "Quadrant not found";
     public static final String FIRE_NOT_FOUND = "Fire not found";
     public static final String TEAM_NOT_FOUND = "Team not found";
     public static final String VEHICLE_NOT_FOUND = "Vehicle not found";
 
 
     @Autowired
-    CuadrantRepository cuadrantRepository;
+    QuadrantRepository quadrantRepository;
 
     @Autowired
     FireRepository fireRepository;
@@ -43,31 +43,31 @@ public class FireManagementServiceImpl implements FireManagementService {
 
     // CUADRANT SERVICES
     @Override
-    public List<Cuadrant> findAllCuadrants() {
-        return cuadrantRepository.findAll();
+    public List<Quadrant> findAllQuadrants() {
+        return quadrantRepository.findAll();
     }
 
     @Override
-    public List<Cuadrant> findCuadrantsByEscala(String scale) {
-        return cuadrantRepository.findByEscala(scale);
+    public List<Quadrant> findQuadrantsByEscala(String scale) {
+        return quadrantRepository.findByEscala(scale);
     }
 
     @Override
-    public Cuadrant findCuadrantById(Integer gid) throws InstanceNotFoundException {
-        return cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
+    public Quadrant findQuadrantById(Integer gid) throws InstanceNotFoundException {
+        return quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
     }
 
     @Override
-    public Cuadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException {
+    public Quadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException {
 
-        Cuadrant cuadrant = cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
+        Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
-        cuadrant.setFire(fire);
+        quadrant.setFire(fire);
 
-        return cuadrantRepository.save(cuadrant);
+        return quadrantRepository.save(quadrant);
     }
 
 
@@ -102,12 +102,12 @@ public class FireManagementServiceImpl implements FireManagementService {
         fire.setFireIndex(FireIndex.EXTINGUISHED);
         fire.setExtinguishedAt(LocalDateTime.now());
 
-        List<Cuadrant> cuadrants = cuadrantRepository.findByFireId(id);
+        List<Quadrant> quadrants = quadrantRepository.findByFireId(id);
 
-        for (Cuadrant cuadrant : cuadrants
+        for (Quadrant quadrant : quadrants
         ) {
-            cuadrant.setFire(null);
-            cuadrantRepository.save(cuadrant);
+            quadrant.setFire(null);
+            quadrantRepository.save(quadrant);
         }
 
         return fireRepository.save(fire);
@@ -138,9 +138,9 @@ public class FireManagementServiceImpl implements FireManagementService {
     @Override
     public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
-        Cuadrant cuadrant = cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
+        Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
-        team.setCuadrant(cuadrant);
+        team.setQuadrant(quadrant);
 
         return teamRepository.save(team);
 
@@ -150,7 +150,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     public Team retractTeam(Long teamId) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
 
-        team.setCuadrant(null);
+        team.setQuadrant(null);
 
         return teamRepository.save(team);
 
@@ -159,9 +159,9 @@ public class FireManagementServiceImpl implements FireManagementService {
     @Override
     public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
-        Cuadrant cuadrant = cuadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(CUADRANT_NOT_FOUND, gid));
+        Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
-        vehicle.setCuadrant(cuadrant);
+        vehicle.setQuadrant(quadrant);
 
         return vehicleRepository.save(vehicle);
 
@@ -171,7 +171,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
 
-        vehicle.setCuadrant(null);
+        vehicle.setQuadrant(null);
 
         return vehicleRepository.save(vehicle);
 

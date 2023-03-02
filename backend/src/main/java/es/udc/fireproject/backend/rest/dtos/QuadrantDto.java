@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.util.List;
 import java.util.Objects;
 
-public class CuadrantDto extends BaseDto {
+public class QuadrantDto extends BaseDto {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
@@ -30,7 +30,7 @@ public class CuadrantDto extends BaseDto {
     private List<Coordinates> coordinates;
 
 
-    public CuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
+    public QuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
@@ -100,7 +100,7 @@ public class CuadrantDto extends BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CuadrantDto that = (CuadrantDto) o;
+        QuadrantDto that = (QuadrantDto) o;
         return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(coordinates, that.coordinates);
     }
 

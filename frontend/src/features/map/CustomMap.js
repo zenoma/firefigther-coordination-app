@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Paper, Typography } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
-import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
+import { useGetQuadrantsByScaleQuery } from "../../api/quadrantApi";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
 import { selectToken } from "../user/login/LoginSlice";
 
@@ -33,7 +33,7 @@ export default function CustomMap() {
     scale: "25.0",
   };
 
-  const { data } = useGetCuadrantsByScaleQuery(payload);
+  const { data } = useGetQuadrantsByScaleQuery(payload);
 
   const [cursor] = useState("auto");
   const [mouseCoords, setMouseCoords] = useState({

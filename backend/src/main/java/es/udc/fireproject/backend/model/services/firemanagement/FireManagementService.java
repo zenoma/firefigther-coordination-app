@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.services.firemanagement;
 
-import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
 import es.udc.fireproject.backend.model.entities.fire.Fire;
 import es.udc.fireproject.backend.model.entities.fire.FireIndex;
+import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface FireManagementService {
     // CUADRANT SERVICES
-    List<Cuadrant> findAllCuadrants();
+    List<Quadrant> findAllQuadrants();
 
-    List<Cuadrant> findCuadrantsByEscala(String scale);
+    List<Quadrant> findQuadrantsByEscala(String scale);
 
-    Cuadrant findCuadrantById(Integer gid) throws InstanceNotFoundException;
+    Quadrant findQuadrantById(Integer gid) throws InstanceNotFoundException;
 
-    Cuadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException;
+    Quadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException;
 
 
     // FIRE SERVICES

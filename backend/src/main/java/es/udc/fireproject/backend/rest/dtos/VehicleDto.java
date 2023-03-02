@@ -12,15 +12,15 @@ public class VehicleDto extends BaseDto {
     private final String type;
     private final LocalDateTime createdAt;
     private final OrganizationDto organization;
-    private final CuadrantInfoDto cuadrant;
+    private final QuadrantInfoDto quadrant;
 
-    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, CuadrantInfoDto cuadrant) {
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;
         this.type = type;
         this.createdAt = createdAt;
         this.organization = organization;
-        this.cuadrant = cuadrant;
+        this.quadrant = quadrant;
     }
 
     public Long getId() {
@@ -43,8 +43,8 @@ public class VehicleDto extends BaseDto {
         return organization;
     }
 
-    public CuadrantInfoDto getCuadrant() {
-        return cuadrant;
+    public QuadrantInfoDto getQuadrant() {
+        return quadrant;
     }
 
     @Override
@@ -57,12 +57,12 @@ public class VehicleDto extends BaseDto {
                 Objects.equals(this.type, entity.type) &&
                 Objects.equals(this.createdAt, entity.createdAt) &&
                 Objects.equals(this.organization, entity.organization) &&
-                Objects.equals(this.cuadrant, entity.cuadrant);
+                Objects.equals(this.quadrant, entity.quadrant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vehiclePlate, type, createdAt, organization, cuadrant);
+        return Objects.hash(id, vehiclePlate, type, createdAt, organization, quadrant);
     }
 
     @Override
@@ -73,6 +73,6 @@ public class VehicleDto extends BaseDto {
                 "type = " + type + ", " +
                 "createdAt = " + createdAt + ", " +
                 "organization = " + organization + ", " +
-                "cuadrant = " + cuadrant + ")";
+                "cuadrant = " + quadrant + ")";
     }
 }

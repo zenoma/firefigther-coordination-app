@@ -5,7 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
-public class CuadrantInfoDto extends BaseDto {
+public class QuadrantInfoDto extends BaseDto {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
@@ -17,10 +17,10 @@ public class CuadrantInfoDto extends BaseDto {
 
     private String nombre;
 
-    public CuadrantInfoDto() {
+    public QuadrantInfoDto() {
     }
 
-    public CuadrantInfoDto(Integer id, String escala, String nombre) {
+    public QuadrantInfoDto(Integer id, String escala, String nombre) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
@@ -64,7 +64,7 @@ public class CuadrantInfoDto extends BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CuadrantInfoDto that = (CuadrantInfoDto) o;
+        QuadrantInfoDto that = (QuadrantInfoDto) o;
         return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre);
     }
 
