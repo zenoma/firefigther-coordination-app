@@ -11,6 +11,8 @@ public class FireDto extends BaseDto {
 
     private static final long serialVersionUID = -91681558665988183L;
 
+    private Long id;
+
     private String description;
 
     private String type;
@@ -28,13 +30,22 @@ public class FireDto extends BaseDto {
     public FireDto() {
     }
 
-    public FireDto(String description, String type, FireIndex fireIndex, List<QuadrantInfoDto> quadrantDtoList, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
+    public FireDto(Long id, String description, String type, FireIndex fireIndex, List<QuadrantInfoDto> quadrantDtoList, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
+        this.id = id;
         this.description = description;
         this.type = type;
         this.fireIndex = fireIndex;
         this.quadrantDtoList = quadrantDtoList;
         this.createdAt = createdAt;
         this.extinguishedAt = extinguishedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -88,12 +99,13 @@ public class FireDto extends BaseDto {
     @Override
     public String toString() {
         return "FireDto{" +
-                "description='" + description + '\'' +
+                "id=" + id +
+                ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", fireIndex=" + fireIndex +
                 ", createdAt=" + createdAt +
                 ", extinguishedAt=" + extinguishedAt +
-                ", cuadrantDtoList=" + quadrantDtoList +
+                ", quadrantDtoList=" + quadrantDtoList +
                 '}';
     }
 
@@ -102,11 +114,11 @@ public class FireDto extends BaseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FireDto fireDto = (FireDto) o;
-        return Objects.equals(description, fireDto.description) && Objects.equals(type, fireDto.type) && fireIndex == fireDto.fireIndex && Objects.equals(createdAt, fireDto.createdAt) && Objects.equals(extinguishedAt, fireDto.extinguishedAt) && Objects.equals(quadrantDtoList, fireDto.quadrantDtoList);
+        return Objects.equals(id, fireDto.id) && Objects.equals(description, fireDto.description) && Objects.equals(type, fireDto.type) && fireIndex == fireDto.fireIndex && Objects.equals(createdAt, fireDto.createdAt) && Objects.equals(extinguishedAt, fireDto.extinguishedAt) && Objects.equals(quadrantDtoList, fireDto.quadrantDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, type, fireIndex, createdAt, extinguishedAt, quadrantDtoList);
+        return Objects.hash(id, description, type, fireIndex, createdAt, extinguishedAt, quadrantDtoList);
     }
 }

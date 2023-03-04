@@ -29,6 +29,8 @@ import {
 import { withTranslation } from "react-i18next";
 import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 import TeamView from "./features/team/TeamView";
+import FireManagementView from "./features/fire/FireManagementView";
+import FireDetailsView from "./features/fire/FireDetailsView";
 
 function App({ t }) {
   const dispatch = useDispatch();
@@ -89,7 +91,12 @@ function App({ t }) {
               path="/organizations/:organizationId/teams"
               element={<OrganizationTeamsVehiclesView />}
             />
-            <Route path="/my-notices" element={<MyNoticesList />} />
+            <Route path="/my-notices" element={<MyNoticesList />} />{" "}
+            <Route path="/fire-management" element={<FireManagementView />} />
+            <Route
+              path="/fire-management/:fireId"
+              element={<FireDetailsView />}
+            />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

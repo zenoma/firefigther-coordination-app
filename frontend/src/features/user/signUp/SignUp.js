@@ -111,7 +111,6 @@ export default function Login() {
         display: "inline-block",
         boxShadow: "none",
       }}
-      elevation={4}
     >
       <form>
         <FormControl>

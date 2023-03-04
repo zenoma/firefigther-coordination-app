@@ -57,6 +57,8 @@
   "lastName": "Apellido",
   "phoneNumber": "Número de teléfono",
 
+  "user-list": "Lista de usuarios",
+  "user-no-user-list": "Todavía no hay usuarios en este equipo",
   "user-added-successfully": "Usuario añadido satisfactoriamente",
   "user-added-error": "No se ha podido añadir el usuario",
   "user-deleted-dialog": "¿Está seguro de eliminar este usuario?",
@@ -64,7 +66,7 @@
   "user-deleted-error": "No se ha podido eliminar el usuario",
   "user-selected-has-team-warning": "Acaba de seleccionar un usuario con equipo. ¿Está seguro?",
 
-  "vehicle-list": "Lista de Vehículos",
+  "vehicle-list": "Lista de vehículos",
   "vehicle-plate": "Matrícula",
   "type": "Tipo vehículo",
   "vehicle-create-title": "Crear un nuevo vehículo",
@@ -76,6 +78,15 @@
   "vehicle-deleted-successfully": "Vehículo borrado satisfactoriamente",
   "vehicle-deleted-error": "No se ha podido borrar el vehículo",
   "vehicle-deleted-dialog": "¿Está seguro de eliminar este vehículo?",
+
+  "fire-list": "Lista de incendios",
+  "fire-management": "Gestión incendios",
+  "fire-id": "Id",
+  "fire-description": "Descripción",
+  "fire-type": "Clasificación",
+  "fire-index": "Nivel",
+  "fire-created-at": "Fecha inicio",
+  "fire-extinguished-at": "Fecha extinción",
 
   "options": "Opciones",
   "cancel": "Cancelar",

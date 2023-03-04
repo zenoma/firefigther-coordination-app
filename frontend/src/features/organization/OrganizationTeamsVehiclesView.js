@@ -1,5 +1,4 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Box, Button } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import TeamsView from "../team/TeamsView";
 import BackButton from "../utils/BackButton";
@@ -10,12 +9,26 @@ export default function OrganizationTeamsVehiclesView() {
   const navigate = useNavigate();
 
   return (
-    <Box>
-      <BackButton />
-      <Box display="flex" justifyContent="space-evenly" maxHeight="600px">
-        <TeamsView organizationId={organizationId} />
-        <VehiclesView organizationId={organizationId} />
-      </Box>
+    <Box sx={{ padding: 3 }}>
+      <Grid
+        container
+        spacing={{ xs: 3, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        <Grid item xs={4} sm={8} md={1}>
+          <BackButton />
+        </Grid>
+        <Grid item xs={4} sm={8} md={5}>
+          <Box>
+            <TeamsView organizationId={organizationId} />
+          </Box>
+        </Grid>
+        <Grid item xs={4} sm={8} md={5}>
+          <Box>
+            <VehiclesView organizationId={organizationId} />
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -30,7 +30,6 @@ export default function VehicleCard(props) {
         display: "inline-block",
         boxShadow: "none",
       }}
-      elevation={3}
     >
       <Typography
         variant="h4"

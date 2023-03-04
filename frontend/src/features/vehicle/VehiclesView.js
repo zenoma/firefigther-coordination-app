@@ -56,11 +56,8 @@ export default function VehiclesView(props) {
     <Box>
       <Paper
         sx={{
-          display: "inline-block",
-          minWidth: "450px",
           padding: "10px",
         }}
-        elevation={5}
       >
         <Typography
           variant="h4"

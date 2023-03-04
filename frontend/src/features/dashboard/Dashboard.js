@@ -25,6 +25,7 @@ export default function Dashboard() {
             sx={{
               color: "primary.light",
               padding: 2,
+              minHeight: 500,
             }}
             variant="outlined"
           >

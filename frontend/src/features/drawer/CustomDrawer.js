@@ -8,9 +8,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import GroupsIcon from "@mui/icons-material/Groups";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import HomeIcon from "@mui/icons-material/Home";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -30,8 +29,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { logout, selectToken } from "../user/login/LoginSlice";
-import { SwitchThemeButton } from "./SwitchThemeButton";
 import { SwitchLanguajeDropdown } from "./SwitchLanguajeDropdown";
+import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;
 const loggedSettingsMenu = ["profile", "logout"];
@@ -48,6 +47,10 @@ const pages = [
   {
     name: "my-notices",
     icon: <ArticleIcon />,
+  },
+  {
+    name: "fire-management",
+    icon: <WhatshotIcon />,
   },
 ];
 
@@ -110,6 +113,9 @@ export default function PersistentDrawerLeft() {
         break;
       case "my-notices":
         navigate("/my-notices");
+        break;
+      case "fire-management":
+        navigate("/fire-management");
         break;
       default:
         navigate("/");
@@ -271,7 +277,7 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           ))}
         </List>
-        <Divider />
+        {/* <Divider />
         <List>
           {["PAGE 4", "PAGE 5", "PAGE 6"].map((text, index) => (
             <ListItem key={text} disablePadding>
@@ -283,7 +289,7 @@ export default function PersistentDrawerLeft() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
         <Divider />
         <SwitchLanguajeDropdown />
         <SwitchThemeButton />

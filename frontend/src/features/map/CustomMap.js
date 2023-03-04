@@ -30,7 +30,7 @@ export default function CustomMap() {
 
   const payload = {
     token: token,
-    scale: "25.0",
+    scale: "50.0",
   };
 
   const { data } = useGetQuadrantsByScaleQuery(payload);
@@ -52,14 +52,18 @@ export default function CustomMap() {
 
   return (
     <Map
-      style={{ minWidth: "800px", minHeight: "600px" }}
+      style={{ minWidth: "200px", minHeight: "500px" }}
       {...settings}
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
-      onClick={(e) => setMouseCoords(e.lngLat)}
+      //FIXME: Change on click to navigate to a new detailed view
+      // onClick={(e) => setMouseCoords(e.lngLat)}
+      // onClick={(e) => console.log(e.features)}
       cursor={cursor}
       maxBounds={bounds}
+      //FIXME:To make layers interactive
+      // interactiveLayerIds={["1364"]}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
         <NavigationControl />
@@ -104,10 +108,12 @@ export default function CustomMap() {
           );
         })}
 
-      <Marker
+      {/* FIXME: Move weather info to layer view */}
+      {/* <Marker
         latitude={mouseCoords.lat}
         longitude={mouseCoords.lng}
         anchor="bottom"
+        onClick={(e) => console.log(e)}
       >
         <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
           <Typography variant="body" color="white" sx={{ display: "block" }}>
@@ -120,7 +126,7 @@ export default function CustomMap() {
             Temp stats:
           </Typography>
         </Paper>
-      </Marker>
+      </Marker> */}
     </Map>
   );
 }

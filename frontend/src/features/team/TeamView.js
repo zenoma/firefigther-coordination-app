@@ -39,7 +39,6 @@ export default function TeamView() {
           display: "inline-block",
           padding: "10px",
         }}
-        elevation={5}
       >
         {error ? (
           <h1>{t("generic-error")}</h1>

@@ -21,7 +21,7 @@ public class FireConversor {
                 cuadrantDtoList.add(QuadrantInfoConversor.toQuadrantDto(quadrant));
             }
         }
-        return new FireDto(fire.getDescription(), fire.getType(), fire.getFireIndex(), cuadrantDtoList, fire.getCreatedAt(), fire.getExtinguishedAt());
+        return new FireDto(fire.getId(), fire.getDescription(), fire.getType(), fire.getFireIndex(), cuadrantDtoList, fire.getCreatedAt(), fire.getExtinguishedAt());
     }
 
     public static Fire toFire(FireDto fireDto) {

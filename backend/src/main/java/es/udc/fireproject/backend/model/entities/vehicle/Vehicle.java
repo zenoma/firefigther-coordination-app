@@ -29,7 +29,7 @@ public class Vehicle extends BaseEntity {
 
     @ManyToOne(optional = false,
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "cuadrant_gid", nullable = false)
+    @JoinColumn(name = "quadrant_gid", nullable = false)
     private Quadrant quadrant;
 
 

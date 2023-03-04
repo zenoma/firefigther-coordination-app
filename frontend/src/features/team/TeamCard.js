@@ -32,7 +32,6 @@ export default function TeamCard(props) {
         display: "inline-block",
         boxShadow: "none",
       }}
-      elevation={3}
     >
       <Typography
         variant="h4"
