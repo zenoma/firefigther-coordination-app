@@ -130,6 +130,21 @@ export const teamApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    retractTeam: build.mutation({
+      query: (payload) => ({
+        url: "/teams/" + payload.teamId + "/retract/",
+        method: "POST",
+        body: {
+          gid: payload.gid,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
@@ -144,4 +159,5 @@ export const {
   useDeleteTeambyIdMutation,
   useAddUserMutation,
   useDeleteUserMutation,
+  useRetractTeamMutation,
 } = teamApi;

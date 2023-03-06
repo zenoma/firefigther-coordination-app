@@ -7,27 +7,26 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
-import { useGetVehiclesByOrganizationIdQuery } from "../../api/vehicleApi";
+import { useGetQuadrantByIdQuery } from "../../api/quadrantApi";
 import { selectToken } from "../user/login/LoginSlice";
-import VehicleCreateDialog from "./VehicleCreateDialog";
-import VehicleTable from "./VehicleTable";
+import QuadrantVehicleTable from "./QuadrantVehicleTable";
 
-export default function VehiclesView(props) {
+export default function QuadrantVehiclesView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
 
-  const organizationId = props.organizationId;
+  const quadrantId = props.quadrantId;
 
   const payload = {
     token: token,
-    organizationId: organizationId,
+    quadrantId: quadrantId,
   };
 
   const {
-    data: vehicleList,
+    data: quadrantInfo,
     isFetching,
     refetch,
-  } = useGetVehiclesByOrganizationIdQuery(payload, {
+  } = useGetQuadrantByIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -47,23 +46,27 @@ export default function VehiclesView(props) {
           margin={1}
           sx={{ fontWeight: "bold", color: "primary.light" }}
         >
-          {t("vehicle-list")}
+          {t("quadrant-vehicles-deployed")}
         </Typography>
         {isFetching ? (
           <CircularProgress />
-        ) : vehicleList ? (
-          <VehicleTable reloadData={reloadData} vehicles={vehicleList} />
+        ) : quadrantInfo ? (
+          <QuadrantVehicleTable
+            reloadData={reloadData}
+            vehicles={quadrantInfo.vehicleDtoList}
+            quadrantId={quadrantId}
+          />
         ) : null}
 
-        <VehicleCreateDialog
+        {/* <VehicleCreateDialog
           reloadData={reloadData}
-          organizationId={organizationId}
-        />
+          organizationId={quadrantId}
+        /> */}
       </Paper>
     </Box>
   );
 }
 
-VehiclesView.propTypes = {
-  organizationId: PropTypes.number.isRequired,
+QuadrantVehiclesView.propTypes = {
+  quadrantId: PropTypes.number.isRequired,
 };

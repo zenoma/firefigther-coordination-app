@@ -60,13 +60,13 @@ export default function OrganizationTeamsVehiclesView() {
             </Box>
           )}
         </Grid>
-        <Grid item xs={4} sm={8} md={5}>
+        <Grid item xs={4} sm={8} md={6}>
           <Box>
             {/* FIXME:Change TeamsViewComponent to make it more abstract */}
             <TeamsView organizationId={organizationId} />
           </Box>
         </Grid>
-        <Grid item xs={4} sm={8} md={5}>
+        <Grid item xs={4} sm={8} md={6}>
           <Box>
             {/* FIXME:Change TeamsViewComponent to make it more abstract */}
             <VehiclesView organizationId={organizationId} />

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 import { selectToken } from "./login/LoginSlice";
 
-import AnnouncementIcon from "@mui/icons-material/Announcement";
 import {
   Alert,
   Button,
@@ -16,7 +15,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";

@@ -13,7 +13,19 @@ export const quadrantApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    getQuadrantById: build.query({
+      query: (payload) => ({
+        url: "/quadrants/" + payload.quadrantId,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetQuadrantsByScaleQuery } = quadrantApi;
+export const { useGetQuadrantsByScaleQuery, useGetQuadrantByIdQuery } =
+  quadrantApi;

@@ -7,12 +7,12 @@ public class VehicleDto extends BaseDto {
 
     private static final long serialVersionUID = -6531781678159378396L;
 
-    private final Long id;
-    private final String vehiclePlate;
-    private final String type;
-    private final LocalDateTime createdAt;
-    private final OrganizationDto organization;
-    private final QuadrantInfoDto quadrant;
+    private Long id;
+    private String vehiclePlate;
+    private String type;
+    private LocalDateTime createdAt;
+    private OrganizationDto organization;
+    private QuadrantInfoDto quadrant;
 
     public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant) {
         this.id = id;
@@ -21,6 +21,14 @@ public class VehicleDto extends BaseDto {
         this.createdAt = createdAt;
         this.organization = organization;
         this.quadrant = quadrant;
+    }
+
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization) {
+        this.id = id;
+        this.vehiclePlate = vehiclePlate;
+        this.type = type;
+        this.createdAt = createdAt;
+        this.organization = organization;
     }
 
     public Long getId() {

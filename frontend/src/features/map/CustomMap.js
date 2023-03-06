@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Paper, Typography } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
+import Map, { Layer, NavigationControl, Source } from "react-map-gl";
 import { useGetQuadrantsByScaleQuery } from "../../api/quadrantApi";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
 import { selectToken } from "../user/login/LoginSlice";
@@ -36,10 +35,10 @@ export default function CustomMap() {
   const { data } = useGetQuadrantsByScaleQuery(payload);
 
   const [cursor] = useState("auto");
-  const [mouseCoords, setMouseCoords] = useState({
-    lng: 0,
-    lat: 0,
-  });
+  // const [mouseCoords, setMouseCoords] = useState({
+  //   lng: 0,
+  //   lat: 0,
+  // });
 
   const [settings] = useState({
     minZoom: 7,

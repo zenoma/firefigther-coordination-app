@@ -94,11 +94,17 @@
   "quadrant-name": "Nombre",
   "quadrant-map": "Cuadrantes afectados",
   "quadrant-details": "Información del cuadrante",
+  "quadrant-teams-deployed": "Equipos desplegados",
+  "quadrant-team-retract-dialog": "¿Está seguro de retirar este equipo del cuadrante?",
+  "quadrant-vehicles-deployed": "Vehículos desplegados",  
+  "quadrant-vehicle-retract-dialog": "¿Está seguro de retirar este vehículo del cuadrante?",
+
 
   "options": "Opciones",
   "cancel": "Cancelar",
   "edit": "Editar",
   "delete": "Eliminar",
+  "retract": "Retirar",
   "create": "Crear",
   "add": "Añadir",
   "rows-per-page": "Filas por página",

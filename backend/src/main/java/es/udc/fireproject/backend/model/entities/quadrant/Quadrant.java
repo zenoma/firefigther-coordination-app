@@ -1,11 +1,14 @@
 package es.udc.fireproject.backend.model.entities.quadrant;
 
 import es.udc.fireproject.backend.model.entities.fire.Fire;
+import es.udc.fireproject.backend.model.entities.team.Team;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +40,16 @@ public class Quadrant implements Serializable {
     @Type(type = "org.locationtech.jts.geom.MultiPolygon")
     @Column(name = "geom")
     private MultiPolygon geom;
+
+    @OneToMany(
+            mappedBy = "quadrant",
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Team> teamList;
+
+    @OneToMany(
+            mappedBy = "quadrant",
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Vehicle> vehicleList;
 
     @ManyToOne(
             optional = false,
@@ -111,22 +124,39 @@ public class Quadrant implements Serializable {
         this.id = id;
     }
 
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
+
+    public List<Vehicle> getVehicleList() {
+        return vehicleList;
+    }
+
+    public void setVehicleList(List<Vehicle> vehicleList) {
+        this.vehicleList = vehicleList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quadrant quadrant = (Quadrant) o;
-        return Objects.equals(id, quadrant.id) && Objects.equals(escala, quadrant.escala) && Objects.equals(nombre, quadrant.nombre) && Objects.equals(folla50, quadrant.folla50) && Objects.equals(folla25, quadrant.folla25) && Objects.equals(folla5, quadrant.folla5) && Objects.equals(geom, quadrant.geom) && Objects.equals(fire, quadrant.fire);
+        return Objects.equals(id, quadrant.id) && Objects.equals(escala, quadrant.escala) && Objects.equals(nombre, quadrant.nombre) && Objects.equals(folla50, quadrant.folla50) && Objects.equals(folla25, quadrant.folla25) && Objects.equals(folla5, quadrant.folla5) && Objects.equals(geom, quadrant.geom) && Objects.equals(teamList, quadrant.teamList) && Objects.equals(vehicleList, quadrant.vehicleList) && Objects.equals(fire, quadrant.fire);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, geom, fire);
+        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, geom, teamList, vehicleList, fire);
     }
 
     @Override
     public String toString() {
-        return "Cuadrant{" +
+        return "Quadrant{" +
                 "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
@@ -134,6 +164,8 @@ public class Quadrant implements Serializable {
                 ", folla25='" + folla25 + '\'' +
                 ", folla5='" + folla5 + '\'' +
                 ", geom=" + geom +
+                ", teamList=" + teamList +
+                ", vehicleList=" + vehicleList +
                 ", fire=" + fire +
                 '}';
     }

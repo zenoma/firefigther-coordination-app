@@ -1,13 +1,13 @@
-import { Box, CircularProgress, Grid, Paper } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 import UsersList from "../user/UsersList";
+import BackButton from "../utils/BackButton";
 import TeamCard from "./TeamCard";
 import TeamUserAdd from "./TeamUserAdd";
-import BackButton from "../utils/BackButton";
 
 export default function TeamView() {
   const token = useSelector(selectToken);

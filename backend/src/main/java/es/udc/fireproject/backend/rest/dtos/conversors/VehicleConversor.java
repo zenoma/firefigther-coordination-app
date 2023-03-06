@@ -19,7 +19,7 @@ public class VehicleConversor {
     public static VehicleDto toVehicleDto(Vehicle vehicle) {
         QuadrantInfoDto quadrantInfoDto = new QuadrantInfoDto();
         if (vehicle.getQuadrant() != null) {
-            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDto(vehicle.getQuadrant());
+            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDtoWithoutTeamsAndVehicles(vehicle.getQuadrant());
         }
 
         return new VehicleDto(vehicle.getId(),
@@ -28,6 +28,16 @@ public class VehicleConversor {
                 vehicle.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(vehicle.getOrganization()),
                 quadrantInfoDto);
+
+    }
+
+    public static VehicleDto toVehicleDtoWithoutQuadrantInfo(Vehicle vehicle) {
+
+        return new VehicleDto(vehicle.getId(),
+                vehicle.getVehiclePlate(),
+                vehicle.getType(),
+                vehicle.getCreatedAt(),
+                OrganizationConversor.toOrganizationDto(vehicle.getOrganization()));
 
     }
 }

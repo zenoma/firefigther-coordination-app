@@ -8,12 +8,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetFireByIdQuery } from "../../api/fireApi";
 import CustomMap from "../map/CustomMap";
 import { selectToken } from "../user/login/LoginSlice";

@@ -30,7 +30,7 @@ public class TeamConversor {
         }
         QuadrantInfoDto quadrantInfoDto = new QuadrantInfoDto();
         if (team.getQuadrant() != null) {
-            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDto(team.getQuadrant());
+            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDtoWithoutTeamsAndVehicles(team.getQuadrant());
         }
         return new TeamDto(team.getId(),
                 team.getCode(),
@@ -38,6 +38,21 @@ public class TeamConversor {
                 OrganizationConversor.toOrganizationDto(team.getOrganization()),
                 userDtoList,
                 quadrantInfoDto);
+
+    }
+
+    public static TeamDto toTeamDtoWithoutQuadrantInfo(Team team) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        if (team.getUserList() != null && !team.getUserList().isEmpty()) {
+            for (User user : team.getUserList()) {
+                userDtoList.add(UserConversor.toUserDto(user));
+            }
+        }
+        return new TeamDto(team.getId(),
+                team.getCode(),
+                team.getCreatedAt(),
+                OrganizationConversor.toOrganizationDto(team.getOrganization()),
+                userDtoList);
 
     }
 }

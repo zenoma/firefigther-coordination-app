@@ -3,6 +3,7 @@ package es.udc.fireproject.backend.rest.dtos;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 import java.util.Objects;
 
 public class QuadrantInfoDto extends BaseDto {
@@ -17,7 +18,19 @@ public class QuadrantInfoDto extends BaseDto {
 
     private String nombre;
 
+    private List<TeamDto> teamDtoList;
+    private List<VehicleDto> vehicleDtoList;
+
+
     public QuadrantInfoDto() {
+    }
+
+    public QuadrantInfoDto(Integer id, String escala, String nombre, List<TeamDto> teamDtoList, List<VehicleDto> vehicleDtoList) {
+        this.id = id;
+        this.escala = escala;
+        this.nombre = nombre;
+        this.teamDtoList = teamDtoList;
+        this.vehicleDtoList = vehicleDtoList;
     }
 
     public QuadrantInfoDto(Integer id, String escala, String nombre) {
@@ -51,13 +64,20 @@ public class QuadrantInfoDto extends BaseDto {
     }
 
 
-    @Override
-    public String toString() {
-        return "CuadrantInfoDto{" +
-                "id=" + id +
-                ", escala='" + escala + '\'' +
-                ", nombre='" + nombre + '\'' +
-                '}';
+    public List<TeamDto> getTeamDtoList() {
+        return teamDtoList;
+    }
+
+    public void setTeamDtoList(List<TeamDto> teamDtoList) {
+        this.teamDtoList = teamDtoList;
+    }
+
+    public List<VehicleDto> getVehicleDtoList() {
+        return vehicleDtoList;
+    }
+
+    public void setVehicleDtoList(List<VehicleDto> vehicleDtoList) {
+        this.vehicleDtoList = vehicleDtoList;
     }
 
     @Override
@@ -65,11 +85,22 @@ public class QuadrantInfoDto extends BaseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuadrantInfoDto that = (QuadrantInfoDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre);
+        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(teamDtoList, that.teamDtoList) && Objects.equals(vehicleDtoList, that.vehicleDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre);
+        return Objects.hash(id, escala, nombre, teamDtoList, vehicleDtoList);
+    }
+
+    @Override
+    public String toString() {
+        return "QuadrantInfoDto{" +
+                "id=" + id +
+                ", escala='" + escala + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", teamDtoList=" + teamDtoList +
+                ", vehicleDtoList=" + vehicleDtoList +
+                '}';
     }
 }

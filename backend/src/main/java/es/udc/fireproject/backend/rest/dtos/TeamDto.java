@@ -41,6 +41,14 @@ public class TeamDto extends BaseDto {
         this.quadrantInfoDto = quadrantInfoDto;
     }
 
+    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList) {
+        this.id = id;
+        this.code = code;
+        this.createdAt = createdAt;
+        this.organizationDto = organizationDto;
+        this.userDtoList = userDtoList;
+    }
+
 
     public Long getId() {
         return id;
