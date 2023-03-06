@@ -54,7 +54,6 @@ export default function VehicleTable(props) {
   const [vehicleId, setVehicleId] = useState("");
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [type, setType] = useState("");
-  const [data, setData] = useState("");
 
   const vehicles = props.vehicles;
 

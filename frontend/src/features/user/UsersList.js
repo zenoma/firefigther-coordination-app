@@ -113,7 +113,12 @@ export default function TeamItem(props) {
 
   return (
     <Paper key={props.name} sx={{ margin: 3 }} elevation={3}>
-      <Typography variant="h6" sx={{ padding: 3 }} color={"primary.light"}>
+      <Typography
+        variant="h6"
+        sx={{ padding: 3 }}
+        fontWeight="bold"
+        color={"primary.light"}
+      >
         {t("user-list")}
       </Typography>
       <List component="div" disablePadding>

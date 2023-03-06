@@ -31,6 +31,7 @@ import OrganizationTeamsVehiclesView from "./features/organization/OrganizationT
 import TeamView from "./features/team/TeamView";
 import FireManagementView from "./features/fire/FireManagementView";
 import FireDetailsView from "./features/fire/FireDetailsView";
+import QuadrantView from "./features/quadrant/QuadrantView";
 
 function App({ t }) {
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ function App({ t }) {
               path="/fire-management/:fireId"
               element={<FireDetailsView />}
             />
+            <Route path="/quadrant/:quadrantId" element={<QuadrantView />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

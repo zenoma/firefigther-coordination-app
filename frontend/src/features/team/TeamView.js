@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Paper } from "@mui/material";
+import { Box, CircularProgress, Grid, Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -29,24 +29,22 @@ export default function TeamView() {
   };
 
   return (
-    <div>
+    <Box sx={{ padding: 3 }} display="flex">
       <BackButton />
-      <Paper
-        sx={{
-          width: "100%",
-          maxWidth: 1000,
-          maxHeight: 1000,
-          display: "inline-block",
-          padding: "10px",
-        }}
-      >
-        {error ? (
-          <h1>{t("generic-error")}</h1>
-        ) : isLoading ? (
-          <CircularProgress />
-        ) : data ? (
-          <Box>
+      {error ? (
+        <h1>{t("generic-error")}</h1>
+      ) : isLoading ? (
+        <CircularProgress />
+      ) : data ? (
+        <Grid
+          container
+          spacing={{ xs: 3, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          <Grid item xs={4} sm={8} md={12}>
             <TeamCard data={data} />
+          </Grid>
+          <Grid item xs={3} sm={7} md={12}>
             <UsersList
               teamId={data.id}
               name={teamId}
@@ -54,9 +52,9 @@ export default function TeamView() {
               reloadData={reloadData}
             />
             <TeamUserAdd teamId={data.id} reloadData={reloadData} />
-          </Box>
-        ) : null}
-      </Paper>
-    </div>
+          </Grid>
+        </Grid>
+      ) : null}
+    </Box>
   );
 }

@@ -13,7 +13,18 @@ export const fireApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    getFireById: build.query({
+      query: (payload) => ({
+        url: "/fire/" + payload.fireId,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetFiresQuery } = fireApi;
+export const { useGetFiresQuery, useGetFireByIdQuery } = fireApi;

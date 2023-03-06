@@ -87,6 +87,13 @@
   "fire-index": "Nivel",
   "fire-created-at": "Fecha inicio",
   "fire-extinguished-at": "Fecha extinción",
+  "fire-details-title": "Detalles del incendio",
+
+  "quadrant-list": "Lista de cuadrantes",
+  "quadrant-id": "Id",
+  "quadrant-name": "Nombre",
+  "quadrant-map": "Cuadrantes afectados",
+  "quadrant-details": "Información del cuadrante",
 
   "options": "Opciones",
   "cancel": "Cancelar",
