@@ -96,6 +96,7 @@
   "fire-created-at": "Fecha inicio",
   "fire-extinguished-at": "Fecha extinción",
   "fire-details-title": "Detalles del incendio",
+  "fire-create-title": "Crear nuevo incendio",
 
   "quadrant-list": "Lista de cuadrantes",
   "quadrant-id": "Id",

@@ -4,7 +4,7 @@ export const fireApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getFires: build.query({
       query: (payload) => ({
-        url: "/fire",
+        url: "/fires",
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -15,7 +15,23 @@ export const fireApi = baseApi.injectEndpoints({
     }),
     getFireById: build.query({
       query: (payload) => ({
-        url: "/fire/" + payload.fireId,
+        url: "/fires/" + payload.fireId,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    createFire: build.mutation({
+      query: (payload) => ({
+        url: "/fires/",
+        method: "POST",
+        body: {
+          description: payload.description,
+          type: payload.type,
+        },
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -27,4 +43,5 @@ export const fireApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetFiresQuery, useGetFireByIdQuery } = fireApi;
+export const { useGetFiresQuery, useGetFireByIdQuery, useCreateFireMutation } =
+  fireApi;

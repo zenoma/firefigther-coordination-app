@@ -1,4 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Fab,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   esES,
@@ -8,10 +21,12 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import * as React from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useGetFiresQuery } from "../../api/fireApi";
+import { toast } from "react-toastify";
+import { useCreateFireMutation, useGetFiresQuery } from "../../api/fireApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 export default function FireDataGrid() {
@@ -19,6 +34,21 @@ export default function FireDataGrid() {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const [open, setOpen] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
+
+  const [description, setDescription] = useState("");
+  const [fireType, setFireType] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setDescription("");
+    setFireType("");
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -28,18 +58,19 @@ export default function FireDataGrid() {
     localeText = esES.components.MuiDataGrid.defaultProps.localeText;
   }
 
-  const [pageSize, setPageSize] = React.useState(10);
-
   const {
     data: fires,
     error,
     isLoading,
+    refetch,
   } = useGetFiresQuery(
     { token: token },
     {
       refetchOnMountOrArgChange: true,
     }
   );
+
+  const [createFire] = useCreateFireMutation();
 
   const data = {
     columns: [
@@ -100,8 +131,38 @@ export default function FireDataGrid() {
     },
   };
 
+  const handleChange = (event) => {
+    var id = event.target.id;
+    var value = event.target.value;
+
+    if (id === "description") {
+      setDescription(value);
+    }
+    if (id === "fireType") {
+      setFireType(value);
+    }
+  };
+
   const handleRowClick = (id) => {
     navigate("/fire-management/" + id);
+  };
+
+  const handleClick = () => {
+    console.log("create");
+    const payload = {
+      token: token,
+      description: description,
+      type: fireType,
+    };
+
+    createFire(payload)
+      .unwrap()
+      .then(() => {
+        toast.success(t("fire-created-successfully"));
+        refetch();
+        handleClose();
+      })
+      .catch((error) => toast.error(t("fire-created-error")));
   };
 
   function CustomToolbar() {
@@ -121,7 +182,7 @@ export default function FireDataGrid() {
       ) : isLoading ? (
         <div>Loading</div>
       ) : fires ? (
-        <Box style={{ height: 250, width: "100%" }}>
+        <Box style={{ height: 490, width: "100%" }}>
           <Typography
             variant="h4"
             margin={1}
@@ -144,6 +205,56 @@ export default function FireDataGrid() {
             localeText={localeText}
             onRowClick={(e) => handleRowClick(e.row.id)}
           />
+          <Box m={1}>
+            <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
+              <AddIcon />
+            </Fab>
+          </Box>
+          <Dialog fullWidth open={open} onClose={handleClose}>
+            <DialogTitle>{t("fire-create-title")} </DialogTitle>
+            <DialogContent>
+              <FormControl>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="description"
+                      label={t("fire-description")}
+                      type="text"
+                      autoComplete="current-description"
+                      margin="normal"
+                      value={description}
+                      onChange={(e) => handleChange(e)}
+                      helperText=" "
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="fireType"
+                      label={t("fire-type")}
+                      type="text"
+                      autoComplete="current-type"
+                      margin="normal"
+                      value={fireType}
+                      onChange={(e) => handleChange(e)}
+                      helperText=" "
+                      required
+                    />
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>{t("cancel")}</Button>
+              <Button
+                autoFocus
+                variant="contained"
+                onClick={() => handleClick()}
+              >
+                {t("create")}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       ) : null}
     </Box>

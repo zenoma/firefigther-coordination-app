@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/fire")
+@RequestMapping("/fires")
 public class FireController {
 
     @Autowired
