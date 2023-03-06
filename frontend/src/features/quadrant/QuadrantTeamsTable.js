@@ -86,7 +86,6 @@ export default function QuadrantTeamsTable(props) {
 
   var rows = [];
   if (teams) {
-    console.log(teams)
     rows = [];
     teams.forEach((item) => {
       rows.push(createData(item.id, item.code, item.organization.code));

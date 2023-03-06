@@ -130,9 +130,24 @@ export const teamApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    deployTeam: build.mutation({
+      query: (payload) => ({
+        url: "/teams/" + payload.teamId + "/deploy",
+        method: "POST",
+        body: {
+          gid: payload.gid,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
     retractTeam: build.mutation({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/retract/",
+        url: "/teams/" + payload.teamId + "/retract",
         method: "POST",
         body: {
           gid: payload.gid,
@@ -159,5 +174,6 @@ export const {
   useDeleteTeambyIdMutation,
   useAddUserMutation,
   useDeleteUserMutation,
+  useDeployTeamMutation,
   useRetractTeamMutation,
 } = teamApi;
