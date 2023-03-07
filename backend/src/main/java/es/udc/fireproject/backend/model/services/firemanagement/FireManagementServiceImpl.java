@@ -118,6 +118,7 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         for (Quadrant quadrant : quadrants
         ) {
+            logManagementService.logExtinguishedFire(id, quadrant.getId());
             quadrant.setFire(null);
             quadrantRepository.save(quadrant);
         }

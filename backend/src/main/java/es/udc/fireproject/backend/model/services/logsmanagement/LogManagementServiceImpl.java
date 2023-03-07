@@ -45,7 +45,11 @@ public class LogManagementServiceImpl implements LogManagementService {
 
     @Override
     public FireQuadrantLog logExtinguishedFire(Long fireId, Integer quadrantId) {
-        return null;
+        FireQuadrantLog fireQuadrantLog = fireQuadrantLogRepository.findByFireIdAndQuadrantId(fireId, quadrantId);
+
+        fireQuadrantLog.setExtinguishedAt(LocalDateTime.now());
+
+        return fireQuadrantLogRepository.save(fireQuadrantLog);
     }
 
     @Override
