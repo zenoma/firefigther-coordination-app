@@ -90,14 +90,14 @@ export default function FireDataGrid() {
         field: "type",
         headerName: t("fire-type"),
         groupable: false,
-        minWidth: 150,
+        minWidth: 100,
         aggregable: false,
       },
       {
         field: "fireIndex",
         headerName: t("fire-index"),
         groupable: false,
-        minWidth: 100,
+        minWidth: 150,
         aggregable: false,
       },
 
@@ -143,8 +143,8 @@ export default function FireDataGrid() {
     }
   };
 
-  const handleRowClick = (id) => {
-    navigate("/fire-management/" + id);
+  const handleRowClick = (row) => {
+    navigate("/fire-management/" + row.id);
   };
 
   const handleClick = () => {
@@ -182,7 +182,16 @@ export default function FireDataGrid() {
       ) : isLoading ? (
         <div>Loading</div>
       ) : fires ? (
-        <Box style={{ height: 490, width: "100%" }}>
+        <Box
+          sx={{
+            height: 490,
+            width: "100%",
+            "& .disabled": {
+              backgroundColor: "lightgrey",
+              "pointer-events": "none",
+            },
+          }}
+        >
           <Typography
             variant="h4"
             margin={1}
@@ -203,7 +212,12 @@ export default function FireDataGrid() {
             rowsPerPageOptions={[10, 25, 50]}
             pagination
             localeText={localeText}
-            onRowClick={(e) => handleRowClick(e.row.id)}
+            getRowClassName={(params) => {
+              if (params.row.fireIndex === "EXTINGUISHED") {
+                return "disabled";
+              }
+            }}
+            onRowClick={(e) => handleRowClick(e.row)}
           />
           <Box m={1}>
             <Fab color="primary" aria-label="add" onClick={handleClickOpen}>

@@ -24,8 +24,26 @@ export const quadrantApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    linkFire: build.mutation({
+      query: (payload) => ({
+        url: "/quadrants/" + payload.quadrantId + "/linkFire",
+        method: "POST",
+        body: {
+          fireId: payload.fireId,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetQuadrantsByScaleQuery, useGetQuadrantByIdQuery } =
-  quadrantApi;
+export const {
+  useGetQuadrantsByScaleQuery,
+  useGetQuadrantByIdQuery,
+  useLinkFireMutation,
+} = quadrantApi;
