@@ -164,7 +164,7 @@ export default function FireDetailsView() {
         </Grid>
       </Grid>
 
-      <Dialog open={open} fullWidth>
+      <Dialog open={open} fullWidth maxWidth="md">
         <DialogTitle>{t("fire-create-title")} </DialogTitle>
         <DialogContent>
           <QuadrantDataGrid childToParent={childToParent} />

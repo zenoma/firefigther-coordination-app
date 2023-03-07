@@ -12,12 +12,17 @@ public class QuadrantConversor {
     }
 
     public static QuadrantDto toQuadrantDto(Quadrant quadrant) {
+        Long fireId = null;
+        if (quadrant.getFire() != null) {
+            fireId = quadrant.getFire().getId();
+        }
         return new QuadrantDto(quadrant.getId(),
                 quadrant.getEscala(),
                 quadrant.getNombre(),
                 quadrant.getFolla50(),
                 quadrant.getFolla25(),
                 quadrant.getFolla5(),
-                new ArrayList(Arrays.asList(quadrant.getGeom().getCoordinates())));
+                new ArrayList(Arrays.asList(quadrant.getGeom().getCoordinates())),
+                fireId);
     }
 }

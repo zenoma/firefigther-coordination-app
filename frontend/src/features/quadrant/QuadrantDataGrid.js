@@ -25,7 +25,7 @@ export default function QuadrantDataGrid({ childToParent }) {
     localeText = esES.components.MuiDataGrid.defaultProps.localeText;
   }
 
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(25);
 
   const {
     data: quadrants,
@@ -57,6 +57,11 @@ export default function QuadrantDataGrid({ childToParent }) {
         headerName: t("quadrant-name"),
         width: 200,
       },
+      {
+        field: "fireId",
+        headerName: t("quadrant-fire-id"),
+        width: 200,
+      },
     ],
     rows: quadrants,
     initialState: {
@@ -84,7 +89,16 @@ export default function QuadrantDataGrid({ childToParent }) {
   }
 
   return (
-    <Box style={{ height: 500 }}>
+    <Box
+      style={{ height: 500, minWidth: 700 }}
+      sx={{
+        "& .disabled": {
+          backgroundColor: "lightgrey",
+          color: "grey",
+          "pointer-events": "none",
+        },
+      }}
+    >
       {error ? (
         <h1>{t("generic-error")}</h1>
       ) : isLoading ? (
@@ -100,9 +114,14 @@ export default function QuadrantDataGrid({ childToParent }) {
           }}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[25, 50, 100]}
           pagination
           localeText={localeText}
+          getRowClassName={(params) => {
+            if (params.row.fireId !== undefined) {
+              return "disabled";
+            }
+          }}
           onRowClick={(e) => handleRowClick(e)}
         />
       ) : null}

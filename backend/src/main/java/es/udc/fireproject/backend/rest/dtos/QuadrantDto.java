@@ -26,11 +26,13 @@ public class QuadrantDto extends BaseDto {
 
     private String folla5;
 
+    private Long fireId;
+
 
     private List<Coordinates> coordinates;
 
 
-    public QuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
+    public QuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates, Long fireId) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
@@ -38,6 +40,7 @@ public class QuadrantDto extends BaseDto {
         this.folla25 = folla25;
         this.folla5 = folla5;
         this.coordinates = coordinates;
+        this.fireId = fireId;
     }
 
     public Integer getId() {
@@ -96,28 +99,37 @@ public class QuadrantDto extends BaseDto {
         this.coordinates = coordinates;
     }
 
+    public Long getFireId() {
+        return fireId;
+    }
+
+    public void setFireId(Long fireId) {
+        this.fireId = fireId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuadrantDto that = (QuadrantDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(coordinates, that.coordinates);
+        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(fireId, that.fireId) && Objects.equals(coordinates, that.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, coordinates);
+        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, fireId, coordinates);
     }
 
     @Override
     public String toString() {
-        return "CuadrantDto{" +
+        return "QuadrantDto{" +
                 "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", folla50='" + folla50 + '\'' +
                 ", folla25='" + folla25 + '\'' +
                 ", folla5='" + folla5 + '\'' +
+                ", fireId=" + fireId +
                 ", coordinates=" + coordinates +
                 '}';
     }
