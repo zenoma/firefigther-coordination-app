@@ -31,6 +31,8 @@ public class TeamDto extends BaseDto {
 
     private QuadrantInfoDto quadrantInfoDto;
 
+    public TeamDto() {
+    }
 
     public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList, QuadrantInfoDto quadrantInfoDto) {
         this.id = id;

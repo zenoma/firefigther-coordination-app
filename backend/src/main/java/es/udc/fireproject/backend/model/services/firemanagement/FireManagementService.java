@@ -28,7 +28,7 @@ public interface FireManagementService {
 
     Fire createFire(String description, String type, FireIndex fireIndex);
 
-    Fire extinguishFire(Long id) throws InstanceNotFoundException;
+    Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException;
 
     Fire updateFire(Long id, String description, String type, FireIndex fireIndex) throws InstanceNotFoundException, ExtinguishedFireException;
 

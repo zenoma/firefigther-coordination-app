@@ -107,9 +107,13 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Fire extinguishFire(Long id) throws InstanceNotFoundException {
+    public Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
+
+        if (fire.getFireIndex() == FireIndex.EXTINGUISHED) {
+            throw new ExtinguishedFireException(id, "already extinguished");
+        }
 
         fire.setFireIndex(FireIndex.EXTINGUISHED);
         fire.setExtinguishedAt(LocalDateTime.now());
@@ -120,6 +124,12 @@ public class FireManagementServiceImpl implements FireManagementService {
         ) {
             logManagementService.logExtinguishedFire(id, quadrant.getId());
             quadrant.setFire(null);
+            for (Team team : quadrant.getTeamList()) {
+                retractTeam(team.getId());
+            }
+            for (Vehicle vehicle : quadrant.getVehicleList()) {
+                retractVehicle(vehicle.getId());
+            }
             quadrantRepository.save(quadrant);
         }
 
