@@ -89,7 +89,7 @@
                                  referencedColumnNames="id" constraintName="fk_quadrants_fire_id"/>
 
 
-        <createTable tableName="fire_quadrants_logs">
+        <createTable tableName="fire_quadrant_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
@@ -102,12 +102,12 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="fire_quadrants_logs" baseColumnNames="fire_id"
+        <addForeignKeyConstraint baseTableName="fire_quadrant_log" baseColumnNames="fire_id"
                                  referencedTableName="fire"
-                                 referencedColumnNames="id" constraintName="fk_vehicle_quadrants_logs_fire_id"/>
-        <addForeignKeyConstraint baseTableName="fire_quadrants_logs" baseColumnNames="quadrant_gid"
+                                 referencedColumnNames="id" constraintName="fk_vehicle_quadrant_log_fire_id"/>
+        <addForeignKeyConstraint baseTableName="fire_quadrant_log" baseColumnNames="quadrant_gid"
                                  referencedTableName="quadrants"
-                                 referencedColumnNames="gid" constraintName="fk_fire_quadrants_logs_quadrant_gid"/>
+                                 referencedColumnNames="gid" constraintName="fk_fire_quadrant_log_quadrant_gid"/>
 
 
         <createTable tableName="team">
@@ -134,7 +134,7 @@
                                  referencedColumnNames="gid" constraintName="fk_quadrant_gid"/>
 
 
-        <createTable tableName="team_quadrants_logs">
+        <createTable tableName="team_quadrant_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
@@ -147,12 +147,12 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="team_quadrants_logs" baseColumnNames="team_id"
+        <addForeignKeyConstraint baseTableName="team_quadrant_log" baseColumnNames="team_id"
                                  referencedTableName="team"
-                                 referencedColumnNames="id" constraintName="fk_team_quadrants_logs_team_id"/>
-        <addForeignKeyConstraint baseTableName="team_quadrants_logs" baseColumnNames="quadrant_gid"
+                                 referencedColumnNames="id" constraintName="fk_team_quadrant_log_team_id"/>
+        <addForeignKeyConstraint baseTableName="team_quadrant_log" baseColumnNames="quadrant_gid"
                                  referencedTableName="quadrants"
-                                 referencedColumnNames="gid" constraintName="fk_team_quadrants_logs_quadrant_gid"/>
+                                 referencedColumnNames="gid" constraintName="fk_team_quadrant_log_quadrant_gid"/>
 
 
         <createTable tableName="vehicle">
@@ -180,7 +180,7 @@
                                  referencedColumnNames="gid" constraintName="fk_vehicle_quadrant_gid"/>
 
 
-        <createTable tableName="vehicle_quadrants_logs">
+        <createTable tableName="vehicle_quadrant_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
@@ -193,12 +193,12 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="vehicle_quadrants_logs" baseColumnNames="vehicle_id"
+        <addForeignKeyConstraint baseTableName="vehicle_quadrant_log" baseColumnNames="vehicle_id"
                                  referencedTableName="vehicle"
-                                 referencedColumnNames="id" constraintName="fk_vehicle_quadrants_logs_vehicle_id"/>
-        <addForeignKeyConstraint baseTableName="vehicle_quadrants_logs" baseColumnNames="quadrant_gid"
+                                 referencedColumnNames="id" constraintName="fk_vehicle_quadrant_log_vehicle_id"/>
+        <addForeignKeyConstraint baseTableName="vehicle_quadrant_log" baseColumnNames="quadrant_gid"
                                  referencedTableName="quadrants"
-                                 referencedColumnNames="gid" constraintName="fk_vehicle_quadrants_logs_quadrant_gid"/>
+                                 referencedColumnNames="gid" constraintName="fk_vehicle_quadrant_log_quadrant_gid"/>
 
 
         <createTable tableName="user">

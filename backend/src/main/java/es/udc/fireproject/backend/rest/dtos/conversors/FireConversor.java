@@ -24,6 +24,11 @@ public class FireConversor {
         return new FireDto(fire.getId(), fire.getDescription(), fire.getType(), fire.getFireIndex(), cuadrantDtoList, fire.getCreatedAt(), fire.getExtinguishedAt());
     }
 
+    public static FireDto toFireDtoWithoutQuadrants(Fire fire) {
+
+        return new FireDto(fire.getId(), fire.getDescription(), fire.getType(), fire.getFireIndex(), fire.getCreatedAt(), fire.getExtinguishedAt());
+    }
+
     public static Fire toFire(FireDto fireDto) {
 
         return new Fire(fireDto.getDescription(), fireDto.getType(), fireDto.getFireIndex());

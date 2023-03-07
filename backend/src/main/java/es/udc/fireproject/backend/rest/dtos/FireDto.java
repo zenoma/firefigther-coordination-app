@@ -40,6 +40,15 @@ public class FireDto extends BaseDto {
         this.extinguishedAt = extinguishedAt;
     }
 
+    public FireDto(Long id, String description, String type, FireIndex fireIndex, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
+        this.id = id;
+        this.description = description;
+        this.type = type;
+        this.fireIndex = fireIndex;
+        this.createdAt = createdAt;
+        this.extinguishedAt = extinguishedAt;
+    }
+
     public Long getId() {
         return id;
     }
