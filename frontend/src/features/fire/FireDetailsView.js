@@ -14,7 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -22,13 +22,15 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useGetFireByIdQuery } from "../../api/fireApi";
+import {
+  useLinkFireMutation
+} from "../../api/quadrantApi";
 import CustomMap from "../map/CustomMap";
+import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
 import BackButton from "../utils/BackButton";
-import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
-import { useLinkFireMutation } from "../../api/quadrantApi";
-import { toast } from "react-toastify";
 
 export default function FireDetailsView() {
   const token = useSelector(selectToken);
@@ -99,7 +101,7 @@ export default function FireDetailsView() {
             variant="outlined"
           >
             <Typography variant="h6">{t("quadrant-map")}</Typography>
-            <CustomMap />
+            {data && <CustomMap quadrants={data.quadrants} />}
           </Paper>
         </Grid>
         <Grid item xs={4} sm={8} md={3}>

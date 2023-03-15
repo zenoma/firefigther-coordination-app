@@ -64,6 +64,11 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
+    public List<Quadrant> findQuadrantsWithActiveFire() {
+        return quadrantRepository.findByFireIdNotNull();
+    }
+
+    @Override
     public Quadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException {
 
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));

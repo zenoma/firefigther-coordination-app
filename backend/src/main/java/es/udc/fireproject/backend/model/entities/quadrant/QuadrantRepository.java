@@ -9,4 +9,6 @@ public interface QuadrantRepository extends JpaRepository<Quadrant, Integer> {
     List<Quadrant> findByEscala(String escala);
 
     List<Quadrant> findByFireId(Long id);
+
+    List<Quadrant> findByFireIdNotNull();
 }

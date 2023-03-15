@@ -20,6 +20,8 @@ public interface FireManagementService {
 
     Quadrant linkFire(Integer gid, Long id) throws InstanceNotFoundException;
 
+    List<Quadrant> findQuadrantsWithActiveFire();
+
 
     // FIRE SERVICES
     List<Fire> findAllFires();

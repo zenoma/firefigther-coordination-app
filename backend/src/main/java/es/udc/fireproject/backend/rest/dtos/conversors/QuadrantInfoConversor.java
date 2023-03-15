@@ -8,6 +8,7 @@ import es.udc.fireproject.backend.rest.dtos.TeamDto;
 import es.udc.fireproject.backend.rest.dtos.VehicleDto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QuadrantInfoConversor {
@@ -28,9 +29,10 @@ public class QuadrantInfoConversor {
                 vehicleDtoList.add(VehicleConversor.toVehicleDtoWithoutQuadrantInfo(vehicle));
             }
         }
+
         return new QuadrantInfoDto(quadrant.getId(),
                 quadrant.getEscala(),
-                quadrant.getNombre(), teamDtoList, vehicleDtoList);
+                quadrant.getNombre(), teamDtoList, vehicleDtoList, new ArrayList(Arrays.asList(quadrant.getGeom().getCoordinates())));
     }
 
     public static QuadrantInfoDto toQuadrantDtoWithoutTeamsAndVehicles(Quadrant quadrant) {

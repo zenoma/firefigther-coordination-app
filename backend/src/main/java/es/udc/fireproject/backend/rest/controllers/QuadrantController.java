@@ -44,6 +44,18 @@ public class QuadrantController {
         return QuadrantInfoConversor.toQuadrantDto(fireManagementService.findQuadrantById(gid));
     }
 
+
+    @GetMapping("/active")
+    public List<QuadrantDto> findQuadrantsWithActiveFire() {
+        List<QuadrantDto> quadrantDtos = new ArrayList<>();
+
+        for (Quadrant quadrant : fireManagementService.findQuadrantsWithActiveFire()) {
+            quadrantDtos.add(QuadrantConversor.toQuadrantDto(quadrant));
+        }
+
+        return quadrantDtos;
+    }
+
     @PostMapping("/{gid}/linkFire")
     public void linkFire(@RequestAttribute Long userId, @PathVariable Integer gid, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException {

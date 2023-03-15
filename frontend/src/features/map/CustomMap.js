@@ -1,12 +1,9 @@
-/// app.js
+import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, NavigationControl, Source } from "react-map-gl";
-import { useGetQuadrantsByScaleQuery } from "../../api/quadrantApi";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
-import { selectToken } from "../user/login/LoginSlice";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -24,15 +21,8 @@ const INITIAL_VIEW_STATE = {
 };
 
 // DeckGL react component
-export default function CustomMap() {
-  const token = useSelector(selectToken);
-
-  const payload = {
-    token: token,
-    scale: "50.0",
-  };
-
-  const { data } = useGetQuadrantsByScaleQuery(payload);
+export default function CustomMap(props) {
+  const quadrants = props.quadrants;
 
   const [cursor] = useState("auto");
   // const [mouseCoords, setMouseCoords] = useState({
@@ -58,9 +48,17 @@ export default function CustomMap() {
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
       //FIXME: Change on click to navigate to a new detailed view
       // onClick={(e) => setMouseCoords(e.lngLat)}
-      // onClick={(e) => console.log(e.features)}
+      onClick={(e) => console.log(e.features)}
       cursor={cursor}
       maxBounds={bounds}
+      onLoad={() => {
+        if (!this.map) return;
+        const map = this.map.getMap();
+        map.loadImage("../../assets/images/pin.png", (error, image) => {
+          if (error) return;
+          map.addImage("myPin", image);
+        });
+      }}
       //FIXME:To make layers interactive
       // interactiveLayerIds={["1364"]}
     >
@@ -68,15 +66,37 @@ export default function CustomMap() {
         <NavigationControl />
       </div>
 
-      {data &&
-        data.map((item, index) => {
+      {quadrants &&
+        quadrants.map((item, index) => {
+          const iconStyle = {
+            id: item.id.toString() + "-icon",
+            type: "symbol",
+            source: "point", // reference the data source
+            layout: {
+              "icon-image": "myPin", // reference the image
+              "icon-size": 1,
+            },
+          };
+          const labelStyle = {
+            id: item.id.toString() + "-label",
+            type: "symbol",
+            source: "label",
+            layout: {
+              "text-field": item.id + " - " + item.nombre + " - ",
+              "text-size": 10,
+            },
+            paint: {
+              "text-color": "black",
+            },
+          };
+
           const layerStyle = {
-            id: item.id.toString(),
+            id: item.id.toString() + "-layer",
             type: "fill",
             paint: {
-              "fill-color": "blue",
-              "fill-opacity": 0.3,
-              "fill-outline-color": "red",
+              "fill-color": "red",
+              "fill-opacity": 0.4,
+              "fill-outline-color": "black",
             },
           };
 
@@ -102,7 +122,9 @@ export default function CustomMap() {
           };
           return (
             <Source key={item.id.toString()} type="geojson" data={geoJson}>
+              <Layer {...labelStyle} />
               <Layer {...layerStyle} />
+              <Layer {...iconStyle} />
             </Source>
           );
         })}
@@ -129,3 +151,7 @@ export default function CustomMap() {
     </Map>
   );
 }
+
+CustomMap.propTypes = {
+  quadrants: PropTypes.array.isRequired,
+};

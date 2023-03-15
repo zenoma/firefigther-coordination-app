@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import org.locationtech.jts.geom.Coordinates;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,8 @@ public class QuadrantInfoDto extends BaseDto {
 
     private String nombre;
 
+    private List<Coordinates> coordinates;
+
     private List<TeamDto> teamDtoList;
     private List<VehicleDto> vehicleDtoList;
 
@@ -25,12 +29,13 @@ public class QuadrantInfoDto extends BaseDto {
     public QuadrantInfoDto() {
     }
 
-    public QuadrantInfoDto(Integer id, String escala, String nombre, List<TeamDto> teamDtoList, List<VehicleDto> vehicleDtoList) {
+    public QuadrantInfoDto(Integer id, String escala, String nombre, List<TeamDto> teamDtoList, List<VehicleDto> vehicleDtoList, List<Coordinates> coordinates) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
         this.teamDtoList = teamDtoList;
         this.vehicleDtoList = vehicleDtoList;
+        this.coordinates = coordinates;
     }
 
     public QuadrantInfoDto(Integer id, String escala, String nombre) {
@@ -80,17 +85,25 @@ public class QuadrantInfoDto extends BaseDto {
         this.vehicleDtoList = vehicleDtoList;
     }
 
+    public List<Coordinates> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<Coordinates> coordinates) {
+        this.coordinates = coordinates;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuadrantInfoDto that = (QuadrantInfoDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(teamDtoList, that.teamDtoList) && Objects.equals(vehicleDtoList, that.vehicleDtoList);
+        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(coordinates, that.coordinates) && Objects.equals(teamDtoList, that.teamDtoList) && Objects.equals(vehicleDtoList, that.vehicleDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre, teamDtoList, vehicleDtoList);
+        return Objects.hash(id, escala, nombre, coordinates, teamDtoList, vehicleDtoList);
     }
 
     @Override
@@ -99,6 +112,7 @@ public class QuadrantInfoDto extends BaseDto {
                 "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
+                ", coordinates=" + coordinates +
                 ", teamDtoList=" + teamDtoList +
                 ", vehicleDtoList=" + vehicleDtoList +
                 '}';
