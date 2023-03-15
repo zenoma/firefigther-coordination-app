@@ -1,16 +1,19 @@
-package es.udc.fireproject.backend.model.entities.cuadrant;
+package es.udc.fireproject.backend.model.entities.quadrant;
 
 import es.udc.fireproject.backend.model.entities.fire.Fire;
+import es.udc.fireproject.backend.model.entities.team.Team;
+import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cuadrants", schema = "public")
-public class Cuadrant implements Serializable {
+@Table(name = "quadrants", schema = "public")
+public class Quadrant implements Serializable {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
@@ -38,13 +41,23 @@ public class Cuadrant implements Serializable {
     @Column(name = "geom")
     private MultiPolygon geom;
 
+    @OneToMany(
+            mappedBy = "quadrant",
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Team> teamList;
+
+    @OneToMany(
+            mappedBy = "quadrant",
+            fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Vehicle> vehicleList;
+
     @ManyToOne(
             optional = false,
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "fire_id", nullable = false)
     private Fire fire;
 
-    public Cuadrant() {
+    public Quadrant() {
     }
 
     public Fire getFire() {
@@ -111,22 +124,39 @@ public class Cuadrant implements Serializable {
         this.id = id;
     }
 
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
+
+    public List<Vehicle> getVehicleList() {
+        return vehicleList;
+    }
+
+    public void setVehicleList(List<Vehicle> vehicleList) {
+        this.vehicleList = vehicleList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cuadrant cuadrant = (Cuadrant) o;
-        return Objects.equals(id, cuadrant.id) && Objects.equals(escala, cuadrant.escala) && Objects.equals(nombre, cuadrant.nombre) && Objects.equals(folla50, cuadrant.folla50) && Objects.equals(folla25, cuadrant.folla25) && Objects.equals(folla5, cuadrant.folla5) && Objects.equals(geom, cuadrant.geom) && Objects.equals(fire, cuadrant.fire);
+        Quadrant quadrant = (Quadrant) o;
+        return Objects.equals(id, quadrant.id) && Objects.equals(escala, quadrant.escala) && Objects.equals(nombre, quadrant.nombre) && Objects.equals(folla50, quadrant.folla50) && Objects.equals(folla25, quadrant.folla25) && Objects.equals(folla5, quadrant.folla5) && Objects.equals(geom, quadrant.geom) && Objects.equals(teamList, quadrant.teamList) && Objects.equals(vehicleList, quadrant.vehicleList) && Objects.equals(fire, quadrant.fire);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, geom, fire);
+        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, geom, teamList, vehicleList, fire);
     }
 
     @Override
     public String toString() {
-        return "Cuadrant{" +
+        return "Quadrant{" +
                 "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
@@ -134,6 +164,8 @@ public class Cuadrant implements Serializable {
                 ", folla25='" + folla25 + '\'' +
                 ", folla5='" + folla5 + '\'' +
                 ", geom=" + geom +
+                ", teamList=" + teamList +
+                ", vehicleList=" + vehicleList +
                 ", fire=" + fire +
                 '}';
     }

@@ -1,13 +1,9 @@
-/// app.js
+import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 
-import { Paper, Typography } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
-import { useGetCuadrantsByScaleQuery } from "../../api/cuadrantApi";
+import Map, { Layer, NavigationControl, Source } from "react-map-gl";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
-import { selectToken } from "../user/login/LoginSlice";
 
 const MAPBOX_ACCESS_TOKEN2 =
   "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
@@ -25,21 +21,14 @@ const INITIAL_VIEW_STATE = {
 };
 
 // DeckGL react component
-export default function CustomMap() {
-  const token = useSelector(selectToken);
-
-  const payload = {
-    token: token,
-    scale: "25.0",
-  };
-
-  const { data } = useGetCuadrantsByScaleQuery(payload);
+export default function CustomMap(props) {
+  const quadrants = props.quadrants;
 
   const [cursor] = useState("auto");
-  const [mouseCoords, setMouseCoords] = useState({
-    lng: 0,
-    lat: 0,
-  });
+  // const [mouseCoords, setMouseCoords] = useState({
+  //   lng: 0,
+  //   lat: 0,
+  // });
 
   const [settings] = useState({
     minZoom: 7,
@@ -52,28 +41,62 @@ export default function CustomMap() {
 
   return (
     <Map
-      style={{ minWidth: "800px", minHeight: "600px" }}
+      style={{ minWidth: "200px", minHeight: "500px" }}
       {...settings}
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
-      onClick={(e) => setMouseCoords(e.lngLat)}
+      //FIXME: Change on click to navigate to a new detailed view
+      // onClick={(e) => setMouseCoords(e.lngLat)}
+      onClick={(e) => console.log(e.features)}
       cursor={cursor}
       maxBounds={bounds}
+      onLoad={() => {
+        if (!this.map) return;
+        const map = this.map.getMap();
+        map.loadImage("../../assets/images/pin.png", (error, image) => {
+          if (error) return;
+          map.addImage("myPin", image);
+        });
+      }}
+      //FIXME:To make layers interactive
+      // interactiveLayerIds={["1364"]}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
         <NavigationControl />
       </div>
 
-      {data &&
-        data.map((item, index) => {
+      {quadrants &&
+        quadrants.map((item, index) => {
+          const iconStyle = {
+            id: item.id.toString() + "-icon",
+            type: "symbol",
+            source: "point", // reference the data source
+            layout: {
+              "icon-image": "myPin", // reference the image
+              "icon-size": 1,
+            },
+          };
+          const labelStyle = {
+            id: item.id.toString() + "-label",
+            type: "symbol",
+            source: "label",
+            layout: {
+              "text-field": item.id + " - " + item.nombre + " - ",
+              "text-size": 10,
+            },
+            paint: {
+              "text-color": "black",
+            },
+          };
+
           const layerStyle = {
-            id: item.id.toString(),
+            id: item.id.toString() + "-layer",
             type: "fill",
             paint: {
-              "fill-color": "blue",
-              "fill-opacity": 0.3,
-              "fill-outline-color": "red",
+              "fill-color": "red",
+              "fill-opacity": 0.4,
+              "fill-outline-color": "black",
             },
           };
 
@@ -99,15 +122,19 @@ export default function CustomMap() {
           };
           return (
             <Source key={item.id.toString()} type="geojson" data={geoJson}>
+              <Layer {...labelStyle} />
               <Layer {...layerStyle} />
+              <Layer {...iconStyle} />
             </Source>
           );
         })}
 
-      <Marker
+      {/* FIXME: Move weather info to layer view */}
+      {/* <Marker
         latitude={mouseCoords.lat}
         longitude={mouseCoords.lng}
         anchor="bottom"
+        onClick={(e) => console.log(e)}
       >
         <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
           <Typography variant="body" color="white" sx={{ display: "block" }}>
@@ -120,7 +147,11 @@ export default function CustomMap() {
             Temp stats:
           </Typography>
         </Paper>
-      </Marker>
+      </Marker> */}
     </Map>
   );
 }
+
+CustomMap.propTypes = {
+  quadrants: PropTypes.array.isRequired,
+};

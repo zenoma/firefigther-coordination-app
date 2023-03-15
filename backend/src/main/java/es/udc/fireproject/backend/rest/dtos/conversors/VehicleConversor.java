@@ -1,7 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos.conversors;
 
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
-import es.udc.fireproject.backend.rest.dtos.CuadrantInfoDto;
+import es.udc.fireproject.backend.rest.dtos.QuadrantInfoDto;
 import es.udc.fireproject.backend.rest.dtos.VehicleDto;
 
 public class VehicleConversor {
@@ -17,9 +17,9 @@ public class VehicleConversor {
     }
 
     public static VehicleDto toVehicleDto(Vehicle vehicle) {
-        CuadrantInfoDto cuadrantInfoDto = new CuadrantInfoDto();
-        if (vehicle.getCuadrant() != null) {
-            cuadrantInfoDto = CuadrantInfoConversor.toCuadrantDto(vehicle.getCuadrant());
+        QuadrantInfoDto quadrantInfoDto = new QuadrantInfoDto();
+        if (vehicle.getQuadrant() != null) {
+            quadrantInfoDto = QuadrantInfoConversor.toQuadrantDtoWithoutTeamsAndVehicles(vehicle.getQuadrant());
         }
 
         return new VehicleDto(vehicle.getId(),
@@ -27,7 +27,17 @@ public class VehicleConversor {
                 vehicle.getType(),
                 vehicle.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(vehicle.getOrganization()),
-                cuadrantInfoDto);
+                quadrantInfoDto);
+
+    }
+
+    public static VehicleDto toVehicleDtoWithoutQuadrantInfo(Vehicle vehicle) {
+
+        return new VehicleDto(vehicle.getId(),
+                vehicle.getVehiclePlate(),
+                vehicle.getType(),
+                vehicle.getCreatedAt(),
+                OrganizationConversor.toOrganizationDto(vehicle.getOrganization()));
 
     }
 }

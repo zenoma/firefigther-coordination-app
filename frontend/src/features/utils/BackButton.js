@@ -8,9 +8,14 @@ export default function BackButton() {
 
   return (
     <Button
-      sx={{ display: "flex"}}
       onClick={() => navigate(-1)}
       color="secondary"
+      sx={{
+        position: "fixed",
+        top: 100,
+        left: 10,
+        "z-index": 100,
+      }}
     >
       <ArrowBackIcon fontSize="large" />
     </Button>

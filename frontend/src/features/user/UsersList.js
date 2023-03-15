@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 
 import { selectToken } from "./login/LoginSlice";
 
-import AnnouncementIcon from "@mui/icons-material/Announcement";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -15,7 +15,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -111,17 +111,25 @@ export default function TeamItem(props) {
   };
 
   return (
-    <Paper key={props.name} sx={{ margin: 3 }} elevation={6}>
-      <Typography variant="h6" sx={{ padding: 3 }}>
-        Lista de usuarios
+    <Paper key={props.name} sx={{ margin: 3 }} elevation={3}>
+      <Typography
+        variant="h6"
+        sx={{ padding: 3 }}
+        fontWeight="bold"
+        color={"primary.light"}
+      >
+        {t("user-list")}
       </Typography>
       <List component="div" disablePadding>
         {users.length === 0 ? (
-          <Box sx={{ margin: "auto", textAlign: "center" }}>
-            <AnnouncementIcon color="warning"></AnnouncementIcon>
-            <Typography variant="body1" display="block">
-              Todavía no hay usuarios en este equipo.
-            </Typography>
+          <Box
+            sx={{
+              padding: "10px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Alert severity="warning">{t("user-no-user-list")}</Alert>
           </Box>
         ) : users.length !== 0 ? (
           <Box>

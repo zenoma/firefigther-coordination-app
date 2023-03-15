@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.util.List;
 import java.util.Objects;
 
-public class CuadrantDto extends BaseDto {
+public class QuadrantInfoDto extends BaseDto {
 
     private static final long serialVersionUID = 4848346612436497001L;
 
@@ -20,24 +20,28 @@ public class CuadrantDto extends BaseDto {
 
     private String nombre;
 
-    private String folla50;
-
-    private String folla25;
-
-    private String folla5;
-
-
     private List<Coordinates> coordinates;
 
+    private List<TeamDto> teamDtoList;
+    private List<VehicleDto> vehicleDtoList;
 
-    public CuadrantDto(Integer id, String escala, String nombre, String folla50, String folla25, String folla5, List<Coordinates> coordinates) {
+
+    public QuadrantInfoDto() {
+    }
+
+    public QuadrantInfoDto(Integer id, String escala, String nombre, List<TeamDto> teamDtoList, List<VehicleDto> vehicleDtoList, List<Coordinates> coordinates) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
-        this.folla50 = folla50;
-        this.folla25 = folla25;
-        this.folla5 = folla5;
+        this.teamDtoList = teamDtoList;
+        this.vehicleDtoList = vehicleDtoList;
         this.coordinates = coordinates;
+    }
+
+    public QuadrantInfoDto(Integer id, String escala, String nombre) {
+        this.id = id;
+        this.escala = escala;
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -64,28 +68,21 @@ public class CuadrantDto extends BaseDto {
         this.nombre = nombre;
     }
 
-    public String getFolla50() {
-        return folla50;
+
+    public List<TeamDto> getTeamDtoList() {
+        return teamDtoList;
     }
 
-    public void setFolla50(String folla50) {
-        this.folla50 = folla50;
+    public void setTeamDtoList(List<TeamDto> teamDtoList) {
+        this.teamDtoList = teamDtoList;
     }
 
-    public String getFolla25() {
-        return folla25;
+    public List<VehicleDto> getVehicleDtoList() {
+        return vehicleDtoList;
     }
 
-    public void setFolla25(String folla25) {
-        this.folla25 = folla25;
-    }
-
-    public String getFolla5() {
-        return folla5;
-    }
-
-    public void setFolla5(String folla5) {
-        this.folla5 = folla5;
+    public void setVehicleDtoList(List<VehicleDto> vehicleDtoList) {
+        this.vehicleDtoList = vehicleDtoList;
     }
 
     public List<Coordinates> getCoordinates() {
@@ -100,25 +97,24 @@ public class CuadrantDto extends BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CuadrantDto that = (CuadrantDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(folla50, that.folla50) && Objects.equals(folla25, that.folla25) && Objects.equals(folla5, that.folla5) && Objects.equals(coordinates, that.coordinates);
+        QuadrantInfoDto that = (QuadrantInfoDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(escala, that.escala) && Objects.equals(nombre, that.nombre) && Objects.equals(coordinates, that.coordinates) && Objects.equals(teamDtoList, that.teamDtoList) && Objects.equals(vehicleDtoList, that.vehicleDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, escala, nombre, folla50, folla25, folla5, coordinates);
+        return Objects.hash(id, escala, nombre, coordinates, teamDtoList, vehicleDtoList);
     }
 
     @Override
     public String toString() {
-        return "CuadrantDto{" +
+        return "QuadrantInfoDto{" +
                 "id=" + id +
                 ", escala='" + escala + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", folla50='" + folla50 + '\'' +
-                ", folla25='" + folla25 + '\'' +
-                ", folla5='" + folla5 + '\'' +
                 ", coordinates=" + coordinates +
+                ", teamDtoList=" + teamDtoList +
+                ", vehicleDtoList=" + vehicleDtoList +
                 '}';
     }
 }

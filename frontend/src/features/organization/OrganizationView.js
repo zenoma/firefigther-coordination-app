@@ -57,7 +57,6 @@ export default function OrganizationsView() {
         display: "inline-block",
         padding: "10px",
       }}
-      elevation={5}
     >
       <Typography
         variant="h4"

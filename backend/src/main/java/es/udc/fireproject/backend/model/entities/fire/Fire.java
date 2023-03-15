@@ -1,7 +1,7 @@
 package es.udc.fireproject.backend.model.entities.fire;
 
 import es.udc.fireproject.backend.model.entities.BaseEntity;
-import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
+import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ public class Fire extends BaseEntity {
 
     @OneToMany(mappedBy = "fire",
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Cuadrant> cuadrantGids;
+    private List<Quadrant> quadrantGids;
 
     @Column(name = "extinguished_at")
     private LocalDateTime extinguishedAt;
@@ -52,12 +52,12 @@ public class Fire extends BaseEntity {
         this.extinguishedAt = extinguishedAt;
     }
 
-    public List<Cuadrant> getCuadrantGids() {
-        return cuadrantGids;
+    public List<Quadrant> getQuadrantGids() {
+        return quadrantGids;
     }
 
-    public void setCuadrantGids(List<Cuadrant> cuadrantGid) {
-        this.cuadrantGids = cuadrantGid;
+    public void setQuadrantGids(List<Quadrant> quadrantGid) {
+        this.quadrantGids = quadrantGid;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -97,12 +97,12 @@ public class Fire extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Fire fire = (Fire) o;
-        return Objects.equals(description, fire.description) && Objects.equals(type, fire.type) && fireIndex == fire.fireIndex && Objects.equals(createdAt, fire.createdAt) && Objects.equals(cuadrantGids, fire.cuadrantGids) && Objects.equals(extinguishedAt, fire.extinguishedAt);
+        return Objects.equals(description, fire.description) && Objects.equals(type, fire.type) && fireIndex == fire.fireIndex && Objects.equals(createdAt, fire.createdAt) && Objects.equals(quadrantGids, fire.quadrantGids) && Objects.equals(extinguishedAt, fire.extinguishedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, type, fireIndex, createdAt, cuadrantGids, extinguishedAt);
+        return Objects.hash(description, type, fireIndex, createdAt, quadrantGids, extinguishedAt);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class Fire extends BaseEntity {
                 ", type='" + type + '\'' +
                 ", fireIndex=" + fireIndex +
                 ", createdAt=" + createdAt +
-                ", cuadrantGids=" + cuadrantGids +
+                ", cuadrantGids=" + quadrantGids +
                 ", extinguishedAt=" + extinguishedAt +
                 '}';
     }

@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/fire")
+@RequestMapping("/fires")
 public class FireController {
 
     @Autowired
@@ -56,7 +56,7 @@ public class FireController {
 
     @PostMapping("/{id}/extinguish")
     public FireDto extinguishFire(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException {
+            throws InstanceNotFoundException, ExtinguishedFireException {
         return FireConversor.toFireDto(fireManagementService.extinguishFire(id));
     }
 

@@ -54,7 +54,6 @@ export default function VehicleTable(props) {
   const [vehicleId, setVehicleId] = useState("");
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [type, setType] = useState("");
-  const [data, setData] = useState("");
 
   const vehicles = props.vehicles;
 
@@ -183,10 +182,7 @@ export default function VehicleTable(props) {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                        >
+                        <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}

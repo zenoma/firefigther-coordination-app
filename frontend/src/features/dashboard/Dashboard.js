@@ -9,9 +9,15 @@ import Notice from "../notice/Notice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useTranslation } from "react-i18next";
+import {
+  useGetQuadrantWithActiveFiresQuery
+} from "../../api/quadrantApi";
 
 export default function Dashboard() {
   const { t } = useTranslation();
+
+
+  const { data: quadrants } = useGetQuadrantWithActiveFiresQuery();
 
   return (
     <Box sx={{ padding: 5 }}>
@@ -25,6 +31,7 @@ export default function Dashboard() {
             sx={{
               color: "primary.light",
               padding: 2,
+              minHeight: 500,
             }}
             variant="outlined"
           >
@@ -34,7 +41,7 @@ export default function Dashboard() {
               }
             />
             <CardMedia>
-              <CustomMap />
+              <CustomMap quadrants={quadrants} />
             </CardMedia>
           </Card>
         </Grid>

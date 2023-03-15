@@ -80,6 +80,36 @@ export const vehicleApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    deployVehicle: build.mutation({
+      query: (payload) => ({
+        url: "/vehicles/" + payload.vehicleId + "/deploy",
+        method: "POST",
+        body: {
+          gid: payload.gid,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    retractVehicle: build.mutation({
+      query: (payload) => ({
+        url: "/vehicles/" + payload.vehicleId + "/retract",
+        method: "POST",
+        body: {
+          gid: payload.gid,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
@@ -90,4 +120,6 @@ export const {
   useCreateVehicleMutation,
   useUpdateVehicleMutation,
   useDeleteVehiclebyIdMutation,
+  useDeployVehicleMutation,
+  useRetractVehicleMutation,
 } = vehicleApi;

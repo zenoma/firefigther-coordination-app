@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.entities.team;
 
 import es.udc.fireproject.backend.model.entities.BaseEntity;
-import es.udc.fireproject.backend.model.entities.cuadrant.Cuadrant;
 import es.udc.fireproject.backend.model.entities.organization.Organization;
+import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
 import es.udc.fireproject.backend.model.entities.user.User;
 
 import javax.persistence.*;
@@ -35,8 +35,8 @@ public class Team extends BaseEntity {
     @ManyToOne(
             optional = false,
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "cuadrant_gid", nullable = false)
-    private Cuadrant cuadrant;
+    @JoinColumn(name = "quadrant_gid", nullable = false)
+    private Quadrant quadrant;
 
 
     public Team() {
@@ -81,12 +81,12 @@ public class Team extends BaseEntity {
         this.code = code;
     }
 
-    public Cuadrant getCuadrant() {
-        return cuadrant;
+    public Quadrant getQuadrant() {
+        return quadrant;
     }
 
-    public void setCuadrant(Cuadrant cuadrant) {
-        this.cuadrant = cuadrant;
+    public void setQuadrant(Quadrant quadrant) {
+        this.quadrant = quadrant;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class Team extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, createdAt, organization, userList, cuadrant);
+        return Objects.hash(code, createdAt, organization, userList, quadrant);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Team extends BaseEntity {
                 ", createdAt=" + createdAt +
                 ", organization=" + organization +
                 ", userList=" + userList +
-                ", cuadrant=" + cuadrant +
+                ", cuadrant=" + quadrant +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 import InfoIcon from "@mui/icons-material/Info";
 import Button from "@mui/material/Button";
@@ -32,7 +33,6 @@ export default function TeamCard(props) {
         display: "inline-block",
         boxShadow: "none",
       }}
-      elevation={3}
     >
       <Typography
         variant="h4"
@@ -41,39 +41,41 @@ export default function TeamCard(props) {
       >
         {t("team-details")}
       </Typography>
-      <Typography
-        variant="h6"
-        margin={1}
-        sx={{
-          fontWeight: "bold",
-          display: "inline-block",
-          color: "secondary.light",
-        }}
-      >
-        {t("team-code")}:
-      </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline" }}>
-        {props.data["code"]}
-      </Typography>
-      <Typography
-        variant="h6"
-        margin={1}
-        sx={{
-          fontWeight: "bold",
-          display: "inline-block",
-          color: "secondary.light",
-        }}
-      >
-        {t("team-organization-belong")}:
-      </Typography>
-      <Typography variant="h6" margin={1} sx={{ display: "inline-block" }}>
-        {props.data["organization"]["name"]}
-      </Typography>
-      <InfoIcon
-        variant="outlined"
-        color="primary"
-        onClick={handleClickToOpen}
-      ></InfoIcon>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Typography
+          variant="h6"
+          margin={1}
+          sx={{
+            fontWeight: "bold",
+            color: "secondary.light",
+          }}
+        >
+          {t("team-code")}:
+        </Typography>
+        <Typography variant="h6" margin={1}>
+          {props.data["code"]}
+        </Typography>
+      </Box>{" "}
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Typography
+          variant="h6"
+          margin={1}
+          sx={{
+            fontWeight: "bold",
+            color: "secondary.light",
+          }}
+        >
+          {t("team-organization-belong")}:
+        </Typography>
+        <Typography variant="h6">
+          {props.data["organization"]["name"]}
+        </Typography>
+        <InfoIcon
+          variant="outlined"
+          color="primary"
+          onClick={handleClickToOpen}
+        ></InfoIcon>
+      </Box>
       <Dialog open={open} onClose={handleToClose}>
         <DialogContent sx={{ background: "#FAFAFA" }}>
           <OrganizationDetailsCard data={props.data["organization"]} />
