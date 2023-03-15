@@ -23,6 +23,7 @@ public class QuadrantConversor {
                 quadrant.getFolla25(),
                 quadrant.getFolla5(),
                 new ArrayList(Arrays.asList(quadrant.getGeom().getCoordinates())),
-                fireId);
+                fireId,
+                quadrant.getLinkedAt());
     }
 }

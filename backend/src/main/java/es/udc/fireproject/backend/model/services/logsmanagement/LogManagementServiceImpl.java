@@ -52,42 +52,23 @@ public class LogManagementServiceImpl implements LogManagementService {
         return fireQuadrantLogRepository.save(fireQuadrantLog);
     }
 
-    @Override
-    public TeamQuadrantLog logDeployedTeam(Long teamId, Integer quadrantId) throws InstanceNotFoundException {
-        Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
 
+    @Override
+    public TeamQuadrantLog logTeam(Long teamId, Integer quadrantId) throws InstanceNotFoundException {
+        Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
         Team team = personalManagementService.findTeamById(teamId);
 
-        return teamQuadrantLogRepository.save(new TeamQuadrantLog(team, quadrant, LocalDateTime.now()));
+        return teamQuadrantLogRepository.save(new TeamQuadrantLog(team, quadrant, team.getDeployAt(), LocalDateTime.now()));
+
     }
 
-    @Override
-    public TeamQuadrantLog logRetractedTeam(Long teamId, Integer quadrantId) {
-        TeamQuadrantLog teamQuadrantLog = teamQuadrantLogRepository.findByTeamIdAndQuadrantIdAndRetractAtIsNull(teamId, quadrantId);
-
-        teamQuadrantLog.setRetractAt(LocalDateTime.now());
-
-
-        return teamQuadrantLogRepository.save(teamQuadrantLog);
-    }
 
     @Override
-    public VehicleQuadrantLog logDeployedVehicle(Long vehicleId, Integer quadrantId) throws InstanceNotFoundException {
+    public VehicleQuadrantLog logVehicle(Long vehicleId, Integer quadrantId) throws InstanceNotFoundException {
         Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
-
         Vehicle vehicle = personalManagementService.findVehicleById(vehicleId);
 
-        return vehicleQuadrantLogRepository.save(new VehicleQuadrantLog(vehicle, quadrant, LocalDateTime.now()));
-    }
-
-    @Override
-    public VehicleQuadrantLog logRetractedVehicle(Long vehicleId, Integer quadrantId) {
-        VehicleQuadrantLog vehicleQuadrantLog = vehicleQuadrantLogRepository.findByVehicleIdAndQuadrantIdAndRetractAtIsNull(vehicleId, quadrantId);
-
-        vehicleQuadrantLog.setRetractAt(LocalDateTime.now());
-
-
-        return vehicleQuadrantLogRepository.save(vehicleQuadrantLog);
+        return vehicleQuadrantLogRepository.save(new VehicleQuadrantLog(vehicle, quadrant, vehicle.getDeployAt(), LocalDateTime.now()));
     }
 
 

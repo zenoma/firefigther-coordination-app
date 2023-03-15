@@ -35,10 +35,11 @@ public class VehicleQuadrantLog extends BaseEntity {
     public VehicleQuadrantLog() {
     }
 
-    public VehicleQuadrantLog(Vehicle fire, Quadrant quadrant, LocalDateTime deployAt) {
+    public VehicleQuadrantLog(Vehicle fire, Quadrant quadrant, LocalDateTime deployAt, LocalDateTime retractAt) {
         this.vehicle = fire;
         this.quadrant = quadrant;
         this.deployAt = deployAt;
+        this.retractAt = retractAt;
     }
 
     public Vehicle getVehicle() {

@@ -37,7 +37,8 @@ public class TeamConversor {
                 team.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(team.getOrganization()),
                 userDtoList,
-                quadrantInfoDto);
+                quadrantInfoDto,
+                team.getDeployAt());
 
     }
 

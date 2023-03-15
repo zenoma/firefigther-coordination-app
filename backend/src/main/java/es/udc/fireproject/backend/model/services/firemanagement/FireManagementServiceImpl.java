@@ -168,15 +168,12 @@ public class FireManagementServiceImpl implements FireManagementService {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
-
         if (team.getQuadrant() != null && !Objects.equals(team.getQuadrant().getId(), gid)) {
-            logManagementService.logRetractedTeam(team.getId(), team.getQuadrant().getId());
+            retractTeam(teamId);
         }
 
-        if (team.getQuadrant() == null || !Objects.equals(team.getQuadrant().getId(), gid)) {
-            team.setQuadrant(quadrant);
-            logManagementService.logDeployedTeam(team.getId(), team.getQuadrant().getId());
-        }
+        team.setDeployAt(LocalDateTime.now());
+        team.setQuadrant(quadrant);
 
 
         return teamRepository.save(team);
@@ -187,9 +184,11 @@ public class FireManagementServiceImpl implements FireManagementService {
     public Team retractTeam(Long teamId) throws InstanceNotFoundException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
 
-        logManagementService.logRetractedTeam(team.getId(), team.getQuadrant().getId());
-        team.setQuadrant(null);
-
+        if (team.getQuadrant() != null) {
+            logManagementService.logTeam(team.getId(), team.getQuadrant().getId());
+            team.setDeployAt(null);
+            team.setQuadrant(null);
+        }
 
         return teamRepository.save(team);
 
@@ -200,14 +199,14 @@ public class FireManagementServiceImpl implements FireManagementService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
+
         if (vehicle.getQuadrant() != null && !Objects.equals(vehicle.getQuadrant().getId(), gid)) {
-            logManagementService.logRetractedVehicle(vehicle.getId(), vehicle.getQuadrant().getId());
+            retractVehicle(vehicleId);
         }
 
-        if (vehicle.getQuadrant() == null || !Objects.equals(vehicle.getQuadrant().getId(), gid)) {
-            vehicle.setQuadrant(quadrant);
-            logManagementService.logDeployedVehicle(vehicle.getId(), vehicle.getQuadrant().getId());
-        }
+        vehicle.setDeployAt(LocalDateTime.now());
+        vehicle.setQuadrant(quadrant);
+
 
         return vehicleRepository.save(vehicle);
 
@@ -217,8 +216,11 @@ public class FireManagementServiceImpl implements FireManagementService {
     public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
 
-        logManagementService.logRetractedVehicle(vehicle.getId(), vehicle.getQuadrant().getId());
-        vehicle.setQuadrant(null);
+        if (vehicle.getQuadrant() != null) {
+            logManagementService.logVehicle(vehicle.getId(), vehicle.getQuadrant().getId());
+            vehicle.setDeployAt(null);
+            vehicle.setQuadrant(null);
+        }
 
         return vehicleRepository.save(vehicle);
 

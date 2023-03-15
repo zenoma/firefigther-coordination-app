@@ -13,13 +13,9 @@ public interface LogManagementService {
 
     FireQuadrantLog logExtinguishedFire(Long fireId, Integer quadrantId);
 
-    TeamQuadrantLog logDeployedTeam(Long teamId, Integer quadrantId) throws InstanceNotFoundException;
+    TeamQuadrantLog logTeam(Long teamId, Integer quadrantId) throws InstanceNotFoundException;
 
-    TeamQuadrantLog logRetractedTeam(Long teamId, Integer quadrantId);
-
-    VehicleQuadrantLog logDeployedVehicle(Long vehicleId, Integer quadrantId) throws InstanceNotFoundException;
-
-    VehicleQuadrantLog logRetractedVehicle(Long vehicleId, Integer quadrantId);
+    VehicleQuadrantLog logVehicle(Long vehicleId, Integer quadrantId) throws InstanceNotFoundException;
 
 
     List<FireQuadrantLog> findAllFireQuadrantLogs();

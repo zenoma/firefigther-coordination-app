@@ -14,13 +14,16 @@ public class VehicleDto extends BaseDto {
     private OrganizationDto organization;
     private QuadrantInfoDto quadrant;
 
-    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant) {
+    private LocalDateTime deployAt;
+
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant, LocalDateTime deployAt) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;
         this.type = type;
         this.createdAt = createdAt;
         this.organization = organization;
         this.quadrant = quadrant;
+        this.deployAt = deployAt;
     }
 
     public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization) {
@@ -35,52 +38,81 @@ public class VehicleDto extends BaseDto {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getVehiclePlate() {
         return vehiclePlate;
+    }
+
+    public void setVehiclePlate(String vehiclePlate) {
+        this.vehiclePlate = vehiclePlate;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public OrganizationDto getOrganization() {
         return organization;
     }
 
+    public void setOrganization(OrganizationDto organization) {
+        this.organization = organization;
+    }
+
     public QuadrantInfoDto getQuadrant() {
         return quadrant;
+    }
+
+    public void setQuadrant(QuadrantInfoDto quadrant) {
+        this.quadrant = quadrant;
+    }
+
+    public LocalDateTime getDeployAt() {
+        return deployAt;
+    }
+
+    public void setDeployAt(LocalDateTime deployAt) {
+        this.deployAt = deployAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VehicleDto entity = (VehicleDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.vehiclePlate, entity.vehiclePlate) &&
-                Objects.equals(this.type, entity.type) &&
-                Objects.equals(this.createdAt, entity.createdAt) &&
-                Objects.equals(this.organization, entity.organization) &&
-                Objects.equals(this.quadrant, entity.quadrant);
+        VehicleDto that = (VehicleDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(vehiclePlate, that.vehiclePlate) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(organization, that.organization) && Objects.equals(quadrant, that.quadrant) && Objects.equals(deployAt, that.deployAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vehiclePlate, type, createdAt, organization, quadrant);
+        return Objects.hash(id, vehiclePlate, type, createdAt, organization, quadrant, deployAt);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "vehiclePlate = " + vehiclePlate + ", " +
-                "type = " + type + ", " +
-                "createdAt = " + createdAt + ", " +
-                "organization = " + organization + ", " +
-                "cuadrant = " + quadrant + ")";
+        return "VehicleDto{" +
+                "id=" + id +
+                ", vehiclePlate='" + vehiclePlate + '\'' +
+                ", type='" + type + '\'' +
+                ", createdAt=" + createdAt +
+                ", organization=" + organization +
+                ", quadrant=" + quadrant +
+                ", deployAt=" + deployAt +
+                '}';
     }
 }
