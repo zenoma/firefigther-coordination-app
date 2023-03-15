@@ -81,7 +81,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
+    void givenValidId_whenDismantle_thenDismantleSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -92,7 +92,8 @@ class TeamServiceImplTest {
                 organization.getId());
         personalManagementService.dismantleTeamById(team.getId());
 
-        Assertions.assertTrue(personalManagementService.findTeamByCode(team.getCode()).isEmpty(), "Expected result must be Empty");
+
+        Assertions.assertNotNull(personalManagementService.findTeamById(team.getId()).getDismantleAt(), "Expected result must be not empty");
     }
 
 
@@ -123,7 +124,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
+    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -140,7 +141,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
 
         User user = UserOM.withDefaultValues();
         Team team = TeamOM.withDefaultValues();
@@ -173,7 +174,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidUser_whenDeleteMember_thenMemberDeletedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidUser_whenDeleteMember_thenMemberDeletedSuccessfully() throws InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
 
 
         User user = UserOM.withDefaultValues();
@@ -190,7 +191,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
 
 
         User user = UserOM.withDefaultValues();
@@ -214,7 +215,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
         Team team = TeamOM.withDefaultValues();
         int itemNumber = 3;
         List<User> userList = UserOM.withRandomNames(itemNumber);
@@ -229,7 +230,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException {
+    void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
 
         Team team = TeamOM.withDefaultValues();
 

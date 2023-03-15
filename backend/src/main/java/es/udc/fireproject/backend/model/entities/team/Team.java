@@ -116,7 +116,7 @@ public class Team extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return Objects.equals(code, team.code) && Objects.equals(createdAt, team.createdAt) && Objects.equals(organization, team.organization) && Objects.equals(userList, team.userList) && Objects.equals(quadrant, team.quadrant) && Objects.equals(deployAt, team.deployAt) && Objects.equals(dismantleAt, team.dismantleAt);
+        return Objects.equals(code, team.code) && Objects.equals(organization, team.organization) && Objects.equals(userList, team.userList) && Objects.equals(quadrant, team.quadrant) && Objects.equals(deployAt, team.deployAt);
     }
 
     @Override
