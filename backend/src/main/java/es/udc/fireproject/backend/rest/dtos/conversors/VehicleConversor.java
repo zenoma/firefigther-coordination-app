@@ -27,7 +27,8 @@ public class VehicleConversor {
                 vehicle.getType(),
                 vehicle.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(vehicle.getOrganization()),
-                quadrantInfoDto, vehicle.getDeployAt());
+                quadrantInfoDto, vehicle.getDeployAt(),
+                vehicle.getDismantleAt());
 
     }
 

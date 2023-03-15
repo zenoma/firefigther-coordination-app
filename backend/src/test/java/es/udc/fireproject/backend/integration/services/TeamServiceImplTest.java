@@ -6,6 +6,7 @@ import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.OrganizationOM;
@@ -80,7 +81,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
+    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
         OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
         Organization organization = OrganizationOM.withDefaultValues();
         organization.setOrganizationType(organizationType);
@@ -89,7 +90,7 @@ class TeamServiceImplTest {
         Team team = TeamOM.withDefaultValues();
         team = personalManagementService.createTeam(team.getCode(),
                 organization.getId());
-        personalManagementService.deleteTeamById(team.getId());
+        personalManagementService.dismantleTeamById(team.getId());
 
         Assertions.assertTrue(personalManagementService.findTeamByCode(team.getCode()).isEmpty(), "Expected result must be Empty");
     }

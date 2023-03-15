@@ -16,7 +16,10 @@ public class VehicleDto extends BaseDto {
 
     private LocalDateTime deployAt;
 
-    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant, LocalDateTime deployAt) {
+
+    private LocalDateTime dismantleAt;
+
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant, LocalDateTime deployAt, LocalDateTime dismantleAt) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;
         this.type = type;
@@ -24,6 +27,7 @@ public class VehicleDto extends BaseDto {
         this.organization = organization;
         this.quadrant = quadrant;
         this.deployAt = deployAt;
+        this.dismantleAt = dismantleAt;
     }
 
     public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization) {
@@ -90,17 +94,25 @@ public class VehicleDto extends BaseDto {
         this.deployAt = deployAt;
     }
 
+    public LocalDateTime getDismantleAt() {
+        return dismantleAt;
+    }
+
+    public void setDismantleAt(LocalDateTime dismantleAt) {
+        this.dismantleAt = dismantleAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VehicleDto that = (VehicleDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(vehiclePlate, that.vehiclePlate) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(organization, that.organization) && Objects.equals(quadrant, that.quadrant) && Objects.equals(deployAt, that.deployAt);
+        return Objects.equals(id, that.id) && Objects.equals(vehiclePlate, that.vehiclePlate) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(organization, that.organization) && Objects.equals(quadrant, that.quadrant) && Objects.equals(deployAt, that.deployAt) && Objects.equals(dismantleAt, that.dismantleAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vehiclePlate, type, createdAt, organization, quadrant, deployAt);
+        return Objects.hash(id, vehiclePlate, type, createdAt, organization, quadrant, deployAt, dismantleAt);
     }
 
     @Override
@@ -113,6 +125,7 @@ public class VehicleDto extends BaseDto {
                 ", organization=" + organization +
                 ", quadrant=" + quadrant +
                 ", deployAt=" + deployAt +
+                ", dismantleAt=" + dismantleAt +
                 '}';
     }
 }

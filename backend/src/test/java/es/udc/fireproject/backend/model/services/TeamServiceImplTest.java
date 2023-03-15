@@ -9,6 +9,7 @@ import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
 import es.udc.fireproject.backend.utils.OrganizationOM;
@@ -105,7 +106,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
+    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
 
         Team team = TeamOM.withDefaultValues();
@@ -113,7 +114,7 @@ class TeamServiceImplTest {
         personalManagementService.createOrganization(team.getOrganization());
         team = personalManagementService.createTeam(team.getCode(), team.getOrganization().getId());
         team.setId(1L);
-        personalManagementService.deleteTeamById(team.getId());
+        personalManagementService.dismantleTeamById(team.getId());
 
         Team finalTeam = team;
 
@@ -146,7 +147,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException {
+    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = TeamOM.withDefaultValues();
         team.setCode("New Name");
 

@@ -3,6 +3,8 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.fire.Fire;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
+import es.udc.fireproject.backend.model.exceptions.VehicleAlreadyDismantledException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.rest.dtos.FireDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.FireConversor;
@@ -56,7 +58,7 @@ public class FireController {
 
     @PostMapping("/{id}/extinguish")
     public FireDto extinguishFire(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException, ExtinguishedFireException {
+            throws InstanceNotFoundException, ExtinguishedFireException, VehicleAlreadyDismantledException, TeamAlreadyDismantledException {
         return FireConversor.toFireDto(fireManagementService.extinguishFire(id));
     }
 

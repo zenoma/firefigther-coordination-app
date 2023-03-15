@@ -11,6 +11,8 @@ import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.entities.vehicle.VehicleRepository;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
+import es.udc.fireproject.backend.model.exceptions.VehicleAlreadyDismantledException;
 import es.udc.fireproject.backend.model.services.logsmanagement.LogManagementServiceImpl;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +114,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException {
+    public Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException, TeamAlreadyDismantledException, VehicleAlreadyDismantledException {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
@@ -164,8 +166,12 @@ public class FireManagementServiceImpl implements FireManagementService {
 
     // EXTINCTION SERVICES
     @Override
-    public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException {
+    public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
+        if (team.getDismantleAt() != null) {
+            throw new TeamAlreadyDismantledException(team.getCode());
+        }
+
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
         if (team.getQuadrant() != null && !Objects.equals(team.getQuadrant().getId(), gid)) {
@@ -181,8 +187,11 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Team retractTeam(Long teamId) throws InstanceNotFoundException {
+    public Team retractTeam(Long teamId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
+        if (team.getDismantleAt() != null) {
+            throw new TeamAlreadyDismantledException(team.getCode());
+        }
 
         if (team.getQuadrant() != null) {
             logManagementService.logTeam(team.getId(), team.getQuadrant().getId());
@@ -195,8 +204,13 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException {
+    public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
+        if (vehicle.getDismantleAt() != null) {
+            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+        }
+
+
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
 
 
@@ -213,8 +227,11 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException {
+    public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
+        if (vehicle.getDismantleAt() != null) {
+            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+        }
 
         if (vehicle.getQuadrant() != null) {
             logManagementService.logVehicle(vehicle.getId(), vehicle.getQuadrant().getId());
