@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
-import { useGetVehiclesByOrganizationIdQuery } from "../../api/vehicleApi";
+import { useGetActiveVehiclesByOrganizationIdQuery } from "../../api/vehicleApi";
 import { selectToken } from "../user/login/LoginSlice";
 import VehicleCreateDialog from "./VehicleCreateDialog";
 import VehicleTable from "./VehicleTable";
@@ -27,7 +27,7 @@ export default function VehiclesView(props) {
     data: vehicleList,
     isFetching,
     refetch,
-  } = useGetVehiclesByOrganizationIdQuery(payload, {
+  } = useGetActiveVehiclesByOrganizationIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
 

@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useGetVehiclesQuery } from "../../api/vehicleApi";
+import { useGetActiveVehiclesQuery } from "../../api/vehicleApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 export default function VehicleDataGrid({ childToParent }) {
@@ -31,7 +31,7 @@ export default function VehicleDataGrid({ childToParent }) {
     data: vehicles,
     error,
     isLoading,
-  } = useGetVehiclesQuery(
+  } = useGetActiveVehiclesQuery(
     { token: token },
     {
       refetchOnMountOrArgChange: true,

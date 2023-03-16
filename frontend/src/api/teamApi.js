@@ -13,9 +13,20 @@ export const teamApi = baseApi.injectEndpoints({
         return response;
       },
     }),
-    getTeamsByOrganizationId: build.query({
+    getactiveTeams: build.query({
       query: (payload) => ({
-        url: "/teams?organizationId=" + payload.organizationId,
+        url: "/teams/active",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    getActiveTeamsByOrganizationId: build.query({
+      query: (payload) => ({
+        url: "/teams/active?organizationId=" + payload.organizationId,
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -165,7 +176,8 @@ export const teamApi = baseApi.injectEndpoints({
 
 export const {
   useGetTeamsQuery,
-  useGetTeamsByOrganizationIdQuery,
+  useGetactiveTeamsQuery,
+  useGetActiveTeamsByOrganizationIdQuery,
   useGetTeamsByIdQuery,
   useGetUsersByIdQuery,
   useGetMyTeamQuery,

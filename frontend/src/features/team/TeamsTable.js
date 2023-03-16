@@ -13,7 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Button } from "@mui/material";
 import { selectToken } from "../user/login/LoginSlice";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DismantleIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -205,7 +205,7 @@ export default function TeamsTable(props) {
                                 size="small"
                                 onClick={(e) => handleClickOpenDelete(row.id)}
                               >
-                                <DeleteIcon />
+                                <DismantleIcon />
                               </Button>
                             </Box>
                           ) : null}

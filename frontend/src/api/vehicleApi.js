@@ -13,9 +13,20 @@ export const vehicleApi = baseApi.injectEndpoints({
         return response;
       },
     }),
-    getVehiclesByOrganizationId: build.query({
+    getActiveVehicles: build.query({
       query: (payload) => ({
-        url: "/vehicles?organizationId=" + payload.organizationId,
+        url: "/vehicles/active",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    getActiveVehiclesByOrganizationId: build.query({
+      query: (payload) => ({
+        url: "/vehicles/active?organizationId=" + payload.organizationId,
         headers: {
           Authorization: "Bearer " + payload.token,
         },
@@ -115,7 +126,8 @@ export const vehicleApi = baseApi.injectEndpoints({
 
 export const {
   useGetVehiclesQuery,
-  useGetVehiclesByOrganizationIdQuery,
+  useGetActiveVehiclesQuery,
+  useGetActiveVehiclesByOrganizationIdQuery,
   useGetVehiclesByIdQuery,
   useCreateVehicleMutation,
   useUpdateVehicleMutation,
