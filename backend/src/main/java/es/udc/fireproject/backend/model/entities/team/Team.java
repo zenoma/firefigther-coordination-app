@@ -38,6 +38,12 @@ public class Team extends BaseEntity {
     @JoinColumn(name = "quadrant_gid", nullable = false)
     private Quadrant quadrant;
 
+    @Column(name = "deploy_at")
+    private LocalDateTime deployAt;
+
+    @Column(name = "dismantle_at")
+    private LocalDateTime dismantleAt;
+
 
     public Team() {
 
@@ -89,17 +95,33 @@ public class Team extends BaseEntity {
         this.quadrant = quadrant;
     }
 
+    public LocalDateTime getDeployAt() {
+        return deployAt;
+    }
+
+    public void setDeployAt(LocalDateTime deployAt) {
+        this.deployAt = deployAt;
+    }
+
+    public LocalDateTime getDismantleAt() {
+        return dismantleAt;
+    }
+
+    public void setDismantleAt(LocalDateTime dismantleAt) {
+        this.dismantleAt = dismantleAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return Objects.equals(code, team.code) && Objects.equals(organization, team.organization) && Objects.equals(userList, team.userList);
+        return Objects.equals(code, team.code) && Objects.equals(organization, team.organization) && Objects.equals(userList, team.userList) && Objects.equals(quadrant, team.quadrant) && Objects.equals(deployAt, team.deployAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, createdAt, organization, userList, quadrant);
+        return Objects.hash(code, createdAt, organization, userList, quadrant, deployAt, dismantleAt);
     }
 
     @Override
@@ -109,7 +131,10 @@ public class Team extends BaseEntity {
                 ", createdAt=" + createdAt +
                 ", organization=" + organization +
                 ", userList=" + userList +
-                ", cuadrant=" + quadrant +
+                ", quadrant=" + quadrant +
+                ", deployAt=" + deployAt +
+                ", dismantleAt=" + dismantleAt +
                 '}';
     }
 }
+

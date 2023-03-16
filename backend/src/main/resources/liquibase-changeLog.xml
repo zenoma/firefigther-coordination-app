@@ -83,6 +83,9 @@
             <column name="revision" type="VARCHAR(50)"/>
             <column name="GEOM" type="GEOMETRY(MULTIPOLYGON,${srid})"/>
             <column name="fire_id" type="BIGINT"/>
+            <column name="fire_linked_at" type="TIMESTAMP(3)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="quadrants" baseColumnNames="fire_id"
                                  referencedTableName="fire"
@@ -95,11 +98,11 @@
             </column>
             <column name="fire_id" type="BIGINT"/>
             <column name="quadrant_gid" type="BIGINT"/>
-            <column name="created_at" type="TIMESTAMP(3)">
+            <column name="linked_at" type="TIMESTAMP(3)">
                 <constraints nullable="false"/>
             </column>
             <column name="extinguished_at" type="TIMESTAMP(3)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="fire_quadrant_log" baseColumnNames="fire_id"
@@ -124,6 +127,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="quadrant_gid" type="BIGINT"/>
+            <column name="deploy_at" type="TIMESTAMP(3)"/>
+            <column name="dismantle_at" type="TIMESTAMP(3)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="team" baseColumnNames="organization_id"
                                  referencedTableName="organization"
@@ -144,7 +151,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="retract_at" type="TIMESTAMP(3)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="team_quadrant_log" baseColumnNames="team_id"
@@ -170,6 +177,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="quadrant_gid" type="BIGINT"/>
+            <column name="deploy_at" type="TIMESTAMP(3)"/>
+            <column name="dismantle_at" type="TIMESTAMP(3)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="vehicle" baseColumnNames="organization_id"
                                  referencedTableName="organization"
@@ -190,7 +201,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="retract_at" type="TIMESTAMP(3)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="vehicle_quadrant_log" baseColumnNames="vehicle_id"

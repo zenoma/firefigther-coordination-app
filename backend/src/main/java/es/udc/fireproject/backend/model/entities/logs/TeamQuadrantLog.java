@@ -35,10 +35,11 @@ public class TeamQuadrantLog extends BaseEntity {
     public TeamQuadrantLog() {
     }
 
-    public TeamQuadrantLog(Team team, Quadrant quadrant, LocalDateTime deployAt) {
+    public TeamQuadrantLog(Team team, Quadrant quadrant, LocalDateTime deployAt, LocalDateTime retractAt) {
         this.team = team;
         this.quadrant = quadrant;
         this.deployAt = deployAt;
+        this.retractAt = retractAt;
     }
 
     public Team getTeam() {

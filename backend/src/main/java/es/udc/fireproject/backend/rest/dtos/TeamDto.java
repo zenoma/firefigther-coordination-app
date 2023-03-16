@@ -31,16 +31,24 @@ public class TeamDto extends BaseDto {
 
     private QuadrantInfoDto quadrantInfoDto;
 
+    private LocalDateTime deployAt;
+
+
+    private LocalDateTime dismantleAt;
+
     public TeamDto() {
     }
 
-    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList, QuadrantInfoDto quadrantInfoDto) {
+    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList, QuadrantInfoDto quadrantInfoDto, LocalDateTime deployAt,
+                   LocalDateTime dismantleAt) {
         this.id = id;
         this.code = code;
         this.createdAt = createdAt;
         this.organizationDto = organizationDto;
         this.userDtoList = userDtoList;
         this.quadrantInfoDto = quadrantInfoDto;
+        this.deployAt = deployAt;
+        this.dismantleAt = dismantleAt;
     }
 
     public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList) {
@@ -100,6 +108,35 @@ public class TeamDto extends BaseDto {
         this.quadrantInfoDto = quadrantInfoDto;
     }
 
+    public LocalDateTime getDeployAt() {
+        return deployAt;
+    }
+
+    public void setDeployAt(LocalDateTime deployAt) {
+        this.deployAt = deployAt;
+    }
+
+    public LocalDateTime getDismantleAt() {
+        return dismantleAt;
+    }
+
+    public void setDismantleAt(LocalDateTime dismantleAt) {
+        this.dismantleAt = dismantleAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamDto teamDto = (TeamDto) o;
+        return Objects.equals(id, teamDto.id) && Objects.equals(code, teamDto.code) && Objects.equals(createdAt, teamDto.createdAt) && Objects.equals(organizationDto, teamDto.organizationDto) && Objects.equals(userDtoList, teamDto.userDtoList) && Objects.equals(quadrantInfoDto, teamDto.quadrantInfoDto) && Objects.equals(deployAt, teamDto.deployAt) && Objects.equals(dismantleAt, teamDto.dismantleAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, createdAt, organizationDto, userDtoList, quadrantInfoDto, deployAt, dismantleAt);
+    }
+
     @Override
     public String toString() {
         return "TeamDto{" +
@@ -109,20 +146,9 @@ public class TeamDto extends BaseDto {
                 ", organizationDto=" + organizationDto +
                 ", userDtoList=" + userDtoList +
                 ", quadrantInfoDto=" + quadrantInfoDto +
+                ", deployAt=" + deployAt +
+                ", dismantleAt=" + dismantleAt +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TeamDto teamDto = (TeamDto) o;
-        return Objects.equals(id, teamDto.id) && Objects.equals(code, teamDto.code) && Objects.equals(createdAt, teamDto.createdAt) && Objects.equals(organizationDto, teamDto.organizationDto) && Objects.equals(userDtoList, teamDto.userDtoList) && Objects.equals(quadrantInfoDto, teamDto.quadrantInfoDto);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, code, createdAt, organizationDto, userDtoList, quadrantInfoDto);
     }
 
     public interface AllValidations {

@@ -32,6 +32,12 @@ public class Vehicle extends BaseEntity {
     @JoinColumn(name = "quadrant_gid", nullable = false)
     private Quadrant quadrant;
 
+    @Column(name = "deploy_at")
+    private LocalDateTime deployAt;
+
+    @Column(name = "dismantle_at")
+    private LocalDateTime dismantleAt;
+
 
     public Vehicle() {
     }
@@ -83,17 +89,33 @@ public class Vehicle extends BaseEntity {
         this.quadrant = quadrant;
     }
 
+    public LocalDateTime getDeployAt() {
+        return deployAt;
+    }
+
+    public void setDeployAt(LocalDateTime deployAt) {
+        this.deployAt = deployAt;
+    }
+
+    public LocalDateTime getDismantleAt() {
+        return dismantleAt;
+    }
+
+    public void setDismantleAt(LocalDateTime dismantleAt) {
+        this.dismantleAt = dismantleAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Objects.equals(vehiclePlate, vehicle.vehiclePlate) && Objects.equals(type, vehicle.type) && Objects.equals(organization, vehicle.organization) && Objects.equals(quadrant, vehicle.quadrant);
+        return Objects.equals(vehiclePlate, vehicle.vehiclePlate) && Objects.equals(type, vehicle.type) && Objects.equals(createdAt, vehicle.createdAt) && Objects.equals(organization, vehicle.organization) && Objects.equals(quadrant, vehicle.quadrant) && Objects.equals(deployAt, vehicle.deployAt) && Objects.equals(dismantleAt, vehicle.dismantleAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehiclePlate, type, organization, quadrant);
+        return Objects.hash(vehiclePlate, type, createdAt, organization, quadrant, deployAt, dismantleAt);
     }
 
     @Override
@@ -103,7 +125,9 @@ public class Vehicle extends BaseEntity {
                 ", type='" + type + '\'' +
                 ", createdAt=" + createdAt +
                 ", organization=" + organization +
-                ", cuadrant=" + quadrant +
+                ", quadrant=" + quadrant +
+                ", deployAt=" + deployAt +
+                ", dismantleAt=" + dismantleAt +
                 '}';
     }
 }

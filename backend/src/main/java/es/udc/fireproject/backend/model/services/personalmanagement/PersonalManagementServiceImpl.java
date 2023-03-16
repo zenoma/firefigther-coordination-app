@@ -12,6 +12,7 @@ import es.udc.fireproject.backend.model.entities.user.UserRole;
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.entities.vehicle.VehicleRepository;
 import es.udc.fireproject.backend.model.exceptions.*;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementServiceImpl;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     private OrganizationRepository organizationRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FireManagementServiceImpl fireManagementService;
 
     // ORGANIZATION SERVICES
     @Override
@@ -166,20 +170,35 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     @Transactional
-    public void deleteTeamById(Long id) throws InstanceNotFoundException {
-        if (findAllUsersByTeamId(id) != null) {
-            List<User> userList = new ArrayList<>(findAllUsersByTeamId(id));
-            for (User user : userList) {
-                user.setTeam(null);
-                userRepository.save(user);
+    public void dismantleTeamById(Long id) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+        Team team = teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id));
+
+        if (team.getDismantleAt() == null) {
+            if (findAllUsersByTeamId(id) != null) {
+                List<User> userList = new ArrayList<>(findAllUsersByTeamId(id));
+                for (User user : userList) {
+                    user.setTeam(null);
+                    userRepository.save(user);
+                }
             }
+            fireManagementService.retractTeam(team.getId());
+            team.setDismantleAt(LocalDateTime.now());
+
+            teamRepository.save(team);
+        } else {
+            throw new TeamAlreadyDismantledException(team.getCode());
         }
-        teamRepository.deleteById(id);
+
+
     }
 
     @Override
-    public Team updateTeam(Long id, String code) throws InstanceNotFoundException {
+    public Team updateTeam(Long id, String code) throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id));
+
+        if (team.getDismantleAt() != null) {
+            throw new TeamAlreadyDismantledException(team.getCode());
+        }
 
         team.setCode(code);
 
@@ -190,8 +209,12 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public Team addMember(Long teamId, Long userId) throws InstanceNotFoundException {
+    public Team addMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
+
+        if (team.getDismantleAt() != null) {
+            throw new TeamAlreadyDismantledException(team.getCode());
+        }
 
         User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
 
@@ -210,8 +233,12 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException {
+    public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
+        if (team.getDismantleAt() != null) {
+            throw new TeamAlreadyDismantledException(team.getCode());
+        }
+
         User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
         if (!team.getUserList().contains(user)) {
             throw new InstanceNotFoundException(USER_NOT_FOUND, userId);
@@ -263,13 +290,26 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public void deleteVehicleById(Long id) throws InstanceNotFoundException {
-        vehicleRepository.deleteById(id);
+    public void dismantleVehicleById(Long id) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
+
+        if (vehicle.getDismantleAt() == null) {
+            fireManagementService.retractVehicle(vehicle.getId());
+            vehicle.setDismantleAt(LocalDateTime.now());
+
+            vehicleRepository.save(vehicle);
+        } else {
+            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+        }
+
     }
 
     @Override
-    public Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException {
+    public Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
+        if (vehicle.getDismantleAt() != null) {
+            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+        }
 
         vehicle.setVehiclePlate(vehiclePlate);
         vehicle.setType(type);

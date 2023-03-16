@@ -9,7 +9,9 @@ import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
+import es.udc.fireproject.backend.model.services.firemanagement.FireManagementServiceImpl;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
 import es.udc.fireproject.backend.utils.OrganizationOM;
 import es.udc.fireproject.backend.utils.OrganizationTypeOM;
@@ -49,7 +51,8 @@ class TeamServiceImplTest {
     OrganizationTypeRepository organizationTypeRepository;
     @InjectMocks
     PersonalManagementServiceImpl personalManagementService;
-
+    @Mock
+    FireManagementServiceImpl fireManagementService;
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -105,7 +108,7 @@ class TeamServiceImplTest {
 
 
     @Test
-    void givenValidId_whenDelete_thenDeletedSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException {
+    void givenValidId_whenDismantle_thenDismantleSuccessfully() throws InstanceNotFoundException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
 
         Team team = TeamOM.withDefaultValues();
@@ -113,14 +116,17 @@ class TeamServiceImplTest {
         personalManagementService.createOrganization(team.getOrganization());
         team = personalManagementService.createTeam(team.getCode(), team.getOrganization().getId());
         team.setId(1L);
-        personalManagementService.deleteTeamById(team.getId());
+
+        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.of(TeamOM.withDefaultValues()));
+
+        personalManagementService.dismantleTeamById(team.getId());
 
         Team finalTeam = team;
 
-        Mockito.when(teamRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        Assertions.assertThrows(InstanceNotFoundException.class, () ->
-                        personalManagementService.findTeamById(finalTeam.getId())
-                , "InstanceNotFoundException error was expected");
+        Assertions.assertNotNull(personalManagementService.findTeamById(team.getId()).getDismantleAt(),
+                "Expected result must be not empty");
+
+
     }
 
 
@@ -146,7 +152,7 @@ class TeamServiceImplTest {
     }
 
     @Test
-    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException {
+    void givenValidCode_whenUpdate_thenUpdateSuccessfully() throws InstanceNotFoundException, TeamAlreadyDismantledException {
         Team team = TeamOM.withDefaultValues();
         team.setCode("New Name");
 
@@ -159,7 +165,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUser_whenAddMember_thenMemberAddedSuccessfully() throws
-            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -210,7 +216,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUser_whenDeleteMember_thenMemberAddedSuccessfully() throws
-            InstanceNotFoundException, DuplicateInstanceException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyDismantledException {
 
 
         User user = UserOM.withDefaultValues();
@@ -229,7 +235,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenInvalidUser_whenDeleteMember_thenConstraintViolationException() throws
-            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -261,7 +267,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenValidUsers_whenFindAllUsers_thenNumberFoundCorrect() throws
-            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
@@ -284,7 +290,7 @@ class TeamServiceImplTest {
 
     @Test
     void givenTeamInvalidID_whenFindAllUsers_thenConstraintViolationException() throws
-            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException {
+            InstanceNotFoundException, DuplicateInstanceException, TeamAlreadyExistException, TeamAlreadyDismantledException {
 
         Organization organization = OrganizationOM.withDefaultValues();
         personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
