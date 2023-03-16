@@ -79,8 +79,7 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         if (quadrant.getFire() == null) {
             quadrant.setFire(fire);
-
-            logManagementService.logLinkedFire(id, gid);
+            quadrant.setLinkedAt(LocalDateTime.now());
         }
 
 
@@ -129,8 +128,9 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         for (Quadrant quadrant : quadrants
         ) {
-            logManagementService.logExtinguishedFire(id, quadrant.getId());
+            logManagementService.logFire(id, quadrant.getId());
             quadrant.setFire(null);
+            quadrant.setLinkedAt(null);
             for (Team team : quadrant.getTeamList()) {
                 retractTeam(team.getId());
             }

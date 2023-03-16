@@ -16,7 +16,7 @@ public class FireQuadrantLogConversor {
         FireDto fireDto = FireConversor.toFireDtoWithoutQuadrants(fireQuadrantLog.getFire());
         QuadrantInfoDto quadrantInfoDto = QuadrantInfoConversor.toQuadrantDtoWithoutTeamsAndVehicles(fireQuadrantLog.getQuadrant());
 
-        return new FireQuadrantLogDto(fireDto, quadrantInfoDto, fireQuadrantLog.getCreatedAt(), fireQuadrantLog.getExtinguishedAt());
+        return new FireQuadrantLogDto(fireDto, quadrantInfoDto, fireQuadrantLog.getLinkedAt(), fireQuadrantLog.getExtinguishedAt());
 
     }
 

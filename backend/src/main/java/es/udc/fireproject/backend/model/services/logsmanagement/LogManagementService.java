@@ -9,9 +9,7 @@ import java.util.List;
 
 public interface LogManagementService {
 
-    FireQuadrantLog logLinkedFire(Long fireId, Integer quadrantId) throws InstanceNotFoundException;
-
-    FireQuadrantLog logExtinguishedFire(Long fireId, Integer quadrantId);
+    FireQuadrantLog logFire(Long fireId, Integer quadrantId) throws InstanceNotFoundException;
 
     TeamQuadrantLog logTeam(Long teamId, Integer quadrantId) throws InstanceNotFoundException;
 

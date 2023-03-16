@@ -33,23 +33,14 @@ public class LogManagementServiceImpl implements LogManagementService {
 
 
     @Override
-    public FireQuadrantLog logLinkedFire(Long fireId, Integer quadrantId) throws InstanceNotFoundException {
+    public FireQuadrantLog logFire(Long fireId, Integer quadrantId) throws InstanceNotFoundException {
 
         Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
 
         Fire fire = fireManagementService.findFireById(fireId);
 
-        return fireQuadrantLogRepository.save(new FireQuadrantLog(fire, quadrant, LocalDateTime.now()));
+        return fireQuadrantLogRepository.save(new FireQuadrantLog(fire, quadrant, quadrant.getLinkedAt(), LocalDateTime.now()));
 
-    }
-
-    @Override
-    public FireQuadrantLog logExtinguishedFire(Long fireId, Integer quadrantId) {
-        FireQuadrantLog fireQuadrantLog = fireQuadrantLogRepository.findByFireIdAndQuadrantId(fireId, quadrantId);
-
-        fireQuadrantLog.setExtinguishedAt(LocalDateTime.now());
-
-        return fireQuadrantLogRepository.save(fireQuadrantLog);
     }
 
 
