@@ -77,9 +77,9 @@ export default function QuadrantVehicleTable(props) {
     retractVehicle(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("vehicle-deleted-successfully"));
+        toast.success(t("vehicle-retracted-successfully"));
       })
-      .catch((error) => toast.error(t("vehicle-deleted-error")));
+      .catch((error) => toast.error(t("vehicle-retracted-error")));
     handleCloseDelete();
     props.reloadData();
   };

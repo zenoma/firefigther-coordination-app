@@ -77,9 +77,9 @@ export default function QuadrantTeamsTable(props) {
     retractTeam(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("team-deleted-successfully"));
+        toast.success(t("team-retracted-successfully"));
       })
-      .catch((error) => toast.error(t("team-deleted-error")));
+      .catch((error) => toast.error(t("team-retracted-error")));
     handleCloseDelete();
     props.reloadData();
   };

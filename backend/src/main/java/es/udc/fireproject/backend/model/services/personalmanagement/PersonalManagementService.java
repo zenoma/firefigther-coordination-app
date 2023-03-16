@@ -65,7 +65,6 @@ public interface PersonalManagementService {
 
     // VEHICLE SERVICES
 
-
     Vehicle createVehicle(String vehiclePlate, String type, Long organizationId) throws InstanceNotFoundException;
 
     void dismantleVehicleById(Long id) throws InstanceNotFoundException, VehicleAlreadyDismantledException;

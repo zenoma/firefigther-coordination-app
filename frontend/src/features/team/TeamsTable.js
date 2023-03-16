@@ -127,9 +127,9 @@ export default function TeamsTable(props) {
     deleteTeambyId(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("team-deleted-successfully"));
+        toast.success(t("team-dismantled-successfully"));
       })
-      .catch((error) => toast.error(t("team-deleted-error")));
+      .catch((error) => toast.error(t("team-dismantled-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -235,12 +235,12 @@ export default function TeamsTable(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {t("team-deleted-dialog")}
+          {t("team-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            {t("delete")}
+            {t("dismantle")}
           </Button>
         </DialogActions>
       </Dialog>

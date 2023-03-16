@@ -132,9 +132,9 @@ export default function VehicleTable(props) {
     deleteVehicleById(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("vehicle-deleted-successfully"));
+        toast.success(t("vehicle-dismantled-successfully"));
       })
-      .catch((error) => toast.error(t("vehicle-deleted-error")));
+      .catch((error) => toast.error(t("vehicle-dismantled-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -232,12 +232,12 @@ export default function VehicleTable(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {t("vehicle-deleted-dialog")}
+          {t("vehicle-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            {t("delete")}
+            {t("dismantle")}
           </Button>
         </DialogActions>
       </Dialog>
