@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 
@@ -23,6 +24,8 @@ public class NoticeDto extends BaseDto {
 
     private NoticeStatus status;
 
+
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @ManyToOne

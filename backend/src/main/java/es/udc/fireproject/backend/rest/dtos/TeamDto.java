@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Id;
@@ -31,9 +32,11 @@ public class TeamDto extends BaseDto {
 
     private QuadrantInfoDto quadrantInfoDto;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime deployAt;
 
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime dismantleAt;
 
     public TeamDto() {

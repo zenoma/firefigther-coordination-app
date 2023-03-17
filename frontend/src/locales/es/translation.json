@@ -87,7 +87,7 @@
   "vehicle-deploy-title": "Desplegar un vehículo",
   "vehicle-deployed-successfully": "Vehículo desplegado correctamente",
   "vehicle-deployed-error": "No se ha podido desplegar el vehículo",
-  "vehicle-deployed-no-selected": "Debe seleccionar un vehículo para desplegar",  
+  "vehicle-deployed-no-selected": "Debe seleccionar un vehículo para desplegar",
   "vehicle-retracted-successfully": "Vehículo retirado correctamente",
   "vehicle-retracted-error": "No se ha podido retirar el vehículo",
 
@@ -101,6 +101,12 @@
   "fire-extinguished-at": "Fecha extinción",
   "fire-details-title": "Detalles del incendio",
   "fire-create-title": "Crear nuevo incendio",
+  "fire-options": "Opciones",
+  "fire-extinguish": "Extinguir",
+  "fire-extinguish-dialog": "¿Está seguro de extinguir este incendio?",
+  "fire-extinguish-text": "Se desvincularán los cuadrantes afectados, se liberarán los equipos y los vehículos de dichos cuadrantes y se marcará el incendio como extinguido.",
+  "fire-extinguished-successfully": "Incendio extinguido correctamente",
+  "fire-extinguished-error": "No se ha podido extinguir el incendio",
 
   "quadrant-list": "Lista de cuadrantes",
   "quadrant-id": "Id",
@@ -114,7 +120,6 @@
   "quadrant-folla5": "Id hoja 5",
   "quadrant-fire-id": "Id fuego asociado",
   "quadrant-linked-successfully": "Cuadrante vinculado correctamente",
-
 
   "options": "Opciones",
   "cancel": "Cancelar",

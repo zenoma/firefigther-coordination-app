@@ -92,7 +92,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     // FIRE SERVICES
     @Override
     public List<Fire> findAllFires() {
-        return fireRepository.findAll();
+        return fireRepository.findAllByOrderByExtinguishedAtDescIdAsc();
     }
 
     @Override

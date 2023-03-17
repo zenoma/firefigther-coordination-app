@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Fab,
   Grid,
@@ -14,7 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -23,10 +24,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGetFireByIdQuery } from "../../api/fireApi";
 import {
-  useLinkFireMutation
-} from "../../api/quadrantApi";
+  useExtinguishFireMutation,
+  useGetFireByIdQuery,
+} from "../../api/fireApi";
+import { useLinkFireMutation } from "../../api/quadrantApi";
 import CustomMap from "../map/CustomMap";
 import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
@@ -39,14 +41,15 @@ export default function FireDetailsView() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-
   const [selectedId, setSelectedId] = useState(true);
+  const [openExtinguish, setOpenExtinguish] = useState(false);
 
   const payload = { token: token, fireId: fireId };
 
   const { data, refetch } = useGetFireByIdQuery(payload);
 
   const [linkFire] = useLinkFireMutation();
+  const [extinguishFire] = useExtinguishFireMutation();
 
   const childToParent = (childdata) => {
     setSelectedId(childdata);
@@ -77,6 +80,34 @@ export default function FireDetailsView() {
       .catch((error) => toast.error(t("quadrant-linked-error")));
   };
 
+  const handleExtinguishOpenClick = () => {
+    setOpenExtinguish(true);
+  };
+
+  const handleExtinguishClose = () => {
+    setOpenExtinguish(false);
+  };
+
+  const handleExtinguishClick = () => {
+    const payload = {
+      token: token,
+      fireId: fireId,
+    };
+
+    extinguishFire(payload)
+      .unwrap()
+      .then(() => {
+        toast.success(t("fire-extinguished-successfully"));
+        setOpenExtinguish(false);
+        navigate("/fire-management");
+      })
+      .catch((error) => toast.error(t("fire-extinguished-error")));
+  };
+
+  const handleEditClick = () => {
+    console.log("edit");
+  };
+
   return (
     <Box sx={{ padding: 3 }}>
       <BackButton />
@@ -92,7 +123,7 @@ export default function FireDetailsView() {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Grid item xs={4} sm={8} md={9}>
+        <Grid item xs={4} sm={8} md={6}>
           <Paper
             sx={{
               color: "primary.light",
@@ -161,6 +192,64 @@ export default function FireDetailsView() {
                   <AddIcon />
                 </Fab>
               </Box>
+            </Paper>
+          )}
+        </Grid>
+        <Grid item xs={4} sm={8} md={3}>
+          {data && (
+            <Paper
+              sx={{
+                color: "primary.light",
+                padding: 2,
+              }}
+              variant="outlined"
+            >
+              <Typography variant="h6">{t("fire-options")}</Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ margin: "5px" }}
+                onClick={() => handleEditClick()}
+              >
+                {t("edit")}
+              </Button>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  backgroundColor: "error.light",
+                  margin: "5px",
+                  ":hover": { backgroundColor: "error.dark" },
+                }}
+                onClick={() => handleExtinguishOpenClick()}
+              >
+                {t("fire-extinguish")}
+              </Button>
+              <Dialog
+                open={openExtinguish}
+                onClose={handleExtinguishClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {t("fire-extinguish-dialog")}
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body2">
+                    {t("fire-extinguish-text")}
+                  </Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleExtinguishClose}>{t("cancel")}</Button>
+                  <Button
+                    onClick={handleExtinguishClick}
+                    color="error"
+                    autoFocus
+                  >
+                    {t("fire-extinguish")}
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Paper>
           )}
         </Grid>

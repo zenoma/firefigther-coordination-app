@@ -40,8 +40,24 @@ export const fireApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    extinguishFire: build.mutation({
+      query: (payload) => ({
+        url: "/fires/" + payload.fireId + "/extinguish",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetFiresQuery, useGetFireByIdQuery, useCreateFireMutation } =
-  fireApi;
+export const {
+  useGetFiresQuery,
+  useGetFireByIdQuery,
+  useCreateFireMutation,
+  useExtinguishFireMutation,
+} = fireApi;

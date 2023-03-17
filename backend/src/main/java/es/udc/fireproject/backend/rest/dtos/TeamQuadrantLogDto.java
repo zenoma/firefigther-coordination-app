@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,8 +12,10 @@ public class TeamQuadrantLogDto extends BaseDto {
 
     private QuadrantInfoDto quadrantInfoDto;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime deployAt;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime retractAt;
 
     public TeamQuadrantLogDto() {
