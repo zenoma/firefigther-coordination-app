@@ -62,18 +62,40 @@ public class LogManagementServiceImpl implements LogManagementService {
         return vehicleQuadrantLogRepository.save(new VehicleQuadrantLog(vehicle, quadrant, vehicle.getDeployAt(), LocalDateTime.now()));
     }
 
-
+    @Override
     public List<FireQuadrantLog> findAllFireQuadrantLogs() {
         return fireQuadrantLogRepository.findAll();
     }
 
+    @Override
     public List<TeamQuadrantLog> findAllTeamQuadrantLogs() {
         return teamQuadrantLogRepository.findAll();
     }
 
+    @Override
     public List<VehicleQuadrantLog> findAllVehicleQuadrantLogs() {
         return vehicleQuadrantLogRepository.findAll();
     }
 
+    @Override
+    public List<FireQuadrantLog> findFiresByFireIdAndLinkedAt(Long fireId, LocalDateTime date) throws InstanceNotFoundException {
+        Fire fire = fireManagementService.findFireById(fireId);
+
+        return fireQuadrantLogRepository.findByFireIdAndLinkedAtLessThanEqualOrderByLinkedAt(fireId, date);
+    }
+
+    @Override
+    public List<TeamQuadrantLog> findTeamsByQuadrantIdAndDeployAtBetweenOrderByDeployAt(Integer quadrantId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException {
+        Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
+
+        return teamQuadrantLogRepository.findByQuadrantIdAndDeployAtBetweenOrderByDeployAt(quadrantId, startDate, endDate);
+    }
+
+    @Override
+    public List<VehicleQuadrantLog> findVehiclesByQuadrantIdAndDeployAtBetweenOrderByDeployAt(Integer quadrantId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException {
+        Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
+
+        return vehicleQuadrantLogRepository.findByQuadrantIdAndDeployAtBetweenOrderByDeployAt(quadrantId, startDate, endDate);
+    }
 
 }
