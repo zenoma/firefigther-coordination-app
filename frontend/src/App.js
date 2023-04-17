@@ -86,19 +86,19 @@ function App({ t }) {
                 userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
               }
             />
-            <Route path="/teams/:teamId" element={<TeamView />} />
+            <Route path="/teams" element={<TeamView />} />
             <Route path="/my-team" element={<MyTeamView />} />
             <Route
-              path="/organizations/:organizationId/teams"
+              path="/organizations/teams"
               element={<OrganizationTeamsVehiclesView />}
             />
             <Route path="/my-notices" element={<MyNoticesList />} />{" "}
             <Route path="/fire-management" element={<FireManagementView />} />
-            <Route
-              path="/fire-management/:fireId"
-              element={<FireDetailsView />}
-            />
-            <Route path="/quadrant/:quadrantId" element={<QuadrantView />} />
+            <Route path="/fire-details/" element={<FireDetailsView />} />
+
+            {/* // fixme: */}
+            <Route path="/fire-history" element={<FireDetailsView />} />
+            <Route path="/quadrant" element={<QuadrantView />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

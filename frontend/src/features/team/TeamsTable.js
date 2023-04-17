@@ -182,7 +182,10 @@ export default function TeamsTable(props) {
                           align={column.align}
                           onClick={
                             column.id !== "options"
-                              ? () => navigate("/teams/" + row.id)
+                              ? () =>
+                                  navigate("/teams", {
+                                    state: { teamId: row.id },
+                                  })
                               : undefined
                           }
                         >

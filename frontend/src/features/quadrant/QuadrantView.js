@@ -1,13 +1,14 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import BackButton from "../utils/BackButton";
 import QuadrantTeamsView from "./QuadrantTeamsView";
 import QuadrantVehiclesView from "./QuadrantVehiclesView";
 
 export default function QuadrantView() {
-  const { quadrantId } = useParams();
+  const location = useLocation();
+  const quadrantId = location.state.quadrantId;
   const { t } = useTranslation();
 
   return (

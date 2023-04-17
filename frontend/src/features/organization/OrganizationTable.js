@@ -162,7 +162,9 @@ export default function OrganizationTable(props) {
   };
 
   const handleClickOrganization = (organizationId) => {
-    navigate("/organizations/" + organizationId + "/teams");
+    navigate("/organizations/teams", {
+      state: { organizationId: organizationId },
+    });
   };
 
   var rows = [];

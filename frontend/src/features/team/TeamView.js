@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 import UsersList from "../user/UsersList";
@@ -11,7 +11,9 @@ import TeamUserAdd from "./TeamUserAdd";
 
 export default function TeamView() {
   const token = useSelector(selectToken);
-  let { teamId } = useParams();
+
+  const location = useLocation();
+  const teamId = location.state.teamId;
 
   const payload = {
     token: token,

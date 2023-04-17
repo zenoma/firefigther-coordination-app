@@ -3,7 +3,7 @@ import { Box, Dialog, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetOrganizationByIdQuery } from "../../api/organizationApi";
 import TeamsView from "../team/TeamsView";
 import { selectToken } from "../user/login/LoginSlice";
@@ -13,7 +13,10 @@ import OrganizationDetailsCard from "./OrganizationDetailsCard";
 
 export default function OrganizationTeamsVehiclesView() {
   const token = useSelector(selectToken);
-  let { organizationId } = useParams();
+
+  const location = useLocation();
+  const organizationId = location.state.organizationId;
+  
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);

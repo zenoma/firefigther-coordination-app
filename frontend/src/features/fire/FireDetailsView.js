@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Fab,
   Grid,
@@ -22,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useExtinguishFireMutation,
@@ -36,7 +35,10 @@ import BackButton from "../utils/BackButton";
 
 export default function FireDetailsView() {
   const token = useSelector(selectToken);
-  const { fireId } = useParams();
+
+  const location = useLocation();
+  const fireId = location.state.fireId;
+
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -172,7 +174,11 @@ export default function FireDetailsView() {
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
-                        onClick={() => navigate("/quadrant/" + row.id)}
+                        onClick={() =>
+                          navigate("/quadrant", {
+                            state: { quadrantId: row.id },
+                          })
+                        }
                       >
                         <TableCell component="th" scope="row">
                           {row.id}

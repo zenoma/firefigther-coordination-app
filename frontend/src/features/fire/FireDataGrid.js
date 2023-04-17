@@ -144,7 +144,11 @@ export default function FireDataGrid() {
   };
 
   const handleRowClick = (row) => {
-    navigate("/fire-management/" + row.id);
+    navigate("/fire-details", { state: { fireId: row.id } });
+  };
+
+  const handleDisabledRowClick = (row) => {
+    navigate("/fire-history", { state: { fireId: row.id } });
   };
 
   const handleClick = () => {
@@ -188,7 +192,9 @@ export default function FireDataGrid() {
             width: "100%",
             "& .disabled": {
               backgroundColor: "lightgrey",
-              "pointer-events": "none",
+              "&:hover": {
+                backgroundColor: "darkgrey",
+              },
             },
           }}
         >
@@ -217,7 +223,11 @@ export default function FireDataGrid() {
                 return "disabled";
               }
             }}
-            onRowClick={(e) => handleRowClick(e.row)}
+            onRowClick={(e) =>
+              e.row.fireIndex === "EXTINGUISHED"
+                ? handleDisabledRowClick(e.row)
+                : handleRowClick(e.row)
+            }
           />
           <Box m={1}>
             <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
