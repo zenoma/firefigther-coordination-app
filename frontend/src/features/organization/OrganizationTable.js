@@ -10,10 +10,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-import { Box, Button, Container, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import {
   useDeleteOrganizationByIdMutation,
-  useUpdateOrganizationMutation,
+  useUpdateOrganizationMutation
 } from "../../api/organizationApi";
 import { selectToken } from "../user/login/LoginSlice";
 
@@ -30,9 +30,9 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import CoordinatesMap from "../map/CoordinatesMap";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import CoordinatesMap from "../map/CoordinatesMap";
 
 const columns = [
   { id: "code", label: "organization-code", minWidth: 50 },

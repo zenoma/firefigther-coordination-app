@@ -9,6 +9,6 @@ public interface FireQuadrantLogRepository extends JpaRepository<FireQuadrantLog
 
     FireQuadrantLog findByFireIdAndQuadrantId(Long fireId, Integer quadrantId);
 
-    List<FireQuadrantLog> findByFireIdAndLinkedAtLessThanEqualOrderByLinkedAt(Long fireId, LocalDateTime linkedAt);
+    List<FireQuadrantLog> findByFireIdAndLinkedAtBetweenOrderByLinkedAt(Long fireId, LocalDateTime startDate, LocalDateTime endDate);
 
 }

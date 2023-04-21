@@ -120,6 +120,11 @@ export default function FireDetailsView() {
       >
         {t("fire-details-title")}
       </Typography>
+      {data && (
+        <Typography variant="body" margin={1}>
+          {data.description} ({"#" + fireId})
+        </Typography>
+      )}
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

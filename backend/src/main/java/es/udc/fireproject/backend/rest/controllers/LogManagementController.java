@@ -42,13 +42,15 @@ public class LogManagementController {
 
     public List<FireQuadrantLogDto> findAllFiresLogsByFireIdAndDate(@RequestAttribute Long userId,
                                                                     @PathVariable Long id,
-                                                                    @RequestParam(value = "date", required = true)
-                                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date)
+                                                                    @RequestParam(value = "startDate", required = true)
+                                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                                    @RequestParam(value = "endDate", required = true)
+                                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate)
             throws InstanceNotFoundException {
 
         List<FireQuadrantLogDto> fireQuadrantLogDtos = new ArrayList<>();
 
-        for (FireQuadrantLog fireQuadrantLog : logManagementService.findFiresByFireIdAndLinkedAt(id, date)) {
+        for (FireQuadrantLog fireQuadrantLog : logManagementService.findFiresByFireIdAndLinkedAt(id, startDate, endDate)) {
             fireQuadrantLogDtos.add(FireQuadrantLogConversor.toFireQuadrantLogDto(fireQuadrantLog));
         }
 

@@ -22,7 +22,7 @@ public interface LogManagementService {
 
     List<VehicleQuadrantLog> findAllVehicleQuadrantLogs();
 
-    List<FireQuadrantLog> findFiresByFireIdAndLinkedAt(Long fireId, LocalDateTime date) throws InstanceNotFoundException;
+    List<FireQuadrantLog> findFiresByFireIdAndLinkedAt(Long fireId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException;
 
     List<TeamQuadrantLog> findTeamsByQuadrantIdAndDeployAtBetweenOrderByDeployAt(Integer quadrantId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException;
 

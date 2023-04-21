@@ -78,10 +78,10 @@ public class LogManagementServiceImpl implements LogManagementService {
     }
 
     @Override
-    public List<FireQuadrantLog> findFiresByFireIdAndLinkedAt(Long fireId, LocalDateTime date) throws InstanceNotFoundException {
+    public List<FireQuadrantLog> findFiresByFireIdAndLinkedAt(Long fireId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException {
         Fire fire = fireManagementService.findFireById(fireId);
 
-        return fireQuadrantLogRepository.findByFireIdAndLinkedAtLessThanEqualOrderByLinkedAt(fireId, date);
+        return fireQuadrantLogRepository.findByFireIdAndLinkedAtBetweenOrderByLinkedAt(fireId, startDate, endDate);
     }
 
     @Override

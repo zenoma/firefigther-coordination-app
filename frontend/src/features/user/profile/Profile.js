@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 

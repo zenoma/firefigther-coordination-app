@@ -93,7 +93,7 @@
 
   "fire-list": "Lista de incendios",
   "fire-management": "Gestión incendios",
-  "fire-id": "Id",
+  "fire-id": "Código incendio",
   "fire-description": "Descripción",
   "fire-type": "Clasificación",
   "fire-index": "Nivel",
@@ -109,7 +109,7 @@
   "fire-extinguished-error": "No se ha podido extinguir el incendio",
 
   "quadrant-list": "Lista de cuadrantes",
-  "quadrant-id": "Id",
+  "quadrant-id": "Código cuadrante",
   "quadrant-name": "Nombre",
   "quadrant-map": "Cuadrantes afectados",
   "quadrant-details": "Información del cuadrante",
@@ -117,9 +117,14 @@
   "quadrant-team-retract-dialog": "¿Está seguro de retirar este equipo del cuadrante?",
   "quadrant-vehicles-deployed": "Vehículos desplegados",
   "quadrant-vehicle-retract-dialog": "¿Está seguro de retirar este vehículo del cuadrante?",
-  "quadrant-folla5": "Id hoja 5",
-  "quadrant-fire-id": "Id fuego asociado",
+  "quadrant-folla5": "Código cuadrante hoja 5",
+  "quadrant-fire-id": "Código incendio asociado",
   "quadrant-linked-successfully": "Cuadrante vinculado correctamente",
+
+  "fire-history-title": "Histórico del incendio",
+  "tittle-date-picker": "Selector de rango de fechas",
+  "start-date-picker": "Fecha de inicio",
+  "end-date-picker": "Fecha de fin",
 
   "options": "Opciones",
   "cancel": "Cancelar",
@@ -130,6 +135,7 @@
   "deploy": "Desplegar",
   "create": "Crear",
   "add": "Añadir",
+  "description": "Descripción",
   "rows-per-page": "Filas por página",
   "generic-error": "Oh no, ha ocurrido un error"
 }
