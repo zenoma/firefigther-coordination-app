@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import React, { useEffect } from "react";
 
 import { Card, CardHeader, CardMedia } from "@mui/material";
 import CustomMap from "../map/CustomMap";
@@ -9,15 +9,17 @@ import Notice from "../notice/Notice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useTranslation } from "react-i18next";
-import {
-  useGetQuadrantWithActiveFiresQuery
-} from "../../api/quadrantApi";
+import { useGetQuadrantWithActiveFiresQuery } from "../../api/quadrantApi";
 
 export default function Dashboard() {
   const { t } = useTranslation();
 
+  const { data: quadrants, refetch } = useGetQuadrantWithActiveFiresQuery();
 
-  const { data: quadrants } = useGetQuadrantWithActiveFiresQuery();
+  useEffect(() => {
+    console.log("refetch");
+    refetch();
+  }, [refetch]);
 
   return (
     <Box sx={{ padding: 5 }}>
@@ -41,7 +43,11 @@ export default function Dashboard() {
               }
             />
             <CardMedia>
-              <CustomMap quadrants={quadrants} />
+              {quadrants ? (
+                <CustomMap quadrants={quadrants} />
+              ) : (
+                <Typography variant="body1">{t("loading")}</Typography>
+              )}
             </CardMedia>
           </Card>
         </Grid>

@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -52,6 +52,10 @@ export default function FireDetailsView() {
 
   const [linkFire] = useLinkFireMutation();
   const [extinguishFire] = useExtinguishFireMutation();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const childToParent = (childdata) => {
     setSelectedId(childdata);
