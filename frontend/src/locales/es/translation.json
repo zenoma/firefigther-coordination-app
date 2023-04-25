@@ -120,6 +120,8 @@
   "quadrant-folla5": "Código cuadrante hoja 5",
   "quadrant-fire-id": "Código incendio asociado",
   "quadrant-linked-successfully": "Cuadrante vinculado correctamente",
+  "quadrant-linkedAt": "Fecha comienzo",
+  "quadrant-extinguishedAt": "Fecha extinción",
 
   "fire-history-title": "Histórico del incendio",
   "tittle-date-picker": "Selector de rango de fechas",

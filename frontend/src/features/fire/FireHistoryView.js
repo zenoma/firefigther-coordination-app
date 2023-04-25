@@ -20,12 +20,12 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useGetFireByIdQuery } from "../../api/fireApi";
 import { useGetFireLogsByFireIdQuery } from "../../api/logApi";
 import CustomMap from "../map/CustomMap";
 import { selectToken } from "../user/login/LoginSlice";
 import BackButton from "../utils/BackButton";
-import { toast } from "react-toastify";
 
 export default function FireHistoryView() {
   const token = useSelector(selectToken);
@@ -49,6 +49,7 @@ export default function FireHistoryView() {
     token: token,
     fireId: fireId,
   });
+
   const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload);
 
   const handleStartDateChange = (date) => {
@@ -188,23 +189,44 @@ export default function FireHistoryView() {
                         >
                           {t("quadrant-name")}
                         </TableCell>
+                        <TableCell
+                          sx={{ color: "secondary.light" }}
+                          align="right"
+                        >
+                          {t("quadrant-linkedAt")}
+                        </TableCell>
+                        <TableCell
+                          sx={{ color: "secondary.light" }}
+                          align="right"
+                        >
+                          {t("quadrant-extinguishedAt")}
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {quadrants.map((row) => (
-                        <TableRow
-                          key={row.id}
-                          hover
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            {row.id}
-                          </TableCell>
-                          <TableCell align="right">{row.nombre}</TableCell>
-                        </TableRow>
-                      ))}
+                      {fireLogs &&
+                        fireLogs.map((row) => (
+                          <TableRow
+                            key={row.quadrantInfoDto.id}
+                            hover
+                            sx={{
+                              "&:last-child td, &:last-child th": {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell component="th" scope="row">
+                              {row.quadrantInfoDto.id}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.quadrantInfoDto.nombre}
+                            </TableCell>
+                            <TableCell align="right">{row.linkedAt}</TableCell>
+                            <TableCell align="right">
+                              {row.extinguishedAt}
+                            </TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                   </Table>
                 </TableContainer>
