@@ -111,6 +111,7 @@ export default function FireDetailsView() {
   };
 
   const handleEditClick = () => {
+    //TODO:
     console.log("edit");
   };
 
@@ -125,7 +126,7 @@ export default function FireDetailsView() {
         {t("fire-details-title")}
       </Typography>
       {data && (
-        <Typography variant="body" margin={1}>
+        <Typography variant="h6" margin={1}>
           {data.description} ({"#" + fireId})
         </Typography>
       )}

@@ -152,7 +152,6 @@ export default function FireDataGrid() {
   };
 
   const handleClick = () => {
-    console.log("create");
     const payload = {
       token: token,
       description: description,

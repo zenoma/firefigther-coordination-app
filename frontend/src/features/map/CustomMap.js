@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, NavigationControl, Source } from "react-map-gl";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
+import { selectToken } from "../user/login/LoginSlice";
 
 const MAPBOX_ACCESS_TOKEN =
   "pk.eyJ1IjoiemVub21hIiwiYSI6ImNrdnM2eWdjNDRrZHcyb3E1NzBtbnlpaHYifQ.9lnCH-vo6CB38AsRXw_aZQ";
@@ -22,15 +25,14 @@ const INITIAL_VIEW_STATE = {
 
 // DeckGL react component
 export default function CustomMap(props) {
+  const token = useSelector(selectToken);
+  const navigate = useNavigate();
+
   const quadrants = props.quadrants;
   const mapRef = useRef(null); // Crear la referencia usando useRef
+  const [interactiveLayerIds, setInteractiveLayerIds] = useState([]);
 
   const [cursor] = useState("auto");
-  // const [mouseCoords, setMouseCoords] = useState({
-  //   lng: 0,
-  //   lat: 0,
-  // });
-
   const [settings] = useState({
     minZoom: 7,
     maxZoom: 15,
@@ -39,6 +41,21 @@ export default function CustomMap(props) {
     [-10.353521, 40.958984], // northeastern corner of the bounds
     [-4.615985, 44.50585], // southwestern corner of the bounds
   ];
+
+  const location = useLocation();
+  const isFireDetails = location.pathname === "/fire-details";
+
+  const handleClick = (event) => {
+    const feature = event.features && event.features[0];
+    if (isFireDetails && feature && token) {
+      navigate("/quadrant", {
+        state: {
+          quadrantId: feature.layer.id,
+          quadrantName: feature.layer.name,
+        },
+      });
+    }
+  };
 
   return (
     <Map
@@ -50,11 +67,11 @@ export default function CustomMap(props) {
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
       //FIXME: Change on click to navigate to a new detailed view
       // onClick={(e) => setMouseCoords(e.lngLat)}
-      onClick={(e) => console.log(e.features)}
+      onClick={(e) => handleClick(e)}
       cursor={cursor}
       maxBounds={bounds}
       //FIXME:To make layers interactive
-      // interactiveLayerIds={["1364"]}
+      interactiveLayerIds={interactiveLayerIds}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
         <NavigationControl />
@@ -62,6 +79,12 @@ export default function CustomMap(props) {
 
       {quadrants &&
         quadrants.map((item, index) => {
+          if (!interactiveLayerIds.includes(item.id.toString())) {
+            setInteractiveLayerIds([
+              ...interactiveLayerIds,
+              item.id.toString(),
+            ]);
+          }
           const coord = item.coordinates.map((item, index) => {
             return [
               untransformCoordinates(item.x, item.y).longitude,
@@ -137,7 +160,7 @@ export default function CustomMap(props) {
           };
 
           const quadrantLayerStyle = {
-            id: item.id.toString() + "-layer",
+            id: item.id.toString(),
             type: "fill",
             layout: {},
             paint: {
@@ -193,27 +216,3 @@ export default function CustomMap(props) {
 CustomMap.propTypes = {
   quadrants: PropTypes.array.isRequired,
 };
-
-{
-  /* FIXME: Move weather info to layer view */
-}
-{
-  /* <Marker
-        latitude={mouseCoords.lat}
-        longitude={mouseCoords.lng}
-        anchor="bottom"
-        onClick={(e) => console.log(e)}
-      >
-        <Paper sx={{ backgroundColor: "black", opacity: 0.6, padding: "5px" }}>
-          <Typography variant="body" color="white" sx={{ display: "block" }}>
-            Name:
-          </Typography>
-          <Typography variant="body" color="white" sx={{ display: "block" }}>
-            Coords:
-          </Typography>
-          <Typography variant="body" color="white" sx={{ display: "block" }}>
-            Temp stats:
-          </Typography>
-        </Paper>
-      </Marker> */
-}

@@ -103,7 +103,7 @@ export default function FireHistoryView() {
         {t("fire-history-title")}
       </Typography>
       {fireData && (
-        <Typography variant="body" margin={1}>
+        <Typography variant="h6" margin={1}>
           {fireData.description} ({"#" + fireId})
         </Typography>
       )}

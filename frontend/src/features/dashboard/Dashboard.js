@@ -17,7 +17,6 @@ export default function Dashboard() {
   const { data: quadrants, refetch } = useGetQuadrantWithActiveFiresQuery();
 
   useEffect(() => {
-    console.log("refetch");
     refetch();
   }, [refetch]);
 
