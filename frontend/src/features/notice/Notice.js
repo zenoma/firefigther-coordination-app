@@ -37,7 +37,7 @@ export default function Notice() {
 
     createNotice(payload).unwrap();
     setBody("");
-    toast.info("Notice created");
+    toast.info("notice-created-sucessfully");
   };
 
   return (

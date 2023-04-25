@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 import PageNotFound from "./errors/PageNotFound";
+import TeamNotFound from "./errors/TeamNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
 import CustomDrawer from "./features/drawer/CustomDrawer";
 import MyNoticesList from "./features/notice/MyNoticesList";

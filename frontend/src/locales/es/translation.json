@@ -58,6 +58,8 @@
   "team-deployed-no-selected": "Debe seleccionar un equipo para desplegar",
   "team-retracted-successfully": "Equipo retirado correctamente",
   "team-retracted-error": "No se ha podido retirado el equipo",
+  "my-team-not-found-tittle": "Todavía no perteneces aún equipo",
+  "my-team-not-found-body": "Habla con algún administrador para que se te asigne correctamente a un equipo.",
 
   "firstName": "Nombre",
   "lastName": "Apellido",
