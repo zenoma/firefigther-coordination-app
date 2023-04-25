@@ -35,11 +35,12 @@ import {
 const columns = [
   { id: "vehiclePlate", label: "vehicle-plate", minWidth: 150 },
   { id: "type", label: "type", minWidth: 150 },
+  { id: "createdAt", label: "created-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, vehiclePlate, type) {
-  return { id, vehiclePlate, type };
+function createData(id, vehiclePlate, type, createdAt) {
+  return { id, vehiclePlate, type, createdAt };
 }
 
 export default function VehicleTable(props) {
@@ -143,7 +144,7 @@ export default function VehicleTable(props) {
   if (vehicles) {
     rows = [];
     vehicles.forEach((item, index) => {
-      rows.push(createData(item.id, item.vehiclePlate, item.type));
+      rows.push(createData(item.id, item.vehiclePlate, item.type, item.createdAt));
     });
   }
 

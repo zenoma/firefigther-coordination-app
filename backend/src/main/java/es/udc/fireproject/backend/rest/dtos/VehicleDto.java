@@ -35,12 +35,14 @@ public class VehicleDto extends BaseDto {
         this.dismantleAt = dismantleAt;
     }
 
-    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization) {
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, LocalDateTime deployAt, LocalDateTime dismantleAt) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;
         this.type = type;
         this.createdAt = createdAt;
         this.organization = organization;
+        this.deployAt = deployAt;
+        this.dismantleAt = dismantleAt;
     }
 
     public Long getId() {

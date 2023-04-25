@@ -53,7 +53,8 @@ public class TeamConversor {
                 team.getCode(),
                 team.getCreatedAt(),
                 OrganizationConversor.toOrganizationDto(team.getOrganization()),
-                userDtoList);
+                userDtoList,
+                team.getDeployAt(), team.getDismantleAt());
 
     }
 }

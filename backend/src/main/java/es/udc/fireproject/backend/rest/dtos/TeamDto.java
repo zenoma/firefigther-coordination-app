@@ -21,6 +21,7 @@ public class TeamDto extends BaseDto {
     private String code;
 
     @NotBlank(groups = {TeamDto.AllValidations.class})
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @JsonProperty("organization")
@@ -54,12 +55,15 @@ public class TeamDto extends BaseDto {
         this.dismantleAt = dismantleAt;
     }
 
-    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList) {
+    public TeamDto(Long id, String code, LocalDateTime createdAt, OrganizationDto organizationDto, List<UserDto> userDtoList, LocalDateTime deployAt,
+                   LocalDateTime dismantleAt) {
         this.id = id;
         this.code = code;
         this.createdAt = createdAt;
         this.organizationDto = organizationDto;
         this.userDtoList = userDtoList;
+        this.deployAt = deployAt;
+        this.dismantleAt = dismantleAt;
     }
 
 

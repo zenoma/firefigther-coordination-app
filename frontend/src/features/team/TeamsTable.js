@@ -35,11 +35,12 @@ import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "code", label: "team-code", minWidth: 150 },
+  { id: "createdAt", label: "created-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, code) {
-  return { id, code };
+function createData(id, code, createdAt) {
+  return { id, code, createdAt };
 }
 
 export default function TeamsTable(props) {
@@ -138,7 +139,7 @@ export default function TeamsTable(props) {
   if (teams) {
     rows = [];
     teams.forEach((item, index) => {
-      rows.push(createData(item.id, item.code));
+      rows.push(createData(item.id, item.code, item.createdAt));
     });
   }
 

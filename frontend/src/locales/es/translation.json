@@ -135,6 +135,8 @@
   "deploy": "Desplegar",
   "create": "Crear",
   "add": "Añadir",
+  "created-at": "Fecha de creación",
+  "deploy-at": "Fecha de despliegue",
   "description": "Descripción",
   "rows-per-page": "Filas por página",
   "generic-error": "Oh no, ha ocurrido un error"
