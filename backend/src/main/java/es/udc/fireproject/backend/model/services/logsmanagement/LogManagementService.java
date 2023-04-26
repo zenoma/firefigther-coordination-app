@@ -1,8 +1,10 @@
 package es.udc.fireproject.backend.model.services.logsmanagement;
 
 import es.udc.fireproject.backend.model.entities.logs.FireQuadrantLog;
+import es.udc.fireproject.backend.model.entities.logs.GlobalStatistics;
 import es.udc.fireproject.backend.model.entities.logs.TeamQuadrantLog;
 import es.udc.fireproject.backend.model.entities.logs.VehicleQuadrantLog;
+import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 
 import java.time.LocalDateTime;
@@ -27,4 +29,6 @@ public interface LogManagementService {
     List<TeamQuadrantLog> findTeamsByQuadrantIdAndDeployAtBetweenOrderByDeployAt(Integer quadrantId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException;
 
     List<VehicleQuadrantLog> findVehiclesByQuadrantIdAndDeployAtBetweenOrderByDeployAt(Integer quadrantId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException;
+
+    GlobalStatistics getGlobalStatisticsByFireId(Long fireId) throws InstanceNotFoundException, ExtinguishedFireException;
 }

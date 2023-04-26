@@ -1,10 +1,13 @@
 package es.udc.fireproject.backend.model.services.logsmanagement;
 
 import es.udc.fireproject.backend.model.entities.fire.Fire;
+import es.udc.fireproject.backend.model.entities.fire.FireIndex;
 import es.udc.fireproject.backend.model.entities.logs.*;
 import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
+import es.udc.fireproject.backend.model.entities.quadrant.QuadrantRepository;
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
+import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementServiceImpl;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementServiceImpl;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +34,9 @@ public class LogManagementServiceImpl implements LogManagementService {
     FireManagementServiceImpl fireManagementService;
     @Autowired
     PersonalManagementServiceImpl personalManagementService;
+
+    @Autowired
+    private QuadrantRepository quadrantRepository;
 
 
     @Override
@@ -96,6 +103,38 @@ public class LogManagementServiceImpl implements LogManagementService {
         Quadrant quadrant = fireManagementService.findQuadrantById(quadrantId);
 
         return vehicleQuadrantLogRepository.findByQuadrantIdAndDeployAtBetweenOrderByDeployAt(quadrantId, startDate, endDate);
+    }
+
+    @Override
+    public GlobalStatistics getGlobalStatisticsByFireId(Long fireId) throws InstanceNotFoundException, ExtinguishedFireException {
+        Fire fire = fireManagementService.findFireById(fireId);
+
+        if (fire.getFireIndex() != FireIndex.EXTINGUISHED) {
+            throw new ExtinguishedFireException(fireId, " must be extinguished");
+
+        }
+
+        List<Integer> quadrantsGidList = fireQuadrantLogRepository.findQuadrantIdsByFireId(fireId);
+        Integer affectedQuadrants = quadrantsGidList.size();
+
+        List<Long> teamsMobilized = new ArrayList<>();
+
+        for (Integer quadrantId : quadrantsGidList) {
+            List<Long> teamsIdList = teamQuadrantLogRepository.findTeamsIdsByQuadrantsGid(quadrantId);
+            teamsMobilized.addAll(teamsIdList);
+        }
+
+        List<Long> vehiclesMobilized = new ArrayList<>();
+
+        for (Integer quadrantId : quadrantsGidList) {
+            List<Long> vehiclesIdList = vehicleQuadrantLogRepository.findVehiclesIdsByQuadrantsGid(quadrantId);
+            vehiclesMobilized.addAll(vehiclesIdList);
+        }
+
+        Double maxBurnedHectares = maxBurnedHectares = quadrantsGidList.isEmpty() ? 0 : quadrantRepository.findHectaresByQuadrantIds(quadrantsGidList);
+
+
+        return new GlobalStatistics(teamsMobilized.size(), vehiclesMobilized.size(), maxBurnedHectares, affectedQuadrants);
     }
 
 }

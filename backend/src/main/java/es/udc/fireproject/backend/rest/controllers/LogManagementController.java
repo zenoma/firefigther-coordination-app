@@ -3,12 +3,15 @@ package es.udc.fireproject.backend.rest.controllers;
 import es.udc.fireproject.backend.model.entities.logs.FireQuadrantLog;
 import es.udc.fireproject.backend.model.entities.logs.TeamQuadrantLog;
 import es.udc.fireproject.backend.model.entities.logs.VehicleQuadrantLog;
+import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.fireproject.backend.model.services.logsmanagement.LogManagementService;
 import es.udc.fireproject.backend.rest.dtos.FireQuadrantLogDto;
+import es.udc.fireproject.backend.rest.dtos.GlobalStatisticsDto;
 import es.udc.fireproject.backend.rest.dtos.TeamQuadrantLogDto;
 import es.udc.fireproject.backend.rest.dtos.VehicleQuadrantLogDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.FireQuadrantLogConversor;
+import es.udc.fireproject.backend.rest.dtos.conversors.GlobalStatisticsConversor;
 import es.udc.fireproject.backend.rest.dtos.conversors.TeamQuadrantLogConversor;
 import es.udc.fireproject.backend.rest.dtos.conversors.VehicleQuadrantLogConversor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +97,15 @@ public class LogManagementController {
 
         return vehicleQuadrantLogDtos;
     }
+
+    @GetMapping("/statistics")
+    public GlobalStatisticsDto getGlobalStatistics(@RequestAttribute Long userId,
+                                                   @RequestParam(value = "fireId", required = true) Long fireId)
+            throws InstanceNotFoundException, ExtinguishedFireException {
+
+        return GlobalStatisticsConversor.toGlobalStatisticsDto(
+                logManagementService.getGlobalStatisticsByFireId(fireId));
+    }
+
 
 }
