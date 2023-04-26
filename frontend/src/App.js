@@ -34,6 +34,7 @@ import FireManagementView from "./features/fire/FireManagementView";
 import FireDetailsView from "./features/fire/FireDetailsView";
 import QuadrantView from "./features/quadrant/QuadrantView";
 import FireHistoryView from "./features/fire/FireHistoryView";
+import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
 
 function App({ t }) {
   const dispatch = useDispatch();
@@ -97,8 +98,9 @@ function App({ t }) {
             <Route path="/my-notices" element={<MyNoticesList />} />{" "}
             <Route path="/fire-management" element={<FireManagementView />} />
             <Route path="/fire-details/" element={<FireDetailsView />} />
-            <Route path="/fire-history" element={<FireHistoryView />} />
             <Route path="/quadrant" element={<QuadrantView />} />
+            <Route path="/quadrant-history" element={<QuadrantHistoryView />} />
+            <Route path="/fire-history" element={<FireHistoryView />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

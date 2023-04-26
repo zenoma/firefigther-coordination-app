@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 
@@ -19,7 +20,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGetFireByIdQuery } from "../../api/fireApi";
 import { useGetFireLogsByFireIdQuery } from "../../api/logApi";
@@ -30,6 +31,7 @@ import BackButton from "../utils/BackButton";
 export default function FireHistoryView() {
   const token = useSelector(selectToken);
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [quadrants, setQuadrants] = useState([]);
@@ -38,6 +40,18 @@ export default function FireHistoryView() {
 
   const fireId = location.state.fireId;
 
+  const { data: fireData } = useGetFireByIdQuery({
+    token: token,
+    fireId: fireId,
+  });
+
+  useEffect(() => {
+    if (fireData) {
+      setSelectedStartDate(dayjs(fireData.createdAt, "DD-MM-YYYY HH:mm:ss"));
+      setSelectedEndDate(dayjs(fireData.extinguishedAt, "DD-MM-YYYY HH:mm:ss"));
+    }
+  }, [fireData]);
+
   const payload = {
     token: token,
     fireId: fireId,
@@ -45,12 +59,15 @@ export default function FireHistoryView() {
     endDate: dayjs(selectedEndDate).format("YYYY-MM-DDTHH:mm:ss"),
   };
 
-  const { data: fireData } = useGetFireByIdQuery({
-    token: token,
-    fireId: fireId,
+  const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload, {
+    refetchOnMountOrArgChange: true,
   });
-
-  const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload);
+  useEffect(() => {
+    if (fireData) {
+      setSelectedStartDate(dayjs(fireData.createdAt, "DD-MM-YYYY HH:mm:ss"));
+      setSelectedEndDate(dayjs(fireData.extinguishedAt, "DD-MM-YYYY HH:mm:ss"));
+    }
+  }, [fireData]);
 
   const handleStartDateChange = (date) => {
     const oldDate = selectedStartDate;
@@ -69,13 +86,6 @@ export default function FireHistoryView() {
     }
     setSelectedEndDate(date);
   };
-
-  useEffect(() => {
-    if (fireData) {
-      setSelectedStartDate(dayjs(fireData.createdAt, "DD-MM-YYYY HH:mm:ss"));
-      setSelectedEndDate(dayjs(fireData.extinguishedAt, "DD-MM-YYYY HH:mm:ss"));
-    }
-  }, [fireData]);
 
   useEffect(() => {
     function getQuadrants() {
@@ -151,6 +161,7 @@ export default function FireHistoryView() {
                       label={t("start-date-picker")}
                       value={selectedStartDate}
                       onChange={handleStartDateChange}
+                      format="DD-MM-YYYY HH:mm"
                     />
                   </LocalizationProvider>
                 </Box>
@@ -168,6 +179,7 @@ export default function FireHistoryView() {
                       label={t("end-date-picker")}
                       value={selectedEndDate}
                       onChange={handleEndDateChange}
+                      format="DD-MM-YYYY HH:mm"
                     />
                   </LocalizationProvider>
                 </Box>
@@ -209,6 +221,15 @@ export default function FireHistoryView() {
                           <TableRow
                             key={row.quadrantInfoDto.id}
                             hover
+                            onClick={() =>
+                              navigate("/quadrant-history", {
+                                state: {
+                                  quadrantId: row.quadrantInfoDto.id,
+                                  startDate: row.linkedAt,
+                                  endDate: row.extinguishedAt,
+                                },
+                              })
+                            }
                             sx={{
                               "&:last-child td, &:last-child th": {
                                 border: 0,

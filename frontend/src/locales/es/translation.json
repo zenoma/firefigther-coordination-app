@@ -124,6 +124,7 @@
   "quadrant-linked-successfully": "Cuadrante vinculado correctamente",
   "quadrant-linkedAt": "Fecha comienzo",
   "quadrant-extinguishedAt": "Fecha extinción",
+  "quadrant-history-details": "Histórico del cuadrante",
 
   "fire-history-title": "Histórico del incendio",
   "tittle-date-picker": "Selector de rango de fechas",
@@ -141,6 +142,7 @@
   "add": "Añadir",
   "created-at": "Fecha de creación",
   "deploy-at": "Fecha de despliegue",
+  "retract-at": "Fecha de retirada",
   "description": "Descripción",
   "rows-per-page": "Filas por página",
   "generic-error": "Oh no, ha ocurrido un error"

@@ -65,12 +65,9 @@ export default function CustomMap(props) {
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
-      //FIXME: Change on click to navigate to a new detailed view
-      // onClick={(e) => setMouseCoords(e.lngLat)}
       onClick={(e) => handleClick(e)}
       cursor={cursor}
       maxBounds={bounds}
-      //FIXME:To make layers interactive
       interactiveLayerIds={interactiveLayerIds}
     >
       <div style={{ position: "absolute", zIndex: 1 }}>
