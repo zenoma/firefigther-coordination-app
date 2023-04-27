@@ -111,7 +111,7 @@ public class LogManagementServiceImpl implements LogManagementService {
     public GlobalStatistics getGlobalStatisticsByFireId(Long fireId) throws InstanceNotFoundException, ExtinguishedFireException {
         Fire fire = fireManagementService.findFireById(fireId);
 
-        if (fire.getFireIndex() != FireIndex.EXTINGUISHED) {
+        if (fire.getFireIndex() != FireIndex.EXTINGUIDO) {
             throw new ExtinguishedFireException(fireId, " must be extinguished");
 
         }

@@ -6,18 +6,24 @@ import {
   DialogContent,
   DialogTitle,
   Fab,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
+import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -27,12 +33,16 @@ import {
   useExtinguishFireMutation,
   useExtinguishQuadrantByFireIdMutation,
   useGetFireByIdQuery,
+  useUpdateFireMutation,
 } from "../../api/fireApi";
 import { useLinkFireMutation } from "../../api/quadrantApi";
 import CustomMap from "../map/CustomMap";
 import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
-import BackButton from "../utils/BackButton"; import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
+import BackButton from "../utils/BackButton";
+
+const fireIndexSelector = ["CERO", "UNO", "DOS", "TRES"];
+
 
 export default function FireDetailsView() {
   const token = useSelector(selectToken);
@@ -46,6 +56,12 @@ export default function FireDetailsView() {
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(true);
   const [quadrantId, setQuadrantId] = useState(true);
+
+  const [description, setDescription] = useState();
+  const [type, setType] = useState();
+  const [fireIndex, setFireIndex] = useState();
+
+  const [openEdit, setOpenEdit] = useState(false);
   const [openQuadrantExtinguish, setOpenQuadrantExtinguish] = useState(false);
   const [openExtinguish, setOpenExtinguish] = useState(false);
 
@@ -114,10 +130,58 @@ export default function FireDetailsView() {
       .catch((error) => toast.error(t("fire-extinguished-error")));
   };
 
-  const handleEditClick = () => {
-    //TODO:
-    console.log("edit");
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
+
+  const handleClickOpenEdit = (data) => {
+    //FIXME: Set data.
+    setDescription(data.description);
+    setType(data.type);
+    setFireIndex(data.fireIndex);
+    setOpenEdit(true);
+  };
+
+  const [updateFire] = useUpdateFireMutation();
+
+  const handleEditClick = () => {
+    const payload = {
+      fireId: fireId,
+      token: token,
+      description: description,
+      type: type,
+      fireIndex: fireIndex,
+    };
+
+    updateFire(payload)
+      .unwrap()
+      .then((payload) => {
+        toast.success(t("fire-updated-successfully"));
+      })
+      .catch((error) => toast.error(t("fire-updated-error")));
+
+    refetch();
+    handleCloseEdit();
+  };
+
+  const handleChange = (event) => {
+    var id = event.target.id;
+    var value = event.target.value;
+
+    switch (id) {
+      case "description":
+        setDescription(value);
+        break;
+      case "type":
+        setType(value);
+        break;
+      default:
+        setFireIndex(value);
+        break;
+    }
+  };
+
 
   const handleExtinguishQuadrantOpenClick = (quadrantId) => {
     setQuadrantId(quadrantId);
@@ -272,7 +336,7 @@ export default function FireDetailsView() {
                 fullWidth
                 variant="contained"
                 sx={{ margin: "5px" }}
-                onClick={() => handleEditClick()}
+                onClick={() => handleClickOpenEdit(data)}
               >
                 {t("edit")}
               </Button>
@@ -352,6 +416,76 @@ export default function FireDetailsView() {
           <Button onClick={handleClose}>{t("cancel")}</Button>
           <Button autoFocus variant="contained" onClick={() => handleClick()}>
             {t("add")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog maxWidth={"md"} open={openEdit}>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("fire-updated-title")}</DialogTitle>
+        <DialogContent>
+          <FormControl>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  id="description"
+                  label={t("fire-description")}
+                  type="text"
+                  autoComplete="current-code"
+                  margin="normal"
+                  value={description}
+                  onChange={(e) => handleChange(e)}
+                  variant="standard"
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="type"
+                  label={t("fire-type")}
+                  type="text"
+                  autoComplete="current-code"
+                  margin="normal"
+                  value={type}
+                  onChange={(e) => handleChange(e)}
+                  variant="standard"
+                  required
+                  sx={{ display: "flex" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth >
+                  <InputLabel id="input-label-id" >
+                    {t("fire-fireIndex")}
+                  </InputLabel>
+                  <Select
+                    id="fireIndex"
+                    label={t("fire-fireIndex")}
+                    value={fireIndex}
+                    onChange={(e) => handleChange(e)}
+                    required 
+                    sx={{ margin: 2 }}
+                  >
+                    {fireIndexSelector.map((item, index) => (
+                      <MenuItem key={index} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl >
+              </Grid>
+
+            </Grid>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEdit}>{t("cancel")}</Button>
+          <Button
+            autoFocus
+            variant="contained"
+            onClick={(e) => handleEditClick(e)}
+          >
+            {t("edit")}
           </Button>
         </DialogActions>
       </Dialog>

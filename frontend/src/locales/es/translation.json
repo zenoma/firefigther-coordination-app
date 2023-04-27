@@ -116,6 +116,10 @@
   "fire-extinguish-text": "Se desvincularán los cuadrantes afectados, se liberarán los equipos y los vehículos de dichos cuadrantes y se marcará el incendio como extinguido.",
   "fire-extinguished-successfully": "Incendio extinguido correctamente",
   "fire-extinguished-error": "No se ha podido extinguir el incendio",
+  "fire-updated-title": "Actualizar incendio",
+  "fire-fireIndex": "Nivel del incendio",
+  "fire-updated-successfully": "Incendio actualizado correctamente",
+  "fire-updated-error": "No se ha podido actualizar el incendio",
 
   "quadrant-list": "Lista de cuadrantes",
   "quadrant-id": "Código cuadrante",

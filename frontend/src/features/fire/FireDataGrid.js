@@ -224,14 +224,14 @@ export default function FireDataGrid() {
             pagination
             localeText={localeText}
             getRowClassName={(params) => {
-              if (params.row.fireIndex === "EXTINGUISHED") {
+              if (params.row.fireIndex === "EXTINGUIDO") {
                 return "disabled";
               } else {
                 return "active";
               }
             }}
             onRowClick={(e) =>
-              e.row.fireIndex === "EXTINGUISHED"
+              e.row.fireIndex === "EXTINGUIDO"
                 ? handleDisabledRowClick(e.row)
                 : handleRowClick(e.row)
             }

@@ -105,7 +105,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     public Fire createFire(String description, String type, FireIndex fireIndex) {
         Fire fire = new Fire(description, type, fireIndex);
         fire.setCreatedAt((LocalDateTime.now()));
-        fire.setFireIndex(FireIndex.ZERO);
+        fire.setFireIndex(FireIndex.CERO);
 
         ConstraintValidator.validate(fire);
 
@@ -117,11 +117,11 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
-        if (fire.getFireIndex() == FireIndex.EXTINGUISHED) {
+        if (fire.getFireIndex() == FireIndex.EXTINGUIDO) {
             throw new ExtinguishedFireException(id, "already extinguished");
         }
 
-        fire.setFireIndex(FireIndex.EXTINGUISHED);
+        fire.setFireIndex(FireIndex.EXTINGUIDO);
         fire.setExtinguishedAt(LocalDateTime.now());
 
         List<Quadrant> quadrants = quadrantRepository.findByFireId(id);
@@ -148,7 +148,7 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
-        if (fire.getFireIndex() == FireIndex.EXTINGUISHED) {
+        if (fire.getFireIndex() == FireIndex.EXTINGUIDO) {
             throw new ExtinguishedFireException(id, "already extinguished");
         }
 
@@ -179,11 +179,11 @@ public class FireManagementServiceImpl implements FireManagementService {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
-        if (fireIndex == FireIndex.EXTINGUISHED) {
+        if (fireIndex == FireIndex.EXTINGUIDO) {
             throw new ExtinguishedFireException(id, ": fireIndex can not be update to EXTINGUISHED");
         }
 
-        if (fire.getFireIndex() != FireIndex.EXTINGUISHED) {
+        if (fire.getFireIndex() != FireIndex.EXTINGUIDO) {
             fire.setDescription(description);
             fire.setType(type);
             fire.setFireIndex(fireIndex);

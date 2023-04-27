@@ -158,7 +158,6 @@ export default function OrganizationCreateDialog(props) {
                     label={t("organization-type-name")}
                     value={organizationTypeId}
                     onChange={(e) => handleChange(e)}
-                    variant="standard"
                     required
                   >
                     {organizationTypesList.map((item, index) => (
