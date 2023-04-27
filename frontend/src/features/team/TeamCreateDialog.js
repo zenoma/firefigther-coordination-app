@@ -64,7 +64,7 @@ export default function TeamCreateDialog(props) {
       .catch((error) => toast.error(t("team-created-error")));
   };
 
-  useEffect(() => {}, [open]);
+  useEffect(() => { }, [open]);
 
   return (
     <div>
@@ -74,7 +74,7 @@ export default function TeamCreateDialog(props) {
         </Fab>
       </Box>
       <Dialog maxWidth={"md"} open={open} onClose={handleClose}>
-        <DialogTitle>{t("team-created-title")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("team-created-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -87,7 +87,7 @@ export default function TeamCreateDialog(props) {
                   margin="normal"
                   value={code}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

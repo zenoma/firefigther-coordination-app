@@ -36,6 +36,9 @@
   "organization-details-name": "Nombre de la organización",
   "organization-type-name": "Tipo de organización",
   "organization-address": "Dirección de la organización",
+  "organization-create-new": "Crear nueva organización",
+  "organization-deleted-dialog": "¿Está seguro de eliminar esta organización?",
+  "organization-edit": "Editar organizacion",
 
   "teams-list": "Lista de equipos",
   "team-details": "Detalles de equipo",
@@ -125,11 +128,18 @@
   "quadrant-linkedAt": "Fecha comienzo",
   "quadrant-extinguishedAt": "Fecha extinción",
   "quadrant-history-details": "Histórico del cuadrante",
+  "quadrant-add-title": "Añadir nuevo cuadrante",
 
   "fire-history-title": "Histórico del incendio",
   "tittle-date-picker": "Selector de rango de fechas",
   "start-date-picker": "Fecha de inicio",
   "end-date-picker": "Fecha de fin",
+
+  "global-statistics": "Estadísticas globales",
+  "teams-mobilized": "Equipos movilizados",
+  "vehicles-mobilized": "Vehículos movilizados",
+  "affected-quadrants": "Cuadrantes afectados",
+  "max-burned-hectares": "Hectáreas quemadas",
 
   "options": "Opciones",
   "cancel": "Cancelar",
@@ -145,5 +155,6 @@
   "retract-at": "Fecha de retirada",
   "description": "Descripción",
   "rows-per-page": "Filas por página",
-  "generic-error": "Oh no, ha ocurrido un error"
+  "generic-error": "Oh no, ha ocurrido un error",
+  "loading": "Cargando"
 }

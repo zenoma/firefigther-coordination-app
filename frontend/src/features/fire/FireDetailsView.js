@@ -144,7 +144,7 @@ export default function FireDetailsView() {
             variant="outlined"
           >
             <Typography variant="h6">{t("quadrant-map")}</Typography>
-            {data && <CustomMap quadrants={data.quadrants} />}
+            {data && <Box sx={{ height: 450 }}><CustomMap quadrants={data.quadrants} /></Box>}
           </Paper>
         </Grid>
         <Grid item xs={4} sm={8} md={3}>
@@ -247,7 +247,7 @@ export default function FireDetailsView() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
                   {t("fire-extinguish-dialog")}
                 </DialogTitle>
                 <DialogContent>
@@ -272,7 +272,7 @@ export default function FireDetailsView() {
       </Grid>
 
       <Dialog open={open} fullWidth maxWidth="md">
-        <DialogTitle>{t("fire-create-title")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("quadrant-add-title")} </DialogTitle>
         <DialogContent>
           <QuadrantDataGrid childToParent={childToParent} />
         </DialogContent>

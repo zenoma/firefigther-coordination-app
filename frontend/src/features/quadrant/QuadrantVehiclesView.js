@@ -115,7 +115,7 @@ export default function QuadrantVehiclesView(props) {
           </Fab>
         </Box>
         <Dialog fullWidth open={open} onClose={handleClose}>
-          <DialogTitle>{t("vehicle-deploy-title")} </DialogTitle>
+          <DialogTitle sx={{ color: "primary.light" }}>{t("vehicle-deploy-title")} </DialogTitle>
           <DialogContent>
             <VehicleDataGrid childToParent={childToParent} />
           </DialogContent>

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 import PageNotFound from "./errors/PageNotFound";
-import TeamNotFound from "./errors/TeamNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
 import CustomDrawer from "./features/drawer/CustomDrawer";
 import MyNoticesList from "./features/notice/MyNoticesList";
@@ -18,8 +17,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme/theme";
 
 import "react-toastify/dist/ReactToastify.css";
-import { useLoginFromTokenMutation } from "./api/userApi";
 import "./App.css";
+import { useLoginFromTokenMutation } from "./api/userApi";
 import MyTeamView from "./features/team/MyTeamView";
 import {
   selectToken,
@@ -28,15 +27,16 @@ import {
 } from "./features/user/login/LoginSlice";
 
 import { withTranslation } from "react-i18next";
-import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
-import TeamView from "./features/team/TeamView";
-import FireManagementView from "./features/fire/FireManagementView";
 import FireDetailsView from "./features/fire/FireDetailsView";
-import QuadrantView from "./features/quadrant/QuadrantView";
 import FireHistoryView from "./features/fire/FireHistoryView";
+import FireManagementView from "./features/fire/FireManagementView";
 import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
+import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
+import QuadrantView from "./features/quadrant/QuadrantView";
+import TeamView from "./features/team/TeamView";
 
 function App({ t }) {
+
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
   const [token, setToken] = useState("");

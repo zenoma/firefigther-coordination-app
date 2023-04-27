@@ -215,7 +215,7 @@ export default function TeamItem(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
+              <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
                 {t("user-deleted-dialog")}
               </DialogTitle>
               <DialogActions>

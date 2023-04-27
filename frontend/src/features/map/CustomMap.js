@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, NavigationControl, Source } from "react-map-gl";
@@ -8,35 +8,34 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
 import { selectToken } from "../user/login/LoginSlice";
 
-const MAPBOX_ACCESS_TOKEN =
-  "pk.eyJ1IjoiemVub21hIiwiYSI6ImNrdnM2eWdjNDRrZHcyb3E1NzBtbnlpaHYifQ.9lnCH-vo6CB38AsRXw_aZQ";
-
+const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAP_STYLE = "mapbox://styles/zenoma/ckvs7r0750sfc14l559g5i461/draft";
 
-// Viewport settings
-const INITIAL_VIEW_STATE = {
-  longitude: -7.787,
-  latitude: 43.0,
-  zoom: 7,
-  minZoon: 7,
-  pitch: 0,
-  bearing: 0,
-};
-
-// DeckGL react component
 export default function CustomMap(props) {
+
   const token = useSelector(selectToken);
   const navigate = useNavigate();
 
   const quadrants = props.quadrants;
-  const mapRef = useRef(null); // Crear la referencia usando useRef
   const [interactiveLayerIds, setInteractiveLayerIds] = useState([]);
 
   const [cursor] = useState("auto");
-  const [settings] = useState({
-    minZoom: 7,
-    maxZoom: 15,
+
+  // Viewport settings
+  const INITIAL_VIEW_STATE = {
+    longitude: -7.787,
+    latitude: 43.0,
+    zoom: 6,
+    pitch: 0,
+    bearing: 0,
+  };
+
+  const [viewport, setViewport] = useState({
+    width: "100%",
+    height: "100%",
   });
+
+
   const bounds = [
     [-10.353521, 40.958984], // northeastern corner of the bounds
     [-4.615985, 44.50585], // southwestern corner of the bounds
@@ -59,9 +58,10 @@ export default function CustomMap(props) {
 
   return (
     <Map
-      ref={mapRef}
-      style={{ minWidth: "200px", minHeight: "500px" }}
-      {...settings}
+      {...viewport}
+      onViewportChange={setViewport}
+      minZoom={6}
+      maxZoom={15}
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
       mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -96,12 +96,12 @@ export default function CustomMap(props) {
 
           const quadrantLabelStyle = {
             id: item.id.toString() + "-label",
-            minzoom: 11,
+            minzoom: 10,
             type: "symbol",
             source: "label",
             layout: {
               "text-field": "{place-name} #{place-id} ",
-              "text-size": 15,
+              "text-size": 12,
               "text-anchor": "center",
               "text-offset": [0, -2],
             },
@@ -114,7 +114,7 @@ export default function CustomMap(props) {
 
           const vehiclesLabelStyle = {
             id: item.id.toString() + "-vehicle-label",
-            minzoom: 11,
+            minzoom: 10,
             type: "symbol",
             source: "label",
             layout: {
@@ -125,7 +125,7 @@ export default function CustomMap(props) {
               "icon-image": "fire-truck",
               "icon-size": 0.4,
               "icon-anchor": "center",
-              "icon-offset": [0, 70],
+              "icon-offset": [0, 68],
             },
             paint: {
               "text-color": "white",
@@ -136,7 +136,7 @@ export default function CustomMap(props) {
 
           const teamLabelStyle = {
             id: item.id.toString() + "-team-label",
-            minzoom: 11,
+            minzoom: 10,
             type: "symbol",
             source: "label",
             layout: {

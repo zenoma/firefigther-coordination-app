@@ -42,11 +42,13 @@ export default function Dashboard() {
               }
             />
             <CardMedia>
-              {quadrants ? (
-                <CustomMap quadrants={quadrants} />
-              ) : (
-                <Typography variant="body1">{t("loading")}</Typography>
-              )}
+              <Box sx={{ height: 500 }}>
+                {quadrants ? (
+                  <CustomMap quadrants={quadrants} />
+                ) : (
+                  <Typography variant="body1">{t("loading")}</Typography>
+                )}
+              </Box>
             </CardMedia>
           </Card>
         </Grid>

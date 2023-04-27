@@ -76,7 +76,7 @@ export default function TeamUserAdd(props) {
           },
         }}
       >
-        <DialogTitle>{t("team-user-add")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("team-user-add")} </DialogTitle>
         <DialogContent>
           <UserDataGrid childToParent={childToParent} />
         </DialogContent>

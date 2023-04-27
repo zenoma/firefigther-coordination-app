@@ -115,7 +115,7 @@ export default function Login() {
       <form>
         <FormControl>
           <FormLabel>
-            <Typography variant="h5">{t("sign-up-tittle")}</Typography>
+            <Typography variant="h5" sx={{ color: "primary.light" }}>{t("sign-up-tittle")}</Typography>
           </FormLabel>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -127,7 +127,6 @@ export default function Login() {
                 margin="dense"
                 value={firstName}
                 onChange={(e) => handleChange(e)}
-                helperText=" "
                 required
                 variant="standard"
               />
@@ -141,7 +140,6 @@ export default function Login() {
                 margin="dense"
                 value={lastName}
                 onChange={(e) => handleChange(e)}
-                helperText=" "
                 required
                 variant="standard"
               />
@@ -209,7 +207,6 @@ export default function Login() {
                 margin="dense"
                 value={password}
                 onChange={(e) => handleChange(e)}
-                helperText=" "
                 variant="standard"
               />
             </Grid>

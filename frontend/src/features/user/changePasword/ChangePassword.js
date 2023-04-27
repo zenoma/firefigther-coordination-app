@@ -1,17 +1,20 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { selectUser, selectToken } from "../login/LoginSlice";
+import { selectToken, selectUser } from "../login/LoginSlice";
 
-import { Button, TextField, FormControl, FormLabel } from "@mui/material";
+import { Button, FormControl, FormLabel, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useChangePasswordMutation } from "../../../api/userApi";
 
 export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
+
+  const { t } = useTranslation();
 
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
@@ -56,7 +59,7 @@ export default function ChangePassword() {
       <form>
         <FormControl>
           <FormLabel>
-            <Typography variant="h5">Cambiar Contraseña</Typography>
+            <Typography variant="h5" sx={{ color: "primary.light" }}>{t("change-password")}</Typography>
           </FormLabel>
           <TextField
             id="old-password"
@@ -64,6 +67,7 @@ export default function ChangePassword() {
             type="password"
             margin="normal"
             autoComplete="current-password"
+            variant="standard"
             value={oldPassword}
             onChange={(e) => handleChange(e)}
           />
@@ -72,6 +76,7 @@ export default function ChangePassword() {
             label="Nueva Contraseña"
             type="password"
             autoComplete="current-password"
+            variant="standard"
             margin="normal"
             value={newPassword}
             onChange={(e) => handleChange(e)}

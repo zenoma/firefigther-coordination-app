@@ -20,8 +20,8 @@ export default function QuadrantHistoryView() {
   const [quadrantInfo, setQuadrantInfo] = useState([]);
 
   const quadrantId = location.state.quadrantId;
-  const startDate = dayjs(location.state.startDate, "DD-MM-YYYY HH:mm:ss");
-  const endDate = dayjs(location.state.endDate, "DD-MM-YYYY HH:mm:ss");
+  const startDate = location.state.startDate;
+  const endDate = location.state.endDate;
 
   const { t } = useTranslation();
 
@@ -31,6 +31,7 @@ export default function QuadrantHistoryView() {
     startDate: dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss"),
     endDate: dayjs(endDate).format("YYYY-MM-DDTHH:mm:ss"),
   };
+  console.log(endDate);
 
   const { data: teamLogs } = useGetTeamLogsByQuadrantIdQuery(payload);
   const { data: vehicleLogs } = useGetVehicleLogsByQuadrantIdQuery(payload);
@@ -57,7 +58,7 @@ export default function QuadrantHistoryView() {
           >
             {t("quadrant-history-details")}
           </Typography>
-          {quadrantInfo && (
+          {quadrantInfo && startDate && endDate && (
             <div>
               <Typography variant="h6" margin={1}>
                 {quadrantInfo.nombre} ({"#" + quadrantId})
@@ -78,7 +79,6 @@ export default function QuadrantHistoryView() {
         </Grid>
         <Grid item xs={4} sm={8} md={6}>
           <Box>
-            {/* TODO: Create new component "QuadrantHistoryTeamsTable" */}
             {teamLogs && <QuadrantHistoryTeamsTable teamLogs={teamLogs} />}
           </Box>
         </Grid>

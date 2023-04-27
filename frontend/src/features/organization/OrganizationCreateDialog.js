@@ -100,7 +100,7 @@ export default function OrganizationCreateDialog(props) {
       .catch((error) => toast.error("No se ha podido crear la organización"));
   };
 
-  useEffect(() => {}, [open]);
+  useEffect(() => { }, [open]);
 
 
   //FIXME: Update translations
@@ -117,36 +117,35 @@ export default function OrganizationCreateDialog(props) {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Crear nueva organización </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("organization-create-new")} </DialogTitle>
         <DialogContent>
           <FormControl fullWidth>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+            <Grid container spacing={2} sx={{ padding: 1 }}>
+              <Grid item xs={3} >
                 <TextField
                   id="code"
                   label={t("organization-code")}
                   type="text"
                   autoComplete="current-code"
-                  margin="normal"
                   value={code}
+                  margin=""
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
                   required
                   sx={{ display: "flex" }}
+                  variant="standard"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={3}>
                 <TextField
                   id="name"
                   label={t("organization-name")}
                   type="text"
                   autoComplete="current-name"
-                  margin="normal"
                   value={name}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
                   required
                   sx={{ display: "flex" }}
+                  variant="standard"
                 />
               </Grid>
               <Grid item xs={6}>
@@ -157,9 +156,10 @@ export default function OrganizationCreateDialog(props) {
                   <Select
                     id="organizationTypes"
                     labelId="input-label-id"
-                    label="Tipo de organización"
+                    label={t("organization-type-name")}
                     value={organizationTypeId}
                     onChange={(e) => handleChange(e)}
+                    variant="standard"
                     required
                   >
                     {organizationTypesList.map((item, index) => (
@@ -170,7 +170,6 @@ export default function OrganizationCreateDialog(props) {
                   </Select>
                 </FormControl>
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   id="headquartersAddress"
@@ -183,15 +182,17 @@ export default function OrganizationCreateDialog(props) {
                   helperText=" "
                   required
                   sx={{ display: "flex" }}
+                  variant="standard"
                 />
               </Grid>
             </Grid>
-            <CoordinatesMap childToParent={childToParent} />
+            <Box sx={{ height: 300 }}>
+              <CoordinatesMap childToParent={childToParent} /></Box>
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={(e) => handleClick(e)}>Crear</Button>
+          <Button onClick={handleClose}>{t("cancel")}</Button>
+          <Button onClick={(e) => handleClick(e)}>{t("create")}</Button>
         </DialogActions>
       </Dialog>
     </div>

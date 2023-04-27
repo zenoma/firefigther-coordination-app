@@ -184,9 +184,9 @@ export default function TeamsTable(props) {
                           onClick={
                             column.id !== "options"
                               ? () =>
-                                  navigate("/teams", {
-                                    state: { teamId: row.id },
-                                  })
+                                navigate("/teams", {
+                                  state: { teamId: row.id },
+                                })
                               : undefined
                           }
                         >
@@ -238,7 +238,7 @@ export default function TeamsTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("team-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
@@ -250,7 +250,7 @@ export default function TeamsTable(props) {
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>{t("team-updated-title")}</DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("team-updated-title")}</DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -263,7 +263,7 @@ export default function TeamsTable(props) {
                   margin="normal"
                   value={code}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

@@ -177,7 +177,7 @@ export default function QuadrantVehicleTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("quadrant-vehicle-retract-dialog")}
         </DialogTitle>
         <DialogActions>

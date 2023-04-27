@@ -50,6 +50,7 @@ export default function Notice() {
         margin="normal"
         autoComplete="notice-body"
         value={body}
+        variant="standard"
         onChange={(e) => handleChange(e)}
       />
       <Button

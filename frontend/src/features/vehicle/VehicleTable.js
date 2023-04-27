@@ -232,7 +232,7 @@ export default function VehicleTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("vehicle-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
@@ -244,7 +244,7 @@ export default function VehicleTable(props) {
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>{t("vehicle-updated-title")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("vehicle-updated-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -257,7 +257,7 @@ export default function VehicleTable(props) {
                   margin="normal"
                   value={vehiclePlate}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -271,7 +271,7 @@ export default function VehicleTable(props) {
                   margin="normal"
                   value={type}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

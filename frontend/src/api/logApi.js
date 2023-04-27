@@ -53,6 +53,17 @@ export const logApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    getGlobalStatisticsByFireId: build.query({
+      query: (payload) => ({
+        url: "/logs/statistics?fireId=" + payload.fireId,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
@@ -60,4 +71,5 @@ export const {
   useGetFireLogsByFireIdQuery,
   useGetTeamLogsByQuadrantIdQuery,
   useGetVehicleLogsByQuadrantIdQuery,
+  useGetGlobalStatisticsByFireIdQuery,
 } = logApi;

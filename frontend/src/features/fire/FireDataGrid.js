@@ -234,7 +234,7 @@ export default function FireDataGrid() {
             </Fab>
           </Box>
           <Dialog fullWidth open={open} onClose={handleClose}>
-            <DialogTitle>{t("fire-create-title")} </DialogTitle>
+            <DialogTitle sx={{ color: "primary.light" }}>{t("fire-create-title")} </DialogTitle>
             <DialogContent>
               <FormControl>
                 <Grid container spacing={2}>
@@ -247,8 +247,8 @@ export default function FireDataGrid() {
                       margin="normal"
                       value={description}
                       onChange={(e) => handleChange(e)}
-                      helperText=" "
                       required
+                      variant="standard"
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -260,8 +260,8 @@ export default function FireDataGrid() {
                       margin="normal"
                       value={fireType}
                       onChange={(e) => handleChange(e)}
-                      helperText=" "
                       required
+                      variant="standard"
                     />
                   </Grid>
                 </Grid>

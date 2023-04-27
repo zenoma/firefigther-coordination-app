@@ -8,8 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,7 +22,10 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGetFireByIdQuery } from "../../api/fireApi";
-import { useGetFireLogsByFireIdQuery } from "../../api/logApi";
+import {
+  useGetFireLogsByFireIdQuery,
+  useGetGlobalStatisticsByFireIdQuery,
+} from "../../api/logApi";
 import CustomMap from "../map/CustomMap";
 import { selectToken } from "../user/login/LoginSlice";
 import BackButton from "../utils/BackButton";
@@ -45,12 +47,10 @@ export default function FireHistoryView() {
     fireId: fireId,
   });
 
-  useEffect(() => {
-    if (fireData) {
-      setSelectedStartDate(dayjs(fireData.createdAt, "DD-MM-YYYY HH:mm:ss"));
-      setSelectedEndDate(dayjs(fireData.extinguishedAt, "DD-MM-YYYY HH:mm:ss"));
-    }
-  }, [fireData]);
+  const { data: globalStatistics } = useGetGlobalStatisticsByFireIdQuery({
+    token: token,
+    fireId: fireId,
+  });
 
   const payload = {
     token: token,
@@ -62,6 +62,7 @@ export default function FireHistoryView() {
   const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
+
   useEffect(() => {
     if (fireData) {
       setSelectedStartDate(dayjs(fireData.createdAt, "DD-MM-YYYY HH:mm:ss"));
@@ -123,34 +124,42 @@ export default function FireHistoryView() {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Grid item xs={4} sm={8} md={6}>
+        <Grid item xs={4} sm={8} md={4}>
           <Paper
             sx={{
               color: "primary.light",
               padding: 2,
+              height: "530px",
             }}
             variant="outlined"
           >
-            <Typography variant="h6">{t("quadrant-map")}</Typography>
-            {fireLogs && <CustomMap quadrants={quadrants} />}
+            <Typography variant="h6" sx={{ padding: 2 }}>
+              {t("quadrant-map")}
+            </Typography>
+            <Box sx={{ height: "90%", padding: 1 }}>
+              {fireLogs && <CustomMap quadrants={quadrants} />}
+            </Box>
           </Paper>
         </Grid>
-        <Grid item xs={2} sm={8} md={5}>
+        <Grid item xs={2} sm={8} md={4}>
           <Paper
             sx={{
               color: "primary.light",
               padding: 2,
+              height: "530px",
             }}
             variant="outlined"
           >
             <Typography variant="h6">{t("tittle-date-picker")}</Typography>
             {fireData && (
-              <div>
+              <div
+              >
                 <Box
                   sx={{
                     color: "primary.light",
-                    padding: 3,
-                    display: "inline-block",
+                    padding: 2,
+                    display: "flex",
+                    transform: "scale(0.9)"
                   }}
                   variant="outlined"
                 >
@@ -164,15 +173,6 @@ export default function FireHistoryView() {
                       format="DD-MM-YYYY HH:mm"
                     />
                   </LocalizationProvider>
-                </Box>
-                <Box
-                  sx={{
-                    color: "primary.light",
-                    padding: 3,
-                    display: "inline-block",
-                  }}
-                  variant="outlined"
-                >
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileDateTimePicker
                       ampm={false}
@@ -187,7 +187,9 @@ export default function FireHistoryView() {
                 <TableContainer
                   component={Paper}
                   elevation={3}
-                  sx={{ maxHeight: 420 }}
+                  sx={{
+                    maxHeight: 350,
+                  }}
                 >
                   <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -225,8 +227,12 @@ export default function FireHistoryView() {
                               navigate("/quadrant-history", {
                                 state: {
                                   quadrantId: row.quadrantInfoDto.id,
-                                  startDate: row.linkedAt,
-                                  endDate: row.extinguishedAt,
+                                  startDate: dayjs(selectedStartDate).format(
+                                    "YYYY-MM-DDTHH:mm:ss"
+                                  ),
+                                  endDate: dayjs(selectedEndDate).format(
+                                    "YYYY-MM-DDTHH:mm:ss"
+                                  ),
                                 },
                               })
                             }
@@ -255,16 +261,99 @@ export default function FireHistoryView() {
             )}
           </Paper>
         </Grid>
-        <Grid item xs={2} sm={8} md={6}>
-          <Paper
-            sx={{
-              color: "primary.light",
-              padding: 2,
-            }}
-            variant="outlined"
-          ></Paper>
+        <Grid item xs={2} sm={8} md={4}>
+          {globalStatistics && (
+            <Paper
+              sx={{
+                padding: 2,
+                height: "530px",
+              }}
+              variant="outlined"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "left",
+                  padding: "5px",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "primary.light",
+                  }}
+                >
+                  {t("global-statistics")}
+                </Typography>
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ color: "secondary.light", padding: "20px" }}
+                        >
+                          {t("teams-mobilized")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {globalStatistics.teamsMobilized}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ color: "secondary.light", padding: "20px" }}
+                        >
+                          {t("vehicles-mobilized")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {globalStatistics.vehiclesMobilized}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ color: "secondary.light", padding: "20px" }}
+                        >
+                          {t("affected-quadrants")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {globalStatistics.affectedQuadrants}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ color: "secondary.light", padding: "20px" }}
+                        >
+                          {t("max-burned-hectares")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {globalStatistics.maxBurnedHectares} ha
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </Paper>
+          )}
         </Grid>
       </Grid>
-    </Box>
+    </Box >
   );
 }
+
+// globalStatistics.affectedQuadrants
+// globalStatistics.maxBurnedHectares
+// globalStatistics.teamsMobilized
+// globalStatistics.vehiclesMobilized

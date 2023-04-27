@@ -276,8 +276,8 @@ export default function OrganizationTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"¿Está seguro de eliminar esta organización?"}
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
+          {t("organization-deleted-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>Cancelar</Button>
@@ -288,7 +288,7 @@ export default function OrganizationTable(props) {
       </Dialog>
 
       <Dialog fullWidth={true} maxWidth={"md"} open={openEdit}>
-        <DialogTitle>Editar organización </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("organization-edit")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -301,7 +301,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={code}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -315,7 +315,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={name}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -330,7 +330,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={headquartersAddress}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

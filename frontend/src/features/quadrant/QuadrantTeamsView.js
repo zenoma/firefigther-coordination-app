@@ -116,7 +116,7 @@ export default function QuadrantTeamsView(props) {
           </Fab>
         </Box>
         <Dialog fullWidth open={open} onClose={handleClose}>
-          <DialogTitle>{t("team-deploy-title")} </DialogTitle>
+          <DialogTitle sx={{ color: "primary.light" }}>{t("team-deploy-title")} </DialogTitle>
           <DialogContent>
             <TeamDataGrid childToParent={childToParent} />
           </DialogContent>
