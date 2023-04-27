@@ -97,7 +97,7 @@ export default function Login() {
     signUp(payload)
       .unwrap()
       .then(() => {
-        toast.info("Successfully signed up.");
+        toast.info(t("succesfully-login"));
         navigate("/login");
       });
   };
@@ -226,7 +226,6 @@ export default function Login() {
             fontSize={15}
             onClick={(e) => handleLinkClick(e)}
           >
-            Already have a account?
             {t("already-account")}
           </Link>
         </FormControl>

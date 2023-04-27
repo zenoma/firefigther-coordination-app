@@ -195,6 +195,12 @@ export default function FireDataGrid() {
                 backgroundColor: "darkgrey",
               },
             },
+            "& .active": {
+              backgroundColor: "error.light",
+              "&:hover": {
+                backgroundColor: "red",
+              },
+            },
           }}
         >
           <Typography
@@ -220,6 +226,8 @@ export default function FireDataGrid() {
             getRowClassName={(params) => {
               if (params.row.fireIndex === "EXTINGUISHED") {
                 return "disabled";
+              } else {
+                return "active";
               }
             }}
             onRowClick={(e) =>

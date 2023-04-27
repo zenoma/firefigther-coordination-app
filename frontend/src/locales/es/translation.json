@@ -12,6 +12,7 @@
   "phone-number": "Número teléfono",
   "email": "Email",
   "password": "Contraseña",
+  "change-password": "Cambiar contraseña",
   "already-account": "¿Ya estás registrado?",
   "has-team?": "¿Tiene equipo asginado?",
 
@@ -22,6 +23,7 @@
   "my-team": "Mi equipo",
   "my-notices": "Mis avisos",
   "notices": "Avisos",
+  "succesfully-login": "Logeado correctamente",
 
   "geographic-map": "Mapa geográfico",
   "create-notice": "Crear aviso",
@@ -106,6 +108,8 @@
   "fire-extinguished-at": "Fecha extinción",
   "fire-details-title": "Detalles del incendio",
   "fire-create-title": "Crear nuevo incendio",
+  "fire-created-successfully": "Fuego creado satisfactoriamente",
+  "fire-created-error": "Ha ocurrido un error al crear el incendio",
   "fire-options": "Opciones",
   "fire-extinguish": "Extinguir",
   "fire-extinguish-dialog": "¿Está seguro de extinguir este incendio?",

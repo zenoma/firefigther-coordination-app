@@ -61,7 +61,7 @@ function App({ t }) {
         .unwrap()
         .then((payload) => {
           dispatch(validLogin(payload));
-          toast.info("Successfully logged in.");
+          toast.info(t("succesfully-login"));
           localStorage.setItem("token", token);
           setLoading(false);
         })

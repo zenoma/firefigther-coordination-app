@@ -312,7 +312,7 @@ export default function FireDetailsView() {
                     {t("quadrant-extinguish")}
                   </Button>
                 </DialogActions>
-              </Dialog>s
+              </Dialog>
               <Dialog
                 open={openExtinguish}
                 onClose={handleExtinguishClose}

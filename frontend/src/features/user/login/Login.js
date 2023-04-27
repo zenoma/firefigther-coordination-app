@@ -49,7 +49,7 @@ export default function Login() {
       .unwrap()
       .then((payload) => {
         dispatch(validLogin(payload));
-        toast.info("Successfully logged in.");
+        toast.info(t("succesfully-login"));
         navigate("/profile");
       });
   };
@@ -66,7 +66,7 @@ export default function Login() {
     >
       <FormControl>
         <FormLabel>
-          <Typography variant="h5" sx={{ color: "primary.light" }}>{t("Login")}</Typography>
+          <Typography variant="h5" sx={{ color: "primary.light" }}>{t("login")}</Typography>
         </FormLabel>
         <TextField
           id="email"
