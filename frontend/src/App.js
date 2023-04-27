@@ -26,6 +26,7 @@ import {
   validLogin,
 } from "./features/user/login/LoginSlice";
 
+import { CircularProgress } from "@mui/material";
 import { withTranslation } from "react-i18next";
 import FireDetailsView from "./features/fire/FireDetailsView";
 import FireHistoryView from "./features/fire/FireHistoryView";
@@ -39,7 +40,6 @@ function App({ t }) {
 
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
-  const [token, setToken] = useState("");
 
   const [login] = useLoginFromTokenMutation();
 
@@ -47,9 +47,11 @@ function App({ t }) {
 
   const userRole = useSelector(selectUser).userRole;
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
 
+  const [token] = useState(localStorage.getItem("token") || "");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     const payload = {
       token: token,
     };
@@ -61,9 +63,23 @@ function App({ t }) {
           dispatch(validLogin(payload));
           toast.info("Successfully logged in.");
           localStorage.setItem("token", token);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [token, dispatch, login]);
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme.darkTheme ? darkTheme : lightTheme}>

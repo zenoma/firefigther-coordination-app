@@ -20,8 +20,8 @@ export default function QuadrantHistoryView() {
   const [quadrantInfo, setQuadrantInfo] = useState([]);
 
   const quadrantId = location.state.quadrantId;
-  const startDate = location.state.startDate;
-  const endDate = location.state.endDate;
+  const startDate = dayjs(location.state.startDate, "DD-MM-YYYY HH:mm:ss");
+  const endDate = dayjs(location.state.endDate, "DD-MM-YYYY HH:mm:ss");
 
   const { t } = useTranslation();
 
@@ -31,13 +31,13 @@ export default function QuadrantHistoryView() {
     startDate: dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss"),
     endDate: dayjs(endDate).format("YYYY-MM-DDTHH:mm:ss"),
   };
-  console.log(endDate);
+
 
   const { data: teamLogs } = useGetTeamLogsByQuadrantIdQuery(payload);
   const { data: vehicleLogs } = useGetVehicleLogsByQuadrantIdQuery(payload);
 
   useEffect(() => {
-    if (teamLogs) {
+    if (teamLogs && teamLogs.length > 0) {
       setQuadrantInfo(teamLogs[0].quadrantInfoDto);
     }
   }, [teamLogs]);

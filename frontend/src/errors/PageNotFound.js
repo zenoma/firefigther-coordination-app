@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import PageNotFound from "../app/assets/images/PageNotFound.png";
+import { Link } from "@mui/material";
 class NotFoundPage extends React.Component {
   render() {
     return (

@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -115,7 +117,9 @@ public class LogManagementServiceImpl implements LogManagementService {
         }
 
         List<Integer> quadrantsGidList = fireQuadrantLogRepository.findQuadrantIdsByFireId(fireId);
-        Integer affectedQuadrants = quadrantsGidList.size();
+        Set<Integer> uniqueQuadrants = new HashSet<>(quadrantsGidList);
+        List<Integer> uniqueQuadrantsList = new ArrayList<>(uniqueQuadrants);
+        Integer affectedQuadrants = uniqueQuadrantsList.size();
 
         List<Long> teamsMobilized = new ArrayList<>();
 
@@ -131,7 +135,7 @@ public class LogManagementServiceImpl implements LogManagementService {
             vehiclesMobilized.addAll(vehiclesIdList);
         }
 
-        Double maxBurnedHectares = maxBurnedHectares = quadrantsGidList.isEmpty() ? 0 : quadrantRepository.findHectaresByQuadrantIds(quadrantsGidList);
+        Double maxBurnedHectares = uniqueQuadrantsList.isEmpty() ? 0 : quadrantRepository.findHectaresByQuadrantIds(uniqueQuadrantsList);
 
 
         return new GlobalStatistics(teamsMobilized.size(), vehiclesMobilized.size(), maxBurnedHectares, affectedQuadrants);

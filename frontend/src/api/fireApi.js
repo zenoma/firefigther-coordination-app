@@ -42,7 +42,19 @@ export const fireApi = baseApi.injectEndpoints({
     }),
     extinguishFire: build.mutation({
       query: (payload) => ({
-        url: "/fires/" + payload.fireId + "/extinguish",
+        url: "/fires/" + payload.fireId + "/extinguishFire",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    extinguishQuadrantByFireId: build.mutation({
+      query: (payload) => ({
+        url: "/fires/" + payload.fireId + "/extinguishQuadrant?quadrantId=" + payload.quadrantId,
         method: "POST",
         headers: {
           Authorization: "Bearer " + payload.token,
@@ -60,4 +72,5 @@ export const {
   useGetFireByIdQuery,
   useCreateFireMutation,
   useExtinguishFireMutation,
+  useExtinguishQuadrantByFireIdMutation
 } = fireApi;

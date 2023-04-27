@@ -111,7 +111,7 @@ export default function TeamItem(props) {
   };
 
   return (
-    <Paper key={props.name} sx={{ margin: 3 }} elevation={3}>
+    <Paper sx={{ margin: 3 }} elevation={3}>
       <Typography
         variant="h6"
         sx={{ padding: 3 }}
@@ -161,7 +161,7 @@ export default function TeamItem(props) {
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.code}
+                          key={row.id}
                         >
                           {columns.map((column) => {
                             const value = row[column.id];

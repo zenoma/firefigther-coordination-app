@@ -129,6 +129,9 @@
   "quadrant-extinguishedAt": "Fecha extinción",
   "quadrant-history-details": "Histórico del cuadrante",
   "quadrant-add-title": "Añadir nuevo cuadrante",
+  "quadrant-extinguish": "Extinguir",
+  "quadrant-extinguish-dialog": "¿Está seguro de extinguir este cuadrante?",
+  "quadrant-extinguish-text": "Se liberarán los equipos y los vehículos del cuadrante y se marcará el cuadrante como extinguido.",
 
   "fire-history-title": "Histórico del incendio",
   "tittle-date-picker": "Selector de rango de fechas",

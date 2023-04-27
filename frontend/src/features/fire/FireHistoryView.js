@@ -90,19 +90,25 @@ export default function FireHistoryView() {
 
   useEffect(() => {
     function getQuadrants() {
-      const quadrants = [];
+      const uniqueQuadrants = [];
 
       for (let i = 0; i < fireLogs.length; i++) {
         const quadrant = fireLogs[i].quadrantInfoDto;
-        quadrants.push(quadrant);
+        const coordsStr = JSON.stringify(quadrant.coordinates);
+        if (!uniqueQuadrants.some(q => JSON.stringify(q.coordinates) === coordsStr)) {
+          uniqueQuadrants.push(quadrant);
+        }
       }
 
-      setQuadrants(quadrants);
+      setQuadrants(uniqueQuadrants);
     }
+
     if (fireLogs) {
       getQuadrants(fireLogs);
     }
   }, [fireLogs]);
+
+
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -219,20 +225,16 @@ export default function FireHistoryView() {
                     </TableHead>
                     <TableBody>
                       {fireLogs &&
-                        fireLogs.map((row) => (
+                        fireLogs.map((row, index) => (
                           <TableRow
-                            key={row.quadrantInfoDto.id}
+                            key={row.quadrantInfoDto.id + index}
                             hover
                             onClick={() =>
                               navigate("/quadrant-history", {
                                 state: {
                                   quadrantId: row.quadrantInfoDto.id,
-                                  startDate: dayjs(selectedStartDate).format(
-                                    "YYYY-MM-DDTHH:mm:ss"
-                                  ),
-                                  endDate: dayjs(selectedEndDate).format(
-                                    "YYYY-MM-DDTHH:mm:ss"
-                                  ),
+                                  startDate: row.linkedAt,
+                                  endDate: row.extinguishedAt,
                                 },
                               })
                             }

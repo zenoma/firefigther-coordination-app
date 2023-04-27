@@ -144,6 +144,37 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
+    public Fire extinguishQuadrantByFireId(Long id, Integer quadrantId) throws InstanceNotFoundException, ExtinguishedFireException, TeamAlreadyDismantledException, VehicleAlreadyDismantledException {
+
+        Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
+
+        if (fire.getFireIndex() == FireIndex.EXTINGUISHED) {
+            throw new ExtinguishedFireException(id, "already extinguished");
+        }
+
+        Quadrant quadrant = quadrantRepository.findById(quadrantId).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, quadrantId));
+
+        if (quadrant.getFire() == null || !Objects.equals(quadrant.getFire().getId(), fire.getId())) {
+            throw new RuntimeException("AAAA");
+        }
+
+
+        logManagementService.logFire(id, quadrant.getId());
+        quadrant.setFire(null);
+        quadrant.setLinkedAt(null);
+        for (Team team : quadrant.getTeamList()) {
+            retractTeam(team.getId());
+        }
+        for (Vehicle vehicle : quadrant.getVehicleList()) {
+            retractVehicle(vehicle.getId());
+        }
+        quadrantRepository.save(quadrant);
+
+        return fireRepository.save(fire);
+    }
+
+
+    @Override
     public Fire updateFire(Long id, String description, String type, FireIndex fireIndex) throws InstanceNotFoundException, ExtinguishedFireException {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));

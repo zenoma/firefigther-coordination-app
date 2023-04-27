@@ -90,5 +90,5 @@ export default function TeamUserAdd(props) {
 }
 
 TeamUserAdd.propTypes = {
-  teamId: PropTypes.string.isRequired,
+  teamId: PropTypes.number.isRequired,
 };

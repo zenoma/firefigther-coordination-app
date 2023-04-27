@@ -166,7 +166,7 @@ export default function QuadrantTeamsTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title"> sx={{ color: "primary.light" }}
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("quadrant-team-retract-dialog")}
         </DialogTitle>
         <DialogActions>

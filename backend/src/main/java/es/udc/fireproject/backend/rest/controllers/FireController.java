@@ -56,10 +56,20 @@ public class FireController {
         return FireConversor.toFireDto(fireManagementService.findFireById(id));
     }
 
-    @PostMapping("/{id}/extinguish")
-    public FireDto extinguishFire(@RequestAttribute Long userId, @PathVariable Long id)
+    @PostMapping("/{id}/extinguishFire")
+    public FireDto extinguishFire(@RequestAttribute Long userId,
+                                  @PathVariable Long id)
+
             throws InstanceNotFoundException, ExtinguishedFireException, VehicleAlreadyDismantledException, TeamAlreadyDismantledException {
         return FireConversor.toFireDto(fireManagementService.extinguishFire(id));
+    }
+
+    @PostMapping("/{id}/extinguishQuadrant")
+    public FireDto extinguishFire(@RequestAttribute Long userId,
+                                  @PathVariable Long id,
+                                  @RequestParam(value = "quadrantId", required = true) Integer quadrantId)
+            throws InstanceNotFoundException, ExtinguishedFireException, VehicleAlreadyDismantledException, TeamAlreadyDismantledException {
+        return FireConversor.toFireDto(fireManagementService.extinguishQuadrantByFireId(id, quadrantId));
     }
 
     @PutMapping("/{id}")

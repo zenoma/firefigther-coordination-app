@@ -131,5 +131,5 @@ export default function VehicleCreateDialog(props) {
 }
 
 VehicleCreateDialog.propTypes = {
-  organizationId: PropTypes.string.isRequired,
+  organizationId: PropTypes.number.isRequired,
 };

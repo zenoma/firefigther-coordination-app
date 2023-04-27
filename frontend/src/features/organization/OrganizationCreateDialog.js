@@ -128,7 +128,6 @@ export default function OrganizationCreateDialog(props) {
                   type="text"
                   autoComplete="current-code"
                   value={code}
-                  margin=""
                   onChange={(e) => handleChange(e)}
                   required
                   sx={{ display: "flex" }}

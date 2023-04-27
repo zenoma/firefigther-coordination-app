@@ -49,7 +49,7 @@ export default function TeamView() {
           <Grid item xs={3} sm={7} md={12}>
             <UsersList
               teamId={data.id}
-              name={teamId}
+              name={data.code}
               users={data.users}
               reloadData={reloadData}
             />

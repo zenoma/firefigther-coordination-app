@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import TeamNotFound from "../app/assets/images/TeamNotFound.png";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 export default function TeamNotFoundPage() {

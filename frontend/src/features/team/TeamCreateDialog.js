@@ -107,5 +107,5 @@ export default function TeamCreateDialog(props) {
 }
 
 TeamCreateDialog.propTypes = {
-  organizationId: PropTypes.string.isRequired,
+  organizationId: PropTypes.number.isRequired,
 };

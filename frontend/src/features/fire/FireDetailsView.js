@@ -25,13 +25,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useExtinguishFireMutation,
+  useExtinguishQuadrantByFireIdMutation,
   useGetFireByIdQuery,
 } from "../../api/fireApi";
 import { useLinkFireMutation } from "../../api/quadrantApi";
 import CustomMap from "../map/CustomMap";
 import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
-import BackButton from "../utils/BackButton";
+import BackButton from "../utils/BackButton"; import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
 
 export default function FireDetailsView() {
   const token = useSelector(selectToken);
@@ -44,6 +45,8 @@ export default function FireDetailsView() {
 
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(true);
+  const [quadrantId, setQuadrantId] = useState(true);
+  const [openQuadrantExtinguish, setOpenQuadrantExtinguish] = useState(false);
   const [openExtinguish, setOpenExtinguish] = useState(false);
 
   const payload = { token: token, fireId: fireId };
@@ -52,6 +55,7 @@ export default function FireDetailsView() {
 
   const [linkFire] = useLinkFireMutation();
   const [extinguishFire] = useExtinguishFireMutation();
+  const [extinguishQuadrantByFireId] = useExtinguishQuadrantByFireIdMutation();
 
   useEffect(() => {
     refetch();
@@ -115,6 +119,33 @@ export default function FireDetailsView() {
     console.log("edit");
   };
 
+  const handleExtinguishQuadrantOpenClick = (quadrantId) => {
+    setQuadrantId(quadrantId);
+    setOpenQuadrantExtinguish(true);
+  };
+
+  const handleExtinguishQuadrantClose = () => {
+    setOpenQuadrantExtinguish(false);
+  };
+
+  const handleExtinguishQuadrantClick = () => {
+    const payload = {
+      token: token,
+      fireId: fireId,
+      quadrantId: quadrantId,
+    };
+
+    extinguishQuadrantByFireId(payload)
+      .unwrap()
+      .then(() => {
+        toast.success(t("quadrant-extinguished-successfully"));
+        setOpenExtinguish(false);
+        refetch();
+      })
+      .catch((error) => toast.error(t("quadrant-extinguished-error")));
+    handleExtinguishQuadrantClose();
+  };
+
   return (
     <Box sx={{ padding: 3 }}>
       <BackButton />
@@ -174,6 +205,12 @@ export default function FireDetailsView() {
                       >
                         {t("quadrant-name")}
                       </TableCell>
+                      <TableCell
+                        sx={{ color: "secondary.light" }}
+                        align="right"
+                      >
+                        {t("options")}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -187,13 +224,23 @@ export default function FireDetailsView() {
                         onClick={() =>
                           navigate("/quadrant", {
                             state: { quadrantId: row.id },
-                          })
-                        }
+                          })}
                       >
                         <TableCell component="th" scope="row">
                           {row.id}
                         </TableCell>
                         <TableCell align="right">{row.nombre}</TableCell>
+                        <TableCell>
+                          <Button
+                            sx={{ color: "red" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleExtinguishQuadrantOpenClick(row.id);
+                            }}
+                          >
+                            <FireExtinguisherIcon />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -242,6 +289,31 @@ export default function FireDetailsView() {
                 {t("fire-extinguish")}
               </Button>
               <Dialog
+                open={openQuadrantExtinguish}
+                onClose={handleExtinguishQuadrantClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
+                  {t("quadrant-extinguish-dialog")}
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body2">
+                    {t("quadrant-extinguish-text")}
+                  </Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleExtinguishQuadrantClose}>{t("cancel")}</Button>
+                  <Button
+                    onClick={handleExtinguishQuadrantClick}
+                    color="error"
+                    autoFocus
+                  >
+                    {t("quadrant-extinguish")}
+                  </Button>
+                </DialogActions>
+              </Dialog>s
+              <Dialog
                 open={openExtinguish}
                 onClose={handleExtinguishClose}
                 aria-labelledby="alert-dialog-title"
@@ -279,10 +351,10 @@ export default function FireDetailsView() {
         <DialogActions>
           <Button onClick={handleClose}>{t("cancel")}</Button>
           <Button autoFocus variant="contained" onClick={() => handleClick()}>
-            {t("create")}
+            {t("add")}
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Box >
   );
 }
