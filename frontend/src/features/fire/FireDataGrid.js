@@ -198,7 +198,7 @@ export default function FireDataGrid() {
             "& .active": {
               backgroundColor: "error.light",
               "&:hover": {
-                backgroundColor: "red",
+                backgroundColor: "error.dark",
               },
             },
           }}

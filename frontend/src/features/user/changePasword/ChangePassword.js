@@ -9,6 +9,7 @@ import { selectToken, selectUser } from "../login/LoginSlice";
 import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useChangePasswordMutation } from "../../../api/userApi";
+import { toast } from "react-toastify";
 
 export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -41,8 +42,11 @@ export default function ChangePassword() {
     changePassword(payload)
       .unwrap()
       .then((payload) => {
+        toast.success(t("change-password-successfully"));
         navigate("/profile");
-      });
+      })
+      .catch((error) => toast.error(t("change-password-error")));
+
   };
 
   return (

@@ -463,7 +463,7 @@ export default function FireDetailsView() {
                     label={t("fire-fireIndex")}
                     value={fireIndex}
                     onChange={(e) => handleChange(e)}
-                    required 
+                    required
                     sx={{ margin: 2 }}
                   >
                     {fireIndexSelector.map((item, index) => (

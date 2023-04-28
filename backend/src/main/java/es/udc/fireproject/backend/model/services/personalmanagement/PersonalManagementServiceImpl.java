@@ -358,7 +358,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByDniAsc();
     }
 
     @Override

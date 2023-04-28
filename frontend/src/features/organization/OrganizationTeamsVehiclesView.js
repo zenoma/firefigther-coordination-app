@@ -1,5 +1,5 @@
 import InfoIcon from "@mui/icons-material/Info";
-import { Box, Dialog, Grid, Typography } from "@mui/material";
+import { Box, Button, Dialog, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -16,7 +16,7 @@ export default function OrganizationTeamsVehiclesView() {
 
   const location = useLocation();
   const organizationId = location.state.organizationId;
-  
+
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -76,6 +76,9 @@ export default function OrganizationTeamsVehiclesView() {
       </Grid>
       <Dialog open={open} onClose={handleClose}>
         <OrganizationDetailsCard data={organizationData} />
+        <Button onClick={handleClose} color="primary" autoFocus>
+          {t("close")}
+        </Button>
       </Dialog>
     </Box>
   );

@@ -13,6 +13,8 @@
   "email": "Email",
   "password": "Contraseña",
   "change-password": "Cambiar contraseña",
+  "change-password-successfully": "Contraseña cambiada satisfactoriamente",
+  "change-password-error": "No se ha podido cambiar la contraseña",
   "already-account": "¿Ya estás registrado?",
   "has-team?": "¿Tiene equipo asginado?",
 
@@ -78,6 +80,11 @@
   "user-deleted-successfully": "Usuario eliminado satisfactoriamente",
   "user-deleted-error": "No se ha podido eliminar el usuario",
   "user-selected-has-team-warning": "Acaba de seleccionar un usuario con equipo. ¿Está seguro?",
+  "user-role-update-error": "No se ha podido actualizar los permisos del usuario",
+  "user-management": "Gestión usuarios",
+  "user-role": "Rol usuario",
+  "user-profile": "Perfil del usuario",
+  "role-permissions": "Opciones de permisos",
 
   "vehicle-list": "Lista de vehículos",
   "vehicle-plate": "Matrícula",

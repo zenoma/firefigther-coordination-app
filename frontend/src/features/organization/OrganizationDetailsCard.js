@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import Container from "@mui/material/Container";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 
@@ -8,68 +8,91 @@ export default function OrganizationDetailsCard(props) {
   const { t } = useTranslation();
 
   return (
-    <Container
+    <Paper
       sx={{
-        padding: "10px",
-        textAlign:"center"
+        padding: 2,
       }}
+      variant="outlined"
     >
-      <Typography
-        variant="h4"
-        margin="10px"
-        sx={{
-          color: "primary.light",
-          textAlign: "center",
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "left",
+          padding: "5px",
         }}
       >
-        {t("organization-details-title")}
-      </Typography>
-      <Typography
-        variant="h6"
-        sx={{
-          color: "secondary.light",
-        }}
-      >
-        {t("organization-details-code")}
-      </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "block" }}>
-        {props.data["code"]}
-      </Typography>
-      <Typography
-        variant="h6"
-        sx={{
-          color: "secondary.light",
-        }}
-      >
-        {t("organization-details-name")}
-      </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "block" }}>
-        {props.data["name"]}
-      </Typography>
-      <Typography
-        variant="h6"
-        sx={{
-          color: "secondary.light",
-        }}
-      >
-        {t("organization-address")}
-      </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "block" }}>
-        {props.data["headquartersAddress"]}
-      </Typography>
-      <Typography
-        variant="h6"
-        sx={{
-          color: "secondary.light",
-        }}
-      >
-        {t("organization-type-name")}
-      </Typography>
-      <Typography variant="body" margin={1} sx={{ display: "block" }}>
-        {props.data["organizationType"]}
-      </Typography>
-    </Container>
-  );
+        <Typography
+          variant="h6"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "primary.light",
+          }}
+        >
+          {t("organization-details-title")}
+        </Typography>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{ color: "secondary.light", padding: "20px" }}
+                >
+                  {t("organization-details-code")}
+                </TableCell>
+                <TableCell align="center">
+                  {props.data["code"]}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{ color: "secondary.light", padding: "20px" }}
+                >
+                  {t("organization-details-name")}
+                </TableCell>
+                <TableCell align="center">
+                  {props.data["name"]}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{ color: "secondary.light", padding: "20px" }}
+                >
+                  {t("organization-address")}
+                </TableCell>
+                <TableCell align="center">
+                  {props.data["headquartersAddress"]}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{ color: "secondary.light", padding: "20px" }}
+                >
+                  {t("organization-type-name")}
+                </TableCell>
+                <TableCell align="center">
+                  {props.data["organizationType"]}
+                </TableCell>
+              </TableRow>
+
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </Paper>
+  )
+
 }
 
 OrganizationDetailsCard.propTypes = {

@@ -35,6 +35,7 @@ import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
 import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 import QuadrantView from "./features/quadrant/QuadrantView";
 import TeamView from "./features/team/TeamView";
+import UserManagementView from "./features/user/management/UserManagementView";
 
 function App({ t }) {
 
@@ -71,7 +72,7 @@ function App({ t }) {
     } else {
       setLoading(false);
     }
-  }, [token, dispatch, login]);
+  }, [token, dispatch, login, t]);
 
   if (loading) {
     return (
@@ -102,7 +103,7 @@ function App({ t }) {
               path="/organizations"
               // TODO: Change when roles implemented
               element={
-                userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
+                userRole ? <OrganizationView /> : <Navigate to="/" />
               }
             />
             <Route path="/teams" element={<TeamView />} />
@@ -117,6 +118,7 @@ function App({ t }) {
             <Route path="/quadrant" element={<QuadrantView />} />
             <Route path="/quadrant-history" element={<QuadrantHistoryView />} />
             <Route path="/fire-history" element={<FireHistoryView />} />
+            <Route path="/user-management" element={<UserManagementView />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

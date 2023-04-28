@@ -10,6 +10,7 @@ import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
+import People from "@mui/icons-material/People";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -51,6 +52,10 @@ const pages = [
   {
     name: "fire-management",
     icon: <WhatshotIcon />,
+  },
+  {
+    name: "user-management",
+    icon: <People />,
   },
 ];
 
@@ -116,6 +121,9 @@ export default function PersistentDrawerLeft() {
         break;
       case "fire-management":
         navigate("/fire-management");
+        break;
+      case "user-management":
+        navigate("/user-management");
         break;
       default:
         navigate("/");

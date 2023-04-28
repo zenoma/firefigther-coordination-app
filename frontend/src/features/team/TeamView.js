@@ -31,7 +31,7 @@ export default function TeamView() {
   };
 
   return (
-    <Box sx={{ padding: 3 }} display="flex">
+    <Box >
       <BackButton />
       {error ? (
         <h1>{t("generic-error")}</h1>
