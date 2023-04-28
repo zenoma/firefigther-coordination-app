@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,6 +12,8 @@ public class ImageDto extends BaseDto {
 
     private Long id;
     private String name;
+
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     public ImageDto() {

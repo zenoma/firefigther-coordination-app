@@ -111,7 +111,7 @@ export default function TeamItem(props) {
   };
 
   return (
-    <Paper key={props.name} sx={{ margin: 3 }} elevation={3}>
+    <Paper sx={{ padding: 1, minWidth: 900, display: "inline-block" }} elevation={3}>
       <Typography
         variant="h6"
         sx={{ padding: 3 }}
@@ -133,7 +133,7 @@ export default function TeamItem(props) {
           </Box>
         ) : users.length !== 0 ? (
           <Box>
-            <TableContainer sx={{ maxHeight: 400 }}>
+            <TableContainer sx={{ maxHeight: 250 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -144,7 +144,8 @@ export default function TeamItem(props) {
                         style={{ minWidth: column.minWidth }}
                         sx={{
                           color: "secondary.light",
-                          fontWeight: "bold",
+                          fontWeight: "bold", fontSize: "0.8rem",
+                          padding: "8px 16px",
                         }}
                       >
                         {t(column.label)}
@@ -161,13 +162,15 @@ export default function TeamItem(props) {
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.code}
+                          key={row.id}
                         >
                           {columns.map((column) => {
                             const value = row[column.id];
                             return (
                               <TableCell
                                 sx={{
+                                  fontSize: "0.8rem",
+                                  padding: "8px 16px",
                                   "&:hover": {
                                     cursor: "pointer",
                                   },
@@ -215,7 +218,7 @@ export default function TeamItem(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
+              <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
                 {t("user-deleted-dialog")}
               </DialogTitle>
               <DialogActions>

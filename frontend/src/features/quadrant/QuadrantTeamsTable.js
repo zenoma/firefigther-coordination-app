@@ -27,11 +27,12 @@ import { useRetractTeamMutation } from "../../api/teamApi";
 const columns = [
   { id: "code", label: "team-code", minWidth: 150 },
   { id: "organizationCode", label: "team-organization-belong", minWidth: 150 },
+  { id: "deployAt", label: "deploy-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, code, organizationCode) {
-  return { id, code, organizationCode };
+function createData(id, code, organizationCode, deployAt) {
+  return { id, code, organizationCode, deployAt };
 }
 
 export default function QuadrantTeamsTable(props) {
@@ -77,9 +78,9 @@ export default function QuadrantTeamsTable(props) {
     retractTeam(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("team-deleted-successfully"));
+        toast.success(t("team-retracted-successfully"));
       })
-      .catch((error) => toast.error(t("team-deleted-error")));
+      .catch((error) => toast.error(t("team-retracted-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -88,7 +89,9 @@ export default function QuadrantTeamsTable(props) {
   if (teams) {
     rows = [];
     teams.forEach((item) => {
-      rows.push(createData(item.id, item.code, item.organization.code));
+      rows.push(
+        createData(item.id, item.code, item.organization.code, item.deployAt)
+      );
     });
   }
 
@@ -163,7 +166,7 @@ export default function QuadrantTeamsTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("quadrant-team-retract-dialog")}
         </DialogTitle>
         <DialogActions>

@@ -28,7 +28,7 @@ export default function TeamCard(props) {
   return (
     <Container
       sx={{
-        padding: 3,
+        paddingTop: 3,
         textAlign: "center",
         display: "inline-block",
         boxShadow: "none",
@@ -77,14 +77,10 @@ export default function TeamCard(props) {
         ></InfoIcon>
       </Box>
       <Dialog open={open} onClose={handleToClose}>
-        <DialogContent sx={{ background: "#FAFAFA" }}>
-          <OrganizationDetailsCard data={props.data["organization"]} />
-        </DialogContent>
-        <DialogActions sx={{ background: "#FAFAFA" }}>
-          <Button onClick={handleToClose} color="primary" autoFocus>
-            Close
-          </Button>
-        </DialogActions>
+        <OrganizationDetailsCard data={props.data["organization"]} />
+        <Button onClick={handleToClose} color="primary" autoFocus>
+          Close
+        </Button>
       </Dialog>
     </Container>
   );

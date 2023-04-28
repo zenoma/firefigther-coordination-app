@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 import PageNotFound from "./errors/PageNotFound";
 import Dashboard from "./features/dashboard/Dashboard";
@@ -17,8 +17,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme/theme";
 
 import "react-toastify/dist/ReactToastify.css";
-import { useLoginFromTokenMutation } from "./api/userApi";
 import "./App.css";
+import { useLoginFromTokenMutation } from "./api/userApi";
 import MyTeamView from "./features/team/MyTeamView";
 import {
   selectToken,
@@ -26,17 +26,21 @@ import {
   validLogin,
 } from "./features/user/login/LoginSlice";
 
+import { CircularProgress } from "@mui/material";
 import { withTranslation } from "react-i18next";
-import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
-import TeamView from "./features/team/TeamView";
-import FireManagementView from "./features/fire/FireManagementView";
 import FireDetailsView from "./features/fire/FireDetailsView";
+import FireHistoryView from "./features/fire/FireHistoryView";
+import FireManagementView from "./features/fire/FireManagementView";
+import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
+import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 import QuadrantView from "./features/quadrant/QuadrantView";
+import TeamView from "./features/team/TeamView";
+import UserManagementView from "./features/user/management/UserManagementView";
 
 function App({ t }) {
+
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
-  const [token, setToken] = useState("");
 
   const [login] = useLoginFromTokenMutation();
 
@@ -44,9 +48,11 @@ function App({ t }) {
 
   const userRole = useSelector(selectUser).userRole;
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
 
+  const [token] = useState(localStorage.getItem("token") || "");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     const payload = {
       token: token,
     };
@@ -56,11 +62,25 @@ function App({ t }) {
         .unwrap()
         .then((payload) => {
           dispatch(validLogin(payload));
-          toast.info("Successfully logged in.");
+          toast.info(t("succesfully-login"));
           localStorage.setItem("token", token);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
-  }, [token, dispatch, login]);
+  }, [token, dispatch, login, t]);
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme.darkTheme ? darkTheme : lightTheme}>
@@ -83,22 +103,22 @@ function App({ t }) {
               path="/organizations"
               // TODO: Change when roles implemented
               element={
-                userRole === "USER" ? <OrganizationView /> : <Navigate to="/" />
+                userRole ? <OrganizationView /> : <Navigate to="/" />
               }
             />
-            <Route path="/teams/:teamId" element={<TeamView />} />
+            <Route path="/teams" element={<TeamView />} />
             <Route path="/my-team" element={<MyTeamView />} />
             <Route
-              path="/organizations/:organizationId/teams"
+              path="/organizations/teams"
               element={<OrganizationTeamsVehiclesView />}
             />
             <Route path="/my-notices" element={<MyNoticesList />} />{" "}
             <Route path="/fire-management" element={<FireManagementView />} />
-            <Route
-              path="/fire-management/:fireId"
-              element={<FireDetailsView />}
-            />
-            <Route path="/quadrant/:quadrantId" element={<QuadrantView />} />
+            <Route path="/fire-details/" element={<FireDetailsView />} />
+            <Route path="/quadrant" element={<QuadrantView />} />
+            <Route path="/quadrant-history" element={<QuadrantHistoryView />} />
+            <Route path="/fire-history" element={<FireHistoryView />} />
+            <Route path="/user-management" element={<UserManagementView />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

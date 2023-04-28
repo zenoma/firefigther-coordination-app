@@ -275,6 +275,15 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
         return teamRepository.findTeamsByOrganizationIdOrderByCode(organizationId);
     }
 
+    @Override
+    public List<Team> findActiveTeamsByOrganizationId(Long organizationId) {
+        return teamRepository.findTeamsByOrganizationIdAndDismantleAtIsNullOrderByCode(organizationId);
+    }
+
+    @Override
+    public List<Team> findAllActiveTeams() {
+        return teamRepository.findTeamsByDismantleAtIsNullOrderByCode();
+    }
 
     // VEHICLE SERVICES
     @Override
@@ -329,16 +338,27 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
         return vehicleRepository.findByOrganizationIdOrderByVehiclePlate(organizationId);
     }
 
+    public List<Vehicle> findActiveVehiclesByOrganizationId(Long organizationId) {
+
+        return vehicleRepository.findVehiclesByOrganizationIdAndDismantleAtIsNullOrderByVehiclePlate(organizationId);
+
+    }
+
     @Override
     public List<Vehicle> findAllVehicles() {
         return vehicleRepository.findAll();
+    }
+
+    @Override
+    public List<Vehicle> findAllActiveVehicles() {
+        return vehicleRepository.findVehiclesByDismantleAtIsNullOrderByVehiclePlate();
     }
 
     // USER SERVICES
 
     @Override
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByDniAsc();
     }
 
     @Override

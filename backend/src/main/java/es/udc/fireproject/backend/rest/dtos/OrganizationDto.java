@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class OrganizationDto extends BaseDto {
 
     private double lat;
 
-    @Column(name = "created_at")
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @NotNull(groups = {OrganizationDto.AllValidations.class})

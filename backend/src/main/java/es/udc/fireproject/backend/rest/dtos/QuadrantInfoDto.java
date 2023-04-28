@@ -38,10 +38,11 @@ public class QuadrantInfoDto extends BaseDto {
         this.coordinates = coordinates;
     }
 
-    public QuadrantInfoDto(Integer id, String escala, String nombre) {
+    public QuadrantInfoDto(Integer id, String escala, String nombre, List<Coordinates> coordinates) {
         this.id = id;
         this.escala = escala;
         this.nombre = nombre;
+        this.coordinates = coordinates;
     }
 
     public Integer getId() {

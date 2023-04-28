@@ -5,34 +5,31 @@ import Map, { Marker, NavigationControl } from "react-map-gl";
 import Icon from "../../app/assets/images/pin.png";
 import { transformCoordinates } from "../../app/utils/coordinatesTransformations";
 
-const MAPBOX_ACCESS_TOKEN2 =
-  "pk.eyJ1Ijoic2VhbmJvcmFtbGVlIiwiYSI6ImNrbTJlcnFqejE3NGQydXFtZng1cXR4eGgifQ.oZ0mZBtUX5u72QTPtPITfA";
-
+var MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAP_STYLE = "mapbox://styles/mapbox/outdoors-v11?optimize=true";
 
-// Viewport settings
-const INITIAL_VIEW_STATE = {
-  longitude: -7.787,
-  latitude: 43.0,
-  zoom: 7,
-  minZoon: 7,
-  pitch: 0,
-  bearing: 0,
-};
-
-// DeckGL react component
 export default function CoordinatesMap({ childToParent }) {
   const [cursor] = useState("auto");
+
+  // Viewport settings
+  const INITIAL_VIEW_STATE = {
+    longitude: -7.787,
+    latitude: 43.0,
+    zoom: 6,
+    pitch: 0,
+    bearing: 0,
+  };
+
+  const [viewport] = useState({
+    width: "100%",
+    height: "100%",
+  });
 
   const [mouseCoords, setMouseCoords] = useState({
     lng: 0,
     lat: 0,
   });
 
-  const [settings] = useState({
-    minZoom: 7,
-    maxZoom: 15,
-  });
   const bounds = [
     [-10.353521, 40.958984], // northeastern corner of the bounds
     [-4.615985, 44.50585], // southwestern corner of the bounds
@@ -49,11 +46,12 @@ export default function CoordinatesMap({ childToParent }) {
 
   return (
     <Map
-      style={{ minWidth: "800px", minHeight: "600px" }}
-      {...settings}
+      {...viewport}
+      minZoom={6}
+      maxZoom={15}
       initialViewState={INITIAL_VIEW_STATE}
       mapStyle={MAP_STYLE}
-      mapboxAccessToken={MAPBOX_ACCESS_TOKEN2}
+      mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
       onClick={(e) => handleClick(e)}
       cursor={cursor}
       maxBounds={bounds}
@@ -66,7 +64,7 @@ export default function CoordinatesMap({ childToParent }) {
         longitude={mouseCoords.lng}
         anchor="bottom"
       >
-        <img src={Icon} alt="map icon" width="50" />
+        <img src={Icon} alt="map icon" width="20" />
       </Marker>
     </Map>
   );

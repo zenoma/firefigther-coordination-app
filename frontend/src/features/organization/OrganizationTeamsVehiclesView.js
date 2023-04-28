@@ -1,9 +1,9 @@
 import InfoIcon from "@mui/icons-material/Info";
-import { Box, Dialog, Grid, Typography } from "@mui/material";
+import { Box, Button, Dialog, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetOrganizationByIdQuery } from "../../api/organizationApi";
 import TeamsView from "../team/TeamsView";
 import { selectToken } from "../user/login/LoginSlice";
@@ -13,7 +13,10 @@ import OrganizationDetailsCard from "./OrganizationDetailsCard";
 
 export default function OrganizationTeamsVehiclesView() {
   const token = useSelector(selectToken);
-  let { organizationId } = useParams();
+
+  const location = useLocation();
+  const organizationId = location.state.organizationId;
+
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -62,19 +65,20 @@ export default function OrganizationTeamsVehiclesView() {
         </Grid>
         <Grid item xs={4} sm={8} md={6}>
           <Box>
-            {/* FIXME:Change TeamsViewComponent to make it more abstract */}
             <TeamsView organizationId={organizationId} />
           </Box>
         </Grid>
         <Grid item xs={4} sm={8} md={6}>
           <Box>
-            {/* FIXME:Change TeamsViewComponent to make it more abstract */}
             <VehiclesView organizationId={organizationId} />
           </Box>
         </Grid>
       </Grid>
       <Dialog open={open} onClose={handleClose}>
         <OrganizationDetailsCard data={organizationData} />
+        <Button onClick={handleClose} color="primary" autoFocus>
+          {t("close")}
+        </Button>
       </Dialog>
     </Box>
   );

@@ -37,7 +37,7 @@ export default function Notice() {
 
     createNotice(payload).unwrap();
     setBody("");
-    toast.info("Notice created");
+    toast.info("notice-created-sucessfully");
   };
 
   return (
@@ -50,6 +50,7 @@ export default function Notice() {
         margin="normal"
         autoComplete="notice-body"
         value={body}
+        variant="standard"
         onChange={(e) => handleChange(e)}
       />
       <Button

@@ -144,11 +144,14 @@ export default function FireDataGrid() {
   };
 
   const handleRowClick = (row) => {
-    navigate("/fire-management/" + row.id);
+    navigate("/fire-details", { state: { fireId: row.id } });
+  };
+
+  const handleDisabledRowClick = (row) => {
+    navigate("/fire-history", { state: { fireId: row.id } });
   };
 
   const handleClick = () => {
-    console.log("create");
     const payload = {
       token: token,
       description: description,
@@ -188,7 +191,15 @@ export default function FireDataGrid() {
             width: "100%",
             "& .disabled": {
               backgroundColor: "lightgrey",
-              "pointer-events": "none",
+              "&:hover": {
+                backgroundColor: "darkgrey",
+              },
+            },
+            "& .active": {
+              backgroundColor: "error.light",
+              "&:hover": {
+                backgroundColor: "error.dark",
+              },
             },
           }}
         >
@@ -213,11 +224,17 @@ export default function FireDataGrid() {
             pagination
             localeText={localeText}
             getRowClassName={(params) => {
-              if (params.row.fireIndex === "EXTINGUISHED") {
+              if (params.row.fireIndex === "EXTINGUIDO") {
                 return "disabled";
+              } else {
+                return "active";
               }
             }}
-            onRowClick={(e) => handleRowClick(e.row)}
+            onRowClick={(e) =>
+              e.row.fireIndex === "EXTINGUIDO"
+                ? handleDisabledRowClick(e.row)
+                : handleRowClick(e.row)
+            }
           />
           <Box m={1}>
             <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
@@ -225,7 +242,7 @@ export default function FireDataGrid() {
             </Fab>
           </Box>
           <Dialog fullWidth open={open} onClose={handleClose}>
-            <DialogTitle>{t("fire-create-title")} </DialogTitle>
+            <DialogTitle sx={{ color: "primary.light" }}>{t("fire-create-title")} </DialogTitle>
             <DialogContent>
               <FormControl>
                 <Grid container spacing={2}>
@@ -238,8 +255,8 @@ export default function FireDataGrid() {
                       margin="normal"
                       value={description}
                       onChange={(e) => handleChange(e)}
-                      helperText=" "
                       required
+                      variant="standard"
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -251,8 +268,8 @@ export default function FireDataGrid() {
                       margin="normal"
                       value={fireType}
                       onChange={(e) => handleChange(e)}
-                      helperText=" "
                       required
+                      variant="standard"
                     />
                   </Grid>
                 </Grid>

@@ -10,5 +10,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findTeamsByOrganizationIdOrderByCode(Long organizationId);
 
+    List<Team> findTeamsByOrganizationIdAndDismantleAtIsNullOrderByCode(Long organizationId);
+
+    List<Team> findTeamsByDismantleAtIsNullOrderByCode();
+
 
 }

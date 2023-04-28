@@ -13,7 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Button } from "@mui/material";
 import { selectToken } from "../user/login/LoginSlice";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DismantleIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -35,11 +35,12 @@ import {
 const columns = [
   { id: "vehiclePlate", label: "vehicle-plate", minWidth: 150 },
   { id: "type", label: "type", minWidth: 150 },
+  { id: "createdAt", label: "created-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, vehiclePlate, type) {
-  return { id, vehiclePlate, type };
+function createData(id, vehiclePlate, type, createdAt) {
+  return { id, vehiclePlate, type, createdAt };
 }
 
 export default function VehicleTable(props) {
@@ -132,9 +133,9 @@ export default function VehicleTable(props) {
     deleteVehicleById(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("vehicle-deleted-successfully"));
+        toast.success(t("vehicle-dismantled-successfully"));
       })
-      .catch((error) => toast.error(t("vehicle-deleted-error")));
+      .catch((error) => toast.error(t("vehicle-dismantled-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -143,7 +144,7 @@ export default function VehicleTable(props) {
   if (vehicles) {
     rows = [];
     vehicles.forEach((item, index) => {
-      rows.push(createData(item.id, item.vehiclePlate, item.type));
+      rows.push(createData(item.id, item.vehiclePlate, item.type, item.createdAt));
     });
   }
 
@@ -202,7 +203,7 @@ export default function VehicleTable(props) {
                                 size="small"
                                 onClick={(e) => handleClickOpenDelete(row.id)}
                               >
-                                <DeleteIcon />
+                                <DismantleIcon />
                               </Button>
                             </Box>
                           ) : null}
@@ -231,19 +232,19 @@ export default function VehicleTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {t("vehicle-deleted-dialog")}
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
+          {t("vehicle-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            {t("delete")}
+            {t("dismantle")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>{t("vehicle-updated-title")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("vehicle-updated-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -256,7 +257,7 @@ export default function VehicleTable(props) {
                   margin="normal"
                   value={vehiclePlate}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -270,7 +271,7 @@ export default function VehicleTable(props) {
                   margin="normal"
                   value={type}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

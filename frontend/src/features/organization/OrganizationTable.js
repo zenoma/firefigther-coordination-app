@@ -10,10 +10,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-import { Box, Button, Container, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import {
   useDeleteOrganizationByIdMutation,
-  useUpdateOrganizationMutation,
+  useUpdateOrganizationMutation
 } from "../../api/organizationApi";
 import { selectToken } from "../user/login/LoginSlice";
 
@@ -30,9 +30,9 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import CoordinatesMap from "../map/CoordinatesMap";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import CoordinatesMap from "../map/CoordinatesMap";
 
 const columns = [
   { id: "code", label: "organization-code", minWidth: 50 },
@@ -162,7 +162,9 @@ export default function OrganizationTable(props) {
   };
 
   const handleClickOrganization = (organizationId) => {
-    navigate("/organizations/" + organizationId + "/teams");
+    navigate("/organizations/teams", {
+      state: { organizationId: organizationId },
+    });
   };
 
   var rows = [];
@@ -274,8 +276,8 @@ export default function OrganizationTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"¿Está seguro de eliminar esta organización?"}
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
+          {t("organization-deleted-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>Cancelar</Button>
@@ -286,7 +288,7 @@ export default function OrganizationTable(props) {
       </Dialog>
 
       <Dialog fullWidth={true} maxWidth={"md"} open={openEdit}>
-        <DialogTitle>Editar organización </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("organization-edit")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -299,7 +301,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={code}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -313,7 +315,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={name}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -328,7 +330,7 @@ export default function OrganizationTable(props) {
                   margin="normal"
                   value={headquartersAddress}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

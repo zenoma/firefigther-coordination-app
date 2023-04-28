@@ -67,6 +67,26 @@ public class TeamController {
         return teamDtoList;
     }
 
+    @GetMapping("/active")
+    public List<TeamDto> findAllActiveByOrganizationId(@RequestAttribute Long userId,
+                                                       @RequestParam(required = false) Long organizationId) {
+
+        List<TeamDto> teamDtoList = new ArrayList<>();
+
+
+        if (organizationId != null) {
+            for (Team team : personalManagementService.findActiveTeamsByOrganizationId(organizationId)) {
+                teamDtoList.add(TeamConversor.toTeamDto(team));
+            }
+        } else {
+            for (Team team : personalManagementService.findAllActiveTeams()) {
+                teamDtoList.add(TeamConversor.toTeamDto(team));
+            }
+        }
+
+        return teamDtoList;
+    }
+
     @GetMapping("/{id}")
     public TeamDto findById(@RequestAttribute Long userId, @PathVariable Long id)
             throws InstanceNotFoundException {

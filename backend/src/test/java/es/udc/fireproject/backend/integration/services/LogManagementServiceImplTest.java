@@ -18,4 +18,6 @@ public class LogManagementServiceImplTest {
     void givenNoData_whenCallFindAll_thenReturnNotEmptyList() {
         Assertions.assertNotNull(logManagementService.findAllFireQuadrantLogs());
     }
+
+
 }

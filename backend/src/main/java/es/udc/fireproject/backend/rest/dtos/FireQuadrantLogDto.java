@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,16 +11,20 @@ public class FireQuadrantLogDto extends BaseDto {
     private FireDto fireDto;
 
     private QuadrantInfoDto quadrantInfoDto;
-    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
+    private LocalDateTime linkedAt;
+
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime extinguishedAt;
 
     public FireQuadrantLogDto() {
     }
 
-    public FireQuadrantLogDto(FireDto fireDto, QuadrantInfoDto quadrantInfoDto, LocalDateTime createdAt, LocalDateTime extinguishedAt) {
+    public FireQuadrantLogDto(FireDto fireDto, QuadrantInfoDto quadrantInfoDto, LocalDateTime linkedAt, LocalDateTime extinguishedAt) {
         this.fireDto = fireDto;
         this.quadrantInfoDto = quadrantInfoDto;
-        this.createdAt = createdAt;
+        this.linkedAt = linkedAt;
         this.extinguishedAt = extinguishedAt;
     }
 
@@ -38,12 +44,12 @@ public class FireQuadrantLogDto extends BaseDto {
         this.quadrantInfoDto = quadrantInfoDto;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getLinkedAt() {
+        return linkedAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setLinkedAt(LocalDateTime linkedAt) {
+        this.linkedAt = linkedAt;
     }
 
     public LocalDateTime getExtinguishedAt() {
@@ -59,12 +65,12 @@ public class FireQuadrantLogDto extends BaseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FireQuadrantLogDto that = (FireQuadrantLogDto) o;
-        return Objects.equals(fireDto, that.fireDto) && Objects.equals(quadrantInfoDto, that.quadrantInfoDto) && Objects.equals(createdAt, that.createdAt) && Objects.equals(extinguishedAt, that.extinguishedAt);
+        return Objects.equals(fireDto, that.fireDto) && Objects.equals(quadrantInfoDto, that.quadrantInfoDto) && Objects.equals(linkedAt, that.linkedAt) && Objects.equals(extinguishedAt, that.extinguishedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fireDto, quadrantInfoDto, createdAt, extinguishedAt);
+        return Objects.hash(fireDto, quadrantInfoDto, linkedAt, extinguishedAt);
     }
 
     @Override
@@ -72,7 +78,7 @@ public class FireQuadrantLogDto extends BaseDto {
         return "FireQuadrantLogDto{" +
                 "fireDto=" + fireDto +
                 ", quadrantInfoDto=" + quadrantInfoDto +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + linkedAt +
                 ", extinguishedAt=" + extinguishedAt +
                 '}';
     }

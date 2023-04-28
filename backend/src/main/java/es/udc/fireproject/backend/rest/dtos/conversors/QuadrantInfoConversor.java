@@ -38,7 +38,7 @@ public class QuadrantInfoConversor {
     public static QuadrantInfoDto toQuadrantDtoWithoutTeamsAndVehicles(Quadrant quadrant) {
         return new QuadrantInfoDto(quadrant.getId(),
                 quadrant.getEscala(),
-                quadrant.getNombre());
+                quadrant.getNombre(), new ArrayList(Arrays.asList(quadrant.getGeom().getCoordinates())));
     }
 
 

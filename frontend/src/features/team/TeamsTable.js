@@ -13,7 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Button } from "@mui/material";
 import { selectToken } from "../user/login/LoginSlice";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DismantleIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -35,11 +35,12 @@ import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: "code", label: "team-code", minWidth: 150 },
+  { id: "createdAt", label: "created-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, code) {
-  return { id, code };
+function createData(id, code, createdAt) {
+  return { id, code, createdAt };
 }
 
 export default function TeamsTable(props) {
@@ -127,9 +128,9 @@ export default function TeamsTable(props) {
     deleteTeambyId(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("team-deleted-successfully"));
+        toast.success(t("team-dismantled-successfully"));
       })
-      .catch((error) => toast.error(t("team-deleted-error")));
+      .catch((error) => toast.error(t("team-dismantled-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -138,7 +139,7 @@ export default function TeamsTable(props) {
   if (teams) {
     rows = [];
     teams.forEach((item, index) => {
-      rows.push(createData(item.id, item.code));
+      rows.push(createData(item.id, item.code, item.createdAt));
     });
   }
 
@@ -182,7 +183,10 @@ export default function TeamsTable(props) {
                           align={column.align}
                           onClick={
                             column.id !== "options"
-                              ? () => navigate("/teams/" + row.id)
+                              ? () =>
+                                navigate("/teams", {
+                                  state: { teamId: row.id },
+                                })
                               : undefined
                           }
                         >
@@ -205,7 +209,7 @@ export default function TeamsTable(props) {
                                 size="small"
                                 onClick={(e) => handleClickOpenDelete(row.id)}
                               >
-                                <DeleteIcon />
+                                <DismantleIcon />
                               </Button>
                             </Box>
                           ) : null}
@@ -234,19 +238,19 @@ export default function TeamsTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {t("team-deleted-dialog")}
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
+          {t("team-dismantled-dialog")}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDelete}>{t("cancel")}</Button>
           <Button onClick={handleDeleteClick} color="error" autoFocus>
-            {t("delete")}
+            {t("dismantle")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog maxWidth={"md"} open={openEdit}>
-        <DialogTitle>{t("team-updated-title")}</DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("team-updated-title")}</DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -259,7 +263,7 @@ export default function TeamsTable(props) {
                   margin="normal"
                   value={code}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />

@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.udc.fireproject.backend.model.entities.fire.FireIndex;
 
@@ -19,8 +20,10 @@ public class FireDto extends BaseDto {
 
     private FireIndex fireIndex;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime extinguishedAt;
 
     @JsonProperty("quadrants")

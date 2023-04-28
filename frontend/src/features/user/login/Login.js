@@ -49,7 +49,7 @@ export default function Login() {
       .unwrap()
       .then((payload) => {
         dispatch(validLogin(payload));
-        toast.info("Successfully logged in.");
+        toast.info(t("succesfully-login"));
         navigate("/profile");
       });
   };
@@ -66,7 +66,7 @@ export default function Login() {
     >
       <FormControl>
         <FormLabel>
-          <Typography variant="h5">Login</Typography>
+          <Typography variant="h5" sx={{ color: "primary.light" }}>{t("login")}</Typography>
         </FormLabel>
         <TextField
           id="email"
@@ -76,6 +76,7 @@ export default function Login() {
           autoComplete="current-email"
           error={!isValidEmail && email !== ""}
           helperText={!isValidEmail && email !== "" ? "Not valid email!" : " "}
+          variant="standard"
           value={email}
           onChange={(e) => handleChange(e)}
         />
@@ -86,6 +87,7 @@ export default function Login() {
           autoComplete="current-password"
           margin="normal"
           value={password}
+          variant="standard"
           onChange={(e) => handleChange(e)}
         />
         <Button

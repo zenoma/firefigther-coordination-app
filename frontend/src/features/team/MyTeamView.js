@@ -7,15 +7,15 @@ import { useParams } from "react-router-dom";
 import { selectToken } from "../user/login/LoginSlice";
 
 import { useGetMyTeamQuery } from "../../api/teamApi";
+import TeamNotFoundPage from "../../errors/TeamNotFound";
 import UsersList from "../user/UsersList";
 import TeamCard from "./TeamCard";
-import { useTranslation } from "react-i18next";
 
 export default function MyTeamView(props) {
   const token = useSelector(selectToken);
 
+
   const teamId = useParams()["id"];
-  const { t } = useTranslation();
 
   const payload = {
     token: token,
@@ -37,13 +37,13 @@ export default function MyTeamView(props) {
       }}
     >
       {error ? (
-        <h1>{t("generic-error")}</h1>
+        <TeamNotFoundPage />
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (
         <Container>
           <TeamCard data={data} />
-          <UsersList teamId={data.id} name={teamId} />
+          <UsersList teamId={data.id} name={data.code} users={data.users} />
         </Container>
       ) : null}
     </Paper>

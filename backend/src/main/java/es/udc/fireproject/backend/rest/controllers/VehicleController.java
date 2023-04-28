@@ -74,6 +74,24 @@ public class VehicleController {
         return vehicleDtos;
     }
 
+    @GetMapping("/active")
+    public List<VehicleDto> findAllActiveByOrganizationId(@RequestAttribute Long userId,
+                                                          @RequestParam(required = false) Long organizationId) {
+
+        List<VehicleDto> vehicleDtos = new ArrayList<>();
+
+        if (organizationId != null)
+            for (Vehicle vehicle : personalManagementService.findActiveVehiclesByOrganizationId(organizationId)) {
+                vehicleDtos.add(VehicleConversor.toVehicleDto(vehicle));
+            }
+        else {
+            for (Vehicle vehicle : personalManagementService.findAllActiveVehicles()) {
+                vehicleDtos.add(VehicleConversor.toVehicleDto(vehicle));
+            }
+        }
+        return vehicleDtos;
+    }
+
     @PostMapping("/{id}/deploy")
     public VehicleDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException, VehicleAlreadyDismantledException {

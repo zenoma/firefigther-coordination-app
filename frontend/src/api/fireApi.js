@@ -40,8 +40,55 @@ export const fireApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    updateFire: build.mutation({
+      query: (payload) => ({
+        url: "/fires/" + payload.fireId,
+        method: "PUT",
+        body: {
+          description: payload.description,
+          type: payload.type,
+          fireIndex: payload.fireIndex,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    extinguishFire: build.mutation({
+      query: (payload) => ({
+        url: "/fires/" + payload.fireId + "/extinguishFire",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    extinguishQuadrantByFireId: build.mutation({
+      query: (payload) => ({
+        url: "/fires/" + payload.fireId + "/extinguishQuadrant?quadrantId=" + payload.quadrantId,
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useGetFiresQuery, useGetFireByIdQuery, useCreateFireMutation } =
-  fireApi;
+export const {
+  useGetFiresQuery,
+  useGetFireByIdQuery,
+  useCreateFireMutation,
+  useUpdateFireMutation,
+  useExtinguishFireMutation,
+  useExtinguishQuadrantByFireIdMutation
+} = fireApi;

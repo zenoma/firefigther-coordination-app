@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useGetTeamsQuery } from "../../api/teamApi";
+import { useGetactiveTeamsQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 export default function TeamDataGrid({ childToParent }) {
@@ -31,7 +31,7 @@ export default function TeamDataGrid({ childToParent }) {
     data: teams,
     error,
     isLoading,
-  } = useGetTeamsQuery(
+  } = useGetactiveTeamsQuery(
     { token: token },
     {
       refetchOnMountOrArgChange: true,

@@ -1,5 +1,7 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,13 +12,16 @@ public class VehicleDto extends BaseDto {
     private Long id;
     private String vehiclePlate;
     private String type;
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime createdAt;
     private OrganizationDto organization;
     private QuadrantInfoDto quadrant;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime deployAt;
 
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime dismantleAt;
 
     public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant, LocalDateTime deployAt, LocalDateTime dismantleAt) {
@@ -30,12 +35,14 @@ public class VehicleDto extends BaseDto {
         this.dismantleAt = dismantleAt;
     }
 
-    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization) {
+    public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, LocalDateTime deployAt, LocalDateTime dismantleAt) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;
         this.type = type;
         this.createdAt = createdAt;
         this.organization = organization;
+        this.deployAt = deployAt;
+        this.dismantleAt = dismantleAt;
     }
 
     public Long getId() {

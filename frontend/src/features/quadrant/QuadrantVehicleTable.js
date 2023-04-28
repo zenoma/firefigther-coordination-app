@@ -25,14 +25,15 @@ import { useTranslation } from "react-i18next";
 import { useRetractVehicleMutation } from "../../api/vehicleApi";
 
 const columns = [
-  { id: "vehiclePlate", label: "vehicle-plate", minWidth: 150 },
+  { id: "vehiclePlate", label: "vehicle-plate", minWidth: 100 },
   { id: "type", label: "type", minWidth: 150 },
   { id: "organizationCode", label: "team-organization-belong", minWidth: 150 },
+  { id: "deployAt", label: "deploy-at", minWidth: 50 },
   { id: "options", label: "options", minWidth: 50 },
 ];
 
-function createData(id, vehiclePlate, type, organizationCode) {
-  return { id, vehiclePlate, type, organizationCode };
+function createData(id, vehiclePlate, type, organizationCode, deployAt) {
+  return { id, vehiclePlate, type, organizationCode, deployAt };
 }
 
 export default function QuadrantVehicleTable(props) {
@@ -77,9 +78,9 @@ export default function QuadrantVehicleTable(props) {
     retractVehicle(payload)
       .unwrap()
       .then((payload) => {
-        toast.success(t("vehicle-deleted-successfully"));
+        toast.success(t("vehicle-retracted-successfully"));
       })
-      .catch((error) => toast.error(t("vehicle-deleted-error")));
+      .catch((error) => toast.error(t("vehicle-retracted-error")));
     handleCloseDelete();
     props.reloadData();
   };
@@ -93,7 +94,8 @@ export default function QuadrantVehicleTable(props) {
           item.id,
           item.vehiclePlate,
           item.type,
-          item.organization.code
+          item.organization.code,
+          item.deployAt
         )
       );
     });
@@ -175,7 +177,7 @@ export default function QuadrantVehicleTable(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ color: "primary.light" }}>
           {t("quadrant-vehicle-retract-dialog")}
         </DialogTitle>
         <DialogActions>

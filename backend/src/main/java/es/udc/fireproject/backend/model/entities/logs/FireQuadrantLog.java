@@ -25,18 +25,19 @@ public class FireQuadrantLog extends BaseEntity {
             fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "quadrant_gid", nullable = false)
     private Quadrant quadrant;
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "linked_at", nullable = false)
+    private LocalDateTime linkedAt;
     @Column(name = "extinguished_at", nullable = false)
     private LocalDateTime extinguishedAt;
 
     public FireQuadrantLog() {
     }
 
-    public FireQuadrantLog(Fire fire, Quadrant quadrant, LocalDateTime createdAt) {
+    public FireQuadrantLog(Fire fire, Quadrant quadrant, LocalDateTime linkedAt, LocalDateTime extinguishedAt) {
         this.fire = fire;
         this.quadrant = quadrant;
-        this.createdAt = createdAt;
+        this.linkedAt = linkedAt;
+        this.extinguishedAt = extinguishedAt;
     }
 
     public Fire getFire() {
@@ -55,12 +56,12 @@ public class FireQuadrantLog extends BaseEntity {
         this.quadrant = quadrant;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getLinkedAt() {
+        return linkedAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setLinkedAt(LocalDateTime linkedAt) {
+        this.linkedAt = linkedAt;
     }
 
     public LocalDateTime getExtinguishedAt() {
@@ -77,12 +78,12 @@ public class FireQuadrantLog extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FireQuadrantLog that = (FireQuadrantLog) o;
-        return Objects.equals(fire, that.fire) && Objects.equals(quadrant, that.quadrant) && Objects.equals(createdAt, that.createdAt) && Objects.equals(extinguishedAt, that.extinguishedAt);
+        return Objects.equals(fire, that.fire) && Objects.equals(quadrant, that.quadrant) && Objects.equals(linkedAt, that.linkedAt) && Objects.equals(extinguishedAt, that.extinguishedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fire, quadrant, createdAt, extinguishedAt);
+        return Objects.hash(fire, quadrant, linkedAt, extinguishedAt);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class FireQuadrantLog extends BaseEntity {
         return "FireQuadrantLog{" +
                 "fire=" + fire +
                 ", quadrant=" + quadrant +
-                ", createdAt=" + createdAt +
+                ", linkedAt=" + linkedAt +
                 ", extinguishedAt=" + extinguishedAt +
                 '}';
     }

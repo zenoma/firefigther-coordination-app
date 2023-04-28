@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetTeamsByIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 import UsersList from "../user/UsersList";
@@ -11,7 +11,9 @@ import TeamUserAdd from "./TeamUserAdd";
 
 export default function TeamView() {
   const token = useSelector(selectToken);
-  let { teamId } = useParams();
+
+  const location = useLocation();
+  const teamId = location.state.teamId;
 
   const payload = {
     token: token,
@@ -29,7 +31,7 @@ export default function TeamView() {
   };
 
   return (
-    <Box sx={{ padding: 3 }} display="flex">
+    <Box >
       <BackButton />
       {error ? (
         <h1>{t("generic-error")}</h1>
@@ -47,7 +49,7 @@ export default function TeamView() {
           <Grid item xs={3} sm={7} md={12}>
             <UsersList
               teamId={data.id}
-              name={teamId}
+              name={data.code}
               users={data.users}
               reloadData={reloadData}
             />

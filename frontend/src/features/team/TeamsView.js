@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
-import { useGetTeamsByOrganizationIdQuery } from "../../api/teamApi";
+import { useGetActiveTeamsByOrganizationIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 import TeamCreateDialog from "./TeamCreateDialog";
 import TeamsTable from "./TeamsTable";
@@ -27,7 +27,7 @@ export default function TeamsView(props) {
     data: teamsList,
     isFetching,
     refetch,
-  } = useGetTeamsByOrganizationIdQuery(payload, {
+  } = useGetActiveTeamsByOrganizationIdQuery(payload, {
     refetchOnMountOrArgChange: true,
   });
 

@@ -62,6 +62,21 @@ export const userApi = baseApi.injectEndpoints({
         return response;
       },
     }),
+    updateRole: build.mutation({
+      query: (payload) => ({
+        url: "/users/" + payload.id + "/updateRole",
+        method: "POST",
+        body: {
+          userRole: payload.userRole,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
   }),
 });
 
@@ -71,4 +86,5 @@ export const {
   useSignUpMutation,
   useChangePasswordMutation,
   useLoginFromTokenMutation,
+  useUpdateRoleMutation,
 } = userApi;

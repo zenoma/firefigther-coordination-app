@@ -58,6 +58,10 @@ public interface PersonalManagementService {
 
     List<Team> findTeamsByOrganizationId(Long organizationId);
 
+    List<Team> findActiveTeamsByOrganizationId(Long organizationId);
+
+    List<Team> findAllActiveTeams();
+
 
     // VEHICLE SERVICES
 
@@ -71,9 +75,14 @@ public interface PersonalManagementService {
 
     List<Vehicle> findVehiclesByOrganizationId(Long organizationId);
 
+    List<Vehicle> findActiveVehiclesByOrganizationId(Long organizationId);
+
     List<Vehicle> findAllVehicles();
 
+    List<Vehicle> findAllActiveVehicles();
+
     // USER SERVICES
+
 
     List<User> findAllUsers();
 

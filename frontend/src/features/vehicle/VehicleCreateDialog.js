@@ -84,7 +84,7 @@ export default function VehicleCreateDialog(props) {
         </Fab>
       </Box>
       <Dialog maxWidth={"md"} open={open} onClose={handleClose}>
-        <DialogTitle>{t("vehicle-create-title")} </DialogTitle>
+        <DialogTitle sx={{ color: "primary.light" }}>{t("vehicle-create-title")} </DialogTitle>
         <DialogContent>
           <FormControl>
             <Grid container spacing={2}>
@@ -97,7 +97,7 @@ export default function VehicleCreateDialog(props) {
                   margin="normal"
                   value={vehiclePlate}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -111,7 +111,7 @@ export default function VehicleCreateDialog(props) {
                   margin="normal"
                   value={type}
                   onChange={(e) => handleChange(e)}
-                  helperText=" "
+                  variant="standard"
                   required
                   sx={{ display: "flex" }}
                 />
@@ -131,5 +131,5 @@ export default function VehicleCreateDialog(props) {
 }
 
 VehicleCreateDialog.propTypes = {
-  organizationId: PropTypes.string.isRequired,
+  organizationId: PropTypes.number.isRequired,
 };

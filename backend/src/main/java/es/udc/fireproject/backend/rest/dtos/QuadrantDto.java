@@ -1,5 +1,6 @@
 package es.udc.fireproject.backend.rest.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.locationtech.jts.geom.Coordinates;
 
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ public class QuadrantDto extends BaseDto {
 
     private Long fireId;
 
+    @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime linkedAt;
 
 
