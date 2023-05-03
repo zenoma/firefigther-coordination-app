@@ -51,6 +51,9 @@ export default function FireDetailsView() {
   const fireId = location.state.fireId;
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+  
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -65,7 +68,10 @@ export default function FireDetailsView() {
   const [openQuadrantExtinguish, setOpenQuadrantExtinguish] = useState(false);
   const [openExtinguish, setOpenExtinguish] = useState(false);
 
-  const payload = { token: token, fireId: fireId };
+
+
+
+  const payload = { token: token, fireId: fireId, locale: locale };
 
   const { data, refetch } = useGetFireByIdQuery(payload);
 
@@ -94,6 +100,7 @@ export default function FireDetailsView() {
       token: token,
       fireId: fireId,
       quadrantId: selectedId,
+      locale: locale
     };
 
     linkFire(payload)
@@ -118,6 +125,7 @@ export default function FireDetailsView() {
     const payload = {
       token: token,
       fireId: fireId,
+      locale: locale
     };
 
     extinguishFire(payload)
@@ -151,6 +159,7 @@ export default function FireDetailsView() {
       description: description,
       type: type,
       fireIndex: fireIndex,
+      locale: locale
     };
 
     updateFire(payload)
@@ -196,6 +205,7 @@ export default function FireDetailsView() {
       token: token,
       fireId: fireId,
       quadrantId: quadrantId,
+      locale: locale
     };
 
     extinguishQuadrantByFireId(payload)

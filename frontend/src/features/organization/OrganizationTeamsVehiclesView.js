@@ -18,11 +18,14 @@ export default function OrganizationTeamsVehiclesView() {
   const organizationId = location.state.organizationId;
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [open, setOpen] = useState(false);
   const payload = {
     token: token,
     organizationId: organizationId,
+    locale: locale
   };
   const { data: organizationData } = useGetOrganizationByIdQuery(payload);
 

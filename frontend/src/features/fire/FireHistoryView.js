@@ -34,7 +34,9 @@ export default function FireHistoryView() {
   const token = useSelector(selectToken);
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(); 
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [quadrants, setQuadrants] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -45,11 +47,13 @@ export default function FireHistoryView() {
   const { data: fireData } = useGetFireByIdQuery({
     token: token,
     fireId: fireId,
+    locale: locale,
   });
 
   const { data: globalStatistics } = useGetGlobalStatisticsByFireIdQuery({
     token: token,
     fireId: fireId,
+    locale: locale, 
   });
 
   const payload = {
@@ -57,6 +61,7 @@ export default function FireHistoryView() {
     fireId: fireId,
     startDate: dayjs(selectedStartDate).format("YYYY-MM-DDTHH:mm:ss"),
     endDate: dayjs(selectedEndDate).format("YYYY-MM-DDTHH:mm:ss"),
+    locale: locale
   };
 
   const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload, {

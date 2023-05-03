@@ -13,6 +13,7 @@ export const logApi = baseApi.injectEndpoints({
           payload.endDate,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -30,6 +31,7 @@ export const logApi = baseApi.injectEndpoints({
           payload.endDate,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -47,6 +49,7 @@ export const logApi = baseApi.injectEndpoints({
           payload.endDate,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -58,6 +61,7 @@ export const logApi = baseApi.injectEndpoints({
         url: "/logs/statistics?fireId=" + payload.fireId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

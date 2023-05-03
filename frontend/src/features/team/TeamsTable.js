@@ -45,7 +45,11 @@ function createData(id, code, createdAt) {
 
 export default function TeamsTable(props) {
   const token = useSelector(selectToken);
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+
   const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
@@ -84,6 +88,7 @@ export default function TeamsTable(props) {
       teamId: teamId,
       code: code,
       token: token,
+      locale: locale
     };
     updateTeam(payload)
       .unwrap()

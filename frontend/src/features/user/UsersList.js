@@ -54,6 +54,8 @@ export default function TeamItem(props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [deleteUser] = useDeleteUserMutation();
 
@@ -64,6 +66,7 @@ export default function TeamItem(props) {
   const payload = {
     token: token,
     teamId: props.teamId,
+    locale: locale
   };
 
   const handleClickOpenDelete = (id) => {
@@ -73,6 +76,7 @@ export default function TeamItem(props) {
 
   const handleDeleteClick = () => {
     payload.memberId = memberId;
+
     deleteUser(payload)
       .unwrap()
       .then(() => {

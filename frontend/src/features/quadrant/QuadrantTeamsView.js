@@ -30,7 +30,11 @@ import teamImage from "../../assets/images/team-banner.jpg"
 
 export default function QuadrantTeamsView(props) {
   const token = useSelector(selectToken);
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(-1);
 
@@ -51,6 +55,7 @@ export default function QuadrantTeamsView(props) {
       teamId: selectedId,
       token: token,
       gid: quadrantId,
+      locale: locale,
     };
 
     if (selectedId === -1) {
@@ -75,6 +80,7 @@ export default function QuadrantTeamsView(props) {
     vehicleId: selectedId,
     token: token,
     quadrantId: quadrantId,
+    locale: locale
   };
 
   const {

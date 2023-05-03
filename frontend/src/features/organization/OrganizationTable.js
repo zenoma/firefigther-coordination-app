@@ -50,6 +50,8 @@ export default function OrganizationTable(props) {
   const userRole = useSelector(selectUser).userRole;
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -96,6 +98,7 @@ export default function OrganizationTable(props) {
       headquartersAddress: headquartersAddress,
       coordinates: data,
       token: token,
+      locale: locale
     };
     updateOrganization(payload)
       .unwrap()
@@ -147,6 +150,7 @@ export default function OrganizationTable(props) {
     const payload = {
       token: token,
       organizationId: organizationId,
+      locale: locale
     };
 
     deleteOrganizationById(payload)

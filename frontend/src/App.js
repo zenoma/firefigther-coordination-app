@@ -27,7 +27,7 @@ import {
 } from "./features/user/login/LoginSlice";
 
 import { CircularProgress } from "@mui/material";
-import { withTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import FireDetailsView from "./features/fire/FireDetailsView";
 import FireHistoryView from "./features/fire/FireHistoryView";
 import FireManagementView from "./features/fire/FireManagementView";
@@ -41,6 +41,9 @@ function App({ t }) {
 
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
+
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [login] = useLoginFromTokenMutation();
 
@@ -56,9 +59,9 @@ function App({ t }) {
 
   useEffect(() => {
 
-
     const payload = {
       token: token,
+      locale: locale,
     };
 
     if (token !== "") {
@@ -76,7 +79,7 @@ function App({ t }) {
     } else {
       setLoading(false);
     }
-  }, [token, dispatch, login, t]);
+  }, [token, dispatch, login, t, locale]);
 
   if (loading) {
     return (

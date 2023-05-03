@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { useLoginMutation } from "../../../api/userApi.js";
 import { emailValidation } from "../../../app/utils/validations.js";
@@ -25,6 +24,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ export default function Login() {
     const payload = {
       userName: email,
       password: password,
-      locale: i18next.language
+      locale: locale
     };
 
     login(payload)

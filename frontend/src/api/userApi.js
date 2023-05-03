@@ -4,11 +4,11 @@ import { baseApi } from "./baseApi";
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query({
-      query: (payload, locale) => ({
+      query: (payload) => ({
         url: "/users/",
         headers: {
           Authorization: "Bearer " + payload.token,
-          "Accept-Language": locale,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -34,6 +34,7 @@ export const userApi = baseApi.injectEndpoints({
         method: "POST",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
         body: payload,
       }),
@@ -64,6 +65,7 @@ export const userApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -79,6 +81,7 @@ export const userApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

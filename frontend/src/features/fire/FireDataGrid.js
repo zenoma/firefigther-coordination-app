@@ -59,13 +59,15 @@ export default function FireDataGrid() {
     localeText = esES.components.MuiDataGrid.defaultProps.localeText;
   }
 
+  const locale = i18n.language;
+
   const {
     data: fires,
     error,
     isLoading,
     refetch,
   } = useGetFiresQuery(
-    { token: token },
+    { token: token, locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }
@@ -157,6 +159,7 @@ export default function FireDataGrid() {
       token: token,
       description: description,
       type: fireType,
+      locale: locale,
     };
 
     createFire(payload)

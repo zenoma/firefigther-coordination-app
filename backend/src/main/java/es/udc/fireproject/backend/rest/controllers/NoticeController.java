@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/notices")
@@ -33,8 +32,7 @@ public class NoticeController {
 
     @PostMapping("")
     public ResponseEntity<NoticeDto> create(@Validated({NoticeDto.AllValidations.class}) @RequestBody NoticeDto noticeDto,
-                                            @RequestAttribute(required = false) Long userId,
-                                            @RequestHeader("Accept-Language") Locale locale) throws InstanceNotFoundException {
+                                            @RequestAttribute(required = false) Long userId) throws InstanceNotFoundException {
 
         Notice notice = NoticeConversor.toNotice(noticeDto);
 

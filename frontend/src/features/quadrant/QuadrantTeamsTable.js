@@ -38,6 +38,8 @@ function createData(id, code, organizationCode, deployAt) {
 export default function QuadrantTeamsTable(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -73,6 +75,7 @@ export default function QuadrantTeamsTable(props) {
       token: token,
       gid: quadrantId,
       teamId: teamId,
+      locale: locale
     };
 
     retractTeam(payload)

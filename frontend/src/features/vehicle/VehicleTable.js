@@ -45,7 +45,10 @@ function createData(id, vehiclePlate, type, createdAt) {
 
 export default function VehicleTable(props) {
   const token = useSelector(selectToken);
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -86,6 +89,7 @@ export default function VehicleTable(props) {
       vehiclePlate: vehiclePlate,
       type: type,
       token: token,
+      locale: locale
     };
     updateVehicle(payload)
       .unwrap()
@@ -128,6 +132,7 @@ export default function VehicleTable(props) {
     const payload = {
       token: token,
       vehicleId: vehicleId,
+      locale: locale
     };
 
     deleteVehicleById(payload)

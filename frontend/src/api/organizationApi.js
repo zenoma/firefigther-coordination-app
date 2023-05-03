@@ -2,22 +2,12 @@ import { baseApi } from "./baseApi";
 
 export const organizationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getOrganizations: build.query({
-      query: (token) => ({
-        url: "/organizations",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }),
-      transformResponse: (response, meta, arg) => {
-        return response;
-      },
-    }),
     getOrganizationById: build.query({
       query: (payload) => ({
         url: "/organizations/" + payload.organizationId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -30,6 +20,7 @@ export const organizationApi = baseApi.injectEndpoints({
           "/organizations?organizationTypeName=" + payload.organizationTypeName,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -52,6 +43,7 @@ export const organizationApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -73,6 +65,7 @@ export const organizationApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -85,6 +78,7 @@ export const organizationApi = baseApi.injectEndpoints({
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -96,7 +90,6 @@ export const organizationApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetOrganizationsQuery,
   useGetOrganizationByIdQuery,
   useCreateOrganizationMutation,
   useUpdateOrganizationMutation,

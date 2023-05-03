@@ -12,11 +12,14 @@ import { useGetMyNoticesQuery } from "../../api/noticeApi";
 export default function MyTeamList() {
   const [list, setList] = useState("");
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const token = useSelector(selectToken);
 
   const payload = {
     token: token,
+    locale: locale
   };
 
   const { data, error, isLoading } = useGetMyNoticesQuery(payload, { refetchOnMountOrArgChange: true });

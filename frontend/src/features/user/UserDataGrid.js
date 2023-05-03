@@ -24,6 +24,7 @@ export default function UserDataGrid({ childToParent }) {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
 
   const location = useLocation();
@@ -52,7 +53,7 @@ export default function UserDataGrid({ childToParent }) {
     isLoading,
     refetch
   } = useGetUsersQuery(
-    { token: token, },
+    { token: token, locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }
@@ -96,6 +97,7 @@ export default function UserDataGrid({ childToParent }) {
       userRole: userRole,
       id: row.id,
       token: token,
+      locale: locale,
     };
 
 

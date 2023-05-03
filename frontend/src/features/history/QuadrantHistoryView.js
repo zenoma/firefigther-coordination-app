@@ -24,12 +24,15 @@ export default function QuadrantHistoryView() {
   const endDate = dayjs(location.state.endDate, "DD-MM-YYYY HH:mm:ss");
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const payload = {
     token: token,
     quadrantId: quadrantId,
     startDate: dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss"),
     endDate: dayjs(endDate).format("YYYY-MM-DDTHH:mm:ss"),
+    locale: locale
   };
 
 

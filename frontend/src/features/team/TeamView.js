@@ -12,15 +12,19 @@ import TeamUserAdd from "./TeamUserAdd";
 export default function TeamView() {
   const token = useSelector(selectToken);
 
+  const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+
   const location = useLocation();
   const teamId = location.state.teamId;
 
   const payload = {
     token: token,
     teamId: teamId,
+    locale: locale
   };
 
-  const { t } = useTranslation();
 
   const { data, error, isLoading, refetch } = useGetTeamsByIdQuery(payload, {
     refetchOnMountOrArgChange: true,

@@ -18,12 +18,15 @@ import vehicleImage from "../../assets/images/vehicle-banner.jpg"
 export default function VehiclesView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const organizationId = props.organizationId;
 
   const payload = {
     token: token,
     organizationId: organizationId,
+    locale: locale
   };
 
   const {
