@@ -5,7 +5,9 @@ import es.udc.fireproject.backend.model.entities.notice.NoticeRepository;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
+import es.udc.fireproject.backend.model.exceptions.NoticeCheckStatusException;
+import es.udc.fireproject.backend.model.exceptions.NoticeDeleteStatusException;
+import es.udc.fireproject.backend.model.exceptions.NoticeUpdateStatusException;
 import es.udc.fireproject.backend.model.services.notice.NoticeServiceImpl;
 import es.udc.fireproject.backend.utils.NoticeOm;
 import org.junit.jupiter.api.Assertions;
@@ -64,7 +66,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValid_whenUpdateNotice_thenCreatedSuccessfully() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValid_whenUpdateNotice_thenCreatedSuccessfully() throws NoticeUpdateStatusException, InstanceNotFoundException {
 
 
         Notice createdNotice = noticeService.create(defaultNotice.getBody(), defaultNotice.getLocation());
@@ -86,7 +88,7 @@ class NoticeServiceImplTest {
 
 
         Notice finalNotice = createdNotice;
-        Assertions.assertThrows(NoticeStatusException.class, () -> noticeService.update(finalNotice.getId(), finalNotice.getBody(), finalNotice.getLocation()), "NoticeStatusException must be thrown");
+        Assertions.assertThrows(NoticeUpdateStatusException.class, () -> noticeService.update(finalNotice.getId(), finalNotice.getBody(), finalNotice.getLocation()), "NoticeStatusException must be thrown");
 
     }
 
@@ -101,7 +103,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws InstanceNotFoundException, NoticeDeleteStatusException {
 
         Notice createdNotice = noticeService.create(defaultNotice.getBody(), defaultNotice.getLocation());
         noticeService.deleteById(createdNotice.getId());
@@ -127,20 +129,20 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenAcceptedNotice_whenDeleteNotice_thenNoticeStatusException() {
+    void givenAcceptedNotice_whenDeleteNotice_thenNoticeDeleteStatusException() {
 
         defaultNotice.setStatus(NoticeStatus.ACCEPTED);
         Mockito.when(noticeRepository.findById(Mockito.any())).thenReturn(Optional.of(defaultNotice));
 
 
-        Assertions.assertThrows(NoticeStatusException.class,
+        Assertions.assertThrows(NoticeDeleteStatusException.class,
                 () -> noticeService.deleteById(defaultNotice.getId()),
                 "NoticeStatusException must be thrown");
 
     }
 
     @Test
-    void givenValidNotice_whenCheckNotice_thenStatusChanged() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValidNotice_whenCheckNotice_thenStatusChanged() throws NoticeCheckStatusException, InstanceNotFoundException {
 
         Notice createdNotice = noticeService.create(defaultNotice.getBody(), defaultNotice.getLocation());
 
@@ -165,7 +167,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenAcceptedNotice_whenCheckNotice_thenNoticeStatusException() {
+    void givenAcceptedNotice_whenCheckNotice_thenNoticeCheckStatusException() {
 
 
         Notice createdNotice = noticeService.create(defaultNotice.getBody(), defaultNotice.getLocation());
@@ -174,7 +176,7 @@ class NoticeServiceImplTest {
 
         Notice finalNotice = createdNotice;
         Mockito.when(noticeRepository.findById(Mockito.any())).thenReturn(Optional.of(finalNotice));
-        Assertions.assertThrows(NoticeStatusException.class,
+        Assertions.assertThrows(NoticeCheckStatusException.class,
                 () -> noticeService.checkNotice(finalNotice.getId(), NoticeStatus.ACCEPTED),
                 "NoticeStatusException must be thrown");
 

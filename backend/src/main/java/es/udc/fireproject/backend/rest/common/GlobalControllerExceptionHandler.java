@@ -1,8 +1,6 @@
 package es.udc.fireproject.backend.rest.common;
 
-import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.PermissionException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,6 +24,8 @@ public class GlobalControllerExceptionHandler {
             PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
     private static final String ILLEGAL_ARGUMENT_EXCEPTION_CODE = "project.exceptions.IllegalArgumentException";
     private static final String DATA_INTEGRITY_EXCEPTION_CODE = "project.exceptions.DataIntegrityViolationException";
+    private static final String ALREADY_DISMANTLED_EXCEPTION_CODE = "project.exceptions.AlreadyDismantledException";
+    private static final String ALREADY_EXIST_EXCEPTION_CODE = "project.exceptions.AlreadyExistException";
 
 
     @Autowired
@@ -104,5 +104,30 @@ public class GlobalControllerExceptionHandler {
         return new ErrorsDto(errorMessage + "\n" + exception.getMessage());
 
     }
+
+    @ExceptionHandler(AlreadyDismantledException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleAlreadyDismantledException(AlreadyDismantledException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(ALREADY_DISMANTLED_EXCEPTION_CODE,
+                new Object[]{exception.getName(), exception.getId()}, ALREADY_DISMANTLED_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleAlreadyExistException(AlreadyExistException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(ALREADY_EXIST_EXCEPTION_CODE,
+                new Object[]{exception.getName(), exception.getId()}, ALREADY_EXIST_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
 
 }

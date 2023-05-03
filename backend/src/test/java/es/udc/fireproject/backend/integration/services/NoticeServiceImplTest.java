@@ -3,9 +3,7 @@ package es.udc.fireproject.backend.integration.services;
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 import es.udc.fireproject.backend.model.entities.user.User;
-import es.udc.fireproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.notice.NoticeService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.utils.NoticeOm;
@@ -56,7 +54,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValid_whenUpdateNotice_thenCreatedSuccessfully() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValid_whenUpdateNotice_thenCreatedSuccessfully() throws NoticeUpdateStatusException, InstanceNotFoundException {
 
         Notice notice = NoticeOm.withDefaultValues();
         notice = noticeService.create(notice.getBody(), notice.getLocation());
@@ -78,7 +76,7 @@ class NoticeServiceImplTest {
 
 
         Notice finalNotice = notice;
-        Assertions.assertThrows(NoticeStatusException.class, () -> noticeService.update(finalNotice.getId(), finalNotice.getBody(), finalNotice.getLocation()), "NoticeStatusException must be thrown");
+        Assertions.assertThrows(NoticeUpdateStatusException.class, () -> noticeService.update(finalNotice.getId(), finalNotice.getBody(), finalNotice.getLocation()), "NoticeStatusException must be thrown");
 
     }
 
@@ -93,7 +91,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws NoticeDeleteStatusException, InstanceNotFoundException {
 
         Notice notice = NoticeOm.withDefaultValues();
         notice = noticeService.create(notice.getBody(), notice.getLocation());
@@ -118,22 +116,22 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenAcceptedNotice_whenDeleteNotice_thenNoticeStatusException()
-            throws InstanceNotFoundException, NoticeStatusException {
+    void givenAcceptedNotice_whenDeleteNotice_thenNoticeDeleteStatusException()
+            throws InstanceNotFoundException, NoticeCheckStatusException {
 
         Notice notice = NoticeOm.withDefaultValues();
         notice = noticeService.create(notice.getBody(), notice.getLocation());
         noticeService.checkNotice(notice.getId(), NoticeStatus.ACCEPTED);
 
         Notice finalNotice = notice;
-        Assertions.assertThrows(NoticeStatusException.class,
+        Assertions.assertThrows(NoticeDeleteStatusException.class,
                 () -> noticeService.deleteById(finalNotice.getId()),
                 "NoticeStatusException must be thrown");
 
     }
 
     @Test
-    void givenValidNotice_whenCheckNotice_thenStatusChanged() throws NoticeStatusException, InstanceNotFoundException {
+    void givenValidNotice_whenCheckNotice_thenStatusChanged() throws NoticeCheckStatusException, InstanceNotFoundException {
 
         Notice notice = NoticeOm.withDefaultValues();
 
@@ -158,7 +156,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenAcceptedNotice_whenCheckNotice_thenNoticeStatusException() {
+    void givenAcceptedNotice_whenCheckNotice_thenNoticeCheckStatusException() {
 
         Notice notice = NoticeOm.withDefaultValues();
 
@@ -166,7 +164,7 @@ class NoticeServiceImplTest {
 
         Notice finalNotice = notice;
         notice.setStatus(NoticeStatus.ACCEPTED);
-        Assertions.assertThrows(NoticeStatusException.class,
+        Assertions.assertThrows(NoticeCheckStatusException.class,
                 () -> noticeService.checkNotice(finalNotice.getId(), NoticeStatus.ACCEPTED),
                 "NoticeStatusException must be thrown");
 

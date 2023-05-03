@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.exceptions;
 
-public class ExtinguishedFireException extends Exception {
+public class ExtinguishedFireException extends EntityException {
 
-    public ExtinguishedFireException(Long id, String message) {
-        super("Fire with id: " + id + " " + message);
+    public ExtinguishedFireException(String name, String id) {
+        super(name, id);
     }
 }

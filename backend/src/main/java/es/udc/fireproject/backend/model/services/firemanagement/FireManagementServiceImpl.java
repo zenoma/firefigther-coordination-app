@@ -9,10 +9,9 @@ import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.team.TeamRepository;
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
 import es.udc.fireproject.backend.model.entities.vehicle.VehicleRepository;
+import es.udc.fireproject.backend.model.exceptions.AlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
-import es.udc.fireproject.backend.model.exceptions.VehicleAlreadyDismantledException;
 import es.udc.fireproject.backend.model.services.logsmanagement.LogManagementServiceImpl;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,12 +112,12 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException, TeamAlreadyDismantledException, VehicleAlreadyDismantledException {
+    public Fire extinguishFire(Long id) throws InstanceNotFoundException, ExtinguishedFireException, AlreadyDismantledException, AlreadyDismantledException {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
         if (fire.getFireIndex() == FireIndex.EXTINGUIDO) {
-            throw new ExtinguishedFireException(id, "already extinguished");
+            throw new ExtinguishedFireException(Fire.class.getSimpleName(), fire.getId().toString());
         }
 
         fire.setFireIndex(FireIndex.EXTINGUIDO);
@@ -144,12 +143,12 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Fire extinguishQuadrantByFireId(Long id, Integer quadrantId) throws InstanceNotFoundException, ExtinguishedFireException, TeamAlreadyDismantledException, VehicleAlreadyDismantledException {
+    public Fire extinguishQuadrantByFireId(Long id, Integer quadrantId) throws InstanceNotFoundException, ExtinguishedFireException, AlreadyDismantledException, AlreadyDismantledException {
 
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
         if (fire.getFireIndex() == FireIndex.EXTINGUIDO) {
-            throw new ExtinguishedFireException(id, "already extinguished");
+            throw new ExtinguishedFireException(Fire.class.getSimpleName(), fire.getId().toString());
         }
 
         Quadrant quadrant = quadrantRepository.findById(quadrantId).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, quadrantId));
@@ -180,7 +179,7 @@ public class FireManagementServiceImpl implements FireManagementService {
         Fire fire = fireRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(FIRE_NOT_FOUND, id));
 
         if (fireIndex == FireIndex.EXTINGUIDO) {
-            throw new ExtinguishedFireException(id, ": fireIndex can not be update to EXTINGUISHED");
+            throw new ExtinguishedFireException(Fire.class.getSimpleName(), fire.getId().toString());
         }
 
         if (fire.getFireIndex() != FireIndex.EXTINGUIDO) {
@@ -188,7 +187,7 @@ public class FireManagementServiceImpl implements FireManagementService {
             fire.setType(type);
             fire.setFireIndex(fireIndex);
         } else {
-            throw new ExtinguishedFireException(id, "can not be updated");
+            throw new ExtinguishedFireException(Fire.class.getSimpleName(), fire.getId().toString());
         }
 
         return fireRepository.save(fire);
@@ -197,10 +196,10 @@ public class FireManagementServiceImpl implements FireManagementService {
 
     // EXTINCTION SERVICES
     @Override
-    public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public Team deployTeam(Long teamId, Integer gid) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
         if (team.getDismantleAt() != null) {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
         Quadrant quadrant = quadrantRepository.findById(gid).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, gid));
@@ -218,10 +217,10 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Team retractTeam(Long teamId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public Team retractTeam(Long teamId) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
         if (team.getDismantleAt() != null) {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
         if (team.getQuadrant() != null) {
@@ -235,10 +234,10 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+    public Vehicle deployVehicle(Long vehicleId, Integer gid) throws InstanceNotFoundException, AlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
         if (vehicle.getDismantleAt() != null) {
-            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+            throw new AlreadyDismantledException(Vehicle.class.getSimpleName(), vehicle.getVehiclePlate());
         }
 
 
@@ -258,10 +257,10 @@ public class FireManagementServiceImpl implements FireManagementService {
     }
 
     @Override
-    public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+    public Vehicle retractVehicle(Long vehicleId) throws InstanceNotFoundException, AlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, vehicleId));
         if (vehicle.getDismantleAt() != null) {
-            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+            throw new AlreadyDismantledException(Vehicle.class.getSimpleName(), vehicle.getVehiclePlate());
         }
 
         if (vehicle.getQuadrant() != null) {

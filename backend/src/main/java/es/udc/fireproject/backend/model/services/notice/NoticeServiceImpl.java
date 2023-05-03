@@ -7,9 +7,7 @@ import es.udc.fireproject.backend.model.entities.notice.NoticeRepository;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
 import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
-import es.udc.fireproject.backend.model.exceptions.ImageAlreadyUploadedException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import java.util.List;
 @Service
 public class NoticeServiceImpl implements NoticeService {
 
-    public static final String NOTICE_NOT_FOUND = "Notice not found";
     @Autowired
     NoticeRepository noticeRepository;
 
@@ -45,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
     public Notice create(String body, Point location, Long userId) throws InstanceNotFoundException {
         Notice notice = new Notice(body, NoticeStatus.PENDING, location);
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException("User not found", userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(User.class.getSimpleName(), userId));
 
         notice.setUser(user);
         notice.setCreatedAt(LocalDateTime.now());
@@ -56,12 +53,12 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Notice update(Long id, String body, Point location) throws NoticeStatusException, InstanceNotFoundException {
+    public Notice update(Long id, String body, Point location) throws NoticeUpdateStatusException, InstanceNotFoundException {
 
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
 
         if (notice.getStatus() != NoticeStatus.PENDING) {
-            throw new NoticeStatusException(notice.getId(), "can not be updated, current status: " + notice.getStatus());
+            throw new NoticeUpdateStatusException(notice.getId(), notice.getStatus().toString());
         }
         notice.setBody(body);
         notice.setLocation(location);
@@ -71,12 +68,12 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteById(Long id) throws InstanceNotFoundException, NoticeStatusException {
+    public void deleteById(Long id) throws InstanceNotFoundException, NoticeDeleteStatusException {
 
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
 
         if (notice.getStatus() != NoticeStatus.PENDING) {
-            throw new NoticeStatusException(notice.getId(), "can not be deleted, current status: " + notice.getStatus());
+            throw new NoticeDeleteStatusException(notice.getId(), notice.getStatus().toString());
         }
         noticeRepository.deleteById(id);
     }
@@ -89,29 +86,30 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Notice findById(Long id) throws InstanceNotFoundException {
 
-        return noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+        return noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
     }
 
     @Override
-    public void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeStatusException {
+    public void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeCheckStatusException {
 
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
 
 
         if (notice.getStatus() == NoticeStatus.REJECTED || notice.getStatus() == NoticeStatus.ACCEPTED) {
-            throw new NoticeStatusException(notice.getId(), "can not be checked, current status: " + notice.getStatus());
+            throw new NoticeCheckStatusException(notice.getId(), notice.getStatus().toString());
         }
         notice.setStatus(status);
+        noticeRepository.save(notice);
     }
 
     @Override
     public Notice addImage(Long id, String name) throws InstanceNotFoundException, ImageAlreadyUploadedException {
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(NOTICE_NOT_FOUND, id));
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
 
 
         Image image = imageRepository.findByName(name);
         if (image != null) {
-            throw new ImageAlreadyUploadedException(image.getId(), "another image with that name is already uploaded");
+            throw new ImageAlreadyUploadedException(Image.class.getSimpleName(), image.getId().toString());
         }
 
         image = new Image(notice, name);

@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.model.exceptions;
 
-public class ImageAlreadyUploadedException extends Exception {
-    public ImageAlreadyUploadedException(Long id, String message) {
+public class ImageAlreadyUploadedException extends EntityException {
 
-        super("Image with id: " + id + " " + message);
+    public ImageAlreadyUploadedException(String name, String id) {
+        super(name, id);
     }
 }

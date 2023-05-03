@@ -40,15 +40,15 @@ public interface PersonalManagementService {
 
     List<Team> findTeamByCode(String code);
 
-    Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, TeamAlreadyExistException;
+    Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, AlreadyExistException;
 
-    void dismantleTeamById(Long id) throws InstanceNotFoundException, TeamAlreadyDismantledException;
+    void dismantleTeamById(Long id) throws InstanceNotFoundException, AlreadyDismantledException;
 
-    Team updateTeam(Long id, String code) throws InstanceNotFoundException, TeamAlreadyDismantledException;
+    Team updateTeam(Long id, String code) throws InstanceNotFoundException, AlreadyDismantledException;
 
-    Team addMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException;
+    Team addMember(Long teamId, Long userId) throws InstanceNotFoundException, AlreadyDismantledException;
 
-    void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException;
+    void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException, AlreadyDismantledException;
 
     List<User> findAllUsersByTeamId(Long teamId) throws InstanceNotFoundException;
 
@@ -67,9 +67,9 @@ public interface PersonalManagementService {
 
     Vehicle createVehicle(String vehiclePlate, String type, Long organizationId) throws InstanceNotFoundException;
 
-    void dismantleVehicleById(Long id) throws InstanceNotFoundException, VehicleAlreadyDismantledException;
+    void dismantleVehicleById(Long id) throws InstanceNotFoundException, AlreadyDismantledException;
 
-    Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException, VehicleAlreadyDismantledException;
+    Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException, AlreadyDismantledException;
 
     Vehicle findVehicleById(Long teamId) throws InstanceNotFoundException;
 

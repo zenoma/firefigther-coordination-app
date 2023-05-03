@@ -2,9 +2,9 @@ package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.team.Team;
 import es.udc.fireproject.backend.model.entities.user.User;
+import es.udc.fireproject.backend.model.exceptions.AlreadyDismantledException;
+import es.udc.fireproject.backend.model.exceptions.AlreadyExistException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
-import es.udc.fireproject.backend.model.exceptions.TeamAlreadyExistException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.TeamDto;
@@ -35,7 +35,7 @@ public class TeamController {
     public TeamDto create(@RequestAttribute Long userId,
                           @Validated({UserDto.AllValidations.class})
                           @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException, TeamAlreadyExistException {
+            throws InstanceNotFoundException, AlreadyExistException {
 
         Team team = personalManagementService.createTeam(jsonParams.get("code"), Long.valueOf(jsonParams.get("organizationId")));
         return TeamConversor.toTeamDto(team);
@@ -101,20 +101,20 @@ public class TeamController {
 
     @PostMapping("/{id}/addUser/")
     public void addUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.addMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
 
     @DeleteMapping("/{id}")
     public void delete(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.dismantleTeamById(id);
     }
 
     @PostMapping("/{id}/deleteUser")
     public void deleteUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.deleteMember(id, Long.valueOf(jsonParams.get("memberId")));
     }
 
@@ -130,21 +130,21 @@ public class TeamController {
 
     @PutMapping("/{id}")
     public void update(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody TeamDto teamDto)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.updateTeam(id, teamDto.getCode());
     }
 
 
     @PostMapping("/{id}/deploy")
     public TeamDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
 
         return TeamConversor.toTeamDto(fireManagementService.deployTeam(id, Integer.valueOf(jsonParams.get("gid"))));
     }
 
     @PostMapping("/{id}/retract")
     public TeamDto retract(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
 
         return TeamConversor.toTeamDto(fireManagementService.retractTeam(id));
 
