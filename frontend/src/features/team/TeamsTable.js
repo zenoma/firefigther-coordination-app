@@ -145,7 +145,7 @@ export default function TeamsTable(props) {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 400 }}>
+      <TableContainer sx={{ maxHeight: 270 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -175,6 +175,7 @@ export default function TeamsTable(props) {
                       return (
                         <TableCell
                           sx={{
+                            padding: "7px",
                             "&:hover": {
                               cursor: "pointer",
                             },

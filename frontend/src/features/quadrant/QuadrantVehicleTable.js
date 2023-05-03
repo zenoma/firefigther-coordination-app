@@ -103,7 +103,7 @@ export default function QuadrantVehicleTable(props) {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 400 }}>
+      <TableContainer sx={{ maxHeight: 260 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -136,7 +136,9 @@ export default function QuadrantVehicleTable(props) {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell key={column.id} align={column.align} sx={{
+                          padding: "8px"
+                        }}>
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}

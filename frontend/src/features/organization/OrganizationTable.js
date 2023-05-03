@@ -15,7 +15,7 @@ import {
   useDeleteOrganizationByIdMutation,
   useUpdateOrganizationMutation
 } from "../../api/organizationApi";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -47,6 +47,7 @@ function createData(id, code, name, address, lon, lat) {
 
 export default function OrganizationTable(props) {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -231,7 +232,7 @@ export default function OrganizationTable(props) {
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}
-                          {column.id === "options" ? (
+                          {column.id === "options" && userRole === "COORDINATOR" ? (
                             <Box>
                               <IconButton
                                 color="primary"

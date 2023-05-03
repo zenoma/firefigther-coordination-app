@@ -25,6 +25,8 @@ import VehicleDataGrid from "../vehicle/VehicleDataGrid";
 import { useDeployVehicleMutation } from "../../api/vehicleApi";
 import { toast } from "react-toastify";
 
+import vehicleImage from "../../assets/images/vehicle-banner.jpg"
+
 export default function QuadrantVehiclesView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
@@ -96,7 +98,17 @@ export default function QuadrantVehiclesView(props) {
         <Typography
           variant="h6"
           margin={1}
-          sx={{ fontWeight: "bold", color: "primary.light" }}
+          sx={{
+            fontWeight: "bold",
+            color: "primary.light",
+            backgroundImage: `url(${vehicleImage})`,
+            minHeight: 75,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textShadow: "1px 1px 2px #000",
+            backgroundBlendMode: "screen",
+          }}
         >
           {t("quadrant-vehicles-deployed")}
         </Typography>

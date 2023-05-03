@@ -25,6 +25,9 @@ import TeamDataGrid from "../team/TeamDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
 import QuadrantTeamsTable from "./QuadrantTeamsTable";
 
+
+import teamImage from "../../assets/images/team-banner.jpg"
+
 export default function QuadrantTeamsView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
@@ -97,7 +100,17 @@ export default function QuadrantTeamsView(props) {
         <Typography
           variant="h6"
           margin={1}
-          sx={{ fontWeight: "bold", color: "primary.light" }}
+          sx={{
+            fontWeight: "bold",
+            color: "primary.light",
+            backgroundImage: `url(${teamImage})`,
+            minHeight: 75,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textShadow: "1px 1px 2px #000",
+            backgroundBlendMode: "screen",
+          }}
         >
           {t("quadrant-teams-deployed")}
         </Typography>

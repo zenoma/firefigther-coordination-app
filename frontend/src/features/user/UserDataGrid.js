@@ -45,6 +45,7 @@ export default function UserDataGrid({ childToParent }) {
 
   const [pageSize, setPageSize] = useState(10);
 
+
   const {
     data: users,
     error,
@@ -248,7 +249,7 @@ export default function UserDataGrid({ childToParent }) {
 
   return (
     <Box sx={{ height: 500 }}>
-      {showWarning && (
+      {showWarning && !isUserManagement && (
         <Alert severity="warning">{t("user-selected-has-team-warning")}</Alert>
       )}
       {error ? (

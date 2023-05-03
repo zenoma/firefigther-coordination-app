@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { selectToken } from "./login/LoginSlice";
+import { selectToken, selectUser } from "./login/LoginSlice";
 
 import {
   Alert,
@@ -46,6 +46,7 @@ function createData(id, dni, email, firstName, lastName, phoneNumber) {
 
 export default function TeamItem(props) {
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
   const [memberId, setMemberId] = useState("-1");
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -181,7 +182,7 @@ export default function TeamItem(props) {
                                 {column.format && typeof value === "number"
                                   ? column.format(value)
                                   : value}
-                                {column.id === "options" ? (
+                                {column.id === "options" && user.userRole !== "USER" ? (
                                   <Button
                                     color="primary"
                                     aria-label="add"

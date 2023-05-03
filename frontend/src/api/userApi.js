@@ -1,12 +1,14 @@
 import { baseApi } from "./baseApi";
 
+
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query({
-      query: (payload) => ({
+      query: (payload, locale) => ({
         url: "/users/",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -16,6 +18,9 @@ export const userApi = baseApi.injectEndpoints({
     login: build.mutation({
       query: (payload) => ({
         url: "/users/login",
+        headers: {
+          "Accept-Language": payload.locale,
+        },
         method: "POST",
         body: payload,
       }),
@@ -39,6 +44,9 @@ export const userApi = baseApi.injectEndpoints({
     signUp: build.mutation({
       query: (payload) => ({
         url: "/users/signUp",
+        headers: {
+          "Accept-Language": payload.locale,
+        },
         method: "POST",
         body: payload,
       }),

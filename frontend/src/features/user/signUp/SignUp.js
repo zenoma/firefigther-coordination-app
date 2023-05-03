@@ -21,6 +21,7 @@ import {
 } from "../../../app/utils/validations.js";
 import "./SignUp.css";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -92,6 +93,7 @@ export default function Login() {
       lastName: lastName,
       dni: dni,
       phoneNumber: phoneNumber,
+      locale: i18next.language
     };
 
     signUp(payload)

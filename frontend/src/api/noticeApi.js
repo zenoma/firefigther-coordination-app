@@ -1,10 +1,11 @@
 import { baseApi } from "./baseApi";
+import i18n from "i18next";
 
 export const noticeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createNotice: build.mutation({
       query: (payload) => ({
-        url: "/notices",
+        url: `/notices?lang=${i18n.language}`,
         method: "POST",
         body: {
           body: payload.body,
@@ -20,7 +21,7 @@ export const noticeApi = baseApi.injectEndpoints({
     }),
     getMyNotices: build.query({
       query: (payload) => ({
-        url: "/notices",
+        url: `/notices?lang=${i18n.language}`,
         headers: {
           Authorization: "Bearer " + payload.token,
         },

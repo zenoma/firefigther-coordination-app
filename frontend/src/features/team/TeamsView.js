@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,8 @@ import { useGetActiveTeamsByOrganizationIdQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 import TeamCreateDialog from "./TeamCreateDialog";
 import TeamsTable from "./TeamsTable";
+
+import teamImage from "../../assets/images/team-banner.jpg";
 
 export default function TeamsView(props) {
   const token = useSelector(selectToken);
@@ -36,30 +38,39 @@ export default function TeamsView(props) {
   };
 
   return (
-    <Box>
-      <Paper
+    <Paper
+      sx={{
+        padding: "10px",
+        borderRadius: "10px",
+      }}
+    >
+      <Typography
+        variant="h6"
+        margin={1}
         sx={{
-          padding: "10px",
+          fontWeight: "bold",
+          color: "primary.light",
+          backgroundImage: `url(${teamImage})`,
+          minHeight: 75,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textShadow: "1px 1px 2px #000",
+          backgroundBlendMode: "screen",
         }}
       >
-        <Typography
-          variant="h6"
-          margin={1}
-          sx={{ fontWeight: "bold", color: "primary.light" }}
-        >
-          {t("teams-list")}
-        </Typography>
-        {isFetching ? (
-          <CircularProgress />
-        ) : teamsList ? (
-          <TeamsTable reloadData={reloadData} teams={teamsList} />
-        ) : null}
-        <TeamCreateDialog
-          reloadData={reloadData}
-          organizationId={organizationId}
-        />
-      </Paper>
-    </Box>
+        {t("teams-list")}
+      </Typography>
+      {isFetching ? (
+        <CircularProgress />
+      ) : teamsList ? (
+        <TeamsTable reloadData={reloadData} teams={teamsList} />
+      ) : null}
+      <TeamCreateDialog
+        reloadData={reloadData}
+        organizationId={organizationId}
+      />
+    </Paper>
   );
 }
 

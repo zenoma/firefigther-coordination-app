@@ -12,6 +12,9 @@ import { selectToken } from "../user/login/LoginSlice";
 import VehicleCreateDialog from "./VehicleCreateDialog";
 import VehicleTable from "./VehicleTable";
 
+
+import vehicleImage from "../../assets/images/vehicle-banner.jpg"
+
 export default function VehiclesView(props) {
   const token = useSelector(selectToken);
   const { t } = useTranslation();
@@ -45,7 +48,17 @@ export default function VehiclesView(props) {
         <Typography
           variant="h6"
           margin={1}
-          sx={{ fontWeight: "bold", color: "primary.light" }}
+          sx={{
+            fontWeight: "bold",
+            color: "primary.light",
+            backgroundImage: `url(${vehicleImage})`,
+            minHeight: 75,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textShadow: "1px 1px 2px #000",
+            backgroundBlendMode: "screen",
+          }}
         >
           {t("vehicle-list")}
         </Typography>

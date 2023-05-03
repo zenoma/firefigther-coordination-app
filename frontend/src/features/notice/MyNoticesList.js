@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { CircularProgress, Divider, ListItemButton, ListItemText, Typography } from "@mui/material";
+import { CircularProgress, Divider, ListItemText, Paper, Typography } from "@mui/material";
 import List from "@mui/material/List";
-import ListSubheader from "@mui/material/ListSubheader";
 
 import { selectToken } from "../user/login/LoginSlice";
 
+import { useTranslation } from "react-i18next";
 import { useGetMyNoticesQuery } from "../../api/noticeApi";
 
 export default function MyTeamList() {
   const [list, setList] = useState("");
+  const { t } = useTranslation();
 
   const token = useSelector(selectToken);
 
@@ -25,39 +26,44 @@ export default function MyTeamList() {
   }
 
   return (
-    <List
+    <Paper
       sx={{
-        width: "100%",
-        maxWidth: 500,
-        maxHeight: 500,
-        overflow: "auto",
+        display: "inline-block",
+        padding: "10px",
+        minWidth: "1000px",
       }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            Mis avisos
-          </Typography>
-        </ListSubheader>
-      }
+      variant="outlined"
     >
-      {error ? (
-        <h1>Oh no, there was an error</h1>
-      ) : isLoading ? (
-        <CircularProgress />
-      ) : data ? (
-        data.map((item, index) => {
-          return (
-            <div key={item.id}>
-              <ListItemButton>
+      <Typography
+        variant="h4"
+        margin={1}
+        sx={{ fontWeight: "bold", color: "primary.light" }}
+      >
+        {t("my-notices")}
+      </Typography>
+      <List
+        sx={{
+          display: "inline-block",
+          minWidth: 500,
+        }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+      >
+        {error ? (
+          t("generic-error")
+        ) : isLoading ? (
+          <CircularProgress />
+        ) : data ? (
+          data.map((item, index) => {
+            return (
+              <div key={item.id}>
                 <ListItemText primary={item.body} secondary={"Status: " + item.status} />
-              </ListItemButton>
-              <Divider component="li" />
-            </div>
-          );
-        })
-      ) : null}
-    </List>
+                <Divider component="li" />
+              </div>
+            );
+          })
+        ) : null}
+      </List>
+    </Paper >
   );
 }

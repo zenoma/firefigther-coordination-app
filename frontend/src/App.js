@@ -46,13 +46,17 @@ function App({ t }) {
 
   const logged = useSelector(selectToken);
 
-  const userRole = useSelector(selectUser).userRole;
+  const userRole = useSelector(selectUser)?.userRole || 'USER';
 
 
   const [token] = useState(localStorage.getItem("token") || "");
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
+
+
     const payload = {
       token: token,
     };
@@ -92,33 +96,33 @@ function App({ t }) {
             <Route path="/login" element={<Login />} />
             <Route
               path="/sign-up"
-              element={!logged ? <SignUp /> : <Navigate replace to={"/"} />}
+              element={!logged ? <SignUp /> : <Navigate replace to="/" />}
             />
             <Route
               path="/profile"
-              element={logged ? <Profile /> : <Navigate replace to={"/"} />}
+              element={logged ? <Profile /> : <Navigate replace to="/" />}
             />
             <Route path="/change-password" element={<ChangePassword />} />
+
             <Route
               path="/organizations"
-              // TODO: Change when roles implemented
-              element={
-                userRole ? <OrganizationView /> : <Navigate to="/" />
-              }
+              element={logged ? <OrganizationView /> : <Navigate replace to="/" />}
             />
-            <Route path="/teams" element={<TeamView />} />
-            <Route path="/my-team" element={<MyTeamView />} />
+            <Route path="/teams" element={logged ? <TeamView /> : <Navigate replace to="/" />} />
+            <Route path="/my-team" element={logged ? <MyTeamView /> : <Navigate replace to="/" />} />
             <Route
               path="/organizations/teams"
-              element={<OrganizationTeamsVehiclesView />}
+              element={logged ? <OrganizationTeamsVehiclesView /> : <Navigate replace to="/" />}
             />
-            <Route path="/my-notices" element={<MyNoticesList />} />{" "}
-            <Route path="/fire-management" element={<FireManagementView />} />
-            <Route path="/fire-details/" element={<FireDetailsView />} />
-            <Route path="/quadrant" element={<QuadrantView />} />
-            <Route path="/quadrant-history" element={<QuadrantHistoryView />} />
-            <Route path="/fire-history" element={<FireHistoryView />} />
-            <Route path="/user-management" element={<UserManagementView />} />
+            <Route path="/my-notices" element={logged ? <MyNoticesList /> : <Navigate replace to="/" />} />
+
+            <Route path="/fire-management" element={userRole !== 'USER' ? <FireManagementView /> : <Navigate to="/" />} />
+            <Route path="/fire-details/" element={userRole !== 'USER' ? <FireDetailsView /> : <Navigate to="/" />} />
+            <Route path="/fire-history" element={userRole !== 'USER' ? <FireHistoryView /> : <Navigate to="/" />} />
+            <Route path="/quadrant" element={userRole !== 'USER' ? <QuadrantView /> : <Navigate to="/" />} />
+            <Route path="/quadrant-history" element={userRole !== 'USER' ? <QuadrantHistoryView /> : <Navigate to="/" />} />
+
+            <Route path="/user-management" element={userRole === 'COORDINATOR' ? <UserManagementView /> : <Navigate to="/" />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

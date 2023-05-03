@@ -29,33 +29,40 @@ import Typography from "@mui/material/Typography";
 import LoginIcon from "@mui/icons-material/Login";
 import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { logout, selectToken } from "../user/login/LoginSlice";
+import { logout, selectToken, selectUser } from "../user/login/LoginSlice";
 import { SwitchLanguajeDropdown } from "./SwitchLanguajeDropdown";
 import { SwitchThemeButton } from "./SwitchThemeButton";
 
 const drawerWidth = 240;
 const loggedSettingsMenu = ["profile", "logout"];
 const notLoggedSettingsMenu = ["login", "sign-up"];
+
 const pages = [
   {
     name: "organizations",
     icon: <GroupsIcon />,
+    role: ["COORDINATOR", "MANAGER", "USER"],
+
   },
   {
     name: "my-team",
     icon: <GroupWorkIcon />,
+    role: ["COORDINATOR", "MANAGER", "USER"],
   },
   {
     name: "my-notices",
     icon: <ArticleIcon />,
+    role: ["COORDINATOR", "MANAGER", "USER"],
   },
   {
     name: "fire-management",
     icon: <WhatshotIcon />,
+    role: ["COORDINATOR", "MANAGER"],
   },
   {
     name: "user-management",
     icon: <People />,
+    role: ["COORDINATOR"],
   },
 ];
 
@@ -63,7 +70,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
@@ -76,6 +82,7 @@ export default function PersistentDrawerLeft() {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -272,32 +279,21 @@ export default function PersistentDrawerLeft() {
 
         <Divider />
         <List>
-          {pages.map((item) => (
-            <ListItem
-              key={item.name}
-              disablePadding
-              onClick={(e) => handleClickItemList(e, item.name)}
-            >
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={t(item.name)} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {pages
+            .filter((item) => item.role.includes(userRole))
+            .map((item) => (
+              <ListItem
+                key={item.name}
+                disablePadding
+                onClick={(e) => handleClickItemList(e, item.name)}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={t(item.name)} />
+                </ListItemButton>
+              </ListItem>
+            ))}
         </List>
-        {/* <Divider />
-        <List>
-          {["PAGE 4", "PAGE 5", "PAGE 6"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
         <Divider />
         <SwitchLanguajeDropdown />
         <SwitchThemeButton />

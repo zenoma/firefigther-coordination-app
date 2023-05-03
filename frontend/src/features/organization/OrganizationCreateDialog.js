@@ -103,7 +103,6 @@ export default function OrganizationCreateDialog(props) {
   useEffect(() => { }, [open]);
 
 
-  //FIXME: Update translations
   return (
     <div>
       <Box m={1}>

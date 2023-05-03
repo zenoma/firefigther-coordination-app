@@ -1,17 +1,15 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 
 import InfoIcon from "@mui/icons-material/Info";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import OrganizationDetailsCard from "../organization/OrganizationDetailsCard";
 import { useTranslation } from "react-i18next";
+import OrganizationDetailsCard from "../organization/OrganizationDetailsCard";
 
 export default function TeamCard(props) {
   const [open, setOpen] = useState(false);
@@ -79,7 +77,7 @@ export default function TeamCard(props) {
       <Dialog open={open} onClose={handleToClose}>
         <OrganizationDetailsCard data={props.data["organization"]} />
         <Button onClick={handleToClose} color="primary" autoFocus>
-          Close
+          t("close")
         </Button>
       </Dialog>
     </Container>

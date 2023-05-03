@@ -12,11 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { useLoginMutation } from "../../../api/userApi.js";
 import { emailValidation } from "../../../app/utils/validations.js";
 import "./Login.css";
 import { validLogin } from "./LoginSlice.js";
-import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -43,6 +44,7 @@ export default function Login() {
     const payload = {
       userName: email,
       password: password,
+      locale: i18next.language
     };
 
     login(payload)

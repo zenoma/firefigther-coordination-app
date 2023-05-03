@@ -136,7 +136,6 @@ export default function FireDetailsView() {
   };
 
   const handleClickOpenEdit = (data) => {
-    //FIXME: Set data.
     setDescription(data.description);
     setType(data.type);
     setFireIndex(data.fireIndex);

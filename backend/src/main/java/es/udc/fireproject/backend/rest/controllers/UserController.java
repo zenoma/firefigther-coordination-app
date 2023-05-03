@@ -64,6 +64,7 @@ public class UserController {
 
     }
 
+
     @ExceptionHandler(InsufficientRolePermissionException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
