@@ -24,6 +24,9 @@ public class VehicleDto extends BaseDto {
     @JsonFormat(pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDateTime dismantleAt;
 
+    public VehicleDto() {
+    }
+
     public VehicleDto(Long id, String vehiclePlate, String type, LocalDateTime createdAt, OrganizationDto organization, QuadrantInfoDto quadrant, LocalDateTime deployAt, LocalDateTime dismantleAt) {
         this.id = id;
         this.vehiclePlate = vehiclePlate;

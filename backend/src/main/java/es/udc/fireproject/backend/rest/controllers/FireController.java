@@ -1,14 +1,16 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.fire.Fire;
+import es.udc.fireproject.backend.model.exceptions.AlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.ExtinguishedFireException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.TeamAlreadyDismantledException;
-import es.udc.fireproject.backend.model.exceptions.VehicleAlreadyDismantledException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
+import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.dtos.FireDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.FireConversor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,11 +18,28 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 @RestController
 @RequestMapping("/fires")
 public class FireController {
+
+
+    private static final String EXTINGUISHED_FIRE_EXCEPTION_CODE = "project.exceptions.ExtinguishedFireException";
+    @Autowired
+    private MessageSource messageSource;
+
+    @ExceptionHandler(ExtinguishedFireException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleExtinguishedFireException(ExtinguishedFireException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(EXTINGUISHED_FIRE_EXCEPTION_CODE,
+                new Object[]{exception.getId()}, EXTINGUISHED_FIRE_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+    }
 
     @Autowired
     FireManagementService fireManagementService;
@@ -60,7 +79,7 @@ public class FireController {
     public FireDto extinguishFire(@RequestAttribute Long userId,
                                   @PathVariable Long id)
 
-            throws InstanceNotFoundException, ExtinguishedFireException, VehicleAlreadyDismantledException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, ExtinguishedFireException, AlreadyDismantledException {
         return FireConversor.toFireDto(fireManagementService.extinguishFire(id));
     }
 
@@ -68,7 +87,7 @@ public class FireController {
     public FireDto extinguishFire(@RequestAttribute Long userId,
                                   @PathVariable Long id,
                                   @RequestParam(value = "quadrantId", required = true) Integer quadrantId)
-            throws InstanceNotFoundException, ExtinguishedFireException, VehicleAlreadyDismantledException, TeamAlreadyDismantledException {
+            throws InstanceNotFoundException, ExtinguishedFireException, AlreadyDismantledException {
         return FireConversor.toFireDto(fireManagementService.extinguishQuadrantByFireId(id, quadrantId));
     }
 

@@ -14,25 +14,30 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetOrganizationsByOrganizationTypeQuery } from "../../api/organizationApi";
 import { useGetOrganizationTypesQuery } from "../../api/organizationTypeApi";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 import OrganizationCreateDialog from "./OrganizationCreateDialog";
 import OrganizationTable from "./OrganizationTable";
 
 export default function OrganizationsView() {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
   const [selectedOrganizationType, setSelectedOrganizationType] = useState(".");
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const payload = {
     token: token,
     organizationTypeName: selectedOrganizationType,
+    locale: locale,
   };
 
   const {
     data: organizationTypes,
     errorOrganizationTypesQuery,
     isLoadingOrganizationTypesQuery,
-  } = useGetOrganizationTypesQuery(token);
+  } = useGetOrganizationTypesQuery({ token: token, locale: locale });
 
   const {
     data: organizationsList,
@@ -112,10 +117,10 @@ export default function OrganizationsView() {
             />
           ) : null}
 
-          <OrganizationCreateDialog
+          {userRole === "COORDINATOR" && <OrganizationCreateDialog
             organizationTypes={organizationTypes}
             reloadData={reloadData}
-          />
+          />}
         </FormControl>
       ) : null}
     </Paper>

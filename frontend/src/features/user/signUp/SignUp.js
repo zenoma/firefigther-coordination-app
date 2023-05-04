@@ -4,23 +4,23 @@ import { toast } from "react-toastify";
 
 import {
   Button,
-  TextField,
   FormControl,
   FormLabel,
   Grid,
   Link,
   Paper,
+  TextField,
   Typography,
 } from "@mui/material";
 
+import { useTranslation } from "react-i18next";
 import { useSignUpMutation } from "../../../api/userApi";
 import {
-  emailValidation,
   dniValidation,
+  emailValidation,
   phoneNumberValidation,
 } from "../../../app/utils/validations.js";
 import "./SignUp.css";
-import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -34,6 +34,8 @@ export default function Login() {
   const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [signUp] = useSignUpMutation();
   const navigate = useNavigate();
@@ -92,6 +94,7 @@ export default function Login() {
       lastName: lastName,
       dni: dni,
       phoneNumber: phoneNumber,
+      locale: locale
     };
 
     signUp(payload)

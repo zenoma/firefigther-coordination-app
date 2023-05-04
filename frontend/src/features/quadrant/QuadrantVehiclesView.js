@@ -18,16 +18,22 @@ import Typography from "@mui/material/Typography";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetQuadrantByIdQuery } from "../../api/quadrantApi";
-import { selectToken } from "../user/login/LoginSlice";
-import QuadrantVehicleTable from "./QuadrantVehicleTable";
-import VehicleDataGrid from "../vehicle/VehicleDataGrid";
-import { useDeployVehicleMutation } from "../../api/vehicleApi";
 import { toast } from "react-toastify";
+import { useGetQuadrantByIdQuery } from "../../api/quadrantApi";
+import { useDeployVehicleMutation } from "../../api/vehicleApi";
+import { selectToken } from "../user/login/LoginSlice";
+import VehicleDataGrid from "../vehicle/VehicleDataGrid";
+import QuadrantVehicleTable from "./QuadrantVehicleTable";
+
+import vehicleImage from "../../assets/images/vehicle-banner.jpg";
 
 export default function QuadrantVehiclesView(props) {
   const token = useSelector(selectToken);
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+
   const [open, setOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState(-1);
@@ -49,6 +55,7 @@ export default function QuadrantVehiclesView(props) {
       vehicleId: selectedId,
       token: token,
       gid: quadrantId,
+      locale: locale,
     };
     if (selectedId === -1) {
       toast.error(t("vehicle-deployed-no-selected"));
@@ -71,6 +78,7 @@ export default function QuadrantVehiclesView(props) {
   const payload = {
     token: token,
     quadrantId: quadrantId,
+    locale: locale,
   };
 
   const {
@@ -96,7 +104,17 @@ export default function QuadrantVehiclesView(props) {
         <Typography
           variant="h6"
           margin={1}
-          sx={{ fontWeight: "bold", color: "primary.light" }}
+          sx={{
+            fontWeight: "bold",
+            color: "primary.light",
+            backgroundImage: `url(${vehicleImage})`,
+            minHeight: 75,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textShadow: "1px 1px 2px #000",
+            backgroundBlendMode: "screen",
+          }}
         >
           {t("quadrant-vehicles-deployed")}
         </Typography>

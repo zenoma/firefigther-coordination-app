@@ -25,6 +25,8 @@ export default function VehicleCreateDialog(props) {
   const organizationId = props.organizationId;
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const token = useSelector(selectToken);
 
@@ -62,6 +64,7 @@ export default function VehicleCreateDialog(props) {
       type: type,
       token: token,
       organizationId: organizationId,
+      locale: locale,
     };
 
     createVehicle(payload)
@@ -74,7 +77,7 @@ export default function VehicleCreateDialog(props) {
       .catch((error) => toast.error(t("vehicle-created-error")));
   };
 
-  useEffect(() => {}, [open]);
+  useEffect(() => { }, [open]);
 
   return (
     <div>

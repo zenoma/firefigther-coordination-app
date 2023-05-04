@@ -24,6 +24,8 @@ export default function TeamCreateDialog(props) {
   const organizationId = props.organizationId;
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const token = useSelector(selectToken);
 
@@ -52,6 +54,7 @@ export default function TeamCreateDialog(props) {
       code: code,
       token: token,
       organizationId: organizationId,
+      locale: locale,
     };
 
     createTeam(payload)

@@ -12,6 +12,8 @@ export default function Notice() {
   const [coordinates, setCoordinates] = useState("");
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;  
 
   const token = useSelector(selectToken);
 
@@ -33,7 +35,7 @@ export default function Notice() {
   };
 
   const handleClick = async (e) => {
-    const payload = { body: body, coordinates: coordinates, token: token };
+    const payload = { body: body, coordinates: coordinates, token: token, locale: locale };
 
     createNotice(payload).unwrap();
     setBody("");

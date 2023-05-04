@@ -30,6 +30,8 @@
   "geographic-map": "Mapa geográfico",
   "create-notice": "Crear aviso",
   "create-notice-placeholder": "Inserte la descripción del aviso...",
+  "notice-created-sucessfully": "Aviso creado correctamente",
+  "notice-created-error": "Hubo un problema al crear el error",
 
   "select-organization-type": "Seleciona el tipo de organización a mostrar",
   "choose-organization-type": "Selecciona el tipo de organización",
@@ -147,11 +149,16 @@
   "quadrant-extinguish": "Extinguir",
   "quadrant-extinguish-dialog": "¿Está seguro de extinguir este cuadrante?",
   "quadrant-extinguish-text": "Se liberarán los equipos y los vehículos del cuadrante y se marcará el cuadrante como extinguido.",
+  "quadrant-extinguished-successfully": "Se ha extinguido el cuadrante satisfactoriamente",
+  "quadrant-extinguished-error": "No se ha podido extinguir el cuadrante",
 
   "fire-history-title": "Histórico del incendio",
   "tittle-date-picker": "Selector de rango de fechas",
   "start-date-picker": "Fecha de inicio",
   "end-date-picker": "Fecha de fin",
+  "date-invalid-body": "Porfavor selecciona las fechas correctamente",
+  "start-date-after-end-date": "La fecha de inicio es posterior a la fecha de fin",
+  "end-date-before-start-date": "La fecha de fin es anterior a la fecha de inicio",
 
   "global-statistics": "Estadísticas globales",
   "teams-mobilized": "Equipos movilizados",

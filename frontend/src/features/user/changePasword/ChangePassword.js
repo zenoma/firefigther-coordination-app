@@ -16,6 +16,8 @@ export default function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
@@ -37,6 +39,7 @@ export default function ChangePassword() {
       newPassword: newPassword,
       id: user.id,
       token: token,
+      locale: locale,
     };
 
     changePassword(payload)

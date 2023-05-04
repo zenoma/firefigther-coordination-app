@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 
-import { logout, selectUser } from "../login/LoginSlice";
 import { useTranslation } from "react-i18next";
+import { logout, selectUser } from "../login/LoginSlice";
 
 export default function Profile() {
   const dispatch = useDispatch();

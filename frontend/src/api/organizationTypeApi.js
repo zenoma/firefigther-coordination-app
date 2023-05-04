@@ -3,10 +3,11 @@ import { baseApi } from "./baseApi";
 export const organizationTypeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getOrganizationTypes: build.query({
-      query: (token) => ({
+      query: (payload) => ({
         url: "/organizationTypes",
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

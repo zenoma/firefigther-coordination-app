@@ -149,7 +149,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, TeamAlreadyExistException {
+    public Team createTeam(String code, Long organizationId) throws InstanceNotFoundException, AlreadyExistException {
 
         Organization organization = findOrganizationById(organizationId);
 
@@ -157,7 +157,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
         for (Team item : teams) {
             if (item.getCode().equals(code)) {
-                throw new TeamAlreadyExistException(code);
+                throw new AlreadyExistException(Team.class.getSimpleName(), item.getCode());
             }
         }
         Team team = new Team(code, organization);
@@ -170,7 +170,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
     @Override
     @Transactional
-    public void dismantleTeamById(Long id) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public void dismantleTeamById(Long id) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id));
 
         if (team.getDismantleAt() == null) {
@@ -186,18 +186,18 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
             teamRepository.save(team);
         } else {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
 
     }
 
     @Override
-    public Team updateTeam(Long id, String code) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public Team updateTeam(Long id, String code) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, id));
 
         if (team.getDismantleAt() != null) {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
         team.setCode(code);
@@ -209,11 +209,11 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public Team addMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public Team addMember(Long teamId, Long userId) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
 
         if (team.getDismantleAt() != null) {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
         User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
@@ -233,10 +233,10 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException, TeamAlreadyDismantledException {
+    public void deleteMember(Long teamId, Long userId) throws InstanceNotFoundException, AlreadyDismantledException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new InstanceNotFoundException(TEAM_NOT_FOUND, teamId));
         if (team.getDismantleAt() != null) {
-            throw new TeamAlreadyDismantledException(team.getCode());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), team.getCode());
         }
 
         User user = userRepository.findById(userId).orElseThrow(() -> new InstanceNotFoundException(USER_NOT_FOUND, userId));
@@ -299,7 +299,7 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
     }
 
     @Override
-    public void dismantleVehicleById(Long id) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+    public void dismantleVehicleById(Long id) throws InstanceNotFoundException, AlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
 
         if (vehicle.getDismantleAt() == null) {
@@ -308,16 +308,16 @@ public class PersonalManagementServiceImpl implements PersonalManagementService 
 
             vehicleRepository.save(vehicle);
         } else {
-            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+            throw new AlreadyDismantledException(Vehicle.class.getSimpleName(), vehicle.getVehiclePlate());
         }
 
     }
 
     @Override
-    public Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+    public Vehicle updateVehicle(Long id, String vehiclePlate, String type) throws InstanceNotFoundException, AlreadyDismantledException {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(VEHICLE_NOT_FOUND, id));
         if (vehicle.getDismantleAt() != null) {
-            throw new VehicleAlreadyDismantledException(vehicle.getVehiclePlate());
+            throw new AlreadyDismantledException(Team.class.getSimpleName(), vehicle.getVehiclePlate());
         }
 
         vehicle.setVehiclePlate(vehiclePlate);

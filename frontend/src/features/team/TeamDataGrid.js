@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useGetactiveTeamsQuery } from "../../api/teamApi";
+import { useGetActiveTeamsQuery } from "../../api/teamApi";
 import { selectToken } from "../user/login/LoginSlice";
 
 export default function TeamDataGrid({ childToParent }) {
@@ -18,6 +18,7 @@ export default function TeamDataGrid({ childToParent }) {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   var localeText;
 
@@ -27,15 +28,16 @@ export default function TeamDataGrid({ childToParent }) {
 
   const [pageSize, setPageSize] = React.useState(10);
 
+  const payload = {
+    token: token,
+    locale: locale
+  }
+
   const {
     data: teams,
     error,
     isLoading,
-  } = useGetactiveTeamsQuery(
-    { token: token },
-    {
-      refetchOnMountOrArgChange: true,
-    }
+  } = useGetActiveTeamsQuery(payload, { refetchOnMountOrArgChange: true, }
   );
 
   const initData = (teams) => {

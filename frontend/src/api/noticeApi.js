@@ -4,7 +4,7 @@ export const noticeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createNotice: build.mutation({
       query: (payload) => ({
-        url: "/notices",
+        url: `/notices`,
         method: "POST",
         body: {
           body: payload.body,
@@ -12,6 +12,7 @@ export const noticeApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -20,9 +21,10 @@ export const noticeApi = baseApi.injectEndpoints({
     }),
     getMyNotices: build.query({
       query: (payload) => ({
-        url: "/notices",
+        url: `/notices`,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

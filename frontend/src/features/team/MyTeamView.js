@@ -10,9 +10,13 @@ import { useGetMyTeamQuery } from "../../api/teamApi";
 import TeamNotFoundPage from "../../errors/TeamNotFound";
 import UsersList from "../user/UsersList";
 import TeamCard from "./TeamCard";
+import { useTranslation } from "react-i18next";
 
 export default function MyTeamView(props) {
   const token = useSelector(selectToken);
+
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
 
   const teamId = useParams()["id"];
@@ -20,6 +24,7 @@ export default function MyTeamView(props) {
   const payload = {
     token: token,
     teamId: teamId,
+    locale: locale,
   };
 
   const { data, error, isLoading } = useGetMyTeamQuery(payload, {

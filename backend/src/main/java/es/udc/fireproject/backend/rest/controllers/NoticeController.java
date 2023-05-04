@@ -2,15 +2,16 @@ package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.notice.Notice;
 import es.udc.fireproject.backend.model.entities.notice.NoticeStatus;
-import es.udc.fireproject.backend.model.exceptions.ImageAlreadyUploadedException;
-import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.NoticeStatusException;
+import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.notice.NoticeService;
+import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.FileUploadUtil;
 import es.udc.fireproject.backend.rest.dtos.NoticeDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.NoticeConversor;
 import es.udc.fireproject.backend.rest.exceptions.ImageRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -22,18 +23,77 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/notices")
 public class NoticeController {
 
+    private static final String IMAGE_ALREADY_UPLOADED_EXCEPTION_CODE = "project.exceptions.ImageAlreadyUploadedException";
+    private static final String NOTICE_CHECK_STATUS_EXCEPTION_CODE = "project.exceptions.NoticeCheckStatusException";
+    private static final String NOTICE_UPDATE_STATUS_EXCEPTION_CODE = "project.exceptions.NoticeUpdateStatusException";
+    private static final String NOTICE_DELETE_STATUS_EXCEPTION_CODE = "project.exceptions.NoticeDeleteStatusException";
+
+
+    @Autowired
+    private MessageSource messageSource;
+
+
+    @ExceptionHandler(ImageAlreadyUploadedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleImageAlreadyUploadedException(ImageAlreadyUploadedException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(IMAGE_ALREADY_UPLOADED_EXCEPTION_CODE,
+                new Object[]{exception.getId()}, IMAGE_ALREADY_UPLOADED_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+    }
+
+
+    @ExceptionHandler(NoticeCheckStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleNoticeCheckStatusException(NoticeCheckStatusException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(NOTICE_CHECK_STATUS_EXCEPTION_CODE,
+                new Object[]{exception.getId(), exception.getStatus()}, NOTICE_CHECK_STATUS_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(NoticeUpdateStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleNoticeUpdateStatusException(NoticeUpdateStatusException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(NOTICE_UPDATE_STATUS_EXCEPTION_CODE,
+                new Object[]{exception.getId(), exception.getStatus()}, NOTICE_UPDATE_STATUS_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
+    @ExceptionHandler(NoticeDeleteStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorsDto handleNoticeDeleteStatusException(NoticeDeleteStatusException exception, Locale locale) {
+
+        String errorMessage = messageSource.getMessage(NOTICE_DELETE_STATUS_EXCEPTION_CODE,
+                new Object[]{exception.getId(), exception.getStatus()}, NOTICE_DELETE_STATUS_EXCEPTION_CODE, locale);
+
+        return new ErrorsDto(errorMessage);
+
+    }
+
+
     @Autowired
     NoticeService noticeService;
 
     @PostMapping("")
-    public ResponseEntity<NoticeDto> create(
-            @Validated({NoticeDto.AllValidations.class}) @RequestBody NoticeDto noticeDto,
-            @RequestAttribute(required = false) Long userId) throws InstanceNotFoundException {
+    public ResponseEntity<NoticeDto> create(@Validated({NoticeDto.AllValidations.class}) @RequestBody NoticeDto noticeDto,
+                                            @RequestAttribute(required = false) Long userId) throws InstanceNotFoundException {
 
         Notice notice = NoticeConversor.toNotice(noticeDto);
 
@@ -73,7 +133,7 @@ public class NoticeController {
     public void update(@RequestAttribute Long userId,
                        @Validated({NoticeDto.AllValidations.class}) @RequestBody NoticeDto noticeDto,
                        @PathVariable Long id)
-            throws InstanceNotFoundException, NoticeStatusException {
+            throws InstanceNotFoundException, NoticeUpdateStatusException {
 
         Notice notice = NoticeConversor.toNotice(noticeDto);
 
@@ -82,7 +142,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeStatusException {
+    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, NoticeUpdateStatusException {
 
         noticeService.deleteById(id);
 
@@ -91,7 +151,7 @@ public class NoticeController {
     @PutMapping("/{id}/status")
     public void checkNotice(@RequestAttribute Long userId,
                             @PathVariable Long id, @RequestParam("status") NoticeStatus status)
-            throws InstanceNotFoundException, NoticeStatusException {
+            throws InstanceNotFoundException, NoticeCheckStatusException {
 
         noticeService.checkNotice(id, status);
 

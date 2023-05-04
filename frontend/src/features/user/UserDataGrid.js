@@ -24,6 +24,7 @@ export default function UserDataGrid({ childToParent }) {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
 
   const location = useLocation();
@@ -45,13 +46,14 @@ export default function UserDataGrid({ childToParent }) {
 
   const [pageSize, setPageSize] = useState(10);
 
+
   const {
     data: users,
     error,
     isLoading,
     refetch
   } = useGetUsersQuery(
-    { token: token, },
+    { token: token, locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }
@@ -95,6 +97,7 @@ export default function UserDataGrid({ childToParent }) {
       userRole: userRole,
       id: row.id,
       token: token,
+      locale: locale,
     };
 
 
@@ -248,7 +251,7 @@ export default function UserDataGrid({ childToParent }) {
 
   return (
     <Box sx={{ height: 500 }}>
-      {showWarning && (
+      {showWarning && !isUserManagement && (
         <Alert severity="warning">{t("user-selected-has-team-warning")}</Alert>
       )}
       {error ? (

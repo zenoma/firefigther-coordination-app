@@ -18,6 +18,7 @@ export default function VehicleDataGrid({ childToParent }) {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   var localeText;
 
@@ -32,7 +33,7 @@ export default function VehicleDataGrid({ childToParent }) {
     error,
     isLoading,
   } = useGetActiveVehiclesQuery(
-    { token: token },
+    { token: token, locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }

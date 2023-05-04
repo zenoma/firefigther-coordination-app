@@ -1,16 +1,22 @@
-import { Box, Paper, Typography } from '@mui/material'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import BackButton from '../../utils/BackButton'
-import UserDataGrid from "../UserDataGrid"
+import { Paper, Typography } from '@mui/material';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import UserDataGrid from "../UserDataGrid";
 
 export default function UserManagementView() {
     const { t } = useTranslation();
 
 
     return (
-        <Box sx={{ padding: 3 }}>
-            <BackButton />
+        <Paper
+            sx={{
+                color: "primary.light",
+                padding: 2,
+                minWidth: "900px",
+                margin: 1,
+            }}
+            variant="outlined"
+        >
             <Typography
                 variant="h4"
                 margin={1}
@@ -18,17 +24,7 @@ export default function UserManagementView() {
             >
                 {t("user-management")}
             </Typography>
-            <Paper
-                sx={{
-                    color: "primary.light",
-                    padding: 2,
-                    minWidth: "900px",
-                }}
-                variant="outlined"
-            >
-                <UserDataGrid />
-            </Paper>
-
-        </Box>
+            <UserDataGrid />
+        </Paper>
     )
 }

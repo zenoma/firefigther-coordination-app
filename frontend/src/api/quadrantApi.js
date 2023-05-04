@@ -7,6 +7,7 @@ export const quadrantApi = baseApi.injectEndpoints({
         url: "/quadrants?scale=" + payload.scale,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -18,6 +19,7 @@ export const quadrantApi = baseApi.injectEndpoints({
         url: "/quadrants/" + payload.quadrantId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -42,6 +44,7 @@ export const quadrantApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

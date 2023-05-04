@@ -1,8 +1,8 @@
 package es.udc.fireproject.backend.rest.controllers;
 
 import es.udc.fireproject.backend.model.entities.vehicle.Vehicle;
+import es.udc.fireproject.backend.model.exceptions.AlreadyDismantledException;
 import es.udc.fireproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.fireproject.backend.model.exceptions.VehicleAlreadyDismantledException;
 import es.udc.fireproject.backend.model.services.firemanagement.FireManagementService;
 import es.udc.fireproject.backend.model.services.personalmanagement.PersonalManagementService;
 import es.udc.fireproject.backend.rest.dtos.UserDto;
@@ -39,13 +39,13 @@ public class VehicleController {
 
     @DeleteMapping("/{id}")
     public void delete(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.dismantleVehicleById(id);
     }
 
     @PutMapping("/{id}")
     public void update(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody VehicleDto vehicleDto)
-            throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.updateVehicle(id, vehicleDto.getVehiclePlate(), vehicleDto.getType());
     }
 
@@ -94,14 +94,14 @@ public class VehicleController {
 
     @PostMapping("/{id}/deploy")
     public VehicleDto deploy(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
-            throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
 
         return VehicleConversor.toVehicleDto(fireManagementService.deployVehicle(id, Integer.valueOf(jsonParams.get("gid"))));
     }
 
     @PostMapping("/{id}/retract")
     public VehicleDto retract(@RequestAttribute Long userId, @PathVariable Long id)
-            throws InstanceNotFoundException, VehicleAlreadyDismantledException {
+            throws InstanceNotFoundException, AlreadyDismantledException {
 
         return VehicleConversor.toVehicleDto(fireManagementService.retractVehicle(id));
 

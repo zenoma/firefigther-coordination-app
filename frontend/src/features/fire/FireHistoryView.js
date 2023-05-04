@@ -35,21 +35,27 @@ export default function FireHistoryView() {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const [quadrants, setQuadrants] = useState([]);
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [selectedStartDate, setSelectedStartDate] = useState(dayjs());
+  const [selectedEndDate, setSelectedEndDate] = useState(dayjs());
+  const [areDatesValid, setAreDatesValid] = useState(true);
 
   const fireId = location.state.fireId;
+
 
   const { data: fireData } = useGetFireByIdQuery({
     token: token,
     fireId: fireId,
+    locale: locale,
   });
 
   const { data: globalStatistics } = useGetGlobalStatisticsByFireIdQuery({
     token: token,
     fireId: fireId,
+    locale: locale,
   });
 
   const payload = {
@@ -57,6 +63,7 @@ export default function FireHistoryView() {
     fireId: fireId,
     startDate: dayjs(selectedStartDate).format("YYYY-MM-DDTHH:mm:ss"),
     endDate: dayjs(selectedEndDate).format("YYYY-MM-DDTHH:mm:ss"),
+    locale: locale
   };
 
   const { data: fireLogs } = useGetFireLogsByFireIdQuery(payload, {
@@ -70,22 +77,25 @@ export default function FireHistoryView() {
     }
   }, [fireData]);
 
+
   const handleStartDateChange = (date) => {
-    const oldDate = selectedStartDate;
-    if (date > oldDate) {
+    if (date >= selectedEndDate) {
       toast.error(t("start-date-after-end-date"));
-      setSelectedStartDate(oldDate);
-    } else {
-      setSelectedStartDate(date);
+      setAreDatesValid(false);
+    }
+    else {
+      setAreDatesValid(true);
     }
   };
 
   const handleEndDateChange = (date) => {
     if (date < selectedStartDate) {
-      alert("La fecha de fin no puede ser anterior a la fecha de inicio");
-      return;
+      toast.error(t("end-date-before-start-date"));
+      setAreDatesValid(false);
     }
-    setSelectedEndDate(date);
+    else {
+      setAreDatesValid(true);
+    }
   };
 
   useEffect(() => {
@@ -190,7 +200,7 @@ export default function FireHistoryView() {
                   </LocalizationProvider>
                 </Box>
                 <Typography variant="h6">{t("quadrant-list")}</Typography>
-                <TableContainer
+                {areDatesValid && <TableContainer
                   component={Paper}
                   elevation={3}
                   sx={{
@@ -258,7 +268,9 @@ export default function FireHistoryView() {
                         ))}
                     </TableBody>
                   </Table>
-                </TableContainer>
+                </TableContainer>}
+                {!areDatesValid && <Typography variant="body" color="error.light">{t("date-invalid-body")}</Typography>
+                }
               </div>
             )}
           </Paper>
@@ -354,8 +366,3 @@ export default function FireHistoryView() {
     </Box >
   );
 }
-
-// globalStatistics.affectedQuadrants
-// globalStatistics.maxBurnedHectares
-// globalStatistics.teamsMobilized
-// globalStatistics.vehiclesMobilized

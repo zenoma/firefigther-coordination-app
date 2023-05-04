@@ -112,7 +112,7 @@ public class LogManagementServiceImpl implements LogManagementService {
         Fire fire = fireManagementService.findFireById(fireId);
 
         if (fire.getFireIndex() != FireIndex.EXTINGUIDO) {
-            throw new ExtinguishedFireException(fireId, " must be extinguished");
+            throw new ExtinguishedFireException(Fire.class.getSimpleName(), fire.getId().toString());
 
         }
 

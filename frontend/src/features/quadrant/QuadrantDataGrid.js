@@ -18,6 +18,7 @@ export default function QuadrantDataGrid({ childToParent }) {
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
+  const locale = i18n.language;  
 
   var localeText;
 
@@ -32,7 +33,7 @@ export default function QuadrantDataGrid({ childToParent }) {
     error,
     isLoading,
   } = useGetQuadrantsByScaleQuery(
-    { token: token, scale: "5.0" },
+    { token: token, scale: "5.0", locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }

@@ -22,7 +22,11 @@ export default function TeamUserAdd(props) {
   const token = useSelector(selectToken);
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(-1);
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
+
   const [addUser] = useAddUserMutation();
   const teamId = props.teamId;
 
@@ -42,6 +46,7 @@ export default function TeamUserAdd(props) {
         token: token,
         memberId: selectedId,
         teamId: teamId,
+        locale: locale
       };
 
       addUser(payload)

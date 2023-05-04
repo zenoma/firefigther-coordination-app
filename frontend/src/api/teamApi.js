@@ -7,17 +7,19 @@ export const teamApi = baseApi.injectEndpoints({
         url: "/teams?code=",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
         return response;
       },
     }),
-    getactiveTeams: build.query({
+    getActiveTeams: build.query({
       query: (payload) => ({
         url: "/teams/active",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -29,6 +31,7 @@ export const teamApi = baseApi.injectEndpoints({
         url: "/teams/active?organizationId=" + payload.organizationId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -40,6 +43,7 @@ export const teamApi = baseApi.injectEndpoints({
         url: "/teams/" + payload.teamId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -51,6 +55,7 @@ export const teamApi = baseApi.injectEndpoints({
         url: "/teams/" + payload.teamId + "/users",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -62,6 +67,7 @@ export const teamApi = baseApi.injectEndpoints({
         url: "/teams/myTeam",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -70,7 +76,7 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     createTeam: build.mutation({
       query: (payload) => ({
-        url: "/teams/",
+        url: "/teams",
         method: "POST",
         body: {
           code: payload.code,
@@ -78,6 +84,7 @@ export const teamApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -93,6 +100,7 @@ export const teamApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -105,6 +113,7 @@ export const teamApi = baseApi.injectEndpoints({
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -113,13 +122,14 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     addUser: build.mutation({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/addUser/",
+        url: "/teams/" + payload.teamId + "/addUser",
         method: "POST",
         body: {
           memberId: payload.memberId,
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -128,13 +138,14 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     deleteUser: build.mutation({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/deleteUser/",
+        url: "/teams/" + payload.teamId + "/deleteUser",
         method: "POST",
         body: {
           memberId: payload.memberId,
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -150,6 +161,7 @@ export const teamApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -165,6 +177,7 @@ export const teamApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -176,7 +189,7 @@ export const teamApi = baseApi.injectEndpoints({
 
 export const {
   useGetTeamsQuery,
-  useGetactiveTeamsQuery,
+  useGetActiveTeamsQuery,
   useGetActiveTeamsByOrganizationIdQuery,
   useGetTeamsByIdQuery,
   useGetUsersByIdQuery,

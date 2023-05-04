@@ -13,11 +13,15 @@ export default function QuadrantView() {
   const location = useLocation();
   const token = useSelector(selectToken);
   const quadrantId = location.state.quadrantId;
+
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const payload = {
     token: token,
     quadrantId: quadrantId,
+    locale: locale
   };
   const { data: quadrantInfo } = useGetQuadrantByIdQuery(payload);
 

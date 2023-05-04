@@ -1,5 +1,6 @@
 import { baseApi } from "./baseApi";
 
+
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query({
@@ -7,6 +8,7 @@ export const userApi = baseApi.injectEndpoints({
         url: "/users/",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -16,6 +18,9 @@ export const userApi = baseApi.injectEndpoints({
     login: build.mutation({
       query: (payload) => ({
         url: "/users/login",
+        headers: {
+          "Accept-Language": payload.locale,
+        },
         method: "POST",
         body: payload,
       }),
@@ -29,6 +34,7 @@ export const userApi = baseApi.injectEndpoints({
         method: "POST",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
         body: payload,
       }),
@@ -39,6 +45,9 @@ export const userApi = baseApi.injectEndpoints({
     signUp: build.mutation({
       query: (payload) => ({
         url: "/users/signUp",
+        headers: {
+          "Accept-Language": payload.locale,
+        },
         method: "POST",
         body: payload,
       }),
@@ -56,6 +65,7 @@ export const userApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -71,6 +81,7 @@ export const userApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {

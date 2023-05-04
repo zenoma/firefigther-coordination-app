@@ -27,10 +27,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCreateFireMutation, useGetFiresQuery } from "../../api/fireApi";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 export default function FireDataGrid() {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
@@ -58,13 +59,15 @@ export default function FireDataGrid() {
     localeText = esES.components.MuiDataGrid.defaultProps.localeText;
   }
 
+  const locale = i18n.language;
+
   const {
     data: fires,
     error,
     isLoading,
     refetch,
   } = useGetFiresQuery(
-    { token: token },
+    { token: token, locale: locale },
     {
       refetchOnMountOrArgChange: true,
     }
@@ -156,6 +159,7 @@ export default function FireDataGrid() {
       token: token,
       description: description,
       type: fireType,
+      locale: locale,
     };
 
     createFire(payload)
@@ -236,11 +240,11 @@ export default function FireDataGrid() {
                 : handleRowClick(e.row)
             }
           />
-          <Box m={1}>
+          {userRole === "COORDINATOR" && <Box m={1}>
             <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
               <AddIcon />
             </Fab>
-          </Box>
+          </Box>}
           <Dialog fullWidth open={open} onClose={handleClose}>
             <DialogTitle sx={{ color: "primary.light" }}>{t("fire-create-title")} </DialogTitle>
             <DialogContent>

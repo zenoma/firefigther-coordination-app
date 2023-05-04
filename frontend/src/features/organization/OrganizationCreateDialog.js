@@ -28,6 +28,8 @@ export default function OrganizationCreateDialog(props) {
   const [organizationTypeId, setOrganizationTypeId] = useState();
 
   const { t } = useTranslation();
+  const { i18n } = useTranslation("home");
+  const locale = i18n.language;
 
   const childToParent = (childdata) => {
     setData({ lat: childdata[0], lng: childdata[1] });
@@ -79,6 +81,7 @@ export default function OrganizationCreateDialog(props) {
       coordinates: data,
       token: token,
       organizationTypeId: organizationTypeId,
+      locale: locale
     };
 
     if (data === "") {
@@ -103,7 +106,6 @@ export default function OrganizationCreateDialog(props) {
   useEffect(() => { }, [open]);
 
 
-  //FIXME: Update translations
   return (
     <div>
       <Box m={1}>

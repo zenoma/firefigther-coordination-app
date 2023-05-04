@@ -7,6 +7,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         url: "/vehicles",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -18,6 +19,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         url: "/vehicles/active",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -29,6 +31,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         url: "/vehicles/active?organizationId=" + payload.organizationId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -40,6 +43,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         url: "/vehicles/" + payload.vehicleId,
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -48,7 +52,7 @@ export const vehicleApi = baseApi.injectEndpoints({
     }),
     createVehicle: build.mutation({
       query: (payload) => ({
-        url: "/vehicles/",
+        url: "/vehicles",
         method: "POST",
         body: {
           vehiclePlate: payload.vehiclePlate,
@@ -57,6 +61,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -73,6 +78,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -85,6 +91,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -100,6 +107,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
@@ -115,6 +123,7 @@ export const vehicleApi = baseApi.injectEndpoints({
         },
         headers: {
           Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
         },
       }),
       transformResponse: (response, meta, arg) => {
