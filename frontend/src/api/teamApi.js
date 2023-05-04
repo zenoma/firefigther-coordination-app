@@ -14,7 +14,7 @@ export const teamApi = baseApi.injectEndpoints({
         return response;
       },
     }),
-    getactiveTeams: build.query({
+    getActiveTeams: build.query({
       query: (payload) => ({
         url: "/teams/active",
         headers: {
@@ -76,7 +76,7 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     createTeam: build.mutation({
       query: (payload) => ({
-        url: "/teams/",
+        url: "/teams",
         method: "POST",
         body: {
           code: payload.code,
@@ -122,7 +122,7 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     addUser: build.mutation({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/addUser/",
+        url: "/teams/" + payload.teamId + "/addUser",
         method: "POST",
         body: {
           memberId: payload.memberId,
@@ -138,7 +138,7 @@ export const teamApi = baseApi.injectEndpoints({
     }),
     deleteUser: build.mutation({
       query: (payload) => ({
-        url: "/teams/" + payload.teamId + "/deleteUser/",
+        url: "/teams/" + payload.teamId + "/deleteUser",
         method: "POST",
         body: {
           memberId: payload.memberId,

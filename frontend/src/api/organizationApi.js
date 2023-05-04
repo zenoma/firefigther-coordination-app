@@ -29,7 +29,7 @@ export const organizationApi = baseApi.injectEndpoints({
     }),
     createOrganization: build.mutation({
       query: (payload) => ({
-        url: "/organizations/",
+        url: "/organizations",
         method: "POST",
         body: {
           code: payload.code,

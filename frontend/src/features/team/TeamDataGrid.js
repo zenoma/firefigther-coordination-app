@@ -28,15 +28,16 @@ export default function TeamDataGrid({ childToParent }) {
 
   const [pageSize, setPageSize] = React.useState(10);
 
+  const payload = {
+    token: token,
+    locale: locale
+  }
+
   const {
     data: teams,
     error,
     isLoading,
-  } = useGetActiveTeamsQuery(
-    { token: token, locale: locale },
-    {
-      refetchOnMountOrArgChange: true,
-    }
+  } = useGetActiveTeamsQuery(payload, { refetchOnMountOrArgChange: true, }
   );
 
   const initData = (teams) => {

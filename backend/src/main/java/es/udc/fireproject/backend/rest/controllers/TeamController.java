@@ -99,7 +99,7 @@ public class TeamController {
         return TeamConversor.toTeamDto(personalManagementService.findTeamByUserId(userId));
     }
 
-    @PostMapping("/{id}/addUser/")
+    @PostMapping("/{id}/addUser")
     public void addUser(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody Map<String, String> jsonParams)
             throws InstanceNotFoundException, AlreadyDismantledException {
         personalManagementService.addMember(id, Long.valueOf(jsonParams.get("memberId")));

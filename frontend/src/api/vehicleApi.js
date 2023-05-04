@@ -52,7 +52,7 @@ export const vehicleApi = baseApi.injectEndpoints({
     }),
     createVehicle: build.mutation({
       query: (payload) => ({
-        url: "/vehicles/",
+        url: "/vehicles",
         method: "POST",
         body: {
           vehiclePlate: payload.vehiclePlate,
