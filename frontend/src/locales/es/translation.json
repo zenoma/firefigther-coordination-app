@@ -156,6 +156,9 @@
   "tittle-date-picker": "Selector de rango de fechas",
   "start-date-picker": "Fecha de inicio",
   "end-date-picker": "Fecha de fin",
+  "date-invalid-body": "Porfavor selecciona las fechas correctamente",
+  "start-date-after-end-date": "La fecha de inicio es posterior a la fecha de fin",
+  "end-date-before-start-date": "La fecha de fin es anterior a la fecha de inicio",
 
   "global-statistics": "Estadísticas globales",
   "teams-mobilized": "Equipos movilizados",
