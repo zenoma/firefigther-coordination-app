@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Box, Button, CircularProgress, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, Typography } from "@mui/material";
 
 import { selectToken } from "../user/login/LoginSlice";
 
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
 
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton, esES } from '@mui/x-data-grid';
 import { useTranslation } from "react-i18next";
