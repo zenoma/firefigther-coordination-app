@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Box, Button, CircularProgress, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Dialog, DialogContent, Paper, Typography } from "@mui/material";
 
 import { selectToken } from "../user/login/LoginSlice";
 
@@ -13,6 +13,8 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useDeleteNoticeMutation, useGetNoticesQuery, useUpdateNoticeMutation } from "../../api/noticeApi";
+
+var URL = process.env.REACT_APP_BACKEND_URL;
 
 
 export default function CoordinatorNoticesView() {
@@ -39,8 +41,24 @@ export default function CoordinatorNoticesView() {
 
   const { data, error, isLoading, refetch } = useGetNoticesQuery(payload, { refetchOnMountOrArgChange: true });
 
-  const [updateNotice] = useUpdateNoticeMutation(payload);
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleDialogOpen = (id, image) => {
+    setSelectedNoticeId(id);
+    setSelectedImage(image);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setSelectedNoticeId(null);
+    setSelectedImage(null);
+    setDialogOpen(false);
+  };
+
+  const [updateNotice] = useUpdateNoticeMutation(payload);
 
   const handleUpdateClick = (e, row, status) => {
     e.stopPropagation();
@@ -138,9 +156,10 @@ export default function CoordinatorNoticesView() {
         if (params.row.images[0]) {
           return (
             <img
-              src={`/images/${params.row.id}/${params.row.images[0].name}`}
-              alt={params.row.title}
-              style={{ width: 50, height: 50 }}
+              src={`${URL}/images/${params.row.id}/${params.row.images[0].name}`}
+              alt={params.row.name}
+              style={{ minWidth: 100, minHeight: 10, cursor: "pointer" }}
+              onClick={() => handleDialogOpen(params.row.id, params.row.images[0].name)}
             />
           );
         } else {
@@ -159,7 +178,6 @@ export default function CoordinatorNoticesView() {
             sx={{ borderRadius: "20px" }}
             variant="contained"
             color="primary"
-            //TODO: Accept Button
             disabled={params.row.status !== "PENDING"}
             onClick={(e) => handleUpdateClick(e, params.row, "ACCEPTED")}
           >
@@ -169,7 +187,6 @@ export default function CoordinatorNoticesView() {
             sx={{ borderRadius: "20px" }}
             variant="contained"
             color="error"
-            //TODO: Rejected Button
             disabled={params.row.status !== "PENDING"}
             onClick={(e) => handleUpdateClick(e, params.row, "REJECTED")}          >
             <CloseIcon />
@@ -177,7 +194,6 @@ export default function CoordinatorNoticesView() {
           <Button
             sx={{ borderRadius: "20px" }}
             color="error"
-            //TODO: Delete button
             disabled={params.row.status !== "PENDING"}
             onClick={(e) => handleDeleteClick(e, params.row)}
           >
@@ -242,6 +258,14 @@ export default function CoordinatorNoticesView() {
           />
         </div>)
         : null}
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogContent>
+          {selectedImage && <img src={`${URL}/images/${selectedNoticeId}/${selectedImage}`}
+            alt="Imagen" style={{ maxWidth: "100%" }} />}
+        </DialogContent>
+      </Dialog>
     </Paper >
+
   );
 }
