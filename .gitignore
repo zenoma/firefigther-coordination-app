@@ -9,6 +9,7 @@ frontend/node_modules/
 backend/.classpath
 backend/.project
 backend/.settings/
+backend/public/images
 
 # IntelliJ IDEA configuration.
 .idea/

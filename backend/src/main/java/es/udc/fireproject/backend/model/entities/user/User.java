@@ -169,9 +169,7 @@ public class User extends BaseEntity {
                 ", dni='" + dni + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", createdAt=" + createdAt +
-                ", userRole=" + userRole +
-                ", team=" + team +
-                '}';
+                ", userRole=" + userRole + '}';
     }
 }
 

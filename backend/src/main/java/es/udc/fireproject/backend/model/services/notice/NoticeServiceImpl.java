@@ -9,10 +9,13 @@ import es.udc.fireproject.backend.model.entities.user.User;
 import es.udc.fireproject.backend.model.entities.user.UserRepository;
 import es.udc.fireproject.backend.model.exceptions.*;
 import es.udc.fireproject.backend.model.services.utils.ConstraintValidator;
+import es.udc.fireproject.backend.rest.common.FileUploadUtil;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -68,13 +71,26 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteById(Long id) throws InstanceNotFoundException, NoticeDeleteStatusException {
+    @Transactional
+    public void deleteById(Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, IOException {
+
 
         Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));
 
         if (notice.getStatus() != NoticeStatus.PENDING) {
             throw new NoticeDeleteStatusException(notice.getId(), notice.getStatus().toString());
         }
+
+        List<Image> imageList = notice.getImageList();
+        if (!imageList.isEmpty()) {
+            Image image = imageList.get(0);
+            if (image != null) {
+                String uploadDir = "public/images/" + notice.getId();
+                FileUploadUtil.deleteFile(uploadDir, image.getName());
+                imageRepository.delete(image);
+            }
+        }
+
         noticeRepository.deleteById(id);
     }
 

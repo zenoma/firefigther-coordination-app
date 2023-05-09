@@ -152,7 +152,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, NoticeUpdateStatusException {
+    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, NoticeUpdateStatusException, IOException {
 
         noticeService.deleteById(id);
 
@@ -182,7 +182,7 @@ public class NoticeController {
         if (multipartFile.isEmpty()) {
             throw new ImageRequiredException();
         }
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = id + "-" + StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 
         NoticeDto noticeDto = NoticeConversor.toNoticeDto(noticeService.addImage(id, fileName));

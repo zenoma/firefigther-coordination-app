@@ -29,4 +29,9 @@ public class FileUploadUtil {
             throw new IOException("Could not save image file: " + fileName, ioe);
         }
     }
+
+    public static void deleteFile(String uploadDir, String fileName) throws IOException {
+        Path filePath = Paths.get(uploadDir).resolve(fileName);
+        Files.deleteIfExists(filePath);
+    }
 }
