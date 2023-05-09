@@ -172,6 +172,20 @@
   "affected-quadrants": "Cadrantes afectados",
   "max-burned-hectares": "Hectáreas queimadas",
 
+  "navigator-geolocation-tittle": "Localización non dispoñible",
+  "navigator-geolocation-error": "Non foi posíbel obter a localización actual, por favor, conceda os permisos necesarios no navegador.",
+  "weather-info-tittle": "Información meteorolóxica en ",
+  "weather-temperature": "Temperatura",
+  "weather-temperature-min": "Temperatura Min.",
+  "weather-temperature-max": "Temperatura Max.",
+  "weather-humidity-pressure": "Humidade e presión",
+  "weather-humidity": "Humidade",
+  "weather-pressure": "Presión",
+  "weather-wind": "Vento",
+  "weather-wind-speed": "Velocidade do vento",
+  "weather-wind-direction": "Dirección do vento",
+
+
   "options": "Opcións",
   "cancel": "Cancelar",
   "edit": "Editar",

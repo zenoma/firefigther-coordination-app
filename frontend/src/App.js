@@ -32,11 +32,11 @@ import FireDetailsView from "./features/fire/FireDetailsView";
 import FireHistoryView from "./features/fire/FireHistoryView";
 import FireManagementView from "./features/fire/FireManagementView";
 import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
+import CoordinatorNoticesView from "./features/notice/CoordinatorNoticesView";
 import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 import QuadrantView from "./features/quadrant/QuadrantView";
 import TeamView from "./features/team/TeamView";
 import UserManagementView from "./features/user/management/UserManagementView";
-import CoordinatorNoticesView from "./features/notice/CoordinatorNoticesView";
 
 function App({ t }) {
 

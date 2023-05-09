@@ -28,7 +28,7 @@ export const fireApi = baseApi.injectEndpoints({
     }),
     createFire: build.mutation({
       query: (payload) => ({
-        url: "/fires/",
+        url: "/fires",
         method: "POST",
         body: {
           description: payload.description,
