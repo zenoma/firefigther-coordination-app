@@ -32,6 +32,12 @@
   "create-notice-placeholder": "Inserte la descripción del aviso...",
   "notice-created-sucessfully": "Aviso creado correctamente",
   "notice-created-error": "Hubo un problema al crear el error",
+  "notice-image-error": "Hubo un problema al subir la imagen",
+  "notice-management": "Gestión avisos",
+  "notice-body": "Descripción",
+  "notice-status": "Estado",
+  "notice-image": "Imagen",
+  "notice-options": "Opciones",
 
   "select-organization-type": "Seleciona el tipo de organización a mostrar",
   "choose-organization-type": "Selecciona el tipo de organización",

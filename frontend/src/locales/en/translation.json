@@ -25,6 +25,8 @@
   "geographic-map": "Geographic Map",
   "create-notice": "Create notice",
   "create-notice-placeholder": "Write notice description...",
+  "notice-created-sucessfully": "Notice created sucessfully",
+  "notice-created-error": "Error creating the notice",
 
   "select-organization-type": "Select organization type to show",
   "choose-organization-type": "Select organization type",

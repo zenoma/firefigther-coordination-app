@@ -36,6 +36,7 @@ import OrganizationTeamsVehiclesView from "./features/organization/OrganizationT
 import QuadrantView from "./features/quadrant/QuadrantView";
 import TeamView from "./features/team/TeamView";
 import UserManagementView from "./features/user/management/UserManagementView";
+import CoordinatorNoticesView from "./features/notice/CoordinatorNoticesView";
 
 function App({ t }) {
 
@@ -126,6 +127,7 @@ function App({ t }) {
             <Route path="/quadrant-history" element={userRole !== 'USER' ? <QuadrantHistoryView /> : <Navigate to="/" />} />
 
             <Route path="/user-management" element={userRole === 'COORDINATOR' ? <UserManagementView /> : <Navigate to="/" />} />
+            <Route path="/notice-management" element={userRole === 'COORDINATOR' ? <CoordinatorNoticesView /> : <Navigate to="/" />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

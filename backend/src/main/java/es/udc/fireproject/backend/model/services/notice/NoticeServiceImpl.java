@@ -90,6 +90,12 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public List<Notice> findAll() {
+
+        return noticeRepository.findAll();
+    }
+
+    @Override
     public void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeCheckStatusException {
 
         Notice notice = noticeRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException(Notice.class.getSimpleName(), id));

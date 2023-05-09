@@ -22,6 +22,8 @@ public interface NoticeService {
 
     Notice findById(Long id) throws InstanceNotFoundException;
 
+    List<Notice> findAll();
+
     void checkNotice(Long id, NoticeStatus status) throws InstanceNotFoundException, NoticeCheckStatusException;
 
     Notice addImage(Long id, String name) throws InstanceNotFoundException, ImageAlreadyUploadedException;

@@ -182,6 +182,16 @@ export default function FireDataGrid() {
     );
   }
 
+  const statusFilterModel = {
+    items: [{ columnField: "fireIndex", operatorValue: 'isAnyOf', value: ['CERO', 'UNO', 'DOS', 'TRES'], label: 'Extinguido' }]
+  };
+
+  const [filterModel, setFilterModel] = useState(statusFilterModel);
+
+  const handleFilterModelChange = (model) => {
+    setFilterModel(model);
+  };
+
   return (
     <Box style={{ height: 600 }}>
       {error ? (
@@ -227,6 +237,8 @@ export default function FireDataGrid() {
             rowsPerPageOptions={[10, 25, 50]}
             pagination
             localeText={localeText}
+            filterModel={filterModel}
+            onFilterModelChange={handleFilterModelChange}
             getRowClassName={(params) => {
               if (params.row.fireIndex === "EXTINGUIDO") {
                 return "disabled";
