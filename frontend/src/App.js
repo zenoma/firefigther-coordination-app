@@ -32,6 +32,7 @@ import FireDetailsView from "./features/fire/FireDetailsView";
 import FireHistoryView from "./features/fire/FireHistoryView";
 import FireManagementView from "./features/fire/FireManagementView";
 import QuadrantHistoryView from "./features/history/QuadrantHistoryView";
+import CoordinatorNoticesView from "./features/notice/CoordinatorNoticesView";
 import OrganizationTeamsVehiclesView from "./features/organization/OrganizationTeamsVehiclesView";
 import QuadrantView from "./features/quadrant/QuadrantView";
 import TeamView from "./features/team/TeamView";
@@ -126,6 +127,7 @@ function App({ t }) {
             <Route path="/quadrant-history" element={userRole !== 'USER' ? <QuadrantHistoryView /> : <Navigate to="/" />} />
 
             <Route path="/user-management" element={userRole === 'COORDINATOR' ? <UserManagementView /> : <Navigate to="/" />} />
+            <Route path="/notice-management" element={userRole === 'COORDINATOR' ? <CoordinatorNoticesView /> : <Navigate to="/" />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

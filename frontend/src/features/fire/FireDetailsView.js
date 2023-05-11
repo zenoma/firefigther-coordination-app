@@ -40,6 +40,8 @@ import CustomMap from "../map/CustomMap";
 import QuadrantDataGrid from "../quadrant/QuadrantDataGrid";
 import { selectToken } from "../user/login/LoginSlice";
 import BackButton from "../utils/BackButton";
+import WeatherInfo from "../weather/WeatherInfo";
+import { untransformCoordinates } from "../../app/utils/coordinatesTransformations";
 
 const fireIndexSelector = ["CERO", "UNO", "DOS", "TRES"];
 
@@ -53,7 +55,7 @@ export default function FireDetailsView() {
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
   const locale = i18n.language;
-  
+
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -69,7 +71,7 @@ export default function FireDetailsView() {
   const [openExtinguish, setOpenExtinguish] = useState(false);
 
 
-
+  const [coordinates, setCoordinates] = useState("");
 
   const payload = { token: token, fireId: fireId, locale: locale };
 
@@ -81,7 +83,17 @@ export default function FireDetailsView() {
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+
+    if (data && data.quadrants.length > 0) {
+      setCoordinates(
+        {
+          lon: untransformCoordinates(data.quadrants[0].coordinates[0].x, data.quadrants[0].coordinates[0].y).longitude,
+          lat: untransformCoordinates(data.quadrants[0].coordinates[0].x, data.quadrants[0].coordinates[0].y).latitude,
+        }
+      )
+    }
+  }
+    , [refetch, data]);
 
   const childToParent = (childdata) => {
     setSelectedId(childdata);
@@ -331,7 +343,7 @@ export default function FireDetailsView() {
             </Paper>
           )}
         </Grid>
-        <Grid item xs={4} sm={8} md={3}>
+        <Grid item xs={4} sm={8} md={3} >
           {data && (
             <Paper
               sx={{
@@ -413,8 +425,12 @@ export default function FireDetailsView() {
               </Dialog>
             </Paper>
           )}
+          {coordinates && <WeatherInfo sx={{ padding: 2 }} lat={coordinates.lat} lon={coordinates.lon} />}
+
         </Grid>
       </Grid>
+
+
 
       <Dialog open={open} fullWidth maxWidth="md">
         <DialogTitle sx={{ color: "primary.light" }}>{t("quadrant-add-title")} </DialogTitle>

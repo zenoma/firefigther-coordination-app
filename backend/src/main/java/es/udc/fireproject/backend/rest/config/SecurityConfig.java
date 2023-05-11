@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/{id}/changePassword").hasAnyRole("USER", "MANAGER", "COORDINATOR")
                 .antMatchers(HttpMethod.POST, "/users/{id}/updateRole").hasAnyRole("COORDINATOR")
 
-                .anyRequest().denyAll();
+                .anyRequest().permitAll();
 
         http.headers().frameOptions().disable();
 

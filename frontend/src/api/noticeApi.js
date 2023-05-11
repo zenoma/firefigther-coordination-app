@@ -19,9 +19,56 @@ export const noticeApi = baseApi.injectEndpoints({
         return response;
       },
     }),
-    getMyNotices: build.query({
+    getNotices: build.query({
       query: (payload) => ({
-        url: `/notices`,
+        url: `/notices?id=` + payload.id,
+        headers: {
+          Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    updateNotice: build.mutation({
+      query: (payload) => ({
+        url: `/notices/` + payload.id + '/status ',
+        method: "PUT",
+        body: {
+          status: payload.status,
+        },
+        headers: {
+          Authorization: "Bearer " + payload.token,
+          "Accept-Language": payload.locale,
+        },
+      }),
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    addImage: build.mutation({
+      query: (payload) => {
+        const formData = new FormData();
+        formData.append('image', payload.imageFile);
+        return {
+          url: `/notices/${payload.id}/images`,
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+            'Accept-Language': payload.locale,
+          },
+        };
+      },
+      transformResponse: (response, meta, arg) => {
+        return response;
+      },
+    }),
+    deleteNotice: build.mutation({
+      query: (payload) => ({
+        url: `/notices/` + payload.id,
+        method: "DELETE",
         headers: {
           Authorization: "Bearer " + payload.token,
           "Accept-Language": payload.locale,
@@ -34,4 +81,4 @@ export const noticeApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateNoticeMutation, useGetMyNoticesQuery } = noticeApi;
+export const { useCreateNoticeMutation, useGetNoticesQuery, useAddImageMutation, useUpdateNoticeMutation, useDeleteNoticeMutation } = noticeApi;

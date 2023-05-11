@@ -64,6 +64,11 @@ const pages = [
     icon: <People />,
     role: ["COORDINATOR"],
   },
+  {
+    name: "notice-management",
+    icon: <ArticleIcon />,
+    role: ["COORDINATOR"],
+  },
 ];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -131,6 +136,9 @@ export default function PersistentDrawerLeft() {
         break;
       case "user-management":
         navigate("/user-management");
+        break;
+      case "notice-management":
+        navigate("/notice-management");
         break;
       default:
         navigate("/");

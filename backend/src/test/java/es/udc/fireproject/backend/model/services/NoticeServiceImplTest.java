@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.Optional;
 
 @SpringBootTest
@@ -103,7 +104,7 @@ class NoticeServiceImplTest {
     }
 
     @Test
-    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws InstanceNotFoundException, NoticeDeleteStatusException {
+    void givenValid_whenDeleteNotice_thenDeletedSuccessfully() throws InstanceNotFoundException, NoticeDeleteStatusException, IOException {
 
         Notice createdNotice = noticeService.create(defaultNotice.getBody(), defaultNotice.getLocation());
         noticeService.deleteById(createdNotice.getId());

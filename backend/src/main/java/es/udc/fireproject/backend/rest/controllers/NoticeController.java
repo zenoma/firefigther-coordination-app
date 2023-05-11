@@ -7,6 +7,7 @@ import es.udc.fireproject.backend.model.services.notice.NoticeService;
 import es.udc.fireproject.backend.rest.common.ErrorsDto;
 import es.udc.fireproject.backend.rest.common.FileUploadUtil;
 import es.udc.fireproject.backend.rest.dtos.NoticeDto;
+import es.udc.fireproject.backend.rest.dtos.NoticeStatusDto;
 import es.udc.fireproject.backend.rest.dtos.conversors.NoticeConversor;
 import es.udc.fireproject.backend.rest.exceptions.ImageRequiredException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,14 +121,23 @@ public class NoticeController {
 
 
     @GetMapping("")
-    public List<NoticeDto> findAll(@RequestAttribute Long userId) {
+    public List<NoticeDto> findAll(@RequestAttribute Long userId, @RequestParam(value = "id", required = false) Long id) {
 
         List<NoticeDto> noticeDtos = new ArrayList<>();
-        for (Notice notice : noticeService.findByUserId(userId)) {
-            noticeDtos.add(NoticeConversor.toNoticeDto(notice));
+        if (id != null) {
+            for (Notice notice : noticeService.findByUserId(id)) {
+                noticeDtos.add(NoticeConversor.toNoticeDto(notice));
+            }
+        } else {
+            for (Notice notice : noticeService.findAll()) {
+                noticeDtos.add(NoticeConversor.toNoticeDto(notice));
+            }
         }
+
+
         return noticeDtos;
     }
+
 
     @PutMapping("/{id}")
     public void update(@RequestAttribute Long userId,
@@ -142,7 +152,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, NoticeUpdateStatusException {
+    public void deleteById(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException, NoticeDeleteStatusException, NoticeUpdateStatusException, IOException {
 
         noticeService.deleteById(id);
 
@@ -150,10 +160,17 @@ public class NoticeController {
 
     @PutMapping("/{id}/status")
     public void checkNotice(@RequestAttribute Long userId,
-                            @PathVariable Long id, @RequestParam("status") NoticeStatus status)
+                            @PathVariable Long id, @RequestBody NoticeStatusDto noticeStatusDto)
             throws InstanceNotFoundException, NoticeCheckStatusException {
 
-        noticeService.checkNotice(id, status);
+        NoticeStatus noticeStatus;
+        try {
+            noticeStatus = NoticeStatus.valueOf(noticeStatusDto.getStatus().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("noticeStatus");
+        }
+
+        noticeService.checkNotice(id, noticeStatus);
 
     }
 
@@ -165,13 +182,13 @@ public class NoticeController {
         if (multipartFile.isEmpty()) {
             throw new ImageRequiredException();
         }
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = id + "-" + StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 
         NoticeDto noticeDto = NoticeConversor.toNoticeDto(noticeService.addImage(id, fileName));
 
 
-        String uploadDir = "notice-photos/" + id;
+        String uploadDir = "public/images/" + id;
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
         return noticeDto;

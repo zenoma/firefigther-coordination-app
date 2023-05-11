@@ -114,7 +114,7 @@ export default function QuadrantTeamsView(props) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            textShadow: "1px 1px 2px #000",
+            textShadow: "2px 2px 3px #000",
             backgroundBlendMode: "screen",
           }}
         >
