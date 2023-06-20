@@ -18,7 +18,6 @@ public class OrganizationOM {
                 "Centro de Coordinación Central",
                 "Calle alguna", geometryFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withDefaultValues());
-
     }
 
     public static Organization withOrganizationTypeAndRandomNames(String name) {
@@ -28,7 +27,6 @@ public class OrganizationOM {
                 "Calle alguna",
                 geometryFactory.createPoint(new Coordinate(-45, 45)),
                 OrganizationTypeOM.withNames(List.of(name)).stream().findFirst().orElse(OrganizationTypeOM.withDefaultValues()));
-
     }
 
     public static Organization withInvalidValues() {

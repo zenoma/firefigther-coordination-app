@@ -47,7 +47,7 @@ public class FireManagementServiceImpl implements FireManagementService {
     @Autowired
     LogManagementServiceImpl logManagementService;
 
-    // CUADRANT SERVICES
+    // QUADRANT SERVICES
     @Override
     public List<Quadrant> findAllQuadrants() {
         return quadrantRepository.findAll();
@@ -154,9 +154,8 @@ public class FireManagementServiceImpl implements FireManagementService {
         Quadrant quadrant = quadrantRepository.findById(quadrantId).orElseThrow(() -> new InstanceNotFoundException(QUADRANT_NOT_FOUND, quadrantId));
 
         if (quadrant.getFire() == null || !Objects.equals(quadrant.getFire().getId(), fire.getId())) {
-            throw new RuntimeException("AAAA");
+            throw new RuntimeException();
         }
-
 
         logManagementService.logFire(id, quadrant.getId());
         quadrant.setFire(null);

@@ -5,6 +5,7 @@ import es.udc.fireproject.backend.model.entities.organization.Organization;
 import es.udc.fireproject.backend.model.entities.quadrant.Quadrant;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ public class Vehicle extends BaseEntity {
     private static final long serialVersionUID = -6662567578161123656L;
 
     @Column(name = "vehicle_plate")
+    @NotBlank
     private String vehiclePlate;
 
     @Column(name = "type")
@@ -123,7 +125,6 @@ public class Vehicle extends BaseEntity {
         return "Vehicle{" +
                 "vehiclePlate='" + vehiclePlate + '\'' +
                 ", type='" + type + '\'' +
-                ", createdAt=" + createdAt +
                 ", organization=" + organization +
                 ", quadrant=" + quadrant +
                 ", deployAt=" + deployAt +

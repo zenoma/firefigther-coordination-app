@@ -185,7 +185,23 @@ class NoticeServiceImplTest {
         noticeList.add(noticeService.create(notice.getBody(), notice.getLocation(), user.getId()));
 
         Assertions.assertTrue(noticeService.findByUserId(user.getId()).containsAll(noticeList), "List must be the same");
+    }
 
+    @Test
+    void givenValidData_whenFindAll_thenNoticesFound() throws DuplicateInstanceException, InstanceNotFoundException {
+
+        Notice notice = NoticeOm.withDefaultValues();
+        User user = UserOM.withDefaultValues();
+        personalManagementService.signUp(user);
+
+        List<Notice> noticeList = new ArrayList<>();
+        noticeList.add(noticeService.create(notice.getBody(), notice.getLocation(), user.getId()));
+        notice.setBody("Body2");
+        noticeList.add(noticeService.create(notice.getBody(), notice.getLocation(), user.getId()));
+        notice.setBody("Body3");
+        noticeList.add(noticeService.create(notice.getBody(), notice.getLocation(), user.getId()));
+
+        Assertions.assertTrue(noticeService.findAll().containsAll(noticeList), "List must be the same");
 
     }
 
