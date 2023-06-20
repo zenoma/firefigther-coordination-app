@@ -120,7 +120,6 @@ public class Organization extends BaseEntity {
                 ", name='" + name + '\'' +
                 ", headquartersAddress='" + headquartersAddress + '\'' +
                 ", location=" + location +
-                ", createdAt=" + createdAt +
                 ", organizationType=" + organizationType +
                 '}';
     }

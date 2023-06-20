@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -245,6 +246,90 @@ class TeamServiceImplTest {
         Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.findAllUsersByTeamId(INVALID_TEAM_ID),
                 "InstanceNotFoundException error was expected");
 
+    }
+
+
+    @Test
+    void givenUserId_whenFindByUserId_thenTeamFound() throws DuplicateInstanceException, InstanceNotFoundException, AlreadyDismantledException {
+        User user = UserOM.withDefaultValues();
+        Team team = TeamOM.withDefaultValues();
+        user.setTeam(team);
+        personalManagementService.signUp(user);
+        team = personalManagementService.addMember(user.getTeam().getId(), user.getId());
+
+        Assertions.assertEquals(team, personalManagementService.findTeamByUserId(user.getId()));
+
+    }
+
+    @Test
+    void givenTeams_whenFindActiveTeamsByOrganizationId_thenActiveTeamsFound() throws InstanceNotFoundException, AlreadyExistException, AlreadyDismantledException {
+        OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        Organization organization = OrganizationOM.withDefaultValues();
+        organization.setOrganizationType(organizationType);
+        organization = personalManagementService.createOrganization(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = personalManagementService.createTeam(team.getCode(),
+                organization.getId());
+        personalManagementService.dismantleTeamById(team.getId());
+
+        Team team2 = TeamOM.withDefaultValues();
+        team2.setCode("TEAM-02");
+        team2 = personalManagementService.createTeam(team2.getCode(),
+                organization.getId());
+
+        Team team3 = TeamOM.withDefaultValues();
+        team3.setCode("TEAM-03");
+        team3 = personalManagementService.createTeam(team3.getCode(),
+                organization.getId());
+
+        ArrayList<Team> teams = new ArrayList<>();
+
+        teams.add(team2);
+        teams.add(team3);
+
+        Assertions.assertEquals(teams, personalManagementService.findActiveTeamsByOrganizationId(organization.getId()));
+    }
+
+
+    @Test
+    void givenTeams_whenFindAllActiveTeams_thenActiveTeamsFound() throws InstanceNotFoundException, AlreadyExistException, AlreadyDismantledException {
+        OrganizationType organizationType = personalManagementService.createOrganizationType(OrganizationTypeOM.withDefaultValues().getName());
+        Organization organization = OrganizationOM.withDefaultValues();
+        organization.setOrganizationType(organizationType);
+        organization = personalManagementService.createOrganization(organization);
+
+        Team team = TeamOM.withDefaultValues();
+        team = personalManagementService.createTeam(team.getCode(),
+                organization.getId());
+        personalManagementService.dismantleTeamById(team.getId());
+
+        Team team2 = TeamOM.withDefaultValues();
+        team2.setCode("TEAM-02");
+        team2 = personalManagementService.createTeam(team2.getCode(),
+                organization.getId());
+
+        Organization organization2 = OrganizationOM.withOrganizationTypeAndRandomNames("Organization 2");
+        organization2.setOrganizationType(organizationType);
+        organization2 = personalManagementService.createOrganization(organization2);
+
+        Team team3 = TeamOM.withDefaultValues();
+        team3.setCode("TEAM-03");
+        team3 = personalManagementService.createTeam(team3.getCode(),
+                organization2.getId());
+        personalManagementService.dismantleTeamById(team3.getId());
+
+        Team team4 = TeamOM.withDefaultValues();
+        team4.setCode("TEAM-04");
+        team4 = personalManagementService.createTeam(team4.getCode(),
+                organization2.getId());
+
+        ArrayList<Team> teams = new ArrayList<>();
+
+        teams.add(team2);
+        teams.add(team4);
+
+        Assertions.assertEquals(teams, personalManagementService.findAllActiveTeams());
     }
 
 

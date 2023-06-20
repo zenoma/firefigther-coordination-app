@@ -93,6 +93,7 @@ class OrganizationServiceImplTest {
         Assertions.assertEquals(organizationList, personalManagementService.findOrganizationByNameOrCode(organization.getName()));
     }
 
+
     @Test
     void givenInvalidName_whenFindByNameOrCode_thenReturnEmptyList() {
 
@@ -111,9 +112,23 @@ class OrganizationServiceImplTest {
     }
 
     @Test
-    void givenInvalidName_whenFindById_thenInstanceNotFoundException() {
+    void givenInvalidName_whenFindOrganizationById_thenInstanceNotFoundException() {
 
         Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.findOrganizationById(-1L), "InstanceNotFoundException not thrown");
+    }
+
+    @Test
+    void givenValidId_whenFindOrganizationTypeById_thenFoundOrganizationType() throws InstanceNotFoundException {
+        OrganizationType organizationType = OrganizationTypeOM.withDefaultValues();
+        organizationType = personalManagementService.createOrganizationType(organizationType.getName());
+
+        Assertions.assertEquals(organizationType, personalManagementService.findOrganizationTypeById(organizationType.getId()));
+    }
+
+    @Test
+    void givenInvalidName_whenFindOrganizationTypeById_thenInstanceNotFoundException() {
+
+        Assertions.assertThrows(InstanceNotFoundException.class, () -> personalManagementService.findOrganizationTypeById(-1L), "InstanceNotFoundException not thrown");
     }
 
     @Test
