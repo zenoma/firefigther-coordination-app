@@ -11,7 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import { Box, Button } from "@mui/material";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 import DismantleIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
@@ -45,6 +45,7 @@ function createData(id, vehiclePlate, type, createdAt) {
 
 export default function VehicleTable(props) {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
@@ -195,7 +196,7 @@ export default function VehicleTable(props) {
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}
-                          {column.id === "options" ? (
+                          {column.id === "options" && userRole !== "USER" ? (
                             <Box>
                               <Button
                                 color="primary"

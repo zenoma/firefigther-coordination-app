@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { CircularProgress, Paper, Typography } from "@mui/material";
+import { CircularProgress, Dialog, DialogContent, Paper, Typography } from "@mui/material";
 
 import { selectToken, selectUser } from "../user/login/LoginSlice";
 
@@ -9,6 +9,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useTranslation } from "react-i18next";
 import { useGetNoticesQuery } from "../../api/noticeApi";
 
+
+var URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function MyNoticesList() {
   const [list, setList] = useState("");
@@ -23,6 +25,22 @@ export default function MyNoticesList() {
     token: token,
     locale: locale,
     id: user.id
+  };
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleDialogOpen = (id, image) => {
+    setSelectedNoticeId(id);
+    setSelectedImage(image);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setSelectedNoticeId(null);
+    setSelectedImage(null);
+    setDialogOpen(false);
   };
 
   const { data, error, isLoading } = useGetNoticesQuery(payload, { refetchOnMountOrArgChange: true });
@@ -71,10 +89,12 @@ export default function MyNoticesList() {
         if (params.row.images[0]) {
           return (
             <img
-              src={`/images/${params.row.id}/${params.row.images[0].name}`}
+              src={`${URL}/images/${params.row.id}/${params.row.images[0].name}`}
               alt={params.row.title}
               style={{ width: 50, height: 50 }}
+              onClick={() => handleDialogOpen(params.row.id, params.row.images[0].name)}
             />
+
           );
         } else {
           return null;
@@ -116,6 +136,13 @@ export default function MyNoticesList() {
           />
         </div>)
         : null}
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogContent>
+          {selectedImage && <img src={`${URL}/images/${selectedNoticeId}/${selectedImage}`}
+            alt="Imagen" style={{ maxWidth: "100%" }} />}
+        </DialogContent>
+      </Dialog>
     </Paper >
+    
   );
 }

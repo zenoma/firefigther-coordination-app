@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
 import { useGetActiveTeamsByOrganizationIdQuery } from "../../api/teamApi";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 import TeamCreateDialog from "./TeamCreateDialog";
 import TeamsTable from "./TeamsTable";
 
@@ -16,6 +16,7 @@ import teamImage from "../../assets/images/team-banner.jpg";
 
 export default function TeamsView(props) {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
@@ -70,10 +71,12 @@ export default function TeamsView(props) {
       ) : teamsList ? (
         <TeamsTable reloadData={reloadData} teams={teamsList} />
       ) : null}
-      <TeamCreateDialog
+
+      {userRole !== "USER" && <TeamCreateDialog
         reloadData={reloadData}
         organizationId={organizationId}
-      />
+      />}
+
     </Paper>
   );
 }
