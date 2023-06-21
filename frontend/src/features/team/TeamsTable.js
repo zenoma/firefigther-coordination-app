@@ -11,7 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import { Box, Button } from "@mui/material";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 
 import DismantleIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
@@ -45,6 +45,7 @@ function createData(id, code, createdAt) {
 
 export default function TeamsTable(props) {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
 
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
@@ -154,7 +155,7 @@ export default function TeamsTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column) =>  (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -199,7 +200,7 @@ export default function TeamsTable(props) {
                           {column.format && typeof value === "number"
                             ? column.format(value)
                             : value}
-                          {column.id === "options" ? (
+                          {column.id === "options" && userRole !== "USER" ? (
                             <Box>
                               <Button
                                 color="primary"

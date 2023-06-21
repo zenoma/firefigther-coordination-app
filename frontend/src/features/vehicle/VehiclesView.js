@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
 import { useGetActiveVehiclesByOrganizationIdQuery } from "../../api/vehicleApi";
-import { selectToken } from "../user/login/LoginSlice";
+import { selectToken, selectUser } from "../user/login/LoginSlice";
 import VehicleCreateDialog from "./VehicleCreateDialog";
 import VehicleTable from "./VehicleTable";
 
@@ -17,6 +17,7 @@ import vehicleImage from "../../assets/images/vehicle-banner.jpg"
 
 export default function VehiclesView(props) {
   const token = useSelector(selectToken);
+  const userRole = useSelector(selectUser).userRole;
   const { t } = useTranslation();
   const { i18n } = useTranslation("home");
   const locale = i18n.language;
@@ -71,10 +72,12 @@ export default function VehiclesView(props) {
           <VehicleTable reloadData={reloadData} vehicles={vehicleList} />
         ) : null}
 
-        <VehicleCreateDialog
+
+        {userRole !== "USER" && <VehicleCreateDialog
           reloadData={reloadData}
           organizationId={organizationId}
-        />
+        />}
+
       </Paper>
     </Box>
   );
